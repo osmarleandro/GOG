@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+    <ui:define name="bread">
+        <h:form>
+            <p:breadCrumb>  
+                <p:menuitem value="Home"/>  
+                <p:menuitem value="Cadastro de Meio Entrada"/>  
+            </p:breadCrumb>  
+        </h:form>
+    </ui:define>
+    
+    <ui:define name="content">
+        <p:fieldset legend="Cadastro de Meio de Entrada" style="max-width: 1190px; margin: 0 auto">
+            <h:form id="formMeioEntrada" >
+                <p:growl id="growl" sticky="false"  />
+                <p:dataTable id="gdMeioEntrada" 
+                             widgetVar="tabela"
+                             value="#{mBMeioEntrada.todos}"
+                             paginator="true" rows="5"
+                             rowsPerPageTemplate="5,10,15"
+                             paginatorPosition="bottom"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             var="item"
+                             rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx">
+                    <f:facet name="header">                    
+                        <p:commandButton id="cbNovo" 
+                                         type="button"
+                                         value="Novo"
+                                         title="Novo"
+                                         onclick="dlgNovoMeioEntrada.show();" 
+                                         style="float: left"/>
+                    </f:facet>
+                    <p:column filterBy="#{item.nmMeioEntrada}" filterMatchMode="contains" sortBy="#{item.nmMeioEntrada}" >
+                        <f:facet name="header">
+                            <h:outputText value="Meio Entrada"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nmMeioEntrada}"/>
+                    </p:column>
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputText value="Editar"/>
+                        </f:facet>
+                        <p:commandButton id="cbViewEditar" 
+                                         icon="ui-icon-pencil"
+                                         title="Editar"
+                                         update=":frmEditarMeioEntrada"
+                                         oncomplete="dlgEditarMeioEntrada.show();"
+                                         rendered="#{item.idMeioEntrada != 1}"> <!-- 1 = Formulário eletrônico -->
+                            <f:setPropertyActionListener value="#{item}" target="#{mBMeioEntrada.meioEntrada}" />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputLabel value="Excluir"/>
+                        </f:facet>
+                        <p:commandButton id="cbViewExcluir" onclick="dlgExcluirMeioEntrada.show();"
+                                         icon="ui-icon-close" title="Excluir"
+                                         rendered="#{item.idMeioEntrada != 1}"> <!-- 1 = Formulário eletrônico -->
+                            <f:setPropertyActionListener value="#{item}"
+                                                         target="#{mBMeioEntrada.meioEntrada}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            <!-- Caixa de diálogo de exclusão -->
+            <p:confirmDialog id="dialogoExcluirMeioEntrada" message="Confirma Operação?"
+                             header="Excluir Meio de Entrada" severity="alert"
+                             widgetVar="dlgExcluirMeioEntrada" appendToBody="true" closable="true" width="300">
+                <h:form id="frmExcluirMeioEntrada">
+
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbExcluirContinuar" value="Sim"
+                                                 oncomplete="dlgExcluirMeioEntrada.hide(); tabela.filter();"
+                                                 actionListener="#{mBMeioEntrada.remover}"/>
+                                <p:commandButton id="cbExcluirCancelar" value="Não" onclick="dlgExcluirMeioEntrada.hide()" type="button" />
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:confirmDialog>
+            <!-- Caixa de diálogo de inclusão -->
+            <p:dialog id="dialogoNovoMeioEntrada" widgetVar="dlgNovoMeioEntrada" modal="true" header="Novo Meio de Entrada"
+                      resizable="false" appendToBody="true" closable="true">
+                <h:form id="frmNovoMeioEntrada">
+                    <p:messages id="mNovoMessages" redisplay="false" />
+                    <p:panelGrid columns="2">
+                        <h:outputLabel value="Nome Meio Entrada:" style="width:300px; font-weight: bold;" />
+                        <p:inputText value="#{mBMeioEntrada.meioEntradaNovo.nmMeioEntrada}" required="true" requiredMessage="Digite o nome do Meio Entrada" style="width:300px; font-weight: bold;" title="Informe o nome do Meio Entrada" />
+                    </p:panelGrid>                        
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbNovoSalvar" value="Salvar"
+                                                 actionListener="#{mBMeioEntrada.cadastrar}"
+                                                 oncomplete="if (!args.validationFailed){dlgNovoMeioEntrada.hide()}; tabela.filter();"
+                                                 update="frmNovoMeioEntrada"
+                                                 ajax="true">
+                                    <p:resetInput target="frmNovoMeioEntrada" />
+                                </p:commandButton>
+                                <p:spacer width="20px"/>
+                                <p:commandButton value="Fechar" immediate="true" update="frmNovoMeioEntrada" process="@this" onclick="dlgNovoMeioEntrada.hide()">
+                                    <p:resetInput target="frmNovoMeioEntrada" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            <!-- Caixa de diálogo de edição -->
+            <p:dialog id="dialogoEditarMeioEntrada" widgetVar="dlgEditarMeioEntrada" header="Editar Meio Entrada"
+                      resizable="false" modal="true" appendToBody="true" closable="true">
+                <h:form id="frmEditarMeioEntrada">
+                    <p:panel id="pEditarTipoRecurso" style="border: 0">
+                        <p:messages id="mEditarMessages" redisplay="false" />                  
+                        <p:panelGrid columns="2">
+                            <h:outputLabel value="Nome:" />
+                            <p:inputText value="#{mBMeioEntrada.meioEntrada.nmMeioEntrada}" required="true" requiredMessage="Digite o nome do Meio Entrada" style="width:300px; font-weight: bold;" title="Informe o nome do Meio Entrada" />
+                        </p:panelGrid>                  
+                        <p:panelGrid style="width: 100%">
+                            <p:row>
+                                <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                    <p:commandButton id="cbEditarSalvar" value="Salvar"
+                                                     actionListener="#{mBMeioEntrada.alterar}"
+                                                     oncomplete="if (!args.validationFailed){dlgEditarMeioEntrada.hide()}"
+                                                     update=":formMeioEntrada:gdMeioEntrada, frmEditarMeioEntrada">
+                                        <p:resetInput target="frmEditarMeioEntrada" />
+                                    </p:commandButton>
+                                    <p:spacer width="20px"/>
+                                    <p:commandButton value="Fechar" immediate="true" onclick="dlgEditarMeioEntrada.hide()" update="frmEditarMeioEntrada" process="@this">
+                                        <p:resetInput target="frmEditarMeioEntrada" />
+                                    </p:commandButton>   
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:panel>
+                </h:form>
+            </p:dialog>
+        </p:fieldset>
+    </ui:define>
+</ui:composition>

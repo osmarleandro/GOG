@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+    <ui:define name="bread">
+        <p:breadCrumb>  
+            <p:menuitem value="Home"/>  
+            <p:menuitem value="Cadastro de Emails Automatizados"/>  
+        </p:breadCrumb>  
+    </ui:define>
+    
+    <ui:define name="content">      
+        <p:fieldset legend="Cadastro de Emails Automatizados" style="max-width: 1190px; margin: 0 auto">
+            <h:form id="frmNovoEmailNotificacao">
+                <p:messages id="mNovoMessages" redisplay="false" />
+                <p:tabView id="tabView" style="border:none!important">
+                	<!-- Nova Manifestação -->
+                	<ui:include src="/pages/templates/emailAutomatizado.xhtml">
+						<ui:param name="tabId" value="tabCadastro" />
+						<ui:param name="tabName" value="Nova Manifestação" />
+						<ui:param name="description" value="Esse e-mail será enviado ao cliente quando o usuário cria uma nova Manifestação ou recuperar o link da Manifestação" />
+						<ui:param name="email" value="#{mBEmailAutomatizado.emailNovaManifestacao}" />
+					</ui:include>
+					
+                	<!-- Primeiro Trâmite -->
+                	<ui:include src="/pages/templates/emailAutomatizado.xhtml">
+						<ui:param name="tabId" value="tabTramite" />
+						<ui:param name="tabName" value="Primeiro Trâmite" />
+						<ui:param name="description" value="Esse e-mail será enviado ao cliente quando ocorrer o primeiro trâmite na Manifestação" />
+						<ui:param name="email" value="#{mBEmailAutomatizado.emailPrimeiroTramite}" />
+					</ui:include>
+					
+                	<!-- Resposta Final -->
+                	<ui:include src="/pages/templates/emailAutomatizado.xhtml">
+						<ui:param name="tabId" value="tabResposta" />
+						<ui:param name="tabName" value="Resposta Final" />
+						<ui:param name="description" value="Esse e-mail será enviado ao cliente quando um técnico fecha uma Manifestação no painel de administração" />
+						<ui:param name="email" value="#{mBEmailAutomatizado.emailRespostaFinal}" />
+					</ui:include>
+					
+                	<!-- Recuperação de Senha -->
+                	<ui:include src="/pages/templates/emailAutomatizado.xhtml">
+						<ui:param name="tabId" value="tabRecuperacao" />
+						<ui:param name="tabName" value="Recuperação de Senha" />
+						<ui:param name="description" value="Esse e-mail será enviado ao usuário que solicitar a recuperação de senha" />
+						<ui:param name="email" value="#{mBEmailAutomatizado.emailRecuperacaoSenha}" />
+						<ui:param name="keyWords" value="#{mBEnum.palavrasChavesUsuariosEnums}" />
+					</ui:include>
+					
+                	<!-- Responder Questionário -->
+                	<ui:include src="/pages/templates/emailAutomatizado.xhtml">
+						<ui:param name="tabId" value="tabQuestionario" />
+						<ui:param name="tabName" value="Responder Questionário" />
+						<ui:param name="description" value="Esse e-mail será enviado ao usuário caso haja um questionário ativo. Informando-lhe de responder o mesmo" />
+						<ui:param name="email" value="#{mBEmailAutomatizado.emailResponderQuestionario}" />
+					</ui:include>
+					
+                	<!-- Interlocutor Ouvidoria -->
+                	<ui:include src="/pages/templates/emailAutomatizado.xhtml">
+						<ui:param name="tabId" value="tabInterlocutorOuvidoria" />
+						<ui:param name="tabName" value="Interlocutor Ouvidoria" />
+						<ui:param name="description" value="Esse e-mail será enviado ao interlocutor sempre que houver um novo trâmite para a sua área" />
+						<ui:param name="email" value="#{mBEmailAutomatizado.emailInterlocutorOuvidoria}" />
+					</ui:include>
+					
+                	<!-- Operador -->
+                	<ui:include src="/pages/templates/emailAutomatizado.xhtml">
+						<ui:param name="tabId" value="tabOperador" />
+						<ui:param name="tabName" value="Operador" />
+						<ui:param name="description" value="Esse e-mail será enviado para o operador sempre que houver trâmites que o operador seja envolvido" />
+						<ui:param name="email" value="#{mBEmailAutomatizado.emailOperador}" />
+					</ui:include>
+					
+                	<!-- Manifestante -->
+                	<ui:include src="/pages/templates/emailAutomatizado.xhtml">
+						<ui:param name="tabId" value="tabManifestante" />
+						<ui:param name="tabName" value="Manifestante" />
+						<ui:param name="description" value="Esse e-mail será enviado para a ouvidoria sempre que o manifestante enviar uma comunicação externa" />
+						<ui:param name="email" value="#{mBEmailAutomatizado.emailManifestante}" />
+					</ui:include>
+					
+                	<!-- Ouvidoria -->
+                	<ui:include src="/pages/templates/emailAutomatizado.xhtml">
+						<ui:param name="tabId" value="tabOuvidoria" />
+						<ui:param name="tabName" value="Ouvidoria" />
+						<ui:param name="description" value="Esse e-mail será enviado a ouvidoria sempre que uma manifestação retornar a ela, seja por um interlocutor ou operador" />
+						<ui:param name="email" value="#{mBEmailAutomatizado.emailOuvidoria}" />
+					</ui:include>
+					
+                	<!-- Interlocutor Operador -->
+                	<ui:include src="/pages/templates/emailAutomatizado.xhtml">
+						<ui:param name="tabId" value="tabInterlocutorOperador" />
+						<ui:param name="tabName" value="Interlocutor Operador" />
+						<ui:param name="description" value="Esse e-mail será enviado do operador para o interlocutor sempre que houver trâmite do operador para o interlocutor" />
+						<ui:param name="email" value="#{mBEmailAutomatizado.emailInterlocutorOperador}" />
+					</ui:include>
+					
+                	<!-- Atraso Interlocutor -->
+                	<ui:include src="/pages/templates/emailAutomatizado.xhtml">
+						<ui:param name="tabId" value="tabAtrasoInterlocutor" />
+						<ui:param name="tabName" value="Atraso Interlocutor" />
+						<ui:param name="description" value="Esse e-mail será enviado aos interlocutores da área que foi enviado notificação de atraso" />
+						<ui:param name="email" value="#{mBEmailAutomatizado.emailAtrasoInterlocutor}" />
+					</ui:include>
+					
+                	<!-- Atraso Operador -->
+                	<ui:include src="/pages/templates/emailAutomatizado.xhtml">
+						<ui:param name="tabId" value="tabAtrasoOperador" />
+						<ui:param name="tabName" value="Atraso Operador" />
+						<ui:param name="description" value="Esse e-mail será enviado aos operadores da área que foi enviado notificação de atraso" />
+						<ui:param name="email" value="#{mBEmailAutomatizado.emailAtrasoOperador}" />
+					</ui:include>
+					
+                	<!-- Nova Senha Manifestação -->
+                	<ui:include src="/pages/templates/emailAutomatizado.xhtml">
+						<ui:param name="tabId" value="tabNovaSenhaManifestacao" />
+						<ui:param name="tabName" value="Nova Senha Manifestação" />
+						<ui:param name="description" value="Esse e-mail será enviado ao manifestante quando for solicitada uma nova senha para a manifestação" />
+						<ui:param name="email" value="#{mBEmailAutomatizado.emailNovaSenhaManifestacao}" />
+					</ui:include>
+                </p:tabView>
+            </h:form>
+        </p:fieldset>
+    </ui:define>
+</ui:composition>

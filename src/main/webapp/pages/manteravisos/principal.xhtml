@@ -1,0 +1,244 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+    <ui:define name="bread">
+        <p:breadCrumb>  
+            <p:menuitem value="Home"/>  
+            <p:menuitem value="Cadastro de Avisos"/>  
+        </p:breadCrumb>  
+    </ui:define>
+    
+    <ui:define name="content">
+        <p:fieldset legend="Cadastro de Avisos" style="width:1190px; margin:0 auto;">
+            <h:form id="formAvisos">
+                <p:dataTable id="gdAvisos" 
+                             widgetVar="tabela"
+                             value="#{mBAviso.todos}"
+                             paginator="true" rows="5"
+                             rowsPerPageTemplate="5,10,15"
+                             paginatorPosition="bottom"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             var="item"
+                             rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx"
+                             filterEvent="enter"
+                             filterDelay="300"
+                             filteredValue="#{mBAviso.avisosFiltrados}">
+                    <f:facet name="header">                    
+                        <p:commandButton id="cbNovo" 
+                                         type="button"
+                                         value="Novo"
+                                         title="Novo"
+                                         onclick="dlgNovoAviso.show();" 
+                                         style="float: left">
+                        </p:commandButton>
+                    </f:facet>
+                    <p:column filterBy="#{item.dsTitulo}" filterMatchMode="contains" sortBy="#{item.dsTitulo}">
+                        <f:facet name="header">
+                            <h:outputText value="Título"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dsTitulo}"/>
+                    </p:column>
+                    <p:column style="width: 80px;" filterBy="#{item.dtInicioAviso}" filterMatchMode="contains" sortBy="#{item.dtInicioAviso}">
+                        <f:facet name="header">
+                            <h:outputText value="Data Inicial"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dtInicioAviso}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+                        </h:outputText>
+                        <div style="text-align: center"><h:outputText value="-" rendered="#{item.dtInicioAviso == null}" style="alignment-adjust: central"  /></div>
+                    </p:column>
+                    <p:column style="width: 80px;" filterBy="#{item.dtFimAviso}" filterMatchMode="contains" sortBy="#{item.dtFimAviso}" >
+                        <f:facet name="header">
+                            <h:outputText value="Data Final"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dtFimAviso}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+                        </h:outputText>
+                        <div style="text-align: center"><h:outputText value="-" rendered="#{item.dtFimAviso == null}" style="alignment-adjust: central"  /></div>
+                    </p:column>
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputText value="Editar"/>
+                        </f:facet>
+						<p:commandButton id="cbViewEditar" 
+						                 icon="ui-icon-pencil"
+						                 title="Editar"
+						                 update=":frmEditar"
+						                 oncomplete="dlgEditarAviso.show();">
+						    <f:setPropertyActionListener value="#{item}" target="#{mBAviso.aviso}" />
+						</p:commandButton>
+                    </p:column>
+                    <p:column style="width: 40px;" >
+                        <f:facet name="header">
+                            <h:outputLabel value="Excluir"/>
+                        </f:facet>
+						<p:commandButton id="cbViewExcluir" onclick="dlgExcluirAviso.show();"
+										 icon="ui-icon-close" title="Excluir"  >
+						    <f:setPropertyActionListener value="#{item}" target="#{mBAviso.aviso}" />
+						</p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            <!-- Caixa de diálogo de exclusão -->
+            <p:confirmDialog id="dialogoExcluir" message="Confimar Operação?"
+                             header="Excluir Aviso" severity="alert"
+                             widgetVar="dlgExcluirAviso" appendToBody="true" closable="true" width="300">
+                <h:form id="frmExcluir">
+                	<p:panelGrid style="width: 100%">
+                		<p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+		                        <p:commandButton id="cbExcluirContinuar" value="Sim"
+		                                         update=":formAvisos"
+		                                         oncomplete="dlgExcluirAviso.hide(); tabela.filter();"
+		                                         actionListener="#{mBAviso.remover}"/>
+		                        <p:commandButton id="cbExcluirCancelar" value="Não" onclick="dlgExcluirAviso.hide()" type="button" />
+	                        </p:column>
+                        </p:row>                    
+                    </p:panelGrid>
+                </h:form>
+            </p:confirmDialog>
+            
+            <!-- Caixa de diálogo de inclusão -->
+            <p:dialog id="dialogoNovoAvisos" widgetVar="dlgNovoAviso" modal="true" appendToBody="true" header="Novo Aviso"
+                      resizable="false" closable="true" dynamic="true">
+                <h:form id="frmNovoAvisos">
+                    <p:messages id="mNovoMessages" redisplay="false" />
+                    <p:panelGrid id="pnlNovoAvisos">
+                    	<p:row>
+                    		<p:column>
+		                        <h:outputLabel value="Título:*" style="font-weight: bold;" />
+                    		</p:column>
+                    		<p:column>
+		                        <p:inputText value="#{mBAviso.avisoNovo.dsTitulo}" required="true" requiredMessage="Digite o título do aviso" size="50"/>
+                    		</p:column>
+                    	</p:row>
+                    	
+                    	<p:row>
+                    		<p:column>
+		                        <h:outputLabel value="Conteúdo:*" style="font-weight: bold;" />
+                    		</p:column>
+                    		<p:column>
+		                        <p:editor id="textoAviso" 
+		                        		  value="#{mBAviso.avisoNovo.dsConteudo}" 
+		                        		  required="true" 
+		                        		  rendered="true"
+		                        		  requiredMessage="Digite o conteúdo do aviso" 
+		                        		  width="600" height="300" />
+                    		</p:column>
+                    	</p:row>
+                    	
+                    	<p:row>
+                    		<p:column>
+		                        <h:outputLabel value="Data Início:*" style="font-weight: bold;" />
+                    		</p:column>
+                    		<p:column>
+		                        <p:calendar id="dataInicio" navigator="true" value="#{mBAviso.avisoNovo.dtInicioAviso}"  onkeypress="mascaraData(this)"  maxlength="10" size="30" pattern="dd/MM/yyyy" required="true" requiredMessage="Digite a Data Início"/>
+                    		</p:column>
+                    	</p:row>
+                    	
+                    	<p:row>
+                    		<p:column>
+		                        <h:outputLabel value="Data Fim:*" style="font-weight: bold;" />
+                    		</p:column>
+                    		<p:column>
+		                        <p:calendar navigator="true" value="#{mBAviso.avisoNovo.dtFimAviso}" onkeypress="mascaraData(this)" maxlength="10" size="30" pattern="dd/MM/yyyy" required="true" requiredMessage="Digite a Data Fim"/>
+                    		</p:column>
+                    	</p:row>
+                    </p:panelGrid>
+                    <p:spacer height="10px" width="100%"/>
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+		                        <p:commandButton id="cbNovoSalvar"
+		                        				 value="Salvar"
+		                                         actionListener="#{mBAviso.cadastrar}"
+		                                         oncomplete="if(!args.validationFailed){dlgNovoAviso.hide()}; tabela.filter();"
+		                                         update="frmNovoAvisos"
+		                                         ajax="true">
+									<p:resetInput target="frmNovoAvisos" />
+	                        	</p:commandButton>
+	                        	<p:spacer width="20px"/>
+		                        <p:commandButton value="Fechar" immediate="true" update="frmNovoAvisos" process="@this" onclick="dlgNovoAviso.hide()">                        
+		                            <p:resetInput target="frmNovoAvisos" />
+		                        </p:commandButton>
+                        	</p:column>
+                    	</p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            
+            <!-- Caixa de diálogo de edição -->
+            <p:dialog id="dialogoEditarAvisos" widgetVar="dlgEditarAviso" header="Editar Aviso"
+                      resizable="false" modal="true" appendToBody="true" closable="true">
+                <h:form id="frmEditar">
+                    <p:messages id="mEditarMessages" redisplay="false" />
+                    <p:panelGrid>
+                    	<p:row>
+                    		<p:column>
+		                        <h:outputLabel value="Título:*" style="font-weight: bold;" />
+                    		</p:column>
+                    		<p:column>
+		                        <p:inputText value="#{mBAviso.aviso.dsTitulo}" required="true" requiredMessage="Digite o título do aviso" size="50"/>
+                    		</p:column>
+                    	</p:row>
+                    	
+                    	<p:row>
+                    		<p:column>
+		                        <h:outputLabel value="Conteúdo:*" style="font-weight: bold;" />
+                    		</p:column>
+                    		<p:column>
+		                        <p:editor id="textoAviso" 
+		                        		  value="#{mBAviso.aviso.dsConteudo}" 
+		                        		  required="true" 
+		                        		  rendered="true"
+		                        		  requiredMessage="Digite o conteúdo do aviso" 
+		                        		  width="600" height="300" />
+                    		</p:column>
+                    	</p:row>
+                    	
+                    	<p:row>
+                    		<p:column>
+		                        <h:outputLabel value="Data Início:*" style="font-weight: bold;" />
+                    		</p:column>
+                    		<p:column>
+		                        <p:calendar id="dataInicio" navigator="true" value="#{mBAviso.aviso.dtInicioAviso}"  onkeypress="mascaraData(this)"  maxlength="10" size="30" pattern="dd/MM/yyyy" required="true" requiredMessage="Digite a Data Início"/>
+                    		</p:column>
+                    	</p:row>
+                    	
+                    	<p:row>
+                    		<p:column>
+		                        <h:outputLabel value="Data Fim:*" style="font-weight: bold;" />
+                    		</p:column>
+                    		<p:column>
+		                        <p:calendar navigator="true" value="#{mBAviso.aviso.dtFimAviso}" onkeypress="mascaraData(this)" maxlength="10" size="30" pattern="dd/MM/yyyy" required="true" requiredMessage="Digite a Data Fim"/>
+                    		</p:column>
+                    	</p:row>
+                    </p:panelGrid>
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+
+		                        <p:commandButton id="cbEditarSalvar" value="Salvar"
+		                                         actionListener="#{mBAviso.alterar}"
+		                                         oncomplete="if (!args.validationFailed){dlgEditarAviso.hide()}"
+		                                         update=":formAvisos:gdAvisos, frmEditar">
+		                            <p:resetInput target="frmEditar" />
+		                        </p:commandButton>
+		                        <p:spacer width="20px"/>
+		                        <p:commandButton value="Fechar" immediate="true" onclick="dlgEditarAviso.hide()">                        
+		                            <p:resetInput target="frmEditar" />
+		                        </p:commandButton>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+                </h:form>
+            </p:dialog>
+        </p:fieldset>
+    </ui:define>
+</ui:composition>

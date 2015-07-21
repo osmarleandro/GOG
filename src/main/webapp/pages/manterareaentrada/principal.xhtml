@@ -1,0 +1,158 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+    <ui:define name="bread">
+        <p:breadCrumb>  
+            <p:menuitem value="Home"/>  
+            <p:menuitem value="Cadastro de Área Entrada"/>  
+        </p:breadCrumb>  
+    </ui:define>
+    
+    <ui:define name="content">
+        <p:fieldset legend="Cadastro de Área de Entrada"  style="width:1190px; margin:0 auto;">            
+            <h:form id="formAreaEntrada">
+                <p:dataTable id="gdAreaEntrada" 
+                             widgetVar="tabela"
+                             value="#{mBAreaEntrada.todos}"
+                             paginator="true" rows="5"
+                             rowsPerPageTemplate="5,10,15"
+                             paginatorPosition="bottom"                             
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             var="item"
+                             rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx"
+                             filterEvent="enter"
+                             filterDelay="300"
+                             filteredValue="#{mBAreaEntrada.areasFiltradas}">
+                    <f:facet name="header">                    
+                        <p:commandButton id="cbNovo"                                       
+                                         type="button"
+                                         value="Novo"
+                                         title="Novo"
+                                         onclick="dlgNovoAreaEntrada.show();" 
+                                         style="float: left">
+                        </p:commandButton>
+                    </f:facet>                                        
+                    <p:column filterBy="#{item.nmAreaEntrada}" filterMatchMode="contains" sortBy="#{item.nmAreaEntrada}" >
+                        <f:facet name="header" >
+                            <h:outputText value="Nome" />
+                        </f:facet>
+                        <h:outputText value="#{item.nmAreaEntrada}" />
+                    </p:column>
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputText value="Editar"/>
+                        </f:facet>
+                        <p:commandButton id="cbViewEditar" 
+                                         icon="ui-icon-pencil"
+                                         title="Editar"
+                                         update=":frmEditar"
+                                         oncomplete="dlgEditarAreaEntrada.show();"
+                                         rendered="#{item.idAreaEntrada != 1}"> <!-- 1 = Página eletrônica da Cultura -->
+                            <f:setPropertyActionListener value="#{item}" target="#{mBAreaEntrada.areaEntrada}" />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputLabel value="Excluir"/>
+                        </f:facet>
+                        <p:commandButton id="cbViewExcluir" onclick="dlgExcluirAreaEntrada.show();"
+                                         icon="ui-icon-close" title="Excluir"
+                                         rendered="#{item.idAreaEntrada != 1}"> <!-- 1 = Página eletrônica da Cultura -->
+                            <f:setPropertyActionListener value="#{item}"
+                                                         target="#{mBAreaEntrada.areaEntrada}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            <!-- Caixa de diálogo de exclusão -->
+            <p:confirmDialog id="dialogoExcluir" message="Confirma Operação?"
+                             header="Excluir Área de Entrada" severity="alert"
+                             widgetVar="dlgExcluirAreaEntrada" appendToBody="true" closable="true" width="300">
+                <h:form id="frmExcluir">
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbExcluirContinuar" value="Sim"
+                                                 update=":formAreaEntrada"
+                                                 oncomplete="dlgExcluirAreaEntrada.hide(); tabela.filter();"
+                                                 actionListener="#{mBAreaEntrada.remover}"/>
+                                <p:commandButton id="cbExcluirCancelar" value="Não" onclick="dlgExcluirAreaEntrada.hide()" type="button" /> 
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:confirmDialog>
+            <!-- Caixa de diálogo de inclusão -->
+            <p:dialog id="dialogoNovoAreaEntrada" widgetVar="dlgNovoAreaEntrada" modal="true" appendToBody="true" header="Nova Área de Entrada"
+                      resizable="false" closable="true">
+                <h:form id="frmNovoAreaEntrada">
+                    <p:messages id="mNovoMessages" redisplay="false" />
+                    <p:panelGrid columns="2"  id="pnlNovoAreaEntrada">
+                        <p:outputLabel id="olNovoNomeTipoRecurso" value="Nome Área de Entrada:" style="font-weight: bold;" for="itNovoNomeTipoRecurso"/>
+                        <p:inputText id="itNovoNomeTipoRecurso" value="#{mBAreaEntrada.areaNovo.nmAreaEntrada}" 
+                                     required="true"
+                                     requiredMessage="Digite o nome da área de entrada"
+                                     style="width:300px;"/>                      
+                    </p:panelGrid>
+                    <p:spacer height="10px" width="100%"/>
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbNovoSalvar" 
+                                                 value="Salvar"                                             
+                                                 actionListener="#{mBAreaEntrada.cadastrar}"
+                                                 oncomplete="if (!args.validationFailed){dlgNovoAreaEntrada.hide()};  tabela.filter();"
+                                                 update="frmNovoAreaEntrada"
+                                                 ajax="true">
+                                    <p:resetInput target="frmNovoAreaEntrada" />
+                                </p:commandButton>
+                                <p:spacer width="20px"/>
+                                <p:commandButton value="Fechar" immediate="true" update="frmNovoAreaEntrada" process="@this"  onclick="dlgNovoAreaEntrada.hide()">      
+                                    <p:resetInput target="frmNovoAreaEntrada" />
+                                </p:commandButton>
+
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            <!-- Caixa de diálogo de edição -->
+            <p:dialog id="dialogoEditar" widgetVar="dlgEditarAreaEntrada" header="Editar Área de Entrada"
+                      resizable="false" modal="true" appendToBody="true" closable="true" >
+                <h:form id="frmEditar">
+                    <p:messages id="mEditarMessages" redisplay="false" />
+                    <p:panelGrid columns="2">
+                        <p:outputLabel id="olEditarNomeTipoRecurso" value="Nome Área de Entrada:" style="font-weight: bold;" for="itEditarNomeTipoRecurso"/>
+                        <p:inputText id="itEditarNomeTipoRecurso" value="#{mBAreaEntrada.areaEntrada.nmAreaEntrada}" required="true"
+                                     requiredMessage="Digite o nome da área de entrada."
+                                     style="width:300px;"/>
+                    </p:panelGrid>
+                 
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+
+                                <p:commandButton id="cbEditarSalvar" value="Salvar"
+                                                 actionListener="#{mBAreaEntrada.alterar}"
+                                                 oncomplete="if (!args.validationFailed){dlgEditarAreaEntrada.hide()}"
+                                                 update=":formAreaEntrada:gdAreaEntrada, frmEditar">
+                                    <p:resetInput target="frmEditar" />
+                                </p:commandButton>
+                                <p:spacer width="20px"/>
+                                <p:commandButton value="Fechar" immediate="true" onclick="dlgEditarAreaEntrada.hide()">
+                                    <p:resetInput target="frmEditar" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+        </p:fieldset>
+    </ui:define>
+</ui:composition>

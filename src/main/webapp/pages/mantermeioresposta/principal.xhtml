@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+    <ui:define name="bread">
+        <h:form>
+            <p:breadCrumb>  
+                <p:menuitem value="Home"/>  
+                <p:menuitem value="Cadastro de Meio Resposta"/>  
+            </p:breadCrumb>  
+        </h:form>
+    </ui:define>
+    
+    <ui:define name="content">
+        <p:fieldset legend="Cadastro de Meio de Resposta" style="max-width: 1190px; margin: 0 auto">
+            <h:form id="formMeioResposta">
+                <p:growl id="growl" sticky="false"  />
+                <p:dataTable id="gdMeioResposta" 
+                             widgetVar="tabela"
+                             value="#{mBMeioResposta.todos}"
+                             paginator="true" rows="5"
+                             rowsPerPageTemplate="5,10,15"
+                             paginatorPosition="bottom"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             var="item"
+                             rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx">
+                    <f:facet name="header">                    
+                        <p:commandButton id="cbNovo" 
+                                         type="button"
+                                         value="Novo"
+                                         title="Novo"
+                                         onclick="dlgNovoMeioResposta.show();" 
+                                         style="float: left"/>
+                    </f:facet>                    
+                    <p:column filterBy="#{item.nmMeioResposta}" filterMatchMode="contains" sortBy="#{item.nmMeioResposta}">
+                        <f:facet name="header">
+                            <h:outputText value="Meio de Resposta"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nmMeioResposta}"/>
+                    </p:column>
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputText value="Editar"/>
+                        </f:facet>
+                        <p:commandButton id="cbViewEditar" 
+                                         icon="ui-icon-pencil"
+                                         title="Editar"
+                                         update=":frmEditarMeioResposta"
+                                         oncomplete="dlgEditarMeioResposta.show();">
+                            <f:setPropertyActionListener value="#{item}" target="#{mBMeioResposta.meioResposta}" />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputLabel value="Excluir"/>
+                        </f:facet>
+                        <p:commandButton id="cbViewExcluir" onclick="dlgExcluirMeioResposta.show();"
+                                         icon="ui-icon-close" title="Excluir">
+                            <f:setPropertyActionListener value="#{item}"
+                                                         target="#{mBMeioResposta.meioResposta}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            <!-- Caixa de diálogo de exclusão -->
+            <p:confirmDialog id="dialogoExcluirMeioResposta" message="Confirmar Operação?"
+                             header="Excluir Meio de Resposta" severity="alert"
+                             widgetVar="dlgExcluirMeioResposta" appendToBody="true" closable="true" width="300">
+                <h:form id="frmExcluirMeioResposta">
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbExcluirContinuar" value="Sim"
+                                                 oncomplete="dlgExcluirMeioResposta.hide(); tabela.filter();"
+                                                 actionListener="#{mBMeioResposta.remover}"/>
+                                <p:commandButton id="cbExcluirCancelar" value="Não" onclick="dlgExcluirMeioResposta.hide()" type="button" />    
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:confirmDialog>
+            <!-- Caixa de diálogo de inclusão -->
+            <p:dialog id="dialogoNovoMeioResposta" widgetVar="dlgNovoMeioResposta" modal="true" header="Novo Meio de Resposta"
+                      resizable="false" appendToBody="true" closable="true">
+                <h:form id="frmNovoMeioResposta">
+                    <p:messages id="mNovoMessages" redisplay="false" />
+                    <p:panelGrid columns="2" style="margin: 0 auto; vertical-align: central">
+                        <h:outputLabel value="Nome Meio Reposta:" style="width:300px; font-weight: bold;" />
+                        <p:inputText value="#{mBMeioResposta.meioRespostaNovo.nmMeioResposta}" required="true" requiredMessage="Digite o nome do Meio Resposta" style="width:300px; font-weight: bold;" title="Informe o nome do Meio Resposta" />
+                    </p:panelGrid>
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbNovoSalvar" value="Salvar"
+                                                 actionListener="#{mBMeioResposta.cadastrar}"
+                                                 oncomplete="if (!args.validationFailed){dlgNovoMeioResposta.hide()}; tabela.filter();"
+                                                 update="frmNovoMeioResposta"
+                                                 ajax="true">
+                                    <p:resetInput target="frmNovoMeioResposta" />
+                                </p:commandButton>
+                                <p:spacer width="20px"/>
+                                <p:commandButton value="Fechar" immediate="true" update="frmNovoMeioResposta" onclick="dlgNovoMeioResposta.hide()">
+                                    <p:resetInput target="frmNovoMeioResposta" />
+                                </p:commandButton>    
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            <!-- Caixa de diálogo de edição -->
+            <p:dialog id="dialogoEditarMeioResposta" widgetVar="dlgEditarMeioResposta" header="Editar Meio de Resposta"
+                      resizable="false" modal="true" appendToBody="true" closable="true">
+                <h:form id="frmEditarMeioResposta">
+                    <p:messages id="mEditarMessages" redisplay="false" />
+                    <p:panelGrid columns="2" >
+                        <h:outputLabel value="Nome Meio Reposta:" style="width:300px; font-weight: bold;" />
+                        <p:inputText value="#{mBMeioResposta.meioResposta.nmMeioResposta}" required="true" requiredMessage="Digite o nome do Meio de Resposta" style="width:300px; font-weight: bold;" title="Informe o nome do Meio Resposta" />
+                    </p:panelGrid>
+                    <p:spacer height="10px" width="100%"/>
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbEditarSalvar" value="Salvar"
+                                                 actionListener="#{mBMeioResposta.alterar}"
+                                                 oncomplete="if (!args.validationFailed){dlgEditarMeioResposta.hide()}"
+                                                 update=":formMeioResposta:gdMeioResposta,frmEditarMeioResposta">
+                                    <p:resetInput target="frmEditarMeioResposta" />
+                                </p:commandButton>
+                                <p:spacer width="20px"/>
+                                <p:commandButton value="Fechar" immediate="true" update="frmEditarMeioResposta" onclick="dlgEditarMeioResposta.hide()">
+                                    <p:resetInput target="frmEditarMeioResposta" />
+                                </p:commandButton>     
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+        </p:fieldset>
+    </ui:define>
+</ui:composition>

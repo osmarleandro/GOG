@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+	<ui:define name="bread">
+		<p:breadCrumb>
+			<p:menuitem value="Home" />
+			<p:menuitem value="Auditoria" />
+		</p:breadCrumb>
+	</ui:define>
+	
+	<ui:define name="content">
+		<p:fieldset legend="Auditoria"
+			style="max-width: 1190px; margin: 0 auto">
+			<h:form>
+				<p:messages id="messages" autoUpdate="true" closable="true" />
+				<p:panelGrid style="width: 100%">
+					<f:facet name="header">
+						<p:row>
+							<p:column colspan="2">Informe os parâmetros para pesquisar</p:column>
+						</p:row>
+					</f:facet>
+					<p:row>
+						<p:column style="font-weight: bold;">Tipo de operação:</p:column>
+						<p:column style="font-weight: bold;">
+							<p:selectOneMenu value="#{mBLogOperacao.tipo}">
+								<f:selectItem itemLabel="- Selecione -" itemValue="" />
+								<f:selectItems var="item" value="#{mBLogOperacao.tipos}"
+									itemValue="#{item}" itemLabel="#{item.descricao}" />
+							</p:selectOneMenu>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column style="font-weight: bold;">Usuário *:</p:column>
+						<p:column style="font-weight: bold;">
+							<p:selectOneMenu value="#{mBLogOperacao.idUsuario}"
+								required="true" requiredMessage="Escolha um usuário">
+								<f:selectItem itemLabel="- Selecione -" itemValue="" />
+								<f:selectItems var="item" value="#{mBUsuario.todosInternos}"
+									itemValue="#{item.idUsuario}" itemLabel="#{item.nmUsuario}" />
+							</p:selectOneMenu>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column style="font-weight: bold;">Período da operação *:</p:column>
+						<p:column>
+                            De: <p:calendar
+								value="#{mBLogOperacao.dataInicial}" required="true"
+								requiredMessage="Data Inicial é obrigatória"
+								pattern="dd/MM/yyyy" />
+							<p:spacer height="1" width="20" /> à: <p:calendar
+								value="#{mBLogOperacao.dataFinal}" pattern="dd/MM/yyyy" />
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+				<p:panelGrid style="width: 100%">
+					<p:row>
+						<p:column style="text-align: center; width: 100%"
+							styleClass="ui-widget-header">
+							<p:commandButton value="Pesquisar"
+								actionListener="#{mBLogOperacao.consultar}" update="tabela" />
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+				<p:spacer height="10" width="100%" />
+
+				<p:dataTable id="tabela" var="log"
+					value="#{mBLogOperacao.resultado}" style="width: 100%; "
+					rowIndexVar="idx" paginator="true" rows="5">
+					<p:column sortBy="#{log.idUsuario.nmUsuario}" headerText="Usuário">
+						<h:outputText value="#{log.idUsuario.nmUsuario}" />
+					</p:column>
+					<p:column sortBy="#{log.tpOperacao}" headerText="Operação">
+						<h:outputText value="#{mBEnum.getLogOperacaoEnum(log.tpOperacao)}" />
+					</p:column>
+					<p:column sortBy="#{log.dtDataLog}" headerText="Data/Hora">
+						<h:outputText value="#{log.dtDataLog}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
+								timeZone="America/Sao_Paulo" />
+						</h:outputText>
+					</p:column>
+					<p:column sortBy="#{log.dsOperacao}" headerText="Ação realizada">
+						<h:outputText value="#{log.dsOperacao}" />
+					</p:column>
+				</p:dataTable>
+
+			</h:form>
+		</p:fieldset>
+	</ui:define>
+</ui:composition>

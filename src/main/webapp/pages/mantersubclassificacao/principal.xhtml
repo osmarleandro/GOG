@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+    <ui:define name="bread">
+        <p:breadCrumb>  
+            <p:menuitem value="Home"/>  
+            <p:menuitem value="Cadastro de Subclassificação"/>  
+        </p:breadCrumb>  
+    </ui:define>
+    
+    <ui:define name="content">
+        <p:fieldset legend="Cadastro de Subclassificação" style="max-width: 1190px; margin: 0 auto">
+            <h:form id="formSubClassificacao">
+                <p:dataTable id="tabela1" 
+                             widgetVar="tabela"
+                             value="#{mBSubClassificacao.todos}"
+                             paginator="true" rows="5"
+                             rowsPerPageTemplate="5,10,15"
+                             paginatorPosition="bottom"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             var="item"
+                             rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx">
+
+                    <f:facet name="header">    
+                        <p:commandButton id="cbNovo" 
+                                         type="button"
+                                         value="Novo"
+                                         title="Novo"
+                                         onclick="dlgNovoSubClassificacao.show();" 
+                                         style="float: left"/>
+                    </f:facet>                    
+                    <p:column filterBy="#{item.dsSubClassificacao}" filterMatchMode="contains" sortBy="#{item.dsSubClassificacao}">
+                        <f:facet name="header">
+                            <h:outputText value="Subclassificação" style="font-weight: bold;" />
+                        </f:facet>
+                        <h:outputText value="#{item.dsSubClassificacao}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.classificacoes}">
+                        <f:facet name="header">
+                            <h:outputText value="Classificações" style="font-weight: bold;" />
+                        </f:facet>
+                        <ui:repeat value="#{mBSubClassificacao.ordenarClassificacoes(item.tbClassificacaoCollection)}" var="classificacao">
+                            <li>
+                                <h:outputText value="#{classificacao.dsClassificacao}"/>
+                            </li>
+                        </ui:repeat>
+                    </p:column>
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputText value="Editar"/>
+                        </f:facet>
+                        <p:commandButton id="cbViewEditar" 
+                                         icon="ui-icon-pencil"
+                                         title="Editar"
+                                         update=":frmEditarSubClassificacao"
+                                         oncomplete="dlgEditarSubClassificacao.show();">
+                            <f:setPropertyActionListener value="#{item}" target="#{mBSubClassificacao.subclassificacao}" />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputLabel value="Excluir"/>
+                        </f:facet>
+                        <p:commandButton icon="ui-icon-close" onclick="dlgNaoPodeExcluirSubClassificacao.show();" rendered="#{item.tbManifestacaoCollection.size() > 0}" />
+                        <p:commandButton id="cbViewExcluir" onclick="dlgExcluirSubClassificacao.show();"
+                                         icon="ui-icon-close" title="Excluir" rendered="#{item.tbManifestacaoCollection.size() == 0}">
+                            <f:setPropertyActionListener value="#{item}"
+                                                         target="#{mBSubClassificacao.subclassificacao}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            <!-- Caixa de diálogo de exclusão -->
+            <p:confirmDialog id="dialogoExcluirSubClassificacao" message="Confirma Operação?"
+                             header="Excluir Subclassificação" severity="alert"
+                             widgetVar="dlgExcluirSubClassificacao" appendToBody="true" closable="true" width="300">
+                <h:form id="frmExcluirSubClassificacao">
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbExcluirContinuar" value="Sim"
+                                                 update=":formSubClassificacao"
+                                                 oncomplete="dlgExcluirSubClassificacao.hide();tabela.filter()"
+                                                 actionListener="#{mBSubClassificacao.remover}"/>
+                                <p:commandButton id="cbExcluirCancelar" value="Não" onclick="dlgExcluirSubClassificacao.hide()" type="button" />                    
+
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:confirmDialog>
+            <!-- Caixa de diálogo de inclusão -->
+            <p:dialog id="dialogoNovoSubClassificacao" widgetVar="dlgNovoSubClassificacao" modal="true" header="Nova Subclassificação"
+                      resizable="false" appendToBody="true" closable="true">
+                <h:form id="frmNovoSubClassificacao">
+                    <p:messages id="mNovoMessages" redisplay="false" />
+                    <p:panelGrid columns="2">
+                        <h:outputLabel value="Nome Subclassificação*:" style="font-weight: bold;" />
+                        <p:inputText value="#{mBSubClassificacao.subclassificacaoNovo.dsSubClassificacao}" style="width:300px;" required="true" requiredMessage="Informe o nome da Subclassificação" title="Informe o nome da Subclassificação " />
+                        
+                        <h:outputText value="Classificações: " style="font-weight: bold;" />  
+                        <p:pickList value="#{mBSubClassificacao.listaClassificacao}" var="classificacao" itemLabel="#{classificacao.dsClassificacao}" itemValue="#{classificacao}" converter="#{conversorClassificacao}"
+                        			showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                            <f:facet name="sourceCaption">Disponíveis</f:facet>
+                            <f:facet name="targetCaption">Selecionados</f:facet>
+                        </p:pickList>
+                    </p:panelGrid>
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbNovoSalvar" value="Salvar"
+                                                 actionListener="#{mBSubClassificacao.cadastrar}"
+                                                 oncomplete="if (!args.validationFailed){dlgNovoSubClassificacao.hide()}"
+                                                 update=":formSubClassificacao:tabela1,frmNovoSubClassificacao"
+                                                 ajax="true">
+                                    <p:resetInput target="frmNovoSubClassificacao" />
+                                </p:commandButton>
+                                <p:spacer width="20px"/>
+                                <p:commandButton value="Fechar" immediate="true" update="frmNovoSubClassificacao" onclick="dlgNovoSubClassificacao.hide()">                            
+                                    <p:resetInput target="frmNovoSubClassificacao" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            <!-- Caixa de diálogo de edição -->
+            <p:dialog id="dialogoEditarSubClassificacao" widgetVar="dlgEditarSubClassificacao" header="Editar Subclassificação"
+                      resizable="false" modal="true" appendToBody="true" closable="true">
+                <h:form id="frmEditarSubClassificacao">
+                    <p:messages id="mEditarMessages" redisplay="false" />
+                    <p:panelGrid columns="2">
+                        <h:outputLabel value="Nome Subclassificação*:" style="font-weight: bold;"  />
+                        <p:inputText value="#{mBSubClassificacao.subclassificacao.dsSubClassificacao}" style="width:300px;" required="true" requiredMessage="Informe o nome da Subclassificação" title="Informe o nome da Subclassificação " />
+                        
+                        <h:outputText value="Classificações: " style="font-weight: bold;" />  
+                        <p:pickList value="#{mBSubClassificacao.listaClassificacao}" var="classificacao" itemLabel="#{classificacao.dsClassificacao}" itemValue="#{classificacao}" converter="#{conversorClassificacao}"
+                        			showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                            <f:facet name="sourceCaption">Disponíveis</f:facet>
+                            <f:facet name="targetCaption">Selecionados</f:facet>
+                        </p:pickList>
+                    </p:panelGrid>
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbEditarSalvar" value="Salvar"
+                                                 actionListener="#{mBSubClassificacao.alterar}"
+                                                 oncomplete="if (!args.validationFailed){dlgEditarSubClassificacao.hide()}"
+                                                 update=":formSubClassificacao,frmEditarSubClassificacao">
+                                    <p:resetInput target="frmEditarSubClassificacao" />
+                                </p:commandButton>
+                                <p:spacer width="20px"/>
+                                <p:commandButton value="Fechar" immediate="true" update="frmEditarSubClassificacao" onclick="dlgEditarSubClassificacao.hide()">
+                                    <p:resetInput target="frmEditarSubClassificacao" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            
+            <!-- Caixa de diálogo Não pode excluir -->
+            <p:confirmDialog id="dialogoNaoPodeExcluirSubClassificacao" 
+							 message="Esta subclassificação não pode ser deletada pois existem manifestações associadas a ela."
+                             header="Excluir Subclassificação" severity="alert"
+                             widgetVar="dlgNaoPodeExcluirSubClassificacao" appendToBody="true" closable="true" width="307">
+				<p:panelGrid style="width: 100%">
+					<p:row>
+						<p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+							<p:commandButton id="cbExcluirCancelar" value="Fechar" onclick="dlgNaoPodeExcluirSubClassificacao.hide()" type="button" />                    
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+            </p:confirmDialog>
+        </p:fieldset>
+    </ui:define>
+</ui:composition>
+
+

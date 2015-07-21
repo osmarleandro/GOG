@@ -1,0 +1,200 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+    <ui:define name="bread">
+        <h:form>
+            <p:breadCrumb>  
+                <p:menuitem value="Home" />  
+                <p:menuitem value="Cadastro de Classificação"  />  
+            </p:breadCrumb>  
+        </h:form>
+    </ui:define>
+    
+    <ui:define name="content">
+        <p:fieldset legend="Cadastro de Classificação" style="max-width: 1190px; margin: 0 auto">
+            <h:form id="formClassificacao">
+                <p:dataTable id="gdClassificacao" 
+                             widgetVar="gridClassificacao"
+                             value="#{mBClassificacao.todos}"
+                             paginator="true" rows="5"
+                             rowsPerPageTemplate="5,10,15"
+                             paginatorPosition="bottom"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             var="item"
+                             rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx">
+                    <f:facet name="header">                    
+                        <p:commandButton id="cbNovo" 
+                                         type="button"
+                                         value="Novo"
+                                         title="Novo"
+                                         onclick="dlgNovoClassificacao.show();" 
+                                         style="float: left"/>
+                    </f:facet>                    
+                    <p:column filterBy="#{item.dsClassificacao}" filterMatchMode="contains" sortBy="#{item.dsClassificacao}">
+                        <f:facet name="header">
+                            <h:outputText value="Classificação"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dsClassificacao}"/>
+                    </p:column>
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="Unidades"/>
+                        </f:facet>
+                        <ui:repeat value="#{item.tbUnidadeCollection}" var="u">
+                            <li>#{u.nmUnidade}</li>
+                        </ui:repeat>
+                    </p:column>
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="Sub-Classificação"/>
+                        </f:facet>
+                        <ui:repeat value="#{item.tbSubClassificacaoCollection}" var="sub">
+                            <li>#{sub.dsSubClassificacao}</li>
+                        </ui:repeat>
+                    </p:column>
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputText value="Editar"/>
+                        </f:facet>
+                        <p:commandButton id="cbViewEditar" 
+                                         icon="ui-icon-pencil"
+                                         title="Editar"
+                                         update=":frmEditarClassificacao"
+                                         oncomplete="dlgEditarClassificacao.show();"
+                                         actionListener="#{mBClassificacao.setClassificacao(item) }">
+                            <f:setPropertyActionListener value="#{item}" target="#{mBClassificacao.classificacao}" />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputLabel value="Excluir"/>
+                        </f:facet>
+                        <p:commandButton icon="ui-icon-close" onclick="dlgNaoPodeExcluirClassificacao.show();" rendered="#{item.tbManifestacaoCollection.size() > 0}" />
+                        <p:commandButton id="cbViewExcluir" onclick="dlgExcluirClassificacao.show();"
+                                         icon="ui-icon-close" title="Excluir" rendered="#{item.tbManifestacaoCollection.size() == 0}">
+                            <f:setPropertyActionListener value="#{item}" target="#{mBClassificacao.classificacao}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            <!-- Caixa de diálogo de exclusão -->
+            <p:confirmDialog id="dialogoExcluirClassificacao" message="Confirma Operação?"
+                             header="Excluir Classificação" severity="alert"
+                             widgetVar="dlgExcluirClassificacao" appendToBody="true" closable="true" width="300">
+                <h:form id="frmExcluirClassificacao">
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbExcluirContinuar" value="Sim"
+                                                 oncomplete="dlgExcluirClassificacao.hide(); gridClassificacao.filter();"
+                                                 actionListener="#{mBClassificacao.remover}"/>
+                                <p:commandButton id="cbExcluirCancelar" value="Não" onclick="dlgExcluirClassificacao.hide()" type="button" /> 
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:confirmDialog>
+            <!-- Caixa de diálogo de inclusão -->
+            <p:dialog id="dialogoNovoClassificacao" widgetVar="dlgNovoClassificacao" modal="true" header="Nova Classificação"
+                      resizable="false" appendToBody="true" closable="true">
+                <h:form id="frmNovoClassificacao">
+                    <p:messages id="mNovoMessages" redisplay="false" />
+                    <p:panelGrid columns="2">
+                        <h:outputLabel value="Nome Classificação:*" style="font-weight: bold;" />
+                        <p:inputText value="#{mBClassificacao.classificacaoNovo.dsClassificacao}" required="true" requiredMessage="Digite o nome da classificação" style="width:300px;" title="Informe o nome da Classificação " />
+
+                        <h:outputLabel value="Unidades:" style="font-weight: bold;" />
+                        <p:pickList value="#{mBClassificacao.listaUnidades}" var="unidade" itemLabel="#{unidade.nmUnidade}" itemValue="#{unidade}" converter="#{conversorUnidade}"
+                        			showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                            <f:facet name="sourceCaption">Disponíveis</f:facet>
+                            <f:facet name="targetCaption">Selecionados</f:facet>
+                        </p:pickList>
+                        
+                        <h:outputLabel value="Sub-Classificações" style="font-weight: bold;" />
+                        <p:pickList value="#{mBClassificacao.listaSubclassificacao}" var="sub" itemLabel="#{sub.dsSubClassificacao}" itemValue="#{sub}" converter="#{conversorSubClassificacao}"
+                        			showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                            <f:facet name="sourceCaption">Disponíveis</f:facet>
+                            <f:facet name="targetCaption">Selecionados</f:facet>
+                        </p:pickList>
+                    </p:panelGrid>
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbNovoSalvar" value="Salvar"
+                                                 actionListener="#{mBClassificacao.cadastrar}"
+                                                 oncomplete="if (!args.validationFailed){dlgNovoClassificacao.hide()}; gridClassificacao.filter();"
+                                                 update="frmNovoClassificacao"
+                                                 ajax="true">
+                                    <p:resetInput target="frmNovoClassificacao" />
+                                </p:commandButton>
+                                <p:spacer width="20px"/>
+                                <p:commandButton value="Fechar" immediate="true" update="frmNovoClassificacao" onclick="dlgNovoClassificacao.hide()">
+                                    <p:resetInput target="frmNovoClassificacao" />
+                                </p:commandButton>     
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            <!-- Caixa de diálogo de edição -->
+            <p:dialog id="dialogoEditarClassificacao" widgetVar="dlgEditarClassificacao" header="Editar Classificação"
+                      resizable="false" modal="true" appendToBody="true" closable="true">
+                <h:form id="frmEditarClassificacao">
+                    <p:messages id="mEditarMessages" redisplay="false" />
+                    <p:panelGrid columns="2" >
+                        <h:outputLabel value="Nome Classificação*:" style="font-weight: bold;"  />
+                        <p:inputText value="#{mBClassificacao.classificacao.dsClassificacao}" required="true" requiredMessage="Digite o nome da classificação"  style="width:300px;" title="Informe o nome da Classificação " />
+                        <h:outputLabel value="Unidades:" style="font-weight: bold;" />
+                        <p:pickList value="#{mBClassificacao.listaUnidades}" var="unidade" itemLabel="#{unidade.nmUnidade}" itemValue="#{unidade}" converter="#{conversorUnidade}"
+                        			showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                            <f:facet name="sourceCaption">Disponíveis</f:facet>
+                            <f:facet name="targetCaption">Selecionados</f:facet>
+                        </p:pickList>
+                        <h:outputLabel value="Sub-Classificações" style="font-weight: bold;" />
+                        <p:pickList value="#{mBClassificacao.listaSubclassificacao}" var="sub" itemLabel="#{sub.dsSubClassificacao}" itemValue="#{sub}" converter="#{conversorSubClassificacao}"
+                        			showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                            <f:facet name="sourceCaption">Disponíveis</f:facet>
+                            <f:facet name="targetCaption">Selecionados</f:facet>
+                        </p:pickList>
+                    </p:panelGrid>
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbEditarSalvar" value="Salvar"
+                                                 actionListener="#{mBClassificacao.alterar}"
+                                                 oncomplete="if (!args.validationFailed){dlgEditarClassificacao.hide()};"
+                                                 update=":formClassificacao:gdClassificacao,frmEditarClassificacao">
+                                    <p:resetInput target="frmEditarClassificacao" />
+                                </p:commandButton>
+                                <p:spacer width="20px"/>
+                                <p:commandButton value="Fechar" immediate="true" onclick="dlgEditarClassificacao.hide()">
+                                    <p:resetInput target="frmEditarClassificacao" />
+                                </p:commandButton>    
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            
+            <!-- Caixa de diálogo Não pode excluir -->
+            <p:confirmDialog id="dialogoNaoPodeExcluirClassificacao" 
+							 message="Esta classificação não pode ser deletada pois existem manifestações associadas a ela."
+                             header="Excluir Classificação" severity="alert"
+                             widgetVar="dlgNaoPodeExcluirClassificacao" appendToBody="true" closable="true" width="307">
+				<p:panelGrid style="width: 100%">
+					<p:row>
+						<p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+							<p:commandButton id="cbExcluirCancelar" value="Fechar" onclick="dlgNaoPodeExcluirClassificacao.hide()" type="button" />                    
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+            </p:confirmDialog>
+        </p:fieldset>
+    </ui:define>
+</ui:composition>

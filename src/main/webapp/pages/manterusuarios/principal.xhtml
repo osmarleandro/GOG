@@ -1,0 +1,283 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="bread">
+        <p:breadCrumb>  
+            <p:menuitem value="Home"/>  
+            <p:menuitem value="Cadastro de Usuários"/>  
+        </p:breadCrumb>  
+    </ui:define>
+    
+    <ui:define name="content">
+        <p:fieldset legend="Cadastro de Usuários" style="max-width: 1190px; margin: 0 auto">
+            <h:form id="formUsuarios">
+                <p:dataTable id="tabela1" 
+                             widgetVar="tabela"
+                             value="#{mBUsuario.todosInternos}"
+                             paginator="true" rows="5"
+                             rowsPerPageTemplate="5,10,15"
+                             paginatorPosition="bottom"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             var="item"
+                             rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx">
+                    <f:facet name="header">                    
+                        <p:commandButton id="cbNovo" type="button" actionListener="#{mBUsuario.limpar()}" value="Novo" onclick="dlgNovoUsuario.show();" style="float: left"/>
+                    </f:facet>                   
+                    <p:column style="width: 25%" filterBy="#{item.nmUsuario}" filterMatchMode="contains" sortBy="#{item.nmUsuario}">
+                        <f:facet name="header">
+                            <h:outputText value="Nome"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nmUsuario}" />
+                    </p:column>
+                    <p:column  style="width: 25%" filterBy="#{item.eeEmail}" filterMatchMode="contains" sortBy="#{item.eeEmail}">
+                        <f:facet name="header">
+                            <h:outputText value="E-mail"/>
+                        </f:facet>
+                        <h:outputText value="#{item.eeEmail}" />
+                    </p:column>
+                    <p:column  style="width: 10%" filterBy="#{mBEnum.getFuncaoUsuarioEnum(item.tpFuncao).descricao}" filterMatchMode="contains" sortBy="#{mBEnum.getFuncaoUsuarioEnum(item.tpFuncao).descricao}">
+                        <f:facet name="header">
+                            <h:outputText value="Tipo"/>
+                        </f:facet>
+                        <h:outputText value="#{mBEnum.getFuncaoUsuarioEnum(item.tpFuncao).descricao}" />
+                    </p:column>
+                    <p:column style="width: 20%" filterBy="#{item.idUnidade.nmUnidade}" filterMatchMode="contains" sortBy="#{item.idUnidade.nmUnidade}">
+                        <f:facet name="header">
+                            <h:outputText value="Unidade"/>
+                        </f:facet>
+                        <h:outputText value="#{item.idUnidade.nmUnidade}" />
+                    </p:column>
+                    <p:column style="width: 10%" filterBy="#{item.stStatus}" filterMatchMode="contains" sortBy="#{item.stStatus}">
+                        <f:facet name="header">
+                            <h:outputText value="Status" />
+                        </f:facet>
+                        <h:outputText value="#{item.stStatus eq 1 ? 'Ativo' : 'Inativo'}" />
+                    </p:column>                    
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputText value="Editar" />
+                        </f:facet>
+                        <p:commandButton id="cbViewEditar" 
+                                         icon="ui-icon-pencil"
+                                         title="Editar"
+                                         update=":frmEditarUsuarios"
+                                         rendered="#{mBUsuario.showEditButton(item)}"
+                                         actionListener="#{mBUsuario.prepararAlterar(item)}"
+                                         oncomplete="dlgEditarUsuario.show();">
+                            <f:setPropertyActionListener value="#{item}" target="#{mBUsuario.usuario}" />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column style="width: 40px;" >
+                        <f:facet name="header">
+                            <h:outputLabel value="Excluir"/>
+                        </f:facet>
+						<p:commandButton id="cbViewExcluir" onclick="dlgExcluirUsuario.show();" icon="ui-icon-close" title="Excluir"  >
+                            <f:setPropertyActionListener value="#{item}" target="#{mBUsuario.usuario}" />
+						</p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            <!-- Caixa de diálogo de exclusão -->
+            <p:confirmDialog id="dialogoExcluir" message="Confimar Operação?"
+                             header="Excluir Usuário" severity="alert"
+                             widgetVar="dlgExcluirUsuario" appendToBody="true" closable="true" width="300">
+                <h:form id="frmExcluir">
+                	<p:panelGrid style="width: 100%">
+                		<p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+		                        <p:commandButton id="cbExcluirContinuar" value="Sim"
+		                                         update=":formUsuarios"
+		                                         oncomplete="dlgExcluirUsuario.hide(); tabela.filter();"
+		                                         actionListener="#{mBUsuario.remover}"/>
+		                        <p:commandButton id="cbExcluirCancelar" value="Não" onclick="dlgExcluirAviso.hide()" type="button" />
+	                        </p:column>
+                        </p:row>                    
+                    </p:panelGrid>
+                </h:form>
+            </p:confirmDialog>
+            
+            <!-- Caixa de diálogo de inclusão -->
+            <p:dialog id="dialogoNovoUsuarios" widgetVar="dlgNovoUsuario" modal="true" header="Novo Usuário" resizable="false" appendToBody="true" closable="true" >
+                <h:form id="frmNovoUsuarios">
+                    <p:panel style="height: 400px">
+                        <p:messages id="mNovoMessages" redisplay="false" />
+                        <p:fieldset legend="Informações Básicas">
+                            <p:panelGrid columns="2">
+                                <h:outputLabel value="Nome:* " />
+                                <p:inputText value="#{mBUsuario.usuarioNovo.nmUsuario}" required="true" requiredMessage="Informe o Nome" />                            
+
+                                <h:outputLabel value="E-mail:* " />
+                                <p:inputText value="#{mBUsuario.usuarioNovo.eeEmail}"  required="true" requiredMessage="Informe o E-mail" >
+                                    <f:validator binding="#{emailValidator}" />
+                                    <!--<f:validator binding="{emailCadastradoValidator}" />-->
+                                </p:inputText>
+
+                                <h:outputLabel value="Telefone:* " />
+                                <p:inputMask value="#{mBUsuario.usuarioNovo.numTelefone}" mask="(99)99999999?" required="true" requiredMessage="Informe o Telefone"/>
+
+                                <h:outputLabel value="Unidade:* " />
+                                <p:selectOneMenu value="#{mBUsuario.usuarioNovo.idUnidade}" required="true" requiredMessage="Informe a Unidade" converter="#{conversorUnidade}">
+                                    <f:selectItem itemLabel=" - Selecione -" itemValue="" />
+                                    <f:selectItems value="#{mBUsuario.unidades}" var="unidade" itemLabel="#{unidade.nmUnidade}" itemValue="#{unidade}" />
+                                    <p:ajax listener="#{mBUsuario.onChangeUnidadeNovo()}" update="slcFuncao" />
+                                </p:selectOneMenu>
+                            </p:panelGrid>
+                        </p:fieldset>
+                        <br />
+                        <p:fieldset legend="Dados de acesso">
+                            <p:panelGrid columns="2">
+                                <h:outputLabel value="Login:* " />
+                                <p:inputText id="login" value="#{mBUsuario.usuarioNovo.nmLogin}" required="true" requiredMessage="Informe a Login"  >
+                                    <f:validator binding="#{usuarioCadastradoValidator}" />
+                                </p:inputText>
+                                <h:outputLabel value="Senha:* " />
+                                <p:password  required="true" value="#{mBUsuario.usuarioNovo.nmSenha}" requiredMessage="Informe a Senha" maxlength="10">
+                                    <f:validator binding="#{senhaValidator}" />
+                                </p:password>
+
+                                <h:outputLabel value="Confirmar Senha:" />
+                                <p:password id="idSenha" value="#{mBUsuario.senhaConfirmar}" required="true" requiredMessage="Informe a Senha" maxlength="10" >
+                                    <f:validator binding="#{senhaValidator}" />
+                                </p:password>
+                            </p:panelGrid>
+                        </p:fieldset>
+                        <br />
+                        <p:fieldset legend="Perfis">
+                            <p:panelGrid>
+                                <p:row>
+                                    <p:column><h:outputLabel value="Tipo:* " /></p:column>
+                                    <p:column>
+                                        <p:selectOneMenu id="slcFuncao" value="#{mBUsuario.funcaoSelecionada}" required="true" requiredMessage="Informe o Perfil Principal" converter="#{conversorFuncaoUsuario}" disabled="#{mBUsuario.disableSlcFuncao()}">
+                                            <f:selectItem itemLabel=" - Selecione -" itemValue="" />
+                                            <f:selectItems value="#{mBUsuario.funcoesUsuario}" var="funcao" itemLabel="#{funcao.descricao}" itemValue="#{funcao}" />
+                                            <p:ajax process="@this" />
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="2">
+                                        <p:pickList value="#{mBUsuario.perfisNovo}" var="perfil" itemLabel="#{perfil.nmPerfil}" itemValue="#{perfil}" converter="#{conversorPerfil}"
+                                        			showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                            <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                            <f:facet name="targetCaption">Selecionados</f:facet>
+                                        </p:pickList>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:fieldset>
+                        <p:spacer height="10px" width="100%"/>
+
+                        <p:panelGrid style="width: 100%">
+                            <p:row>
+                                <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                    <p:commandButton id="cbNovoSalvar" value="Salvar"
+                                                     actionListener="#{mBUsuario.cadastrar}"
+                                                     oncomplete="if (!args.validationFailed){dlgNovoUsuario.hide()}; "
+                                                     update=":formUsuarios:tabela1,frmNovoUsuarios">
+                                        <p:resetInput target="frmNovoUsuarios" />
+                                    </p:commandButton>
+                                    <p:spacer width="20px"/>
+                                    <p:commandButton value="Fechar" immediate="true" update="frmNovoUsuarios" oncomplete="dlgNovoUsuario.hide()">
+                                        <p:resetInput target="frmNovoUsuarios" />
+                                    </p:commandButton>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:panel>
+
+                </h:form>
+            </p:dialog>
+            <!-- Caixa de diálogo de edição -->
+            <p:dialog id="dialogoEditarUsuarios" widgetVar="dlgEditarUsuario" header="Editar Usuário" resizable="false" modal="true" appendToBody="true" closable="true">
+                <h:form id="frmEditarUsuarios" >
+                    <p:panel style="height: 400px">
+                        <p:messages id="mEditarMessages" redisplay="false" />
+
+                        <p:fieldset legend="Informações Básicas">
+                            <p:panelGrid columns="2">
+                                <h:outputLabel value="Nome:* " />
+                                <p:inputText value="#{mBUsuario.usuario.nmUsuario}" required="true" requiredMessage="Informe o Nome" />                            
+
+                                <h:outputLabel value="Email:* " />
+                                <p:inputText value="#{mBUsuario.email}" required="true" requiredMessage="Informe o E-mail">
+                                    <f:validator binding="#{emailValidator}" />
+                                </p:inputText>
+
+                                <h:outputLabel value="Telefone:* " />
+                                <p:inputMask value="#{mBUsuario.usuario.numTelefone}" mask="(99)99999999?" required="true" requiredMessage="Informe o Telefone"/>
+
+                                <h:outputLabel value="Unidade:* " />
+                                <p:selectOneMenu value="#{mBUsuario.usuario.idUnidade}" required="true" requiredMessage="Informe a Unidade" converter="#{conversorUnidade}">
+                                    <f:selectItem itemLabel=" - Selecione -" itemValue="" />
+                                    <f:selectItems value="#{mBUsuario.unidades}" var="unidade" itemLabel="#{unidade.nmUnidade}" itemValue="#{unidade}" />
+                                    <p:ajax listener="#{mBUsuario.onChangeUnidade()}" update="slcFuncao" />
+                                </p:selectOneMenu>
+
+                                <h:outputLabel value="Status:* " />
+                                <p:selectOneMenu value="#{mBUsuario.usuario.stStatus}" required="true" requiredMessage="Informe o Status">
+                                    <f:selectItems value="#{mBUsuario.statusDisponiveis()}" var="st" itemLabel="#{st.descricao}" itemValue="#{st.id}" />
+                                </p:selectOneMenu>
+                            </p:panelGrid>
+                        </p:fieldset>
+                        <br />
+                        <p:fieldset legend="Dados de acesso">
+                            <p:panelGrid columns="2">
+                                <h:outputLabel value="Login:* " />
+                                <p:inputText value="#{mBUsuario.usuario.nmLogin}" disabled="true"/>
+
+                                <h:outputLabel value="Senha:* " />
+                                <p:password value="#{mBUsuario.usuario.nmSenha}" redisplay="true" />
+                            </p:panelGrid>
+                        </p:fieldset>
+                        <br />
+                        <p:fieldset legend="Perfis">
+                            <p:panelGrid>
+                                <p:row>
+                                    <p:column><h:outputLabel value="Tipo:* " /></p:column>
+                                    <p:column>
+                                        <p:selectOneMenu id="slcFuncao" value="#{mBUsuario.funcaoSelecionada}" required="true" requiredMessage="Informe o Perfil Principal" converter="#{conversorFuncaoUsuario}" disabled="#{mBUsuario.disableSlcFuncao()}">
+                                            <f:selectItem itemLabel=" - Selecione -" itemValue="" />
+                                            <f:selectItems value="#{mBUsuario.funcoesUsuario}" var="funcao" itemLabel="#{funcao.descricao}" itemValue="#{funcao}" />
+                                            <p:ajax process="@this" />
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="2">
+                                        <p:pickList value="#{mBUsuario.perfis}" var="perfil" itemLabel="#{perfil.nmPerfil}" itemValue="#{perfil}" converter="#{conversorPerfil}"
+                                        			showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                            <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                            <f:facet name="targetCaption">Selecionados</f:facet>
+                                        </p:pickList>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:fieldset>
+                        <p:spacer height="10px" width="100%"/>
+                        <p:panelGrid style="width: 100%">
+                            <p:row>
+                                <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                    <p:commandButton id="cbEditarSalvar" value="Salvar"
+                                                     actionListener="#{mBUsuario.alterar}"
+                                                     update=":formUsuarios:tabela1,:frmEditarUsuarios">
+                                        <p:resetInput target="frmEditarUsuarios"/>
+                                    </p:commandButton>
+                                    <p:spacer width="20px"/>
+                                    <p:commandButton value="Fechar" immediate="true" update="frmEditarUsuarios" oncomplete="dlgEditarUsuario.hide()">                            
+                                        <p:resetInput target="frmEditarUsuarios"/>
+                                    </p:commandButton>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:panel>
+                </h:form>
+            </p:dialog>
+        </p:fieldset>
+    </ui:define>
+</ui:composition>

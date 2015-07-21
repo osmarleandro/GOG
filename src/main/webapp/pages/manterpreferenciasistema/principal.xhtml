@@ -1,0 +1,192 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+    <ui:define name="bread">
+        <p:breadCrumb>  
+            <p:menuitem value="Home"/>  
+            <p:menuitem value="Preferências do Sistema"/>  
+        </p:breadCrumb>  
+    </ui:define>
+    
+    <ui:define name="content">
+        <h:form style="max-width: 1216px; margin: 0 auto">
+            <p:panelGrid style="text-align: left; width: 100%">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="2">Comum</p:column>
+                    </p:row>
+                </f:facet>
+
+                <p:row>
+                    <p:column style="width: 130px">
+                        <h:outputText value="Nome da Ouvidoria:" />
+                    </p:column>
+                    <p:column>
+                        <p:inputText value="#{mBPreferenciaSistema.preferencias.nomeOuvidoria}" size="60"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column style="width: 130px">
+                        <h:outputText value="E-mail da Ouvidoria" />
+                    </p:column>
+                    <p:column>
+                        <p:inputText value="#{mBPreferenciaSistema.preferencias.emailOuvidoria}" size="60"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+
+            <p:spacer height="5" width="800"/>
+
+            <!-- Configuração de emails -->
+            <p:panelGrid style="width: 100%; text-align: left">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="2">Configuração de emails</p:column>
+                    </p:row>
+                </f:facet>
+
+                <p:row>
+                    <p:column style="width: 60px">
+                        <h:outputText value="Host:"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText value="#{mBPreferenciaSistema.preferencias.hostEmail}" size="60" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column style="width: 60px">
+                        <h:outputText value="Porta:"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText value="#{mBPreferenciaSistema.preferencias.portaEmail}" size="60" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column style="width: 60px">
+                        <h:outputText value="Usuário:"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText value="#{mBPreferenciaSistema.preferencias.usuarioEmail}" size="60" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column style="width: 60px">
+                        <h:outputText value="Senha:"/>
+                    </p:column>
+                    <p:column>
+                        <p:password value="#{mBPreferenciaSistema.preferencias.senhaEmail}" size="60" redisplay="true" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column style="width: 60px">
+                        <h:outputText value="SSL"/>
+                    </p:column>
+                    <p:column>
+                        <p:selectBooleanCheckbox value="#{mBPreferenciaSistema.ssl}"  />
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+
+            <p:spacer height="5" width="800"/>                
+            <!-- Funções -->
+
+            <p:panelGrid style="width: 100%; text-align: left">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="2">Funções</p:column>
+                    </p:row>
+                </f:facet>
+
+                <p:row>
+                    <p:column>
+                        <h:outputText value="Permitir Solucionar Ocorrência com Trâmites com Status ENCAMINHADA" />
+                    </p:column>
+                    <p:column>
+                        <p:selectBooleanCheckbox value="#{mBPreferenciaSistema.encerrarTramiteEncaminhada}" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputText value="Permitir Qualquer Analista RETORNAR trâmite para Ouvidoria" />
+                    </p:column>
+                    <p:column>
+                        <p:selectBooleanCheckbox value="#{mBPreferenciaSistema.retornarTramiteOuvidoria}" />
+                    </p:column>
+                </p:row>
+
+                <p:row rendered="false">
+                    <!-- Não Remover-->
+                    <p:column>
+                        <h:outputText value="Controle de prazos para Manifestações Solucionadas" />
+                    </p:column>
+                    <p:column>
+                        <p:selectBooleanCheckbox value="#{mBPreferenciaSistema.ctlPrazoManifSoluc}" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputText value="Permitir Respostas Imediatas" />
+                    </p:column>
+                    <p:column>
+                        <p:selectBooleanCheckbox value="#{mBPreferenciaSistema.respostasImediatas}" />
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+
+            <p:spacer height="5" width="800"/>  
+            <!-- Definir Prazos -->
+            <p:panelGrid style="width: 100%; text-align: left">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="2">Definir Prazos</p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column colspan="2" style="background: #FFCC22">
+                        <b>Estes são os valores que servirão como padrão no momento de cadastrar o Tipo de Manifestação, caso o usuário necessite.</b> 
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column style="width: 170px">
+                        <h:outputText value="Prazo Entrada (dias):" />
+                    </p:column>
+                    <p:column>
+                        <p:inputText value="#{mBPreferenciaSistema.preferencias.prazoEntrada}" size="20"/> (dias)
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column style="width: 170px">
+                        <h:outputText value="Prazo Área Solucionadora (dias):" />
+                    </p:column>
+                    <p:column>
+                        <p:inputText value="#{mBPreferenciaSistema.preferencias.prazoAreaSolucionadora}" size="20"/> (dias)
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column style="width: 170px">
+                        <h:outputText value="Prazo Resposta Cidadão (dias):" />
+                    </p:column>
+                    <p:column>
+                        <p:inputText value="#{mBPreferenciaSistema.preferencias.prazoRespostaCidadao}" size="20"/> (dias)
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:panelGrid style="width: 100%">
+                <p:row>
+                    <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                        <p:commandButton id="cbNovoSalvar" 
+                                         value="Salvar" 
+                                         actionListener="#{mBPreferenciaSistema.atualizar}" />
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:spacer height="5" width="800"/>  
+        </h:form>
+    </ui:define>
+</ui:composition>

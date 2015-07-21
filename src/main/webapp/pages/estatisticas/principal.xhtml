@@ -1,0 +1,194 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+	<ui:define name="bread">
+		<p:breadCrumb>
+			<p:menuitem value="Home" />
+			<p:menuitem value="Estatísticas da Manifestação" />
+		</p:breadCrumb>
+	</ui:define>
+	
+	<ui:define name="content">
+		<h:form>
+			<p:fieldset legend="Estatísticas das Manifestações" style="max-width: 1216px; margin: 0 auto">
+				<table style="width: 100%; text-align: center; border-color: transparent;">
+					<tr>
+						<td align="center" valign="top">
+							<p:panelGrid style="width: 100%; margin: 0 auto; vertical-align: central;">
+								<f:facet name="header">
+									<p:row>
+										<p:column colspan="3">Estatísticas comuns</p:column>
+									</p:row>
+								</f:facet>
+								<p:row>
+									<p:column colspan="2">
+										<p:pieChart id="grafico1"
+											value="#{mBEstatisticas.graficoComum}" legendPosition="e"
+											fill="false" showDataLabels="true"
+											title="Gráficos Estatísticos Comuns"
+											style="width:400px;height:300px" sliceMargin="5"
+											diameter="150" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column style="width: 80%">
+										<h:outputText value="#{mBEstatisticas.getEstatistica(1).dsMetrica}" />
+									</p:column>
+									<p:column>
+										<h:outputText
+											value="#{mBEstatisticas.getEstatistica(1).qtdade}"
+											style="margin-right: 5px;" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<h:outputText value="#{mBEstatisticas.getEstatistica(2).dsMetrica}" />
+									</p:column>
+									<p:column>
+										<h:outputText
+											value="#{mBEstatisticas.getEstatistica(2).qtdade}"
+											style="margin-right: 5px;" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<h:outputText value="#{mBEstatisticas.getEstatistica(3).dsMetrica}" />
+									</p:column>
+									<p:column>
+										<h:outputText
+											value="#{mBEstatisticas.getEstatistica(3).qtdade}"
+											style="margin-right: 5px;" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<h:outputText value="#{mBEstatisticas.getEstatistica(4).dsMetrica}" />
+									</p:column>
+									<p:column>
+										<h:outputText
+											value="#{mBEstatisticas.getEstatistica(4).qtdade}"
+											style="margin-right: 5px;" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<h:outputText value="#{mBEstatisticas.getEstatistica(5).dsMetrica}" />
+									</p:column>
+									<p:column>
+										<h:outputText
+											value="#{mBEstatisticas.getEstatistica(5).qtdade}"
+											style="margin-right: 5px;" />
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+						</td>
+						<td align="center" valign="top">
+							<p:panelGrid style="width: 100%; margin: 0 auto; vertical-align: central; ">
+								<f:facet name="header">
+									<p:row>
+										<p:column colspan="3">Estatísticas por status da manifestação</p:column>
+									</p:row>
+								</f:facet>
+								<p:row>
+									<p:column colspan="2" style="text-align: center;">
+										<p:pieChart id="grafico2"
+											value="#{mBEstatisticas.graficoStatusManifestacao}"
+											legendPosition="e" fill="false" showDataLabels="true"
+											title="Gráficos Estatísticos por Status da Manifestação"
+											style="width:400px;height:300px" sliceMargin="5"
+											diameter="150" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column style="width: 80%">
+										<h:outputText value="#{mBEstatisticas.getEstatistica(6).dsMetrica}" />
+									</p:column>
+									<p:column>
+										<h:outputText
+											value="#{mBEstatisticas.getEstatistica(6).qtdade}"
+											style="margin-right: 5px;" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<h:outputText value="#{mBEstatisticas.getEstatistica(7).dsMetrica}" />
+									</p:column>
+									<p:column>
+										<h:outputText
+											value="#{mBEstatisticas.getEstatistica(7).qtdade}"
+											style="margin-right: 5px;" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<h:outputText value="#{mBEstatisticas.getEstatistica(8).dsMetrica}" />
+									</p:column>
+									<p:column>
+										<h:outputText
+											value="#{mBEstatisticas.getEstatistica(8).qtdade}"
+											style="margin-right: 5px;" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<h:outputText value="#{mBEstatisticas.getEstatistica(9).dsMetrica}" />
+									</p:column>
+									<p:column>
+										<h:outputText
+											value="#{mBEstatisticas.getEstatistica(9).qtdade}"
+											style="margin-right: 5px;" />
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+						</td>
+						<td align="center" valign="top">
+							<p:panelGrid style="width: 100%; margin: 0 auto; vertical-align: central;">
+								<f:facet name="header">
+									<p:row>
+										<p:column colspan="3">Estatísticas por status do Trâmite</p:column>
+									</p:row>
+								</f:facet>
+								<p:row>
+									<p:column colspan="2" style="text-align: center;">
+										<p:pieChart id="grafico3"
+											value="#{mBEstatisticas.graficoStatusTramite}"
+											legendPosition="e" fill="false" showDataLabels="true"
+											title="Gráficos Estatísticos por Status do Trâmite"
+											style="width:400px;height:300px" sliceMargin="5"
+											diameter="150" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<h:outputText value="#{mBEstatisticas.getEstatistica(10).dsMetrica}" />
+									</p:column>
+									<p:column>
+										<h:outputText
+											value="#{mBEstatisticas.getEstatistica(10).qtdade}"
+											style="margin-right: 5px;" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column style="width: 80%">
+										<h:outputText value="#{mBEstatisticas.getEstatistica(11).dsMetrica}" />
+									</p:column>
+									<p:column>
+										<h:outputText
+											value="#{mBEstatisticas.getEstatistica(11).qtdade}"
+											style="margin-right: 5px;" />
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+						</td>
+					</tr>
+				</table>
+			</p:fieldset>
+		</h:form>
+	</ui:define>
+</ui:composition>

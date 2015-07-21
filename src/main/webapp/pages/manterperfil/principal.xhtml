@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+    <ui:define name="bread">
+        <h:form>
+            <p:breadCrumb>  
+                <p:menuitem value="Home"/>  
+                <p:menuitem value="Cadastro de Perfil"/>  
+            </p:breadCrumb>  
+        </h:form>
+    </ui:define>
+    
+    <ui:define name="content">
+        <p:fieldset legend="Cadastro de Perfil" style="max-width: 1190px; margin: 0 auto">
+            <h:form id="formPerfil">
+                <p:dataTable id="tabela1" 
+                             widgetVar="tabela"
+                             value="#{mBPerfil.todos}"
+                             paginator="true" rows="5"
+                             rowsPerPageTemplate="5,10,15"
+                             paginatorPosition="bottom"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             var="item"
+                             rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx">
+                    <f:facet name="header">                    
+                        <p:commandButton id="cbNovo" type="button" value="Novo" onclick="dlgNovoPerfil.show();" style="float: left"/>
+                    </f:facet>                    
+                    <p:column style="width: 15%" filterBy="#{item.tpPerfil}" filterMatchMode="contains" sortBy="#{item.tpPerfil}">
+                        <f:facet name="header">
+                            <h:outputText value="Tipo" />
+                        </f:facet>
+                        <h:outputText value="Interno" rendered="#{item.tpPerfil=='1'}" />
+                        <h:outputText value="Externo" rendered="#{item.tpPerfil=='2'}" />
+                    </p:column>
+                    <p:column filterBy="#{item.nmPerfil}" filterMatchMode="contains" sortBy="#{item.nmPerfil}">
+                        <f:facet name="header">
+                            <h:outputText value="Nome Perfil"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nmPerfil}"/>
+                    </p:column>
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputText value="Editar"/>
+                        </f:facet>
+                        <p:commandButton id="cbViewEditar" 
+                                         icon="ui-icon-pencil"
+                                         title="Editar"
+                                         update=":frmEditarPerfil"
+                                         oncomplete="dlgEditarPerfil.show();">
+                            <f:setPropertyActionListener value="#{item}" target="#{mBPerfil.perfil}" />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputLabel value="Excluir"/>
+                        </f:facet>
+                        <p:commandButton id="cbViewExcluir" onclick="dlgExcluirPerfil.show();" icon="ui-icon-close" title="Excluir">
+                            <f:setPropertyActionListener value="#{item}" target="#{mBPerfil.perfil}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            <!-- Caixa de diálogo de exclusão -->
+            <p:confirmDialog id="dialogoExcluirPerfil" message="Confirmar Operação?"
+                             header="Excluir Perfil" severity="alert"
+                             widgetVar="dlgExcluirPerfil" appendToBody="true" closable="true" width="300">
+                <h:form id="frmExcluirPerfil">
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbExcluirContinuar" value="Sim"
+                                                 update=":formPerfil"
+                                                 oncomplete="dlgExcluirPerfil.hide();tabela.filter();"
+                                                 actionListener="#{mBPerfil.remover}"/>
+                                <p:commandButton id="cbExcluirCancelar" value="Não" onclick="dlgExcluirPerfil.hide();" type="button" />
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:confirmDialog>
+            <!-- Caixa de diálogo de inclusão -->
+            <p:dialog id="dialogoNovoPerfil" widgetVar="dlgNovoPerfil" modal="true" header="Novo Perfil"
+                      resizable="false" appendToBody="true" closable="true">
+                <h:form id="frmNovoPerfil">
+                    <p:messages id="mNovoMessages" redisplay="false" />
+                    <p:panelGrid columns="1" style="width: 300px;">
+                        <h:outputLabel value="Nome Perfil:* " styleClass="bold" />
+                        <p:inputText value="#{mBPerfil.perfilNovo.nmPerfil}" required="true" size="60" requiredMessage="Digite o nome do Perfil" title="Informe o Perfil" />
+                    </p:panelGrid>                    
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbNovoSalvar" value="Salvar"
+                                                 actionListener="#{mBPerfil.cadastrar}"
+                                                 oncomplete="if (!args.validationFailed){dlgNovoPerfil.hide()};tabela.filter()"
+                                                 update=":formPerfil,:frmNovoPerfil"
+                                                 ajax="true">
+                                    <p:resetInput target="frmNovoPerfil" />
+                                </p:commandButton>
+                                <p:spacer width="20px"/>
+                                <p:commandButton value="Fechar" immediate="true" update="frmNovoPerfil" onclick="dlgNovoPerfil.hide()">
+                                    <p:resetInput target="frmNovoPerfil" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            <!-- Caixa de diálogo de edição -->
+            <p:dialog id="dialogoEditarPerfil" widgetVar="dlgEditarPerfil" header="Editar Perfil"
+                      resizable="false" modal="true" appendToBody="true" closable="true">
+                <h:form id="frmEditarPerfil" >
+                    <p:messages id="mEditarMessages" redisplay="false" />
+                    <p:panelGrid columns="1" style="width: 300px;">                             
+                        <h:outputLabel value="Nome Perfil:* " styleClass="bold" />
+                        <p:inputText value="#{mBPerfil.perfil.nmPerfil}" required="true" size="60" requiredMessage="Digite o nome do Perfil" title="Informe o Perfil " />
+                    </p:panelGrid>
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbEditarSalvar" value="Salvar"
+                                                 actionListener="#{mBPerfil.alterar}"
+                                                 oncomplete="if (!args.validationFailed){dlgEditarPerfil.hide()}"
+                                                 update=":formPerfil,:frmEditarPerfil">
+                                    <p:resetInput target="frmEditarPerfil" />
+                                </p:commandButton>
+                                <p:spacer width="20px"/>
+                                <p:commandButton value="Fechar" immediate="true" update="frmEditarPerfil" onclick="dlgEditarPerfil.hide()">
+                                    <p:resetInput target="frmEditarPerfil" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+        </p:fieldset>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,661 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+    <ui:define name="bread">
+        <p:breadCrumb>  
+            <p:menuitem value="Home"/>  
+            <p:menuitem value="Cadastro de Filtros Personalizados"/>  
+        </p:breadCrumb>  
+    </ui:define>
+    
+    <ui:define name="content">
+        <p:fieldset legend="Filtros Personalizados" style="width:1190px; margin:0 auto;">
+            <h:form id="formFiltroPersonalizado">
+                <p:dataTable id="tabela1" 
+                             widgetVar="tabela"
+                             value="#{mBFiltroPersonalizado.todos}"
+                             paginator="true" rows="6"
+                             rowsPerPageTemplate="5,10"
+                             paginatorPosition="bottom"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             var="item"
+                             rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx">
+
+                    <f:facet name="header">                    
+                        <p:commandButton id="cbNovo" type="button" value="Novo" onclick="dlgNovoFiltroPersonalizado.show();" style="float: left; width: 100px" />
+                    </f:facet>
+                    <p:column filterBy="#{item.nmFiltroPersonalizado}" filterMatchMode="contains" sortBy="#{item.nmFiltroPersonalizado}">
+                        <f:facet name="header">
+                            <h:outputText value="Nome do Filtro Personalizado"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nmFiltroPersonalizado}" />
+                    </p:column>
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputText value="Editar" />
+                        </f:facet>
+                        <p:commandButton id="cbViewEditar" 
+                                         icon="ui-icon-pencil"
+                                         title="Editar"
+                                         update=":frmEditarFiltroPersonalizado"
+                                         actionListener="#{mBFiltroPersonalizado.prepararAlterar(item)}"
+                                         oncomplete="dlgEditarFiltroPersonalizado.show();">
+                            <f:setPropertyActionListener value="#{item}" target="#{mBFiltroPersonalizado.tbFiltroPersonalizado}" />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputLabel value="Excluir"/>
+                        </f:facet>
+                        <p:commandButton id="cbViewExcluir" onclick="dlgExcluirFiltroPersonalizado.show();" icon="ui-icon-close" title="Excluir">
+                            <f:setPropertyActionListener value="#{item}" target="#{mBFiltroPersonalizado.tbFiltroPersonalizado}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            <!-- Caixa de diálogo de exclusão -->
+            <p:confirmDialog id="dialogoExcluirFiltroPersonalizado" message="Confirmar Operação?"
+                             header="Excluir Filtro Personalizado" closable="true" severity="alert" widgetVar="dlgExcluirFiltroPersonalizado" appendToBody="true" width="300" >
+                <h:form id="frmExcluirFiltroPersonalizado">
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbExcluirContinuar" value="Sim"
+                                                 update=":formFiltroPersonalizado"
+                                                 oncomplete="dlgExcluirFiltroPersonalizado.hide();tabela.filter();"
+                                                 actionListener="#{mBFiltroPersonalizado.remover}" />
+                                <p:commandButton id="cbExcluirCancelar" value="Não" onclick="dlgExcluirFiltroPersonalizado.hide()" type="button" />
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+
+                </h:form>
+            </p:confirmDialog>            
+            <!-- Caixa de diálogo de inclusão -->
+            <p:dialog id="dialogoNovoFiltroPersonalizado" widgetVar="dlgNovoFiltroPersonalizado" 
+                      modal="true" header="Novo Filtro Personalizado" 
+                      resizable="true" appendToBody="true" closable="true">
+                <h:form id="frmNovoFiltroPersonalizado" style="width: 800px; height: 400px; overflow-x: hidden">
+                    <p:messages id="mNovoMessages" redisplay="false" />
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="width: 150px">
+                                <h:outputLabel value="Nome do Filtro Personalizado:*" />
+                            </p:column>
+                            <p:column colspan="3">
+                                <p:inputText value="#{mBFiltroPersonalizado.tbFiltroPersonalizadoNovo.nmFiltroPersonalizado}" size="50" maxlength="30" 
+                                             required="true"
+                                             requiredMessage="Digite o nome do Filtro Personalizado"
+                                             />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Método de Busca:" />
+                            </p:column>
+                            <p:column colspan="3">
+                                <p:selectOneRadio value="#{mBFiltroPersonalizado.filtroPersonalizadoNovo.metodoBusca}" required="true"
+                                                  requiredMessage="Marque o método de busca">
+                                    <f:selectItem itemLabel="E" itemValue="and" />
+                                    <f:selectItem itemLabel="Ou" itemValue="or" />
+                                    <f:selectItem itemLabel="Não" itemValue="not" />
+                                </p:selectOneRadio>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="4" styleClass="ui-widget-header centro">
+                                <h:outputLabel value="Filtro de Manifestação"  />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="Número da Manifestação:" /></p:column>
+                            <p:column colspan="3">
+                                <h:outputLabel value="De: " />
+                                <p:inputText value="#{mBFiltroPersonalizado.filtroPersonalizadoNovo.manIdRangeDe}" converterMessage="Número da manifestação deve conter um ou mais dígitos numéricos." />
+                                <p:spacer width="10" />
+                                <h:outputLabel value="Até: " />
+                                <p:inputText value="#{mBFiltroPersonalizado.filtroPersonalizadoNovo.manIdRangeAte}" converterMessage="Número da manifestação deve conter um ou mais dígitos numéricos." />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="Data de Cadastro:" /></p:column>  
+                            <p:column colspan="3">
+                                <h:outputLabel value="De: " />
+                                <p:calendar id="dtCadastroDe" value="#{mBFiltroPersonalizado.filtroPersonalizadoNovo.manDataCadastroDe}" pattern="dd/MM/yyyy">
+                                    <!--<f:validator binding="{dataFiltroPersonalizadoValidator}" />-->
+                                </p:calendar>
+                                <p:spacer width="10" />
+                                <h:outputLabel value="Até: " />
+                                <p:calendar id="dtCadastroAte" value="#{mBFiltroPersonalizado.filtroPersonalizadoNovo.manDataCadastroAte}" pattern="dd/MM/yyyy">
+                                    <!--<f:validator binding="{dataFiltroPersonalizadoValidator}" />-->
+                                </p:calendar>
+                            </p:column>
+                        </p:row>
+                        <p:row>  
+                            <p:column><h:outputLabel value="Sexo:" /></p:column>  
+                            <p:column colspan="3"> 
+                                <p:selectOneMenu value="#{mBFiltroPersonalizado.filtroPersonalizadoNovo.manSexo}">
+                                    <f:selectItem itemLabel=" - Todos -" itemValue="0" />
+                                    <f:selectItems value="#{mBEnum.sexoEnums}" var="sexo" itemLabel="#{sexo.descricao}" itemValue="#{sexo.id}" />
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column> <h:outputLabel value="Deseja Receber Resposta:"  /></p:column>  
+                            <p:column colspan="3"> 
+                                <p:selectOneMenu value="#{mBFiltroPersonalizado.filtroPersonalizadoNovo.manResposta}">
+                                    <f:selectItem itemLabel=" - Todos -" itemValue="" />
+                                    <f:selectItem itemLabel="Sim" itemValue="1" />
+                                    <f:selectItem itemLabel="Não" itemValue="0" />
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{!(security.interlocutor || security.operador)}">
+                            <p:column><h:outputLabel value="Sigilo:" /></p:column>
+                            <p:column colspan="3">
+                                <p:selectOneMenu value="#{mBFiltroPersonalizado.filtroPersonalizadoNovo.manSigilo}">
+                                    <f:selectItem itemLabel=" - Todos -" itemValue="" />
+                                    <f:selectItem itemLabel="Sim" itemValue="1" />
+                                    <f:selectItem itemLabel="Não" itemValue="0" />
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="País:" /></p:column>
+                            <p:column colspan="3">
+                                <p:selectOneMenu value="#{mBFiltroPersonalizado.filtroPersonalizadoNovo.manIdPais}">
+                                    <f:selectItem itemLabel=" - Selecione -" itemValue="" />
+                                    <f:selectItems value="#{localidadeBean.paises}" var="pais" itemLabel="#{pais.nmPais}" itemValue="#{pais.idPais}" />
+                                    <p:ajax event="change" update="panelEstado" />
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="4">
+                                <p:outputPanel id="panelEstado">
+	                                <p:panelGrid style="width: 100%" rendered="#{mBFiltroPersonalizado.isBrasil(mBFiltroPersonalizado.filtroPersonalizadoNovo.manIdPais)}">
+				                        <p:row>
+				                            <p:column style="width: 139px">
+		                                        <h:outputLabel value="Estado" />
+		                                    </p:column>
+				                            <p:column>
+		                                        <p:pickList value="#{mBFiltroPersonalizado.listaUfNovo}" var="uf" itemLabel="#{uf.nmUF}" itemValue="#{uf}" converter="#{conversorEstado}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+		                                            <f:facet name="sourceCaption">Disponíveis</f:facet>
+		                                            <f:facet name="targetCaption">Selecionados</f:facet>
+		                                        </p:pickList>
+                                       		</p:column>
+                                     	</p:row>
+                                    </p:panelGrid>
+                                </p:outputPanel>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="Cadastrada por:" /></p:column>
+                            <p:column colspan="3" style="border: 0">
+                                <p:pickList value="#{mBFiltroPersonalizado.listaUsuarioCriadorNovo}" var="criador" itemLabel="#{criador.nmUsuario}" itemValue="#{criador}" converter="#{conversorUsuario}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                </p:pickList>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="Classificação:" /></p:column>
+                            <p:column colspan="3" style="border: 0">
+                                <p:pickList value="#{mBFiltroPersonalizado.listaClassificacaoNovo}" var="classificacao" itemLabel="#{classificacao.dsClassificacao}" itemValue="#{classificacao}" converter="#{conversorClassificacao}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                    <p:ajax event="transfer" listener="#{mBFiltroPersonalizado.onTransferNovo}" update="pickSubClassificacaoNovo" />
+                                </p:pickList>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="Subclassificação:" /></p:column>
+                            <p:column colspan="3"> 
+                                <p:pickList id="pickSubClassificacaoNovo" value="#{mBFiltroPersonalizado.listaSubClassificacaoNovo}" var="subClassificacao" itemLabel="#{subClassificacao.dsSubClassificacao}" itemValue="#{subClassificacao}" converter="#{conversorSubClassificacao}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                    <p:ajax event="transfer" update="@this" />
+                                </p:pickList>
+                            </p:column>
+                        </p:row>
+                        <p:row>  
+                            <p:column><h:outputLabel value="Tipo:" /></p:column>
+                            <p:column colspan="3"> 
+                                <p:pickList value="#{mBFiltroPersonalizado.listaTipoNovo}" var="tpmanifestacao" itemLabel="#{tpmanifestacao.nmTipoManifestacao}" itemValue="#{tpmanifestacao}" converter="#{conversorTipoManifestacao}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                </p:pickList>
+                            </p:column> 
+                        </p:row>  
+                        <p:row>  
+                            <p:column> <h:outputLabel value="Status Manifestação:"  /></p:column>  
+                            <p:column colspan="3"> 
+                                <p:pickList value="#{mBFiltroPersonalizado.listaStatusManifestacaoNovo}" var="statusmanifestacao" itemLabel="#{statusmanifestacao.descricao}" itemValue="#{statusmanifestacao}" converter="#{conversorStatusManifestacao}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                </p:pickList>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="Faixa Etária:" /></p:column>
+                            <p:column colspan="3">
+                                <p:pickList value="#{mBFiltroPersonalizado.listaFaixaEtariaNovo}" var="faixaetaria" itemLabel="#{faixaetaria.nmFaixaEtaria}" itemValue="#{faixaetaria}" converter="#{conversorFaixaEtaria}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                </p:pickList>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="Grau Instrução:" /></p:column>
+                            <p:column colspan="3">
+                                <p:pickList value="#{mBFiltroPersonalizado.listaGrauInstrucaoNovo}" var="grauinstrucao" itemLabel="#{grauinstrucao.nmGrauInstrucao}" itemValue="#{grauinstrucao}" converter="#{conversorGrauInstrucao}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                </p:pickList>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="Raça:" /></p:column>
+                            <p:column colspan="3">
+                                <p:pickList value="#{mBFiltroPersonalizado.listaRacaNovo}" var="raca" itemLabel="#{raca.descricao}" itemValue="#{raca}" converter="#{conversorRaca}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                </p:pickList>
+                            </p:column>
+                        </p:row>  
+                        <p:row>  
+                            <p:column> <h:outputLabel value="Meio de Entrada:"  /></p:column>  
+                            <p:column colspan="3"> 
+                                <p:pickList value="#{mBFiltroPersonalizado.listaMeioEntradaNovo}" var="meioentrada" itemLabel="#{meioentrada.nmMeioEntrada}" itemValue="#{meioentrada}" converter="#{conversorMeioEntrada}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                </p:pickList>
+                            </p:column> 
+                        </p:row>  
+                        <p:row>  
+                            <p:column> <h:outputLabel value="Área de Entrada:"  /></p:column>  
+                            <p:column colspan="3"> 
+                                <p:pickList value="#{mBFiltroPersonalizado.listaAreaEntradaNovo}" var="areaentrada" itemLabel="#{areaentrada.nmAreaEntrada}" itemValue="#{areaentrada}" converter="#{conversorAreaEntrada}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                </p:pickList>
+                            </p:column>
+                        </p:row>
+                        <p:row>  
+                            <p:column> <h:outputLabel value="Prioridade:" /></p:column>  
+                            <p:column colspan="3"> 
+                                <p:pickList value="#{mBFiltroPersonalizado.listaPrioridadeNovo}" var="prioridade" itemLabel="#{prioridade.nmPrioridade}" itemValue="#{prioridade}" converter="#{conversorPrioridade}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                </p:pickList>
+                            </p:column> 
+                        </p:row>  
+                        <p:row>  
+                            <p:column> <h:outputLabel value="Área Solucionadora:" /></p:column>  
+                            <p:column colspan="3"> 
+                                <p:pickList value="#{mBFiltroPersonalizado.listaAreaSolucionadoraNovo}" var="areaSolucionadora" itemLabel="#{areaSolucionadora.nmUnidade}" itemValue="#{areaSolucionadora}" converter="#{conversorUnidade}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                </p:pickList>
+                            </p:column> 
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="4" styleClass="ui-widget-header centro">
+                                <h:outputLabel value="Filtro de Encaminhamento" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="Data de Encaminhamento:" /></p:column>  
+                            <p:column colspan="3">
+                                <h:outputLabel value="De: " />
+                                <p:calendar locale="pt" value="#{mBFiltroPersonalizado.filtroPersonalizadoNovo.encDataEnvioDe}" pattern="dd/MM/yyyy" />
+                                <p:spacer width="10" />
+                                <h:outputLabel value="Até: " />
+                                <p:calendar locale="pt" value="#{mBFiltroPersonalizado.filtroPersonalizadoNovo.encDataEnvioAte}" pattern="dd/MM/yyyy" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="Status Encaminhamento:" /></p:column>
+                            <p:column colspan="3">
+                                <p:selectOneMenu value="#{mBFiltroPersonalizado.filtroPersonalizadoNovo.encStatus}">
+                                    <f:selectItem itemLabel=" - Todos -" itemValue="0" />
+                                    <f:selectItems value="#{mBEnum.statusEncaminhamentoEnums}" var="statusEnc" itemLabel="#{statusEnc.descricao}" itemValue="#{statusEnc.id}" />
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>  
+                            <p:column> <h:outputLabel value="Área Encaminhada:" /></p:column>  
+                            <p:column colspan="3"> 
+                                <p:pickList value="#{mBFiltroPersonalizado.listaUnidadeEnvioNovo}" var="unidadeEnvio" itemLabel="#{unidadeEnvio.nmUnidade}" itemValue="#{unidadeEnvio}" converter="#{conversorUnidade}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                </p:pickList>
+                            </p:column> 
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="Operador:"  /></p:column>
+                            <p:column colspan="3">
+                                <p:pickList value="#{mBFiltroPersonalizado.listaOperadorNovo}" var="operador" itemLabel="#{operador.nmUsuario}" itemValue="#{operador}" converter="#{conversorUsuario}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                </p:pickList>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbNovoSalvar" value="Salvar"
+                                                 actionListener="#{mBFiltroPersonalizado.cadastrar}"
+                                                 oncomplete="if (!args.validationFailed){dlgNovoFiltroPersonalizado.hide()}"
+                                                 update=":formFiltroPersonalizado,frmNovoFiltroPersonalizado"
+                                                 style="width: 100px; margin: 10px"
+                                                 ajax="true">
+                                    <p:resetInput target="frmNovoFiltroPersonalizado" />
+                                </p:commandButton> 
+                                <p:spacer width="20px"/>
+                                <p:commandButton value="Fechar" immediate="true"
+                                                 update="frmNovoFiltroPersonalizado"
+                                                 style="width: 100px; margin: 10px"
+                                                 onclick="dlgNovoFiltroPersonalizado.hide()" >
+                                    <p:resetInput target="frmNovoFiltroPersonalizado" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+
+            <!-- Caixa de diálogo de edição -->
+            <p:dialog id="dialogoEditarFiltroPersonalizado" widgetVar="dlgEditarFiltroPersonalizado" 
+                      header="Editar Filtro Personalizado" 
+                      resizable="false" modal="true" appendToBody="true" closable="true">
+                <h:form id="frmEditarFiltroPersonalizado" style="width: 800px; height: 400px; overflow-x: hidden">
+                    <p:messages id="mEditarMessages" redisplay="false" />
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="width: 150px">
+                                <h:outputLabel value="Nome do Filtro Personalizado*:" />
+                            </p:column>
+                            <p:column colspan="3">
+                                <p:inputText value="#{mBFiltroPersonalizado.tbFiltroPersonalizado.nmFiltroPersonalizado}" size="50" maxlength="30" required="true"
+                                             requiredMessage="Digite o nome do Filtro Personalizado" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Método de Busca:" />
+                            </p:column>
+                            <p:column colspan="3">
+                                <p:selectOneRadio value="#{mBFiltroPersonalizado.filtroPersonalizado.metodoBusca}">
+                                    <f:selectItem itemLabel="E" itemValue="and" />
+                                    <f:selectItem itemLabel="Ou" itemValue="or" />
+                                    <f:selectItem itemLabel="Não" itemValue="not" />
+                                </p:selectOneRadio>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="4" styleClass="ui-widget-header centro">
+                                <h:outputLabel value="Filtro de Manifestação"  />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="Número da Manifestação:" /></p:column>
+                            <p:column colspan="3">
+                                <h:outputLabel value="De: " />
+                                <p:inputText value="#{mBFiltroPersonalizado.filtroPersonalizado.manIdRangeDe}"/>
+                                <p:spacer width="10" />
+                                <h:outputLabel value="Até: " />
+                                <p:inputText value="#{mBFiltroPersonalizado.filtroPersonalizado.manIdRangeAte}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="Data de Cadastro:" /></p:column>  
+                            <p:column colspan="3">
+                                <h:outputLabel value="De: " />
+                                <p:calendar value="#{mBFiltroPersonalizado.filtroPersonalizado.manDataCadastroDe}" pattern="dd/MM/yyyy"/>                                    
+                                <p:spacer width="10" />
+                                <h:outputLabel value="Até: " />
+                                <p:calendar value="#{mBFiltroPersonalizado.filtroPersonalizado.manDataCadastroAte}" pattern="dd/MM/yyyy"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>  
+                            <p:column><h:outputLabel value="Sexo:" /></p:column>  
+                            <p:column colspan="3"> 
+                                <p:selectOneMenu value="#{mBFiltroPersonalizado.filtroPersonalizado.manSexo}">
+                                    <f:selectItem itemLabel=" - Todos -" itemValue="0" />
+                                    <f:selectItems value="#{mBEnum.sexoEnums}" var="sexo" itemLabel="#{sexo.descricao}" itemValue="#{sexo.id}" />
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column> <h:outputLabel value="Deseja Receber Resposta:"  /></p:column>  
+                            <p:column colspan="3"> 
+                                <p:selectOneMenu value="#{mBFiltroPersonalizado.filtroPersonalizado.manResposta}">
+                                    <f:selectItem itemLabel=" - Todos -" itemValue="" />
+                                    <f:selectItem itemLabel="Sim" itemValue="1" />
+                                    <f:selectItem itemLabel="Não" itemValue="0" />
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="Sigilo:" /></p:column>
+                            <p:column colspan="3">
+                                <p:selectOneMenu value="#{mBFiltroPersonalizado.filtroPersonalizado.manSigilo}">
+                                    <f:selectItem itemLabel=" - Todos -" itemValue="" />
+                                    <f:selectItem itemLabel="Sim" itemValue="1" />
+                                    <f:selectItem itemLabel="Não" itemValue="0" />
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="País:" /></p:column>
+                            <p:column colspan="3">
+                                <p:selectOneMenu value="#{mBFiltroPersonalizado.filtroPersonalizado.manIdPais}">
+                                    <f:selectItem itemLabel=" - Selecione -" itemValue="" />
+                                    <f:selectItems value="#{localidadeBean.paises}" var="pais" itemLabel="#{pais.nmPais}" itemValue="#{pais.idPais}" />
+                                    <p:ajax event="change" update="panelEstado" />
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="4">
+                                <p:outputPanel id="panelEstado">
+                                	<p:panelGrid style="width: 100%" rendered="#{mBFiltroPersonalizado.isBrasil(mBFiltroPersonalizado.filtroPersonalizado.manIdPais)}">
+				                        <p:row>
+				                            <p:column style="width: 139px">
+		                                        <h:outputLabel value="Estado" />
+		                                    </p:column>
+				                            <p:column>
+		                                        <p:pickList value="#{mBFiltroPersonalizado.listaUf}" var="uf" itemLabel="#{uf.nmUF}" itemValue="#{uf}" converter="#{conversorEstado}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+		                                            <f:facet name="sourceCaption">Disponíveis</f:facet>
+		                                            <f:facet name="targetCaption">Selecionados</f:facet>
+		                                        </p:pickList>
+                                       		</p:column>
+                                     	</p:row>
+                                    </p:panelGrid>
+                                </p:outputPanel>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="Cadastrada por:" /></p:column>
+                            <p:column colspan="3" style="border: 0">
+                                <p:pickList value="#{mBFiltroPersonalizado.listaUsuarioCriador}" var="criador" itemLabel="#{criador.nmUsuario}" itemValue="#{criador}" converter="#{conversorUsuario}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                </p:pickList>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="Classificação:" /></p:column>
+                            <p:column colspan="3">
+                                <p:pickList value="#{mBFiltroPersonalizado.listaClassificacao}" var="classificacao" itemLabel="#{classificacao.dsClassificacao}" itemValue="#{classificacao}" converter="#{conversorClassificacao}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                    <p:ajax event="transfer" listener="#{mBFiltroPersonalizado.onTransfer}" update="pickSubClassificacao" />
+                                </p:pickList>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="Subclassificação:" /></p:column>
+                            <p:column colspan="3"> 
+                                <p:pickList id="pickSubClassificacao" value="#{mBFiltroPersonalizado.listaSubClassificacao}" var="subClassificacao" itemLabel="#{subClassificacao.dsSubClassificacao}" itemValue="#{subClassificacao}" converter="#{conversorSubClassificacao}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                    <p:ajax event="transfer" update="@this" />
+                                </p:pickList>
+                            </p:column>
+                        </p:row>
+                        <p:row>  
+                            <p:column><h:outputLabel value="Tipo:" /></p:column>
+                            <p:column colspan="3"> 
+                                <p:pickList value="#{mBFiltroPersonalizado.listaTipo}" var="tpmanifestacao" itemLabel="#{tpmanifestacao.nmTipoManifestacao}" itemValue="#{tpmanifestacao}" converter="#{conversorTipoManifestacao}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                </p:pickList>
+                            </p:column> 
+                        </p:row>  
+                        <p:row>  
+                            <p:column> <h:outputLabel value="Status Manifestação:"  /></p:column>  
+                            <p:column colspan="3"> 
+                                <p:pickList value="#{mBFiltroPersonalizado.listaStatusManifestacao}" var="statusmanifestacao" itemLabel="#{statusmanifestacao.descricao}" itemValue="#{statusmanifestacao}" converter="#{conversorStatusManifestacao}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                </p:pickList>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="Faixa Etária:" /></p:column>
+                            <p:column colspan="3">
+                                <p:pickList value="#{mBFiltroPersonalizado.listaFaixaEtaria}" var="faixaetaria" itemLabel="#{faixaetaria.nmFaixaEtaria}" itemValue="#{faixaetaria}" converter="#{conversorFaixaEtaria}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                </p:pickList>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="Grau Instrução:" /></p:column>
+                            <p:column colspan="3">
+                                <p:pickList value="#{mBFiltroPersonalizado.listaGrauInstrucao}" var="grauinstrucao" itemLabel="#{grauinstrucao.nmGrauInstrucao}" itemValue="#{grauinstrucao}" converter="#{conversorGrauInstrucao}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                </p:pickList>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="Raça:" /></p:column>
+                            <p:column colspan="3">
+                                <p:pickList value="#{mBFiltroPersonalizado.listaRaca}" var="raca" itemLabel="#{raca.descricao}" itemValue="#{raca}" converter="#{conversorRaca}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                </p:pickList>
+                            </p:column>
+                        </p:row>  
+                        <p:row>  
+                            <p:column> <h:outputLabel value="Meio de Entrada:"  /></p:column>  
+                            <p:column colspan="3"> 
+                                <p:pickList value="#{mBFiltroPersonalizado.listaMeioEntrada}" var="meioentrada" itemLabel="#{meioentrada.nmMeioEntrada}" itemValue="#{meioentrada}" converter="#{conversorMeioEntrada}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                </p:pickList>
+                            </p:column> 
+                        </p:row>  
+                        <p:row>  
+                            <p:column> <h:outputLabel value="Área de Entrada:"  /></p:column>  
+                            <p:column colspan="3"> 
+                                <p:pickList value="#{mBFiltroPersonalizado.listaAreaEntrada}" var="areaentrada" itemLabel="#{areaentrada.nmAreaEntrada}" itemValue="#{areaentrada}" converter="#{conversorAreaEntrada}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                </p:pickList>
+                            </p:column>
+                        </p:row>
+                        <p:row>  
+                            <p:column> <h:outputLabel value="Prioridade:" /></p:column>  
+                            <p:column colspan="3"> 
+                                <p:pickList value="#{mBFiltroPersonalizado.listaPrioridade}" var="prioridade" itemLabel="#{prioridade.nmPrioridade}" itemValue="#{prioridade}" converter="#{conversorPrioridade}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                </p:pickList>
+                            </p:column> 
+                        </p:row>  
+                        <p:row>  
+                            <p:column> <h:outputLabel value="Área Solucionadora:" /></p:column>  
+                            <p:column colspan="3"> 
+                                <p:pickList value="#{mBFiltroPersonalizado.listaAreaSolucionadora}" var="areaSolucionadora" itemLabel="#{areaSolucionadora.nmUnidade}" itemValue="#{areaSolucionadora}" converter="#{conversorUnidade}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                </p:pickList>
+                            </p:column> 
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="4" styleClass="ui-widget-header centro">
+                                <h:outputLabel value="Filtro de Encaminhamento" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="Data de Encaminhamento:" /></p:column>  
+                            <p:column colspan="3">
+                                <h:outputLabel value="De: " />
+                                <p:calendar value="#{mBFiltroPersonalizado.filtroPersonalizado.encDataEnvioDe}" pattern="dd/MM/yyyy"/>
+                                <p:spacer width="10" />
+                                <h:outputLabel value="Até: " />
+                                <p:calendar value="#{mBFiltroPersonalizado.filtroPersonalizado.encDataEnvioAte}" pattern="dd/MM/yyyy"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="Status Encaminhamento:" /></p:column>
+                            <p:column colspan="3">
+                                <p:selectOneMenu value="#{mBFiltroPersonalizado.filtroPersonalizado.encStatus}">
+                                    <f:selectItem itemLabel=" - Todos -" itemValue="0" />
+                                    <f:selectItems value="#{mBEnum.statusEncaminhamentoEnums}" var="statusEnc" itemLabel="#{statusEnc.descricao}" itemValue="#{statusEnc.id}" />
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>  
+                            <p:column> <h:outputLabel value="Área Encaminhada:" /></p:column>  
+                            <p:column colspan="3"> 
+                                <p:pickList value="#{mBFiltroPersonalizado.listaUnidadeEnvio}" var="unidadeEnvio" itemLabel="#{unidadeEnvio.nmUnidade}" itemValue="#{unidadeEnvio}" converter="#{conversorUnidade}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                </p:pickList>
+                            </p:column> 
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="Operador:"  /></p:column>
+                            <p:column colspan="3">
+                                <p:pickList value="#{mBFiltroPersonalizado.listaOperador}" var="operador" itemLabel="#{operador.nmUsuario}" itemValue="#{operador}" converter="#{conversorUsuario}" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionados</f:facet>
+                                </p:pickList>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbEditarSalvar" value="Salvar"
+                                                 actionListener="#{mBFiltroPersonalizado.alterar}"
+                                                 oncomplete="if (!args.validationFailed){dlgEditarFiltroPersonalizado.hide()}"
+                                                 update=":formFiltroPersonalizado,frmEditarFiltroPersonalizado"
+                                                 ajax="true">
+                                    <p:resetInput target="frmEditarFiltroPersonalizado" />
+                                </p:commandButton>
+                                <p:commandButton value="Fechar" immediate="true" update="frmEditarFiltroPersonalizado" onclick="dlgEditarFiltroPersonalizado.hide()">
+                                    <p:resetInput target="frmEditarFiltroPersonalizado" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+        </p:fieldset>
+    </ui:define>
+</ui:composition>

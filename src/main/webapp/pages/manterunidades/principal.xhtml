@@ -1,0 +1,215 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+    <ui:define name="bread">
+        <h:form>
+            <p:breadCrumb>  
+                <p:menuitem value="Home"/>  
+                <p:menuitem value="Cadastro de Unidade"/>  
+            </p:breadCrumb>  
+        </h:form>
+    </ui:define>
+    
+    <ui:define name="content">
+        <p:fieldset legend="Cadastro de Unidade" style="max-width: 1190px; margin: 0 auto">
+            <h:form id="formUnidades">
+                <p:dataTable id="tabela1" 
+                             widgetVar="tabela"
+                             value="#{mBUnidade.todos}"
+                             paginator="true" rows="5"
+                             rowsPerPageTemplate="5,10,15"
+                             paginatorPosition="bottom"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             var="item"
+                             rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx">
+                    <f:facet name="header">                    
+                        <p:commandButton id="cbNovo" 
+                                         type="button"
+                                         value="Novo"
+                                         onclick="dlgNovoUnidade.show();" 
+                                         style="float: left"/>
+                    </f:facet>
+                    <p:column filterBy="#{item.nmUnidade}" filterMatchMode="contains" sortBy="#{item.nmUnidade}">
+                        <f:facet name="header">
+                            <h:outputText value="Nome da Unidade"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nmUnidade}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.sgUnidade}" filterMatchMode="contains" sortBy="#{item.sgUnidade}">
+                        <f:facet name="header">
+                            <h:outputText value="Sigla da Unidade"/>
+                        </f:facet>
+                        <h:outputText value="#{item.sgUnidade}"/>
+                    </p:column>
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="Classificações"/>
+                        </f:facet>
+                        <ui:repeat value="#{item.tbClassificacaoCollection}" var="c">
+                            <li>#{c.dsClassificacao}</li>
+                        </ui:repeat>
+                    </p:column>
+                    <p:column filterBy="#{item.eeEmail}" filterMatchMode="contains" sortBy="#{item.eeEmail}">
+                        <f:facet name="header">
+                            <h:outputText value="E-mail"/>
+                        </f:facet>
+                        <h:outputText value="#{item.eeEmail}"/>
+                    </p:column>
+
+                    <p:column style="width: 80px">
+                        <f:facet name="header">
+                            <h:outputText value="Editar"/>
+                        </f:facet>
+                        <p:commandButton id="cbViewEditar" 
+                                         icon="ui-icon-pencil"
+                                         title="Editar"
+                                         update=":frmEditarUnidades"
+                                         oncomplete="dlgEditarUnidade.show();"
+                                         >
+                            <f:setPropertyActionListener value="#{item}" target="#{mBUnidade.unidade}" />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputLabel value="Excluir"/>
+                        </f:facet>
+                        <p:commandButton icon="ui-icon-close" onclick="dlgNaoPodeExcluir.show();" 
+                        				 rendered="#{not mBUnidade.mostrarBotaoExcluir(item) and item.idUnidade != 1}" />
+                        <p:commandButton id="cbViewExcluir" onclick="dlgExcluirUnidade.show();"
+                                         icon="ui-icon-close" title="Excluir"
+                                         rendered="#{mBUnidade.mostrarBotaoExcluir(item)}">
+                            <f:setPropertyActionListener value="#{item}" target="#{mBUnidade.unidade}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            <!-- Caixa de diálogo de exclusão -->
+            <p:confirmDialog id="dialogoExcluirUnidades" message="Confirmar Operação?"
+                             header="Excluir Unidade" severity="alert"
+                             widgetVar="dlgExcluirUnidade" appendToBody="true" closable="true" width="300">
+                <h:form id="frmExcluirUnidades">
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbExcluirContinuar" value="Sim"
+                                                 update=":formUnidades"
+                                                 oncomplete="dlgExcluirUnidade.hide();tabela.filter()"
+                                                 actionListener="#{mBUnidade.remover}"/>
+                                <p:commandButton id="cbExcluirCancelar" value="Não" onclick="dlgExcluirUnidade.hide()" type="button" />                    
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:confirmDialog>
+            <!-- Caixa de diálogo de inclusão -->
+            <p:dialog id="dialogoNovoUnidades" widgetVar="dlgNovoUnidade" modal="true" header="Nova Unidade"
+                      resizable="false" appendToBody="true" closable="true">
+                <h:form id="frmNovoUnidades">
+                    <p:messages id="mNovoMessages" redisplay="false" />
+                    <p:panelGrid columns="2" style="width: 100%">
+                        <h:outputLabel value="Nome da Unidade:* " />
+                        <p:inputText value="#{mBUnidade.unidadeNovo.nmUnidade}" required="true" requiredMessage="Digite a Nome da Unidade" title="Informe o Nome da Unidade " size="50" />
+                        
+                        <h:outputLabel value="Sigla da Unidade:* " />
+                        <p:inputText value="#{mBUnidade.unidadeNovo.sgUnidade}" required="true" requiredMessage="Digite a Sigla da Unidade" title="Informe a Sigla da Unidade " size="50" />
+                        
+                        <h:outputLabel value="E-mail da Unidade:* " />
+                        <p:inputText value="#{mBUnidade.unidadeNovo.eeEmail}" required="true" requiredMessage="Digite o E-mail da Unidade" title="Informe o E-mail da Unidade " size="50">
+                            <f:validator binding="#{emailValidator}" />
+                        </p:inputText>
+                        
+                        <h:outputText value="Permitir qualquer interlocutor realizar encaminhamento para outras unidades"/>
+                        <p:selectBooleanCheckbox value="#{mBUnidade.unidadeNovo.encaminharOutrasAreas}" />
+                        
+                        <h:outputText value="Permitir qualquer analista RETORNAR trâmite para Ouvidoria"/>
+                        <p:selectBooleanCheckbox value="#{mBUnidade.unidadeNovo.retornoOuvidoria}" />
+                        
+                        <h:outputText value="Unidade Vinculada?"/>
+                        <p:selectBooleanCheckbox value="#{mBUnidade.unidadeNovo.vinculada}" />
+                    </p:panelGrid>
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbNovoSalvar" value="Salvar"
+                                                 actionListener="#{mBUnidade.cadastrar}"
+                                                 oncomplete="if (!args.validationFailed){dlgNovoUnidade.hide()}"
+                                                 update=":formUnidades,frmNovoUnidades"
+                                                 ajax="true">
+                                    <p:resetInput target="frmNovoUnidades" />
+                                </p:commandButton>
+                                <p:spacer width="20px"/>
+                                <p:commandButton value="Fechar" immediate="true" update="frmNovoUnidades" onclick="dlgNovoUnidade.hide()">
+                                    <p:resetInput target="frmNovoUnidades" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            <!-- Caixa de diálogo de edição -->
+            <p:dialog id="dialogoEditarUnidades" widgetVar="dlgEditarUnidade" header="Editar Unidade"
+                      resizable="false" modal="true" appendToBody="true" closable="true">
+                <h:form id="frmEditarUnidades">
+                    <p:messages id="mEditarMessages" redisplay="false" />
+                    <p:panelGrid columns="2" style="width: 100%">
+                        <h:outputLabel value="Nome da Unidade:* " />
+                        <p:inputText value="#{mBUnidade.unidade.nmUnidade}" required="true" requiredMessage="Digite o Nome da Undidade" title="Informe o Nome da Undidade " size="45" disabled="#{mBUnidade.unidade.idUnidade == 1}"/>
+                        
+                        <h:outputLabel value="Sigla da Unidade:* " />
+                        <p:inputText value="#{mBUnidade.unidade.sgUnidade}" required="true" requiredMessage="Digite Sigla da Unidade" title="Informe a Sigla da Unidade " size="45" disabled="#{mBUnidade.unidade.idUnidade == 1}"/>
+                        
+                        <h:outputLabel value="E-mail da Unidade:* " />
+                        <p:inputText value="#{mBUnidade.unidade.eeEmail}" size="50" required="true" requiredMessage="Digite o E-mail da Unidade" title="Informe o E-mail da Unidade " >
+                            <f:validator binding="#{emailValidator}" />
+                        </p:inputText>
+                        
+                        <h:outputText value="Permitir qualquer interlocutor realizar encaminhamento para outras unidades"/>
+                        <p:selectBooleanCheckbox value="#{mBUnidade.unidade.encaminharOutrasAreas}" />
+                        
+                        <h:outputText value="Permitir qualquer analista RETORNAR trâmite para Ouvidoria"/>
+                        <p:selectBooleanCheckbox value="#{mBUnidade.unidade.retornoOuvidoria}" />
+                        
+                        <h:outputText value="Unidade Vinculada?"/>
+                        <p:selectBooleanCheckbox value="#{mBUnidade.unidade.vinculada}" />
+                    </p:panelGrid>
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbEditarSalvar" value="Salvar"
+                                                 actionListener="#{mBUnidade.alterar}"
+                                                 oncomplete="if (!args.validationFailed){dlgEditarUnidade.hide()}"
+                                                 update=":formUnidades,frmEditarUnidades">
+                                    <p:resetInput target="frmEditarUnidades" />
+                                </p:commandButton>
+                                <p:spacer width="20px"/>
+                                <p:commandButton value="Fechar" immediate="true" update="frmEditarUnidades" onclick="dlgEditarUnidade.hide()">
+                                    <p:resetInput target="frmEditarUnidades" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            
+            <!-- Caixa de diálogo Não pode excluir -->
+            <p:confirmDialog id="dialogoNaoPodeExcluir" 
+							 message="Esta unidade não pode ser deletada pois existem encaminhamentos realizados para ela."
+                             header="Excluir Unidade" severity="alert"
+                             widgetVar="dlgNaoPodeExcluir" appendToBody="true" closable="true" width="315">
+				<p:panelGrid style="width: 100%">
+					<p:row>
+						<p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+							<p:commandButton id="cbExcluirCancelar" value="Fechar" onclick="dlgNaoPodeExcluir.hide()" type="button" />                    
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+            </p:confirmDialog>
+        </p:fieldset>
+    </ui:define>
+</ui:composition>

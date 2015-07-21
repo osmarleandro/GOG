@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+    <ui:define name="bread">
+        <p:breadCrumb>  
+            <p:menuitem value="Home"/>  
+            <p:menuitem value="Administrar Manifestação"/>  
+        </p:breadCrumb>  
+    </ui:define>
+    
+    <ui:define name="content">
+        <p:panel  style="max-width: 1216px; margin: 0 auto">
+            <f:facet name="header">
+                <h:outputLabel value="Minhas Informações"/>
+            </f:facet>
+            <h:form id="frmEditarMinhasInformacoes" >
+                <p:messages id="messages" showDetail="true" />
+                <p:fieldset legend="Informações Básicas">
+                    <p:panelGrid columns="2">
+                        <h:outputLabel value="Nome: " />
+                        <p:inputText value="#{mBMinhasInformacoes.usuario.nmUsuario}" size="50"  readonly="#{mBMinhasInformacoes.habilitaEdicao()}"/>
+                        <h:outputLabel value="E-mail: " />
+                        <p:inputText validatorMessage="Formato de E-mail inválido" value="#{mBMinhasInformacoes.email}" size="50" required="true" requiredMessage="Informe um E-mail" readonly="#{mBMinhasInformacoes.habilitaEdicao()}" >
+                            <f:validator binding="#{emailValidator}" />
+                        </p:inputText>
+                        <h:outputLabel value="Telefone: " />
+                        <p:inputMask id="nrTelefone" value="#{mBMinhasInformacoes.usuario.numTelefone}" mask="(99)99999999?9"  maxlength="13" title="Informe um Telefone para contato" readonly="#{mBMinhasInformacoes.habilitaEdicao()}"/>  
+                    </p:panelGrid>
+                </p:fieldset>
+                <br />
+                <p:fieldset legend="Dados de acesso">
+                    <p:panelGrid>
+                        <p:row>
+                            <p:column><h:outputLabel value="Login:" /></p:column>
+                            <p:column><p:inputText value="#{mBMinhasInformacoes.usuario.nmLogin}" readonly="true" /></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2">
+                                <h5>
+                                    <p>Para alterar a sua senha preencha os campos abaixo com a sua senha atual e a nova senha</p> 
+                                    <p>em seus respectivos campos. É necessário confirmar a nova senha por motivos de segurança.</p>
+                                </h5>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="Senha Atual: " /></p:column>
+                            <p:column><p:password value="#{mBMinhasInformacoes.senhaAtual}" size="25" maxlength="10" /></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="Nova Senha (entre 4 e 10 caracteres): " /></p:column>
+                            <p:column><p:password id="novaSenha" value="#{mBMinhasInformacoes.novaSenha}" size="25" maxlength="10" /></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column><h:outputLabel value="Confirma Nova Senha: " /></p:column>
+                            <p:column><p:password id="novaSenha2" value="#{mBMinhasInformacoes.novaSenhaConfirmar}" size="25" maxlength="10" /></p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:fieldset>
+                <br />
+                <p:panelGrid style="width: 100%">
+                    <p:row>
+                        <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                            <p:commandButton id="cbEditarSalvarMinhasInformacoes" value="Salvar"
+                                             update="frmEditarMinhasInformacoes"
+                                             actionListener="#{mBMinhasInformacoes.alterarMinhasInformacoes}"
+                                             />
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </h:form>
+        </p:panel>
+    </ui:define>
+</ui:composition>

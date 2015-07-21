@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+	<ui:define name="bread">
+		<h:form>
+			<p:breadCrumb>
+				<p:menuitem value="Home" />
+				<p:menuitem value="Gráficos" />
+			</p:breadCrumb>
+		</h:form>
+	</ui:define>
+	
+	<ui:define name="content">
+		<script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
+		<script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function () {
+				$('#container').highcharts({
+					chart: {
+						type: 'column'
+					},
+					title: {
+						text: 'Médias de dias de atraso à Ouvidoria - #{mBCharts.total}'
+					},
+					subtitle: {
+						text: #{mBCharts.subtitulo}
+					},
+					credits: {
+						enabled: false
+					},
+					tooltip: {
+						enabled: false
+					},
+					legend: {
+						enabled: false
+					},
+					plotOptions: {
+						column: {
+							dataLabels: {
+								enabled: true,
+								formatter: function() {
+									return this.y;
+								}
+							}
+						},
+						series: {
+							cursor: 'pointer',
+							point: {
+								events: {
+									click: function() {
+										var drilldown = this.drilldown;
+										if(drilldown) {
+											carregarManifestacoes([{name:'idManifestacoes', value:drilldown.name}]);
+										}
+									}
+								}
+							}
+						}
+					},
+					xAxis: {
+						categories: [#{mBCharts.labels}]
+					},
+					yAxis: {
+						min: 0,
+						title: {
+							text: 'Média Dias Resposta Ouvidoria'
+						}
+					},
+					series: [{
+						name: 'Mensagens',
+						data: [#{mBCharts.dados}]
+					}]
+				});
+			});
+		</script>
+		
+        <h:form style="max-width: 1190px; margin: 0 auto">
+        	<div class="TituloGrafico" style="padding-bottom: 10px">Informe uma data para gerar o gráfico</div>
+        	<div class="pesquisaGrafico" style="background: #02712B; width: 1216px; margin-left:-10px; padding-top: 10px; height: auto; color: white">
+        	<table border="0" style="margin: 0 auto; max-width: 1190px">
+        		<thead>
+        			<tr>
+        				<th>Data</th>
+        				<th>Unidades</th>
+        			</tr>
+        		</thead>
+        		<tbody>
+        			<tr>
+        				<td style="text-align: right">
+							<h:outputLabel value="De " />
+							<p:calendar value="#{mBCharts.dataDe}" pattern="dd/MM/yyyy" required="true" requiredMessage="Campo data é obrigatório" navigator="true" />
+        				</td>
+        				<td rowspan="2">
+        					<p:selectManyMenu value="#{mBCharts.idUnidades}" id="slcUnidades" style="width: 450px; height: 80px; line-height: 10px; margin-left:10px;">
+								<f:selectItems value="#{mBUnidade.todos}"
+									var="item" itemLabel="#{item.sgUnidade} - #{item.nmUnidade}"
+									itemValue="#{item.idUnidade}" />
+							</p:selectManyMenu>
+        				</td>
+        			</tr>
+        			<tr>
+        				<td style="text-align: right">
+							<h:outputLabel value=" à " />
+							<p:calendar value="#{mBCharts.dataAte}" pattern="dd/MM/yyyy" required="true" requiredMessage="Campo data é obrigatório" navigator="true" />
+        				</td>
+        			</tr>
+        			<tr>
+        				<td colspan="3" style="text-align: center">
+							<p:commandButton value="Consultar" action="#{mBCharts.getMediaDiasRespostaAOuvidoria()}" ajax="false" style="margin: 5px 10px 5px 0px;" />	
+							<p:commandButton value="Limpar" action="#{mBCharts.limparFiltros()}" ajax="false" style="margin: 5px 0px 5px;" />	
+        				</td>
+        			</tr>
+        		</tbody>
+        	</table>
+			</div>
+		</h:form>
+		
+        <div id="container" style="margin: 0 auto !important; width: 1216px !important;"/>
+        
+        <ui:include src="/pages/templates/listaManifestacaoGraficos.xhtml" />
+	</ui:define>
+</ui:composition>

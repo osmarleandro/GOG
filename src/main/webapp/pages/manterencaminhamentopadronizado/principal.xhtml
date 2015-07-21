@@ -1,0 +1,183 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+    <ui:define name="bread">
+        <p:breadCrumb>  
+            <p:menuitem value="Home"/>  
+            <p:menuitem value="Cadastro de Encaminhamento Padronizado"/>  
+        </p:breadCrumb>  
+    </ui:define>
+    
+    <ui:define name="content">
+        <p:fieldset legend="Cadastro de Encaminhamento Padronizado" style="max-width: 1190px; margin: 0 auto">
+            <h:form id="formEncaminhamentoTramite">
+                <p:dataTable id="tabelaEncPadronizado" 
+                             widgetVar="tabela"
+                             value="#{mBEncaminhamentoPadronizado.todos}"
+                             paginator="true" rows="5"
+                             rowsPerPageTemplate="5,10,15"
+                             paginatorPosition="bottom"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             var="item"
+                             rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx">
+                    <f:facet name="header">                    
+                        <p:commandButton id="cbNovo" 
+                                         type="button"
+                                         value="Novo"
+                                         onclick="dlgNovoEncPadronizado.show();" 
+                                         style="float: left"/>
+                    </f:facet>
+                    <p:column filterBy="#{item.dsTitulo}" filterMatchMode="contains" sortBy="#{item.dsTitulo}">
+                        <f:facet name="header">
+                            <h:outputText value="Título"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dsTitulo}"/>
+                    </p:column>
+                    <!--p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Descrição do Encaminhamento Padronizado"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dsConteudo}"/>
+                    </p:column-->
+                    <!--p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Data de Cadastro"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dtCadastro}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+                        </h:outputText>
+                    </p:column-->
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputText value="Editar"/>
+                        </f:facet>
+                        <p:commandButton id="cbViewEditar" 
+                                         icon="ui-icon-pencil"
+                                         title="Editar"
+                                         update=":frmEditarEncPadronizado"
+                                         oncomplete="dlgEditarEncPadronizado.show();">
+                            <f:setPropertyActionListener value="#{item}" target="#{mBEncaminhamentoPadronizado.encaminhamentoPadronizado}" />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputLabel value="Excluir"/>
+                        </f:facet>
+                        <p:commandButton id="cbViewExcluir" onclick="dlgExcluirEncPadronizado.show();"
+                                         icon="ui-icon-close" title="Excluir">
+                            <f:setPropertyActionListener value="#{item}"
+                                                         target="#{mBEncaminhamentoPadronizado.encaminhamentoPadronizado}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            <!-- Caixa de diálogo de exclusão -->
+            <p:confirmDialog id="dialogoExcluirEncPadronizado" message="Confirmar Operação?"
+                             header="Excluir Encaminhamento Padronizado" severity="alert"
+                             widgetVar="dlgExcluirEncPadronizado" appendToBody="true" closable="true" width="300">
+                <h:form id="frmExcluirEncPadronizado">
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbExcluirContinuar" value="Sim"
+                                                 update=":formEncaminhamentoTramite:tabelaEncPadronizado"
+                                                 oncomplete="dlgExcluirEncPadronizado.hide();tabela.filter();"
+                                                 actionListener="#{mBEncaminhamentoPadronizado.remover}"/>
+                                <p:commandButton id="cbExcluirCancelar" value="Não" onclick="dlgExcluirEncPadronizado.hide()" type="button" />
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:confirmDialog>
+            <!-- Caixa de diálogo de inclusão -->
+            <p:dialog id="dialogoNovoEncaminhamentoTramite" widgetVar="dlgNovoEncPadronizado" header="Novo Encaminhamento Padronizado"
+                      resizable="false" closable="true">
+                <h:form id="frmNovoEncaminhamentoTramite">
+                    <p:messages id="mNovoMessages" redisplay="false" />
+                    <p:panelGrid columns="2" style="margin: 0 auto; vertical-align: central">
+                        <h:outputLabel value="Título:* " style="font-weight: bold;" />
+                        <p:inputText value="#{mBEncaminhamentoPadronizado.encaminhamentoPadronizadoNovo.dsTitulo}" required="true" requiredMessage="Digite o título" style="width: 100%;" title="Informe o título " />
+                        <h:outputLabel value="Descrição:* " style="font-weight: bold;"/>
+                        <p:editor value="#{mBEncaminhamentoPadronizado.encaminhamentoPadronizadoNovo.dsConteudo}" required="true" requiredMessage="Digite o conteúdo" />
+                        <h:outputLabel value="Data de Cadastro:" style="font-weight: bold;"/>
+                        <p:calendar value="#{mBEncaminhamentoPadronizado.dataAtual}" required="true" pattern="dd/MM/yyyy" disabled="true" />
+                    </p:panelGrid>
+                    <p:spacer width="100%" height="10px;" />
+                    <div style="width: 720px; overflow: hidden">
+                        <ui:repeat value="#{mBEnum.palavrasChavesEnums}" var="p">
+                            <div style="float: left; width: 355px;">
+                                <span class="palavraChave" style="font-weight: bold">%#{p}%</span> - #{p.descricao}
+                            </div>
+                        </ui:repeat>
+                    </div>
+                    <p:spacer width="100%" height="10px;" />
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbNovoSalvar" value="Salvar"
+                                                 actionListener="#{mBEncaminhamentoPadronizado.cadastrar}"
+                                                 oncomplete="if (!args.validationFailed){dlgNovoEncPadronizado.hide()}"
+                                                 update=":formEncaminhamentoTramite:tabelaEncPadronizado,frmNovoEncaminhamentoTramite"
+                                                 ajax="true">
+                                    <p:resetInput target="frmNovoEncaminhamentoTramite" />
+                                </p:commandButton>
+                                <p:spacer width="20px"/>
+                                <p:commandButton value="Fechar" immediate="true" update="frmNovoEncaminhamentoTramite" onclick="dlgNovoEncPadronizado.hide()">                            
+                                    <p:resetInput target="frmNovoEncaminhamentoTramite" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            <!-- Caixa de diálogo de edição -->
+            <p:dialog id="dialogoEditarEncPadronizado" widgetVar="dlgEditarEncPadronizado" header="Editar  Encaminhamento Padronizado"
+                      resizable="false" modal="true" appendToBody="true" closable="true">
+                <h:form id="frmEditarEncPadronizado">
+                    <p:messages id="mEditarMessages" redisplay="false" />
+                    <p:panelGrid columns="2" style="margin: 0 auto; vertical-align: central">
+                        <h:outputLabel value="Título:* " style="font-weight: bold;"/>
+                        <p:inputText value="#{mBEncaminhamentoPadronizado.encaminhamentoPadronizado.dsTitulo}" required="true" requiredMessage="Digite o título" style="width: 100%;" title="Informe o título " />
+                        <h:outputLabel value="Descrição:* " style="font-weight: bold;" />
+                        <p:editor value="#{mBEncaminhamentoPadronizado.encaminhamentoPadronizado.dsConteudo}" required="true" requiredMessage="Digite o conteúdo" />
+                        <h:outputLabel value="Data de Cadastro:" style="font-weight: bold;" />
+                        <p:calendar value="#{mBEncaminhamentoPadronizado.dataAtual}" required="true" pattern="dd/MM/yyyy" disabled="true" />
+                    </p:panelGrid>
+                    <p:spacer width="100%" height="10px;" />
+                    <div style="width: 720px; overflow: hidden">
+                        <ui:repeat value="#{mBEnum.palavrasChavesEnums}" var="p">
+                            <div style="float: left; width: 355px;">
+                                <span class="palavraChave" style="font-weight: bold">%#{p}%</span> - #{p.descricao}
+                            </div>
+                        </ui:repeat>
+                    </div>
+                    <p:spacer width="100%" height="10px;" />
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbEditarSalvar" value="Salvar"
+                                                 actionListener="#{mBEncaminhamentoPadronizado.alterar}"
+                                                 oncomplete="if (!args.validationFailed){dlgEditarEncPadronizado.hide()}"
+                                                 update=":formEncaminhamentoTramite:tabelaEncPadronizado,frmEditarEncPadronizado">
+                                    <p:resetInput target="frmEditarEncPadronizado" />
+                                </p:commandButton>
+                                <p:spacer width="20px"/>
+                                <p:commandButton value="Fechar" immediate="true" update="frmEditarEncPadronizado" onclick="dlgEditarEncPadronizado.hide()">                            
+                                    <p:resetInput target="frmEditarEncPadronizado" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+        </p:fieldset>
+    </ui:define>
+</ui:composition>
+
+

@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+    <ui:define name="bread">
+        <p:breadCrumb>  
+            <p:menuitem value="Home"/>  
+            <p:menuitem value="Cadastro de Faixa Etária"/>  
+        </p:breadCrumb>  
+    </ui:define>
+    
+    <ui:define name="content">
+        <p:fieldset legend="Cadastro de Faixa Etária" style="max-width: 1190px; margin: 0 auto">
+            <h:form id="formFaixaEtaria">
+                <p:dataTable id="tabela1" 
+                             widgetVar="tabela"
+                             value="#{mBFaixaEtaria.todos}"
+                             paginator="true" rows="5"
+                             rowsPerPageTemplate="5,10,15"
+                             paginatorPosition="bottom"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             var="item"
+                             rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx">
+                    <f:facet name="header">                    
+                        <p:commandButton id="cbNovo" 
+                                         type="button"
+                                         value="Novo"
+                                         title="Novo"
+                                         onclick="dlgNovoFaixaEtaria.show();" 
+                                         style="float: left"/>
+                    </f:facet>
+                    <p:column filterBy="#{item.nmFaixaEtaria}" filterMatchMode="contains" sortBy="#{item.nmFaixaEtaria}">
+                        <f:facet name="header">
+                            <h:outputText value="Faixa Etária"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nmFaixaEtaria}"/>
+                    </p:column>
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputText value="Editar"/>
+                        </f:facet>
+                        <p:commandButton id="cbViewEditar" 
+                                         icon="ui-icon-pencil"
+                                         title="Editar"
+                                         update=":frmEditarFaixaEtariaFaixaEtaria"
+                                         oncomplete="dlgEditarFaixaEtaria.show();">
+                            <f:setPropertyActionListener value="#{item}" target="#{mBFaixaEtaria.faixaetaria}" />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputLabel value="Excluir"/>
+                        </f:facet>
+                        <p:commandButton id="cbViewExcluir" onclick="dlgExcluirFaixaEtaria.show();"
+                                         icon="ui-icon-close" title="Excluir">
+                            <f:setPropertyActionListener value="#{item}"
+                                                         target="#{mBFaixaEtaria.faixaetaria}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            <!-- Caixa de diálogo de exclusão -->
+            <p:confirmDialog id="dialogoExcluirFaixaEtaria" message="Confirma Operação?"
+                             header="Excluir Faixa Etária" severity="alert"
+                             widgetVar="dlgExcluirFaixaEtaria" appendToBody="true" closable="true" width="300">
+                <h:form id="frmExcluirFaixaEtaria">
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbExcluirContinuar" value="Sim"
+                                                 update=":formFaixaEtaria:tabela1"
+                                                 oncomplete="dlgExcluirFaixaEtaria.hide();tabela.filter()"
+                                                 actionListener="#{mBFaixaEtaria.remover}"/>
+                                <p:commandButton id="cbExcluirCancelar" value="Não" onclick="dlgExcluirFaixaEtaria.hide()" type="button" />
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:confirmDialog>
+            <!-- Caixa de diálogo de inclusão -->
+            <p:dialog id="dialogoNovoFaixaEtaria" widgetVar="dlgNovoFaixaEtaria" modal="true" header="Nova Faixa Etária"
+                      resizable="false" appendToBody="true" closable="true">
+                <h:form id="frmNovoFaixaEtaria">
+                    <p:messages id="mNovoMessages" redisplay="false" />
+                    <p:panelGrid columns="2" style="margin: 0 auto; vertical-align: central">
+                        <h:outputLabel value="Nome Faixa Etária:*" style="font-weight: bold;" />
+                        <p:inputText value="#{mBFaixaEtaria.faixaetariaNovo.nmFaixaEtaria}" required="true" requiredMessage="Digite a Faixa Etária" title="Informe a Faixa Etária " />
+                    </p:panelGrid>
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbNovoSalvar" value="Salvar"
+                                                 actionListener="#{mBFaixaEtaria.cadastrar}"
+                                                 oncomplete="if (!args.validationFailed){dlgNovoFaixaEtaria.hide()}"
+                                                 update=":formFaixaEtaria:tabela1,frmNovoFaixaEtaria"
+                                                 ajax="true">
+                                    <p:resetInput target="frmNovoFaixaEtaria" />
+                                </p:commandButton>
+                                <p:spacer width="20px"/>
+                                <p:commandButton value="Fechar" immediate="true" update="frmNovoFaixaEtaria" onclick="dlgNovoFaixaEtaria.hide()">
+                                    <p:resetInput target="frmNovoFaixaEtaria" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            <!-- Caixa de diálogo de edição -->
+            <p:dialog id="dialogoEditarFaixaEtaria" widgetVar="dlgEditarFaixaEtaria" header="Editar Faixa Etária"
+                      resizable="false" modal="true" appendToBody="true" closable="true">
+                <h:form id="frmEditarFaixaEtariaFaixaEtaria">
+                    <p:messages id="mEditarMessages" redisplay="false" />
+                    <p:panelGrid columns="2" style="margin: 0 auto; vertical-align: central">
+                        <h:outputLabel value="Nome Faixa Etária:*" style="font-weight: bold;" />
+                        <p:inputText value="#{mBFaixaEtaria.faixaetaria.nmFaixaEtaria}" required="true" requiredMessage="Digite a Faixa Etária" title="Informe a Faixa Etária " />
+                    </p:panelGrid>
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbEditarSalvar" value="Salvar"
+                                                 actionListener="#{mBFaixaEtaria.alterar}"
+                                                 oncomplete="if (!args.validationFailed){dlgEditarFaixaEtaria.hide()}"
+                                                 update=":formFaixaEtaria:tabela1,frmEditarFaixaEtariaFaixaEtaria">
+                                    <p:resetInput target="frmEditarFaixaEtariaFaixaEtaria" />
+                                </p:commandButton>
+                                <p:spacer width="20px"/>
+                                <p:commandButton value="Fechar" immediate="true" update="frmEditarFaixaEtariaFaixaEtaria" onclick="dlgEditarFaixaEtaria.hide()">                      
+                                    <p:resetInput target="frmEditarFaixaEtariaFaixaEtaria" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+        </p:fieldset>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="./template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+	<ui:define name="bread">
+		<h:form>
+			<p:breadCrumb>
+				<p:menuitem value="Home" />
+				<p:menuitem value="Cadastrar Manifestação" />
+			</p:breadCrumb>
+		</h:form>
+	</ui:define>
+	
+	<ui:define name="content">
+		<h:form id="frmNovaManifestacao" acceptcharset="UTF-8" lang="pt_BR" style="width: 1200px; margin: 0 auto">
+			<p:panel>
+				<h:outputText value="Acompanhe nossa lista de relatórios" styleClass="texto-anexo"/>
+				
+				<p:spacer width="100%" height="5px" />
+			
+				<p:accordionPanel activeIndex="4">
+				    <p:tab title="2010" >
+				        <h:panelGrid columns="2" cellpadding="10">
+				        	<h:graphicImage library="img" name="setaHome.png" />
+				        	<a href="../../anexos/2010.pdf">Relatório de Ações da Ouvidoria do Ministério da Cultura - 2010</a>
+				        </h:panelGrid>
+				    </p:tab>
+				    <p:tab title="2011">
+				        <h:panelGrid columns="2" cellpadding="10">
+				        	<h:graphicImage library="img" name="setaHome.png" />
+				        	<a href="../../anexos/2011.pdf">Relatório de Ações da Ouvidoria do Ministério da Cultura - 2011</a>
+				        </h:panelGrid>
+				    </p:tab>
+				    <p:tab title="2012">
+				        <h:panelGrid columns="2" cellpadding="10">
+				        	<h:graphicImage library="img" name="setaHome.png" />
+				        	<a href="../../anexos/2012.pdf">Relatório de Atividades da Ouvidoria do Ministério da Cultura - 2012</a>
+				        </h:panelGrid>
+				    </p:tab>
+				    <p:tab title="2013">
+				        <h:panelGrid columns="2" cellpadding="10">
+				        	<h:graphicImage library="img" name="setaHome.png" />
+				        	<a href="../../anexos/2013.pdf">Ouvidoria - Relatório Anual - 2013.pdf</a>
+				        	
+				        	<h:graphicImage library="img" name="setaHome.png" />
+				        	<a href="../../anexos/2013_e-SIC.pdf">e-SIC MinC - Relatório Anual - 2013.pdf</a>
+				        	
+				        	<h:graphicImage library="img" name="setaHome.png" />
+				        	<a href="../../anexos/planodemetas_ouvidoria_2014.pdf">Plano de Metas para a Ouvidoria do MinC - 2014.pdf</a>
+				        </h:panelGrid>
+				    </p:tab>
+				    <p:tab title="2014">
+				        <h:panelGrid columns="2" cellpadding="10">
+				        	<h:graphicImage library="img" name="setaHome.png" />
+				        	<a href="../../anexos/2014_1trimestre.pdf">Ouvidoria - Relatório 1º Trimestre - 2014.pdf</a>
+				        	
+				        	<h:graphicImage library="img" name="setaHome.png" />
+				        	<a href="../../anexos/2014_1semestre.pdf">Ouvidoria - Relatório 1º Semestre - 2014.pdf</a>
+				        	
+				        	<h:graphicImage library="img" name="setaHome.png" />
+				        	<a href="../../anexos/2014.pdf">Ouvidoria - Relatório Anual - 2014.pdf</a>
+				        	
+				        	<h:graphicImage library="img" name="setaHome.png" />
+				        	<a href="../../anexos/2014_e-SIC.pdf">e-SIC MinC - Relatório Anual - 2014.pdf</a>
+				        </h:panelGrid>
+				    </p:tab>
+				</p:accordionPanel>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

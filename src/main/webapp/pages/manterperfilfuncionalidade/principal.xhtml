@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+    <ui:define name="bread">
+        <h:form>
+            <p:breadCrumb>  
+                <p:menuitem value="Home"/>  
+                <p:menuitem value="Vincular Funcionalidade ao Perfil"/>  
+            </p:breadCrumb>  
+        </h:form>
+    </ui:define>
+    
+    <ui:define name="content">
+        <p:fieldset legend="Vincular Funcionalidade ao Perfil" style="max-width: 1190px; margin: 0 auto">
+            <h:form id="formPerfilFuncionalidade">
+                <p:dataTable id="tpFuncionalidade" 
+                             widgetVar="tabela"
+                             value="#{mBPerfil.todos}"
+                             paginator="true" rows="5"
+                             rowsPerPageTemplate="5,10,15"
+                             paginatorPosition="bottom"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             var="item"
+                             rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx"> 
+                    <f:facet name="header" >
+                        <div style="height: 25px;"></div>
+                    </f:facet> 
+                    <p:column style="width: 15%" filterBy="#{item.tpPerfil}" filterMatchMode="contains" sortBy="#{item.tpPerfil}">
+                        <f:facet name="header">
+                            <h:outputText value="Tipo" />
+                        </f:facet>
+                        <h:outputText value="Interno" rendered="#{item.tpPerfil=='1'}" />
+                        <h:outputText value="Externo" rendered="#{item.tpPerfil=='2'}" />
+                    </p:column>
+                    <p:column filterBy="#{item.nmPerfil}" filterMatchMode="contains" sortBy="#{item.nmPerfil}">
+                        <f:facet name="header">
+                            <h:outputText value="Nome Perfil"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nmPerfil}"/>
+                    </p:column>
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputText value="Vincular"/>
+                        </f:facet>
+                        <p:commandButton id="cbViewEditar" 
+                                         icon="ui-icon-pencil"
+                                         title="Vincular"
+                                         update=":frmEditarPerfilFuncionalidade"
+                                         actionListener="#{mBPerfil.prepararAlterarFuncionalidade(item)}"
+                                         oncomplete="dlgEditar.show();">
+                            <f:setPropertyActionListener value="#{item}" target="#{mBPerfil.perfil}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            <!-- Caixa de diálogo de edição -->
+            <p:dialog id="dialogoEditarPerfilFuncionalidade" widgetVar="dlgEditar" header="Vincular Funcionalidade ao Perfil"
+                      resizable="false" modal="true" appendToBody="true" closable="true">
+                <h:form id="frmEditarPerfilFuncionalidade" >
+                    <p:fieldset legend="#{mBPerfil.perfil.nmPerfil}">
+                        <p:pickList value="#{mBPerfil.funcionalidades}" var="func" itemLabel="#{func.dsFuncionalidade}" itemValue="#{func.idFuncionalidade}"
+                        			showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains">
+                            <f:facet name="sourceCaption">Disponíveis</f:facet>
+                            <f:facet name="targetCaption">Selecionados</f:facet>
+                        </p:pickList>
+                    </p:fieldset>      
+                    <p:spacer height="10px" width="100%"/>
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbEditarSalvar" value="Salvar"
+                                                 actionListener="#{mBPerfil.atualizarFuncionalidade}"
+                                                 oncomplete="if (!args.validationFailed){dlgEditar.hide()}"
+                                                 update=":formPerfilFuncionalidade:tpFuncionalidade,:formPerfilFuncionalidade,frmEditarPerfilFuncionalidade">
+                                    <p:resetInput target="frmEditarPerfilFuncionalidade" />
+                                </p:commandButton>
+                                <p:spacer width="20px"/>
+                                <p:commandButton value="Fechar" immediate="true" update="frmEditarPerfilFuncionalidade" onclick="dlgEditar.hide()">
+                                    <p:resetInput target="frmEditarPerfilFuncionalidade" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+        </p:fieldset>
+    </ui:define>
+</ui:composition>

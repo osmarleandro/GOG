@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+    <ui:define name="bread">
+        <p:breadCrumb>  
+            <p:menuitem value="Home"/>  
+            <p:menuitem value="Cadastro de Prioridade"/>  
+        </p:breadCrumb>  
+    </ui:define>
+    
+    <ui:define name="content">
+        <p:fieldset legend="Cadastro de Prioridade" style="max-width: 1190px; margin: 0 auto">
+            <h:form id="formPrioridade">
+                <p:dataTable id="tabela1" 
+                             widgetVar="tabela"
+                             value="#{mBPrioridade.todos}"
+                             paginator="true" rows="5"
+                             rowsPerPageTemplate="5,10,15"
+                             paginatorPosition="bottom"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             var="item"
+                             rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx">
+                    <f:facet name="header">                    
+                        <p:commandButton id="cbNovo" 
+                                         type="button"
+                                         value="Novo"
+                                         title="Novo"
+                                         onclick="dlgNovoPrioridade.show();" 
+                                         style="float: left"/>
+                    </f:facet>                    
+                    <p:column filterBy="#{item.nmPrioridade}" filterMatchMode="contains" sortBy="#{item.nmPrioridade}">
+                        <f:facet name="header">
+                            <h:outputText value="Prioridade"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nmPrioridade}"/>
+                    </p:column>
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputText value="Editar"/>
+                        </f:facet>
+                        <p:commandButton id="cbViewEditar" 
+                                         icon="ui-icon-pencil"
+                                         title="Editar"
+                                         update=":frmEditarPrioridade"
+                                         oncomplete="dlgEditarPrioridade.show();"
+                                         rendered="#{item.idPrioridade != 1}"> <!-- 1 = Prioridade Normal -->
+                            <f:setPropertyActionListener value="#{item}" target="#{mBPrioridade.prioridade}" />                            
+                        </p:commandButton>
+                    </p:column>
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputLabel value="Excluir"/>
+                        </f:facet>
+                        <p:commandButton id="cbViewExcluir" onclick="dlgExcluirPrioridade.show();"
+                                         icon="ui-icon-close" title="Excluir"
+                                         rendered="#{item.idPrioridade != 1}"> <!-- 1 = Prioridade Normal -->
+                            <f:setPropertyActionListener value="#{item}"
+                                                         target="#{mBPrioridade.prioridade}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            <!-- Caixa de diálogo de exclusão -->
+            <p:confirmDialog id="dialogoExcluirPrioridade" message="Confirmar Operação?"
+                             header="Excluir Prioridade" severity="alert"
+                             widgetVar="dlgExcluirPrioridade" appendToBody="true" closable="true" width="300">
+                <h:form id="frmExcluirPrioridade">
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbExcluirContinuar" value="Sim"
+                                                 update=":formPrioridade:tabela1"
+                                                 oncomplete="dlgExcluirPrioridade.hide();tabela.filter()"
+                                                 actionListener="#{mBPrioridade.remover}"/>
+                                <p:commandButton id="cbExcluirCancelar" value="Não" onclick="dlgExcluirPrioridade.hide()" type="button" />
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:confirmDialog>
+            <!-- Caixa de diálogo de inclusão -->
+            <p:dialog id="dialogoNovoPrioridade" widgetVar="dlgNovoPrioridade" modal="true" header="Nova Prioridade"
+                      resizable="false" appendToBody="true" closable="true">
+                <h:form id="frmNovoPrioridade">
+                    <p:messages id="mNovoMessages" redisplay="false" />
+                    <p:panelGrid columns="2">
+                        <h:outputLabel value="Nome Prioridade:" style="font-weight: bold;" />
+                        <p:inputText value="#{mBPrioridade.prioridadeNovo.nmPrioridade}" required="true" requiredMessage="Digite o nome da Prioridade" style="width:300px;" title="Informe o nome da Prioridade" />
+                    </p:panelGrid>
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbNovoSalvar" value="Salvar"
+                                                 actionListener="#{mBPrioridade.cadastrar}"
+                                                 oncomplete="if (!args.validationFailed){dlgNovoPrioridade.hide()}"
+                                                 update=":formPrioridade:tabela1,frmNovoPrioridade"
+                                                 ajax="true">
+                                    <p:resetInput target="frmNovoPrioridade" />
+                                </p:commandButton>
+                                <p:commandButton value="Fechar" immediate="true" update="frmNovoPrioridade" onclick="dlgNovoPrioridade.hide()">                        
+                                    <p:resetInput target="frmNovoPrioridade" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            <!-- Caixa de diálogo de edição -->
+            <p:dialog id="dialogoEditarPrioridade" widgetVar="dlgEditarPrioridade" header="Editar Prioridade"
+                      resizable="false" modal="true" appendToBody="true" closable="true">
+                <h:form id="frmEditarPrioridade">
+                    <p:messages id="mEditarMessages" redisplay="false" />
+                    <p:panelGrid columns="2">
+                        <h:outputLabel value="Nome Prioridade:" style="font-weight: bold;"  />
+                        <p:inputText value="#{mBPrioridade.prioridade.nmPrioridade}" required="true" requiredMessage="Digite o nome da Prioridade" style="width:300px;" title="Informe o nome da Prioridade" />
+                    </p:panelGrid>
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbEditarSalvar" value="Salvar"
+                                                 actionListener="#{mBPrioridade.alterar}"
+                                                 oncomplete="if (!args.validationFailed){dlgEditarPrioridade.hide()}"
+                                                 update=":formPrioridade:tabela1,frmEditarPrioridade">
+                                    <p:resetInput target="frmEditarPrioridade" />
+                                </p:commandButton>
+                                <p:commandButton value="Fechar" immediate="true" update="frmEditarPrioridade" onclick="dlgEditarPrioridade.hide()">                        
+                                    <p:resetInput target="frmEditarPrioridade" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+        </p:fieldset>
+    </ui:define>
+</ui:composition>
+
+

@@ -1,0 +1,174 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+    <ui:define name="bread">
+        <h:form>
+            <p:breadCrumb>  
+                <p:menuitem value="Home"/>  
+                <p:menuitem value="Cadastro de Respostas de Manifestação"/>  
+            </p:breadCrumb>  
+        </h:form>
+    </ui:define>
+    
+    <ui:define name="content">
+        <p:fieldset legend="Cadastro de Respostas de Manifestação" style="max-width: 1190px; margin: 0 auto">
+            <h:form id="formRespManifestacao">
+                <p:dataTable id="gdRespManifestacao" 
+                             widgetVar="tabela"
+                             value="#{mBRespostaManifestacao.todos}"
+                             paginator="true" rows="5"
+                             rowsPerPageTemplate="5,10,15"
+                             paginatorPosition="bottom"
+                             style="width: 100%"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             var="item"
+                             rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx">
+                    <f:facet name="header">                    
+                        <p:commandButton id="cbNovo" 
+                                         type="button" 
+                                         value="Novo" 
+                                         title="Novo" 
+                                         update="formRespManifestacao"
+                                         onclick="dlgNovoRespManifestacao.show();" 
+                                         style="float: left" />
+                    </f:facet>
+                    <p:column filterBy="#{item.dsTituloResposta}" filterMatchMode="contains" sortBy="#{item.dsTituloResposta}">
+                        <f:facet name="header">
+                            <h:outputText value="Título"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dsTituloResposta}" />
+                    </p:column>
+                    <p:column style="width: 80px" filterBy="#{item.dtCadastroRespostaManifestacao}" filterMatchMode="contains" sortBy="#{item.dtCadastroRespostaManifestação}">
+                        <f:facet name="header">
+                            <h:outputText value="Data de Cadastro"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dtCadastroRespostaManifestacao}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputText value="Editar" />
+                        </f:facet>
+                        <p:commandButton id="cbViewEditar" 
+                                         icon="ui-icon-pencil"
+                                         title="Editar"
+                                         update=":frmEditarRespManifestacao"
+                                         oncomplete="dlgEditarRespManifestacao.show();">
+                            <f:setPropertyActionListener value="#{item}" target="#{mBRespostaManifestacao.resposta}" />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputLabel value="Excluir"/>
+                        </f:facet>
+                        <p:commandButton id="cbViewExcluir" onclick="dlgExcluirRespManifestacao.show();" icon="ui-icon-close" title="Excluir">
+                            <f:setPropertyActionListener value="#{item}" target="#{mBRespostaManifestacao.resposta}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            <!-- Caixa de diálogo de exclusão -->
+            <p:confirmDialog id="dialogoExcluirRespManifestacao" message="Confirmar Operação?"
+                             header="Excluir Resposta de Manifestação" severity="alert" widgetVar="dlgExcluirRespManifestacao" appendToBody="true" closable="true" width="300">
+                <h:form id="frmExcluirRespManifestacao">
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbExcluirContinuar" value="Sim"
+                                                 update=":formRespManifestacao:gdRespManifestacao"
+                                                 oncomplete="dlgExcluirRespManifestacao.hide(); tabela.filter();"
+                                                 actionListener="#{mBRespostaManifestacao.remover}" />
+                                <p:commandButton id="cbExcluirCancelar" value="Não" onclick="dlgExcluirRespManifestacao.hide()" type="button" />
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:confirmDialog>
+            <!-- Caixa de diálogo de inclusão -->
+            <p:dialog widgetVar="dlgNovoRespManifestacao" header="Nova Resposta de Manifestação" resizable="false" closable="true">
+                <h:form id="frmNovoRespostasManifestacao">
+                    <p:messages id="mNovoMessages" redisplay="false" />
+                    <p:panelGrid columns="2">
+                        <h:outputLabel value="Título:* " style="font-weight: bold;"  />
+                        <p:inputText value="#{mBRespostaManifestacao.respostaNovo.dsTituloResposta}" size="80" required="true" requiredMessage="Informe o título de respostas da manifestação" />
+                        <h:outputLabel value="Resposta:* " style="font-weight: bold;"  />
+                        <p:editor value="#{mBRespostaManifestacao.respostaNovo.dsResposta}" required="true" requiredMessage="Informe o texto da resposta"/>
+                    </p:panelGrid>
+                    <p:spacer width="100%" height="10px;" />
+                    <div style="width: 720px; overflow: hidden">
+                        <ui:repeat value="#{mBEnum.palavrasChavesEnums}" var="p">
+                            <div style="float: left; width: 355px;">
+                                <span class="palavraChave" style="font-weight: bold">%#{p}%</span> - #{p.descricao}
+                            </div>
+                        </ui:repeat>
+                    </div>
+                    <p:spacer width="100%" height="10px;" />
+
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbNovoSalvar" value="Salvar"
+                                                 actionListener="#{mBRespostaManifestacao.cadastrar}"
+                                                 oncomplete="if (!args.validationFailed){dlgNovoRespManifestacao.hide(); tabela.filter();}"
+                                                 update="frmNovoRespostasManifestacao"
+                                                 ajax="true">
+                                    <p:resetInput target="frmNovoRespostasManifestacao" />
+                                </p:commandButton>
+                                <p:commandButton value="Fechar" immediate="true" update="frmNovoRespostasManifestacao" onclick="dlgNovoRespManifestacao.hide()">
+                                    <p:resetInput target="frmNovoRespostasManifestacao" />
+                                </p:commandButton>    
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            <!-- Caixa de diálogo de edição -->
+            <p:dialog widgetVar="dlgEditarRespManifestacao" header="Editar Resposta de Manifestação" resizable="false" modal="true" appendToBody="true" closable="true">
+                <h:form id="frmEditarRespManifestacao">                    
+                    <p:messages id="mEditarMessages" redisplay="false" />
+                    <p:panelGrid columns="2">
+                        <h:outputLabel value="Título:* " style="font-weight: bold;" />
+                        <p:inputText value="#{mBRespostaManifestacao.resposta.dsTituloResposta}" size="80" required="true" requiredMessage="Informe o título de respostas da manifestação" />
+                        <h:outputLabel value="Resposta:* " style="font-weight: bold;" />
+                        <p:editor value="#{mBRespostaManifestacao.resposta.dsResposta}" required="true" requiredMessage="Informe a resposta da manifestação"/>
+                        <h:outputLabel value="Data Cadastro:" style="font-weight: bold;" />
+                        <h:outputText value="#{mBRespostaManifestacao.resposta.dtCadastroRespostaManifestacao}">
+                            <f:convertDateTime pattern="dd/MM/YYYY" timeZone="America/Sao_Paulo" />
+                        </h:outputText>
+                    </p:panelGrid>
+                    <p:spacer width="100%" height="10px;" />
+                    <div style="width: 720px; overflow: hidden">
+                        <ui:repeat value="#{mBEnum.palavrasChavesEnums}" var="p">
+                            <div style="float: left; width: 355px;">
+                                <span class="palavraChave" style="font-weight: bold">%#{p}%</span> - #{p.descricao}
+                            </div>
+                        </ui:repeat>
+                    </div>
+                    <p:spacer width="100%" height="10px;" />
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbEditarSalvar" value="Salvar"
+                                                 actionListener="#{mBRespostaManifestacao.alterar}"
+                                                 oncomplete="if (!args.validationFailed){dlgEditarRespManifestacao.hide()}"
+                                                 update=":formRespManifestacao:gdRespManifestacao,frmEditarRespManifestacao">
+                                    <p:resetInput target="frmEditarRespManifestacao" />
+                                </p:commandButton>
+                                <p:commandButton value="Fechar" immediate="true" update="frmEditarRespManifestacao" onclick="dlgEditarRespManifestacao.hide()">
+                                    <p:resetInput target="frmEditarRespManifestacao" />
+                                </p:commandButton>   
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+        </p:fieldset>
+    </ui:define>
+</ui:composition>

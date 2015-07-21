@@ -1,0 +1,1865 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+	<ui:define name="bread">
+		<p:breadCrumb>
+			<p:menuitem value="Home" />
+			<p:menuitem value="Administrar Manifestação" />
+		</p:breadCrumb>
+	</ui:define>
+	
+	<ui:define name="content">
+		<f:metadata>
+		    <f:viewParam name="num" value="#{mBManifestacao.manifestationNumber}" />
+		    <f:viewParam name="id" value="#{mBManifestacao.manifestationId}" />
+	        <f:event type="preRenderView" listener="#{mBManifestacao.loadManifestation}" />
+		</f:metadata>
+		
+		<p:panel id="pnlAdministrarManifestacao" rendered="#{not empty mBManifestacao.manifestacao}">
+			<h:form id="frmAdministrarManifestacao" style="max-width: 1216px; margin:0 auto;">
+				<p:commandButton value="Visualizar Questionário"
+					id="btnResponderQuestionario"
+					styleClass="btnResponderQuestionario"
+					actionListener="#{mBResponderQuestionario.prepararResponder(mBManifestacao.manifestacao)}"
+					oncomplete="dlgQuestionarioW.show();" update=":frmQuestionario"
+					immediate="true"
+					rendered="#{mBManifestacao.manifestacao.stStatusManifestacao == mBEnum.codStatusManifestacaoSOLUCIONADA}" />
+					
+				<!-- ========== INICIO - COMANDOS PARA BLOQUEAR A MANIFESTACAO ===================== -->
+				<p:dataTable id="dtbMsgBloquearManifestacao"
+					value="ManipularManifestacao"
+					rendered="#{mBManifestacao.isManifestacaoNaCaixaRetornadas()}">
+					<f:facet name="header">
+                        Bloquear Manifestação
+                    </f:facet>
+                    <p:column style="width: 70%">
+						<h:outputText rendered="#{not mBManifestacao.isManifestacaoBloqueada()}" style="color: goldenrod" class="bold" 
+							value="Clique no botão ao lado para bloquear esta manifestação." />
+						<h:outputText rendered="#{mBManifestacao.isManifestacaoBloqueada()}" style="color: goldenrod" class="bold"
+							value="A Manifestação foi bloqueada pelo Analista Ouvidor, #{mBManifestacao.manifestacao.idUsuarioBloqueou.nmUsuario}, e não é permitido fazer alterações." />
+					</p:column>
+					<p:column style="width: 30%">
+						<p:panelGrid style="width: 100%; height: 35px;"
+							rendered="#{mBManifestacao.mostrarBotaoBloquearManifestacao()}">
+							<p:row>
+								<p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+									<p:commandButton
+										update=":frmAdministrarManifestacao,
+												:frmEncaminharManifestacao,
+												:frmTramiteManifestacao"
+										process="@this, btnBloquearManifestacao"
+										value="Bloquear Manifestação" id="btnBloquearManifestacao"
+										rendered="#{not mBManifestacao.isManifestacaoBloqueada()}"
+										action="#{mBManifestacao.bloquearManifestacao()}"
+										ajax="false" />
+									<p:commandButton
+										update=":frmAdministrarManifestacao,
+												:frmEncaminharManifestacao,
+												:frmTramiteManifestacao"
+										process="@this, btnDesbloquearManifestacao"
+										value="Desbloquear Manifestação" id="btnDesbloquearManifestacao"
+										rendered="#{mBManifestacao.isManifestacaoBloqueada()}"
+										action="#{mBManifestacao.desbloquearManifestacao()}" />
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+					</p:column>
+				</p:dataTable>
+				<!-- ========== FIM - COMANDOS PARA BLOQUEAR A MANIFESTACAO ===================== -->
+				
+				<!-- ========== INICIO - COMANDOS PARA ASSUMIR ANALISE DA MANIFESTACAO ===================== -->
+				<p:dataTable id="dtbMsgAnalisarManifestacao"
+					value="ManipularManifestacao"
+					style="margin-bottom: 20px;"
+					rendered="#{mBManifestacao.desabilitaEdicaoManifestacao()}">
+					<f:facet name="header">  
+                        Tratar Manifestação
+                    </f:facet>
+					<p:column style="width: 70%">
+						<h:outputText
+							rendered="#{mBManifestacao.isManifestacaoNova()}"
+							style="color: goldenrod" class="bold"
+							value="Para iniciar o tratamento da manifestação é necessário colocá-la EM ANÁLISE." />
+						<h:outputText
+							rendered="#{mBManifestacao.isManifestacaoEmAnalise()}"
+							style="color: goldenrod" class="bold"
+							value="A Manifestação está sendo analisada pelo Analista Ouvidor, #{mBManifestacao.manifestacao.idUsuarioAnalisador.nmUsuario}, e está bloqueada para alterações. Se deseja assumir a análise desta manifestação clique em Assumir Análise." />
+					</p:column>
+					<p:column style="width: 30%">
+						<p:panelGrid style="width: 100%; height: 35px;"
+							rendered="#{mBManifestacao.showTakeUpManifestation()}">
+							<p:row>
+								<p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+									<p:commandButton
+										update=":frmAdministrarManifestacao,
+                                                :frmEncaminharManifestacao,
+                                                :frmTramiteManifestacao"
+										process="@this, btnAnalisarManifestacao"
+										value="Analisar Manifestação" id="btnAnalisarManifestacao"
+										action="#{mBManifestacao.gravaStatusManifestacao()}">
+										<f:setPropertyActionListener
+											value="#{mBEnum.codStatusManifestacaoEM_ANALISE}"
+											target="#{mBManifestacao.manifestacao.stStatusManifestacao}" />
+									</p:commandButton>
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+
+						<p:panelGrid style="width: 100%" rendered="#{mBManifestacao.isManifestacaoEmAnalise()}">
+							<p:row>
+								<p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+									<p:commandButton
+										onclick="dlgConfirmaAssumirManifestacao.show()"
+										value="Assumir Análise" />
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+					</p:column>
+				</p:dataTable>
+				<!-- ========== FIM - COMANDOS PARA SSUMIR ANALISE DA MANIFESTACAO ===================== -->
+				
+				<p:panelGrid id="dtbManifestacaoEmAtraso" 
+							 style="margin: 0 auto; margin-bottom: 20px;" 
+							 rendered="#{mBManifestacao.showDelayNotificationPanel()}">
+					<p:row>
+						<p:column style="background: #FFCC22">
+							<b>#{mBManifestacao.messageDelayNotification()}</b>
+							<p:commandButton 
+								value="Notificar áreas"
+								style="margin-left: 15px"
+								actionListener="#{mBManifestacao.sendDelayNotification()}" /> 
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+				
+				<p:dataTable id="dtbRegistroManifestacao" var="registroManifestacao" value="Manifestação" style="margin-bottom: 20px;">
+					<p:column headerText="Número da Manifestação">
+						<span style="margin-top: 6px; float: left;">
+							<h:outputText value="#{mBManifestacao.manifestacao.nrManifestacao}" />
+						</span>
+						<p:commandButton onclick="dlgNewPassword.show();" 
+							value="Gerar Nova Senha"
+							rendered="#{security.administrador || security.ouvidor}"
+							style="float: right; background: #00500F; color: #FFF;" />
+					</p:column>
+					<p:column headerText="Tipo de Manifestação">
+						<p:selectOneMenu
+							id="slcTipoManifestacao" required="true" 
+							value="#{mBManifestacao.manifestacao.idTipoManifestacao.idTipoManifestacao}"
+							requiredMessage="Informe o Tipo da Manifestação"
+							disabled="#{mBManifestacao.disableManifestationType()}">
+							<f:selectItem itemLabel=" - Selecione -" itemValue="" />
+							<f:selectItems value="#{mBManifestacao.tipos}" var="tipo"
+								itemLabel="#{tipo.nmTipoManifestacao}"
+								itemValue="#{tipo.idTipoManifestacao}"
+								itemDescription="#{tipo.dsTipoManifestacao}">
+							</f:selectItems>
+							<p:ajax event="change"
+								listener="#{mBManifestacao.alteraTipoManifestacao}" />
+						</p:selectOneMenu>
+					</p:column>
+
+					<p:column headerText="Data de Registro">
+						<h:outputText value="#{mBManifestacao.manifestacao.dtCadastro}">
+							<f:convertDateTime pattern="dd/MM/YYYY HH:mm" timeZone="America/Sao_Paulo" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Última Atualização">
+						<h:outputText value="#{mBManifestacao.manifestacao.dtUltimaAtualizacao}">
+							<f:convertDateTime pattern="dd/MM/YYYY HH:mm" timeZone="America/Sao_Paulo" />
+						</h:outputText>
+						<p:commandButton id="cbUsuarioAnalisador"
+							icon="ui-icon-grip-dotted-horizontal"
+							style="margin-left: 20px;"
+							title="#{mBManifestacao.manifestacao.idUsuarioAnalisador.nmUsuario}" 
+							rendered="#{not security.manifestante}" />
+					</p:column>
+
+					<p:column headerText="Data de Fechamento">
+						<h:outputText value="#{mBManifestacao.mostrarDataFechamento()}" />
+					</p:column>
+				</p:dataTable>
+				
+				<p:dataTable id="dtbDadosManifestante"
+					var="manifestacao"
+					value="DadosManifestante"
+					rendered="#{mBManifestacao.showSecretData()}"
+					style="margin-bottom: 20px;">
+					<f:facet name="header">  
+                        Dados do Manifestante
+                    </f:facet>
+
+					<p:column headerText="Nome">
+						<h:outputText value="#{mBManifestacao.manifestacao.nmPessoa}" />
+					</p:column>
+
+					<p:column headerText="Telefone">
+						<h:outputText value="#{mBManifestacao.manifestacao.nrTelefone}" />
+					</p:column>
+
+					<p:column headerText="E-mail">
+						<h:outputText value="#{mBManifestacao.manifestacao.eeEmailUsuario}" rendered="#{not security.administrador}" />
+						<p:inplace id="ajaxEmail" editor="true" saveLabel="Salvar" cancelLabel="Cancelar" rendered="#{security.administrador}">
+							<p:inputText value="#{mBManifestacao.manifestacao.eeEmailUsuario}" required="true" label="E-mail">
+								<f:validator binding="#{emailValidator}" />
+							</p:inputText>
+							<p:ajax event="save" listener="#{mBManifestacao.salvarEmailManifestante}" />
+			            </p:inplace>
+					</p:column>
+				</p:dataTable>
+				
+				<p:dataTable id="dtbTextoManifstacao" var="dtbTxtManifestacao" value="TextoManifestacao">
+					<f:facet name="header">  
+                        Texto da Manifestação  
+                    </f:facet>
+					<p:column headerText="Descrição" style="background:#fdf1dc">
+						<h:outputText value="#{mBManifestacao.manifestacao.getDsTextoManifestacaoFormatado()}" escape="false" /><br />
+						<p:spacer height="20px" width="100%" />
+						<h:outputLabel value="Arquivo(s)" styleClass="bold" rendered="#{not empty mBManifestacao.manifestacao.tbManifestacaoxAnexoCollection}" />
+							<ul>
+								<ui:repeat value="#{mBManifestacao.manifestacao.tbManifestacaoxAnexoCollection}" var="item">
+									<li><p:commandLink value="#{item.idAnexo.nmAnexo}" actionListener="#{mBManifestacao.baixarArquivo(item.idAnexo)}" ajax="false" /></li>
+								</ui:repeat>
+							</ul>
+					</p:column>
+				</p:dataTable>
+
+				<p:accordionPanel id="outrosDadosAc" activeIndex="-1">
+					<p:tab title="Outros Dados">
+						<h:panelGrid columns="1" cellpadding="10" style="max-width: 1180px; margin: 0 auto">
+							<p:dataTable id="dtbOutrosDados" style="width: 1100px"
+								var="outrosDados" value="OutrosDados"
+								rendered="#{mBManifestacao.showSecretData()}">
+								<f:facet name="header">  
+                                    Outros Dados
+                                </f:facet>
+
+								<p:column headerText="Endereço Completo"
+									style="min-width: 450px">
+									<h:outputText value="#{mBManifestacao.manifestacao.enderecoCompleto}" />
+								</p:column>
+
+								<p:column headerText="País" style="width: 100px">
+									<h:outputText
+										value="#{mBManifestacao.manifestacao.idPais.nmPais}" />
+								</p:column>
+
+								<p:column headerText="Cidade - Estado" style="width: 250px">
+									<h:outputText
+										value="#{mBManifestacao.manifestacao.dsLocalidade} - #{mBManifestacao.manifestacao.idUF.sgUF}" />
+								</p:column>
+							</p:dataTable>
+
+							<p:dataTable id="dtbOutrosDados1" var="outrosDados1"
+								value="OutrosDados1"
+								rendered="#{mBManifestacao.showSecretData()}">
+								<p:column headerText="CEP" style="width: 200px">
+									<h:outputText value="#{mBManifestacao.manifestacao.nrCEP}" />
+								</p:column>
+
+								<p:column headerText="FAX" style="width: 200px">
+									<h:outputText value="#{mBManifestacao.manifestacao.nrFAX}" />
+								</p:column>
+
+								<p:column headerText="Outros E-mails" style="width: 200px">
+									<h:outputText
+										value="#{mBManifestacao.manifestacao.eeEmailSecundario}" />
+								</p:column>
+
+								<p:column headerText="Faixa Etária" style="width: 200px">
+									<h:outputText
+										value="#{mBManifestacao.manifestacao.idFaixaEtaria.nmFaixaEtaria}" />
+								</p:column>
+								<p:column headerText="Grau de Instrução" style="width: 200px">
+									<h:outputText
+										value="#{mBManifestacao.manifestacao.idGrauInstrucao.nmGrauInstrucao}" />
+								</p:column>
+							</p:dataTable>
+
+							<p:dataTable id="dtbOutrosDados2" var="outrosDados2"
+								value="OutrosDados1"
+								rendered="#{mBManifestacao.showSecretData()}">
+								<p:column headerText="Sexo" style="width: 200px">
+									<h:outputText
+										value="#{mBEnum.getSexoEnum(mBManifestacao.manifestacao.tpSexo).descricao}" />
+								</p:column>
+
+								<p:column headerText="Deseja Receber Resposta?"
+									style="width: 200px">
+									<h:outputText
+										value="#{mBEnum.getBooleanEnum(mBManifestacao.manifestacao.stResposta).descricao}" />
+								</p:column>
+
+								<p:column headerText="Meio de Resposta" style="width: 200px">
+									<h:outputText
+										value="#{mBManifestacao.manifestacao.idMeioResposta.nmMeioResposta}" />
+								</p:column>
+
+								<p:column headerText="Área de Entrada" style="width: 200px">
+									<h:outputText
+										value="#{mBManifestacao.manifestacao.idAreaEntrada.nmAreaEntrada}" />
+								</p:column>
+							</p:dataTable>
+
+							<p:dataTable id="dtbOutrosDados3" var="outrosDados3"
+								value="OutrosDados3"
+								rendered="#{mBManifestacao.showSecretData()}">
+								<p:column headerText="Meio de Entrada" style="width: 200px">
+									<h:outputText
+										value="#{mBManifestacao.manifestacao.idMeioEntrada.nmMeioEntrada}" />
+								</p:column>
+
+								<p:column headerText="Deseja Manter Sigilo de Suas Informações "
+									style="width: 200px">
+									<h:outputText
+										value="#{mBEnum.getBooleanEnum(mBManifestacao.manifestacao.siSigilo).descricao}" />
+								</p:column>
+
+								<p:column headerText="Raça" style="width: 100px">
+									<h:outputText
+										value="#{mBEnum.getTipoRacaEnum(mBManifestacao.manifestacao.tpRaca).descricao}" />
+								</p:column>
+
+								<p:column headerText="Número Processo" style="width: 150px">
+									<h:outputText value="#{mBManifestacao.manifestacao.nrProcesso}" />
+								</p:column>
+
+								<p:column headerText="Número Pronac" style="width: 150px">
+									<h:outputText value="#{mBManifestacao.manifestacao.nrPronac}" />
+								</p:column>
+							</p:dataTable>
+
+							<p:dataTable id="dtbOutrosDados4" var="outrosDados4"
+								value="OutrosDados4"
+								rendered="#{mBManifestacao.showSecretData()}">
+								<p:column headerText="Tipo Pessoa" style="width: 200px">
+									<h:outputText value="#{mBEnum.getTipoPessoaEnum(mBManifestacao.manifestacao.tipoPessoa).descricao}" />
+								</p:column>
+
+								<p:column style="width: 200px" headerText="CPF" rendered="#{mBManifestacao.manifestacao.tipoPessoa.equals('1')}">
+									<h:outputText value="#{mBManifestacao.manifestacao.nrCpfCnpj}" />
+								</p:column>
+								
+								<p:column style="width: 200px" headerText="CNPJ" rendered="#{mBManifestacao.manifestacao.tipoPessoa.equals('2')}">
+									<h:outputText value="#{mBManifestacao.manifestacao.nrCpfCnpj}" />
+								</p:column>
+
+								<p:column headerText="Telefone Alternativo" style="width: 200px">
+									<h:outputText value="#{mBManifestacao.manifestacao.nrTelefone2}" />
+								</p:column>
+
+								<p:column headerText="Celular" style="width: 200px">
+									<h:outputText value="#{mBManifestacao.manifestacao.nrCelular}" />
+								</p:column>
+							</p:dataTable>
+							
+							<p:dataTable id="dtbOutrosDadosInterlocutor1" var="outrosDadosInterlocutor1"
+								value="OutrosDadosInterlocutor1"
+								rendered="#{security.interlocutor || security.operador}">
+								<p:column headerText="Número Pronac" style="width: 150px">
+									<h:outputText value="#{mBManifestacao.manifestacao.nrPronac}" />
+								</p:column>
+							</p:dataTable>
+						</h:panelGrid>
+					</p:tab>
+				</p:accordionPanel>
+				
+				<p:dataTable id="dtbAdministracao" 
+					value="Administracao" 
+					var="administracao"
+					style="margin-top: 20px;" 
+					rendered="#{security.ouvidor || security.administrador}">
+					<f:facet name="header">Administração</f:facet>
+					
+					<p:column headerText="Orgão de Destino*">
+						<p:inputText id="txtFiltroOrgaoDestino" value="#{mBManifestacao.txtFiltroOrgaoDestino}" style="width: 350px">
+							<p:ajax update="slcUnidadeTramite" event="keyup" global="false" listener="#{mBManifestacao.filtrarOrgaoDestino}" />
+						</p:inputText>
+						
+						<p:selectManyMenu value="#{mBManifestacao.idOrgaoDestino}"
+							id="slcUnidadeTramite" style="width: 370px; height: 80px;"
+							disabled="#{mBManifestacao.isManifestacaoBloqueada() || mBManifestacao.desabilitaEdicaoManifestacao()}">
+							<f:selectItems value="#{mBManifestacao.listaUnidades}"
+								var="item" itemLabel="#{item.sgUnidade} - #{item.nmUnidade}"
+								itemValue="#{item.idUnidade}" />
+							<p:ajax
+								update="slcClassificacao,:frmAdministrarManifestacao:dtbAdministracao"
+								event="change" listener="#{mBManifestacao.ajustaClassificacao}" />
+						</p:selectManyMenu>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							Classificação*
+							<p:spacer width="10" />
+							<p:commandLink value="::" update="slcClassificacao,:frmAdministrarManifestacao:dtbAdministracao" actionListener="#{mBManifestacao.mostraTodasClassificacoes}" />
+						</f:facet>
+						
+						<p:inputText id="txtFiltroClassificacao" value="#{mBManifestacao.txtFiltroClassificacao}" style="width: 350px">
+							<p:ajax update="slcClassificacao" event="keyup" global="false" listener="#{mBManifestacao.filtrarClassificacao}" />
+						</p:inputText>
+						
+						<p:selectManyMenu value="#{mBManifestacao.idClassificacao}"
+							id="slcClassificacao" style="width: 370px; height: 80px;"
+							disabled="#{mBManifestacao.isManifestacaoBloqueada() || mBManifestacao.desabilitaEdicaoManifestacao()}">
+							<f:selectItems value="#{mBManifestacao.classificacoes}"
+								var="item" itemLabel="#{item.dsClassificacao}"
+								itemValue="#{item.idClassificacao}" />
+							<p:ajax
+								update="slcSubClassificacao,:frmAdministrarManifestacao:dtbAdministracao"
+								event="change"
+								listener="#{mBManifestacao.ajustaSubClassificacoes()}" />
+
+						</p:selectManyMenu>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							Subclassificação
+							<p:spacer width="10" />
+							<p:commandLink value="::" update="slcSubClassificacao,:frmAdministrarManifestacao:dtbAdministracao" actionListener="#{mBManifestacao.mostraTodasSubclassificacoes}" />
+						</f:facet>
+						
+						<p:inputText id="txtFiltroSubclassificacao" value="#{mBManifestacao.txtFiltroSubclassificacao}" style="width: 350px">
+							<p:ajax update="slcSubClassificacao" event="keyup" global="false" listener="#{mBManifestacao.filtrarSubclassificacao}" />
+						</p:inputText>
+						
+						<p:selectManyMenu value="#{mBManifestacao.idSubClassificacao}"
+							id="slcSubClassificacao" style="width: 370px; height: 80px;"
+							disabled="#{mBManifestacao.isManifestacaoBloqueada() || (!mBManifestacao.desabilitaEdicaoManifestacao() ? mBManifestacao.habilitaSubClassificacao() : mBManifestacao.desabilitaEdicaoManifestacao())}">
+							<f:selectItems value="#{mBManifestacao.subClassificacoes}"
+								var="item" itemLabel="#{item.dsSubClassificacao}"
+								itemValue="#{item.idSubClassificacao}" />
+							<p:ajax update=":frmAdministrarManifestacao:dtbAdministracao"
+								event="change"
+								listener="#{mBManifestacao.gravaSubClassificacao()}" />
+						</p:selectManyMenu>
+					</p:column>
+				</p:dataTable>
+				<p:panelGrid id="panelBtnEncaminharManifestacao" style="width: 100%" rendered="#{mBManifestacao.mostrarBotaoEncaminharManifestacao()}"> 
+					<p:row>
+						<p:column style="text-align: center; width: 100%"
+							styleClass="ui-widget-header">
+							<p:outputPanel autoUpdate="true">
+								<p:commandButton 
+									id="btnEncaminharManifestacao"
+									value="Encaminhar Manifestação"
+									update=":frmEncaminharManifestacao:pnlEncaminhamentoManifestacao,
+											:frmMessageEncaminhamento:msgEncaminhamento"
+									oncomplete="dlgEncaminharManifestacaoW.show();"
+									style="font-weight: bold"
+									disabled="#{mBManifestacao.desabilitaEncaminhamentoManifestacao()}"
+									actionListener="#{mBManifestacao.preparaListaAreasSolucionadoras()}"
+									process="@this">
+									<p:resetInput target=":frmEncaminharManifestacao:pnlEncaminhamentoManifestacao" />
+								</p:commandButton>
+							</p:outputPanel>
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+				<p:dataTable id="dtbStatusManifestacao" var="statusManifestacao"
+					value="StatusManifestacao" rendered="#{security.ouvidor || security.administrador}">
+					<p:column headerText="Status Manifestação" style="width: 400px;">
+						<p:selectOneMenu id="slcStatus"
+							value="#{mBManifestacao.manifestacao.stStatusManifestacao}"
+							disabled="#{mBManifestacao.isManifestacaoBloqueada() || mBManifestacao.desabilitaComboStatusManifestacao()}"
+							styleClass="slcStatusManifestacao">
+							<f:selectItem itemLabel="- Selecione -" />
+							<f:selectItems value="#{mBManifestacao.listaStatusManifestacao}"
+								var="item" itemLabel="#{item.descricao}" itemValue="#{item.id}" />
+							<p:ajax event="change"
+								listener="#{mBManifestacao.gravaStatusManifestacao()}"
+								update=":frmAdministrarManifestacao,
+                                    :frmEncaminharManifestacao,
+                                    :frmTramiteManifestacao,
+                                    :frmEncerraManifestacaoComMensagem"
+								process="@this, slcStatus, :frmTramiteManifestacao" />
+						</p:selectOneMenu>
+					</p:column>
+
+					<p:column headerText="Prioridade*" style="width: 400px;">
+						<p:selectOneMenu id="slcPrioridade"
+							value="#{mBManifestacao.idPrioridade}"
+							disabled="#{mBManifestacao.isManifestacaoBloqueada() || mBManifestacao.desabilitaEdicaoManifestacao()}">
+							<f:selectItem itemLabel="- Selecione -" itemValue="" />
+							<f:selectItems value="#{mBManifestacao.prioridades}" var="item"
+								itemLabel="#{item.nmPrioridade}"
+								itemValue="#{item.idPrioridade}" />
+							<p:ajax update=":frmAdministrarManifestacao:dtbAdministracao"
+								event="change" listener="#{mBManifestacao.gravaPrioridade()}" />
+						</p:selectOneMenu>
+					</p:column>
+
+					<p:column headerText="Área Solucionadora">
+						<ui:remove>
+							<p:inputText id="txtFiltroAreaSolucionadora" value="#{mBManifestacao.txtFiltroAreaSolucionadora}" style="width: 350px">
+								<p:ajax update="slcAreaSolucionadora" event="keyup" global="false" listener="#{mBManifestacao.filtrarAreaSolucionadora}" />
+							</p:inputText>
+						</ui:remove>
+					
+						<p:selectManyMenu
+							value="#{mBManifestacao.idUnidadeAreaSolucionadora}"
+							id="slcAreaSolucionadora" style="width: 370px; height: 80px;"
+							disabled="#{mBManifestacao.isManifestacaoBloqueada() || mBManifestacao.desabilitaEdicaoManifestacao()}">
+							<f:selectItems value="#{mBManifestacao.unidades}" var="item"
+								itemLabel="#{item.sgUnidade} - #{item.nmUnidade}"
+								itemValue="#{item.idUnidade}" />
+							<p:ajax event="change" listener="#{mBManifestacao.mostrarBotaoSolucionarManifestacao()}" />
+						</p:selectManyMenu>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+			
+			<p:panelGrid style="max-width: 1216px; margin:0 auto; margin-top:10px">
+				<f:facet name="header">
+					<p:row>
+						<p:column style="padding: 6px; width: 1216px;">Trâmite da Manifestação</p:column>
+					</p:row>
+				</f:facet>
+			</p:panelGrid>
+			<div style="max-width: 1216px; margin: 0 auto">
+				<ui:include src="/pages/templates/tabsTramite.xhtml">
+					<ui:param name="bean" value="#{mBManifestacao}" />
+				</ui:include>
+				
+				<p:panelGrid style="max-width: 1216px; margin: 0 auto">
+					<p:row>
+						<p:column style="text-align: center; width: 1216px"
+							styleClass="ui-widget-header">
+							<div style="width: 100%; margin: 0 auto;">
+								<p:outputPanel autoUpdate="true">
+									<h:form>
+										<p:commandButton value="Voltar" action="#{mBManifestacao.voltar}" />
+										
+										<!-- Solucionar Manifestação (Ouvidor) -->
+										<p:commandButton id="solucionarManifestacao" value="Solucionar Manifestação"
+											rendered="#{mBManifestacao.mostrarBotaoSolucionarManifestacao()}"
+											disabled="#{mBManifestacao.isManifestacaoBloqueada()}"
+											update=":frmAdministrarManifestacao,
+													:frmEncaminharManifestacao,
+													:frmTramiteManifestacao,
+													:frmEncerraManifestacaoComMensagem">
+											<f:setPropertyActionListener value="4" target="#{mBManifestacao.manifestacao.stStatusManifestacao}" />
+											<f:actionListener binding="#{mBManifestacao.gravaStatusManifestacao()}" />
+										</p:commandButton>
+										
+										<!-- Reativar Manifestação (Ouvidor) -->
+										<p:commandButton id="reativarManifestacao" value="Reativar Manifestação"
+											rendered="#{mBManifestacao.mostrarBotaoReativarManifestacao()}"
+											disabled="#{mBManifestacao.isManifestacaoBloqueada()}"
+											oncomplete="dlManifestacaoReativada.show()"
+											update=":frmAdministrarManifestacao,
+													:frmEncaminharManifestacao,
+													:frmTramiteManifestacao,
+													:frmEncerraManifestacaoComMensagem">
+											<f:setPropertyActionListener value="2" target="#{mBManifestacao.manifestacao.stStatusManifestacao}" />
+											<f:setPropertyActionListener value="#{security.user}" target="#{mBManifestacao.manifestacao.idUsuarioAnalisador}" />
+											<f:setPropertyActionListener value="#{security.user}" target="#{mBManifestacao.manifestacao.idUsuarioReativou}" />
+											<f:actionListener binding="#{mBManifestacao.gravaStatusManifestacao()}" />
+										</p:commandButton>
+										
+										<!-- Responder a Ouvidoria (Interlocutor) -->
+										<p:commandButton id="responderOuvidoria" value="Responder a Ouvidoria"
+											rendered="#{mBManifestacao.mostrarBotaoResponderAOuvidoria()}"
+											update=":frmAdministrarManifestacao,
+													:frmEncaminharManifestacao,
+													:frmTramiteManifestacao,
+													:frmEnviarMensagemTramite,
+													:frmEncerraManifestacaoComMensagem"
+											oncomplete="dlgEnviarMensagemTramiteW.show();">
+											<f:actionListener binding="#{mBManifestacao.ajustaListaUnidadeTramite(tabItem)}" />
+											<f:setPropertyActionListener value="1" target="#{mBManifestacao.idUnidadeTramite}" />
+										</p:commandButton>
+									</h:form>
+								</p:outputPanel>
+							</div>
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+			</div>
+			
+			<h:form id="frmMessageEncaminhamento" style="max-width: 1180px; margin: 0 auto;">
+				<p:messages id="msgEncaminhamento" redisplay="false" showDetail="true" closable="true" />
+			</h:form>
+			
+			<!-- dialog de confirmacao para assumir analise da manifestacao -->
+			<p:confirmDialog widgetVar="dlgConfirmaAssumirManifestacao"
+				message="Deseja realmente assumir a análise da Manifestação?"
+				header="Confirmação" severity="alert" appendToBody="true">
+				<h:form>
+					<p:panelGrid style="max-width: 1180px; margin: 0 auto">
+						<p:row>
+							<p:column style="text-align: center; width: 100%"
+								styleClass="ui-widget-header">
+								<p:commandButton
+									update=":frmAdministrarManifestacao,
+                                                 :frmEncaminharManifestacao,
+                                                 :frmTramiteManifestacao"
+									process="@this, confirmarAssumirAnalise" value="Sim"
+									id="confirmarAssumirAnalise"
+									oncomplete="dlgConfirmaAssumirManifestacao.hide()"
+									action="#{mBManifestacao.gravaStatusManifestacao()}">
+									<f:setPropertyActionListener
+										value="#{mBEnum.codStatusManifestacaoEM_ANALISE}"
+										target="#{mBManifestacao.manifestacao.stStatusManifestacao}" />
+								</p:commandButton>
+								<p:commandButton id="negarAssumirAnalise" value="Não"
+									onclick="dlgConfirmaAssumirManifestacao.hide()" type="button" />
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</h:form>
+			</p:confirmDialog>
+			
+			<!-- ======================================== -->
+			<!-- DIALOG de Encaminhamento da MANIFESTACAO -->
+			<!-- ======================================== -->
+			<p:dialog id="dlgEncaminharManifestacao"
+				widgetVar="dlgEncaminharManifestacaoW"
+				header="Encaminha Manifestação" resizable="true" appendToBody="true"
+				closable="false" maximizable="true" width="1120" minimizable="true">
+				<p:ajax event="close" listener="#{mBManifestacao.zerarValoresEncaminhamento}" />
+				<div style="overflow: auto; height: 100%;">
+					<h:form id="frmEncaminharManifestacao">
+						<p:panelGrid id="pnlEncaminhamentoManifestacao" style="height: 100%; margin: 0 auto;">
+							<p:row>
+								<p:column colspan="4">
+									<p:messages id="meEncaminhamentoMessages" redisplay="false" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="ui-widget-header centro" colspan="4">
+                                	Área Técnica
+                            	</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="bold" style="width: 100px;">Unidade*</p:column>
+								<p:column>
+									<p:selectManyMenu value="#{mBManifestacao.idOrgaoDestino}"
+										id="slcUnidade" required="true"
+										style="height: 80px; width:500px"
+										requiredMessage="Informe a unidade de encaminhamento">
+										<f:selectItems
+											value="#{mBManifestacao.listaUnidades}" var="item"
+											itemLabel="#{item.sgUnidade} - #{item.nmUnidade}"
+											itemValue="#{item.idUnidade}" />
+										<p:ajax update="slcUsuarioTramite" event="change" />
+									</p:selectManyMenu>
+								</p:column>
+								
+								<p:column styleClass="bold">Operador</p:column>
+								<p:column>
+									<p:selectOneMenu value="#{mBManifestacao.idUsuarioEncaminhamento}"
+										id="slcUsuarioTramite" style="width: 250px"
+										disabled="#{mBManifestacao.idOrgaoDestino.size() > 1}">
+										<f:selectItem itemLabel="- Selecione -" itemValue="" />
+										<f:selectItems 
+											value="#{mBManifestacao.usuarios}" var="item"
+											itemLabel="#{item.nmUsuario}"
+											itemValue="#{item.idUsuario}" />
+										<p:ajax event="change" />
+									</p:selectOneMenu>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="ui-widget-header centro" colspan="4">  
+                                Encaminhamento para Área Técnica
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column colspan="2" style="vertical-align: top; height: 100%;">
+									<p:panelGrid>
+										<p:row>
+											<p:column styleClass="ui-widget-header centro">Texto para Encaminhamento</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<p:editor widgetVar="textoEncaminhamentoManifestacao"
+													value="#{mBManifestacao.dsEncaminhamento}"
+													id="textoEncaminhamentoManifestacao"
+													styleClass="classIdCampo_textoEncaminhamentoManifestacao"
+													required="true"
+													height="320"
+													requiredMessage="Informe um texto para encaminhamento.">
+													<p:focus />
+												</p:editor>
+											</p:column>
+										</p:row>
+									</p:panelGrid>
+								</p:column>
+								<p:column colspan="2" style="vertical-align: top; width:50%">
+
+									<!-- ===================================== -->
+									<!-- INICIO - ENCAMINHAMENTOS PADRONIZADOS -->
+									<p:panelGrid>
+										<p:row>
+											<p:column styleClass="ui-widget-header centro"
+												style="vertical-align: top">  
+                                            Encaminhamentos Padronizados
+                                        </p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<p:selectOneMenu
+													value="#{mBManifestacao.idEncaminhamentoPadronizado}">
+													<f:selectItem itemLabel="- Selecionar encaminhamento -"
+														itemValue="" />
+													<f:selectItems
+														value="#{mBManifestacao.encaminhamentosPadronizados}"
+														var="item" itemLabel="#{item.dsTitulo}"
+														itemValue="#{item.idEncaminhamentoPadronizado}" />
+													<p:ajax event="change"
+														update="modeloEncaminhamentoPadronizado"
+														listener="#{mBManifestacao.ajustaMensagemEncaminhamento()}" />
+												</p:selectOneMenu>
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<p:editor id="modeloEncaminhamentoPadronizado"
+													styleClass="classIdCampo_modeloEncaminhamentoPadronizado"
+													value="#{mBManifestacao.encaminhamentoPadronizado.dsConteudo}"
+													disabled="true" />
+												<p:panelGrid>
+													<p:row>
+														<p:column style="text-align: center"
+															styleClass="ui-widget-header">
+															<p:commandButton value="Utilizar este encaminhamento"
+																process="@this" update="textoEncaminhamentoManifestacao" />
+														</p:column>
+													</p:row>
+												</p:panelGrid>
+											</p:column>
+										</p:row>
+									</p:panelGrid>
+									<!-- FIM - ENCAMINHAMENTOS PADRONIZADOS -->
+									<!-- ================================== -->
+
+								</p:column>
+							</p:row>
+							<!-- Upload de Arquivo -->
+							<p:row>
+								<p:column colspan="4">
+									<p:fileUpload id="fileEncaminhamento"
+										fileUploadListener="#{mBManifestacao.handleFileUpload}"
+										mode="advanced" update="filesEnviadosEncaminhamentos"
+										multiple="true" label="Adicionar arquivo"
+										invalidFileMessage="Tipo de arquivo inválido (permitidos: gif, jpeg, jpg, png, doc, docx, pdf, xls, xlsx, zip, rar, rtf, ppt, pptx)"
+										invalidSizeMessage="Tamanho do arquivo inválido (máximo 10 megabytes)"
+										sizeLimit="10485760"
+										allowTypes="/(\.|\/)(gif|jpe?g|png|doc|docx|ppt|pptx|pdf|xls|xlsx|zip|rar|rtf)$/"
+										auto="true" />
+									<p:outputPanel id="filesEnviadosEncaminhamentos"
+										autoUpdate="true">
+										
+											<ui:repeat value="#{mBManifestacao.arquivosEncaminhamento}"
+												var="arquivo" varStatus="x" id="rpt">
+												<tr bgcolor="#CCCCCC">
+													<td>
+														<h:outputText style="font-size: 10px;" value="#{x.index + 1}" /> -
+														<p:commandLink value="#{arquivo.nmAnexo}" action="#{mBManifestacao.baixarArquivo(arquivo)}" immediate="true" ajax="false" /> 
+													<p:commandButton icon="ui-icon-close"
+															title="Excluir"
+															actionListener="#{mBManifestacao.removerArquivo(arquivo, mBManifestacao.arquivosEncaminhamento)}"
+															process="@this" immediate="true">
+														</p:commandButton></td>
+												</tr>
+											</ui:repeat>
+									
+									</p:outputPanel>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column colspan="4">
+									<p:panelGrid style="width: 100%">
+										<p:row>
+											<p:column style="text-align: center; width: 100%"
+												styleClass="ui-widget-header">
+												<p:commandButton
+													update=":frmVisualizarEncaminhamento"
+													process="@this, textoEncaminhamentoManifestacao"
+													value="Visualizar" id="visualizarEncaminhamento"
+													onclick="statusDialog.show()"
+													oncomplete="dlgVisualizarEncaminhamento.show()">
+												</p:commandButton>
+												<p:spacer width="20px" />
+												<p:commandButton value="Enviar" id="btnEncaminhar"
+													process="@this,slcUnidade,textoEncaminhamentoManifestacao"
+													actionListener="#{mBManifestacao.salvaEncaminhamento}"
+													update=":frmAdministrarManifestacao:dtbStatusManifestacao,
+														:frmAdministrarManifestacao:dtbAdministracao,
+                                                        :frmEncaminharManifestacao"
+													oncomplete="if (!args.validationFailed){dlgEncaminharManifestacaoW.hide()};">
+													<p:resetInput target="frmEncaminharManifestacao" />
+												</p:commandButton>
+												<p:spacer width="20px" />
+												<p:commandButton value="Fechar" immediate="true"
+													update=":frmAdministrarManifestacao:dtbStatusManifestacao"
+													style="width: 100px; margin: 10px"
+													onclick="dlgEncaminharManifestacaoW.hide()">
+													<p:resetInput target="frmEncaminharManifestacao" />
+												</p:commandButton>
+											</p:column>
+										</p:row>
+									</p:panelGrid>
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+					</h:form>
+				</div>
+			</p:dialog>
+			
+			
+			
+			<!-- ======================================== -->
+			<!-- DIALOG de Enviar Mensagem a MANIFESTANTE -->
+			<!-- ======================================== -->
+			<p:dialog id="dlgEnviarMensagem" widgetVar="dlgEnviarMensagemW"
+				header="Nova Mensagem" resizable="true" minimizable="true"
+				maximizable="true" appendToBody="true" closable="false" width="1120">
+				<p:ajax event="close" listener="#{mBManifestacao.zerarValoresComunicacaoExterna}" />
+				<h:form id="frmEnviarMensagem">
+					<p:messages id="meManifestanteMessages" redisplay="false" />
+					
+					<p:outputPanel rendered="#{security.manifestante}">
+						<p:panelGrid style="width: 100%; height: auto; margin: 0 auto">
+	                        <p:row>
+	                            <p:column style="width: 15%" styleClass="ui-widget-header centro">Mensagem ao Ouvidor</p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column>
+	                                <p:editor widgetVar="editorMensagemAoOuvidor"
+	                                          rendered="true"
+	                                          value="#{mBManifestacao.dsMensagemAoManifestante}"
+	                                          id="textoMensagemAoOuvidor"
+	                                          width="600" height="250"
+	                                          styleClass="classIdCampo_textoMensagemAoManifestante"
+	                                          required="true" requiredMessage="Informe um texto para enviar à Ouvidoria."/>
+	                            </p:column> 
+	                        </p:row>
+	                        <p:row>  
+	                            <p:column>
+	                            	<p:fileUpload id="fileComunicacaoExternaManifestante"
+										fileUploadListener="#{mBManifestacao.handleFileUpload}"
+										mode="advanced" update="filesEnviadosComunicacaoExternaManifestante"
+										multiple="true" label="Adicionar arquivo"
+										invalidFileMessage="Tipo de arquivo inválido (permitidos: gif, jpeg, jpg, png, doc, docx, pdf, xls, xlsx, zip, rar, rtf, ppt, pptx)"
+										invalidSizeMessage="Tamanho do arquivo inválido (máximo 10 megabytes)"
+										sizeLimit="10485760"
+										allowTypes="/(\.|\/)(gif|jpe?g|png|doc|docx|ppt|pptx|pdf|xls|xlsx|zip|rar|rtf)$/"
+										auto="true" />
+										
+									<p:outputPanel id="filesEnviadosComunicacaoExternaManifestante" autoUpdate="true">
+										<table>
+											<ui:repeat
+												value="#{mBManifestacao.arquivosComunicacaoExterna}"
+												var="arquivo" varStatus="x">
+												<tr bgcolor="#CCCCCC">
+													<td>
+														<h:outputText style="font-size: 10px;" value="#{x.index + 1}" /> -
+														<p:commandLink value="#{arquivo.nmAnexo}" action="#{mBManifestacao.baixarArquivo(arquivo)}" immediate="true" ajax="false" /> 
+													</td>
+													<td>
+														<p:commandButton icon="ui-icon-close"
+															title="Excluir"
+															actionListener="#{mBManifestacao.removerArquivo(arquivo, mBManifestacao.arquivosComunicacaoExterna)}"
+															process="@this" immediate="true">
+														</p:commandButton>
+													</td>
+												</tr>
+											</ui:repeat>
+										</table>
+									</p:outputPanel>
+	                                <p:panelGrid style="width: 100%">
+	                                    <p:row>
+	                                        <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+	                                        	<p:commandButton value="Enviar mensagem"
+													style="margin-right: 20px;"
+													process="@this,textoMensagemAoOuvidor"
+													actionListener="#{mBManifestacao.salvaComunicacaoExterna}"
+													update="frmEnviarMensagem"
+													oncomplete="if (!args.validationFailed){dlgEnviarMensagemW.hide()};">
+													<p:resetInput target="frmEnviarMensagem" />
+												</p:commandButton>
+												
+												<p:commandButton value="Fechar" immediate="true"
+													update="frmEnviarMensagem" style="width: 100px; margin: 4px"
+													onclick="dlgEnviarMensagemW.hide()">
+													<p:resetInput target="frmEnviarMensagem" />
+												</p:commandButton>
+	                                        </p:column>
+	                                    </p:row>
+	                                </p:panelGrid>
+	                            </p:column>
+	                        </p:row>
+	                    </p:panelGrid>
+					</p:outputPanel>
+					
+					<p:outputPanel rendered="#{not security.manifestante}">
+						<p:panelGrid id="pnlMasterComunicacaoExterna" style="width: 100%; height: auto; margin: 0 auto">
+							<p:row>
+								<p:column style="width: 50%;vertical-align: top" colspan="2">
+									<p:panelGrid style="width: 100%; margin: 0 auto; vertical-align: top;">
+										<p:row>
+											<p:column style="width: 15%" styleClass="ui-widget-header centro">Mensagem ao Manifestante</p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<p:editor widgetVar="editorMensagemAoManifestante"
+													rendered="true"
+													value="#{mBManifestacao.dsMensagemAoManifestante}"
+													id="textoMensagemAoManifestante"
+													styleClass="classIdCampo_textoMensagemAoManifestante"
+													height="320"
+													required="true"
+													requiredMessage="Informe um texto para enviar ao manifestante." />
+											</p:column>
+										</p:row>
+									</p:panelGrid>
+								</p:column>
+								<p:column style="width: 50%; vertical-align: top;" colspan="2">
+									<p:panelGrid
+										style="width: 100%; margin: 0 auto; vertical-align: central;">
+										<p:row>
+											<p:column styleClass="ui-widget-header centro"
+												style="vertical-align: top">  
+	                                            Respostas personalizadas
+	                                        </p:column>
+										</p:row>
+										<p:row>
+											<p:column>
+												<p:selectOneMenu
+													value="#{mBManifestacao.idRespostaManifestacao}"
+													id="slcRespostaManifestacao">
+													<f:selectItem itemLabel="- Selecionar resposta -" itemValue="" />
+													<f:selectItems
+														value="#{mBManifestacao.respostasManifestacao}" var="item"
+														itemLabel="#{item.dsTituloResposta}"
+														itemValue="#{item.idRespostaManifestacao}" />
+													<p:ajax update="modeloRespostaManifestacao" event="change"
+														listener="#{mBManifestacao.ajustaDescricaoMensagemManifestante()}" />
+												</p:selectOneMenu>
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column colspan="2">
+												<p:editor id="modeloRespostaManifestacao"
+													styleClass="classIdCampo_modeloRespostaPadronizado"
+													value="#{mBManifestacao.respostaManifestacao.dsResposta}"
+													disabled="true" />
+												<p:panelGrid>
+													<p:row>
+														<p:column style="text-align: center"
+															styleClass="ui-widget-header">
+															<p:commandButton value="Utilizar esta resposta"
+																process="@this" update="textoMensagemAoManifestante" />
+														</p:column>
+													</p:row>
+												</p:panelGrid>
+											</p:column>
+										</p:row>
+									</p:panelGrid>
+								</p:column>
+							</p:row>
+							<!-- Upload de Arquivo -->
+							<p:row>
+								<p:column colspan="4">
+									<p:fileUpload id="fileComunicacaoExterna"
+										fileUploadListener="#{mBManifestacao.handleFileUpload}"
+										mode="advanced" update="filesEnviadosComunicacaoExterna"
+										multiple="true" label="Adicionar arquivo"
+										invalidFileMessage="Tipo de arquivo inválido (permitidos: gif, jpeg, jpg, png, doc, docx, pdf, xls, xlsx, zip, rar, rtf, ppt, pptx)"
+										invalidSizeMessage="Tamanho do arquivo inválido (máximo 10 megabytes)"
+										sizeLimit="10485760"
+										allowTypes="/(\.|\/)(gif|jpe?g|png|doc|docx|ppt|pptx|pdf|xls|xlsx|zip|rar|rtf)$/"
+										auto="true" />
+									<p:outputPanel id="filesEnviadosComunicacaoExterna"
+										autoUpdate="true">
+										<table>
+											<ui:repeat
+												value="#{mBManifestacao.arquivosComunicacaoExterna}"
+												var="arquivo" varStatus="x">
+												<tr bgcolor="#CCCCCC">
+													<td>
+														<h:outputText style="font-size: 10px;" value="#{x.index + 1}" /> -
+														<p:commandLink value="#{arquivo.nmAnexo}" action="#{mBManifestacao.baixarArquivo(arquivo)}" immediate="true" ajax="false" /> 
+													</td>
+													<td><p:commandButton icon="ui-icon-close"
+															title="Excluir"
+															actionListener="#{mBManifestacao.removerArquivo(arquivo, mBManifestacao.arquivosComunicacaoExterna)}"
+															process="@this" immediate="true">
+														</p:commandButton></td>
+												</tr>
+											</ui:repeat>
+										</table>
+									</p:outputPanel>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column colspan="4" style="text-align: center; width: 100%" styleClass="ui-widget-header">
+									<p:commandButton
+										update=":frmVisualizarComunicacao"
+										style="margin-right: 20px;"
+										process="@this,textoMensagemAoManifestante"
+										value="Visualizar" id="visualizarComunicacao"
+										onclick="statusDialog.show()"
+										oncomplete="dlgVisualizarComunicacao.show()">
+									</p:commandButton>
+									
+									<p:commandButton value="Enviar mensagem"
+										style="margin-right: 20px;"
+										process="@this,textoMensagemAoManifestante"
+										actionListener="#{mBManifestacao.salvaComunicacaoExterna}"
+										update="frmEnviarMensagem"
+										oncomplete="if (!args.validationFailed){dlgEnviarMensagemW.hide()};">
+										<p:resetInput target="frmEnviarMensagem" />
+									</p:commandButton>
+									
+									<p:commandButton value="Fechar" immediate="true"
+										update="frmEnviarMensagem" style="width: 100px; margin: 4px"
+										onclick="dlgEnviarMensagemW.hide()">
+										<p:resetInput target="frmEnviarMensagem" />
+									</p:commandButton>
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+					</p:outputPanel>
+
+					<!-- FIM - ENVIAR MENSAGEM AO MANIFESTANTE -->
+					<!-- ===================================== -->
+				</h:form>
+			</p:dialog>
+
+			<!-- ======================================== -->
+			<!-- DIALOG de Enviar Mensagem a AREA TECNICA -->
+			<!-- ======================================== -->
+			<p:dialog id="dlgEnviarMensagemTramite" widgetVar="dlgEnviarMensagemTramiteW" width="900"
+				header="Nova Mensagem" resizable="false" appendToBody="true" minimizable="true">
+				<p:ajax event="close" listener="#{mBManifestacao.zerarValoresTramite}" />
+				<h:form id="frmEnviarMensagemTramite">
+					<p:messages id="meAreaTecnicaMessages" redisplay="false" closable="true" />
+					<!-- ============================== -->
+					<!-- ENVIAR MENSAGEM A AREA TECNICA -->
+					<p:panelGrid style="width: 100%">
+						<p:row>
+							<p:column styleClass="bold" style="width: 50%">Unidade</p:column>
+							<p:column>
+								<p:selectOneMenu value="#{mBManifestacao.idUnidadeTramite}"
+									id="slcUnidadeTramite" required="true"
+									requiredMessage="Informe a unidade de envio da mensagem"
+									disabled="#{mBManifestacao.desabilitaUnidadeTramite()}">
+									<f:selectItem itemLabel="- Selecione -" itemValue="" />
+									<f:selectItems value="#{mBManifestacao.listaUnidadesTramite}"
+										var="item" itemLabel="#{item.sgUnidade} - #{item.nmUnidade}"
+										itemValue="#{item.idUnidade}" />
+
+									<p:ajax update="slcUsuarioTramite,pnlBtnsTramite" event="change" />
+								</p:selectOneMenu>
+							</p:column>
+							
+							<p:column styleClass="bold">Operador</p:column>
+							<p:column>
+								<p:selectOneMenu value="#{mBManifestacao.idUsuarioTramite}"
+									id="slcUsuarioTramite"
+									required="#{security.interlocutor}"
+									requiredMessage="Informe o operador"
+									disabled="#{mBManifestacao.desabilitaUsuarioTramite()}">
+									<f:selectItem itemLabel="- Selecione -" itemValue="" />
+									<f:selectItems value="#{mBManifestacao.usuarios}" var="item"
+										itemLabel="#{item.nmUsuario}" itemValue="#{item.idUsuario}" />
+										
+									<p:ajax update="pnlBtnsTramite" event="change" />
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="width: 50%;vertical-align: top"
+								colspan="#{security.ouvidor || security.administrador ? '2' : '4'}">
+								<p:panelGrid
+									style="width: 100%; margin: 0 auto; vertical-align: top;">
+									<p:row>
+										<p:column style="width: 15%"
+											styleClass="ui-widget-header centro">
+											<h:outputText
+												value="#{security.ouvidor || security.administrador ? 'Mensagem à Unidade' : 'Mensagem' }" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<p:editor rendered="true"
+												value="#{mBManifestacao.dsMensagemAreaTecnica}"
+												id="textoMensagemAreaTecnica"
+												width="#{security.ouvidor || security.administrador ? '330' : '600'}"
+												height="390"
+												styleClass="classIdCampo_textoMensagemAreaTecnica"
+												required="true"
+												requiredMessage="Informe o texto da mensagem." />
+										</p:column>
+									</p:row>
+
+								</p:panelGrid>
+							</p:column>
+							<p:column style="width: 50%; vertical-align: top;" colspan="2" rendered="#{security.ouvidor || security.administrador}">
+								<p:panelGrid style="width: 100%; margin: 0 auto; vertical-align: central;">
+									<p:row>
+										<p:column styleClass="ui-widget-header centro"
+											style="vertical-align: top">  
+                                            Encaminhamentos padronizados
+                                        </p:column>
+									</p:row>
+									<p:row>
+										<p:column style="width: 85%;">
+											<p:selectOneMenu
+												value="#{mBManifestacao.idEncaminhamentoPadronizadoTramite}"
+												id="slcEncaminhamentoPadronizadoTramite" style="width: 98%;">
+												<f:selectItem itemLabel="- Selecionar encaminhamento -"
+													itemValue="" />
+												<f:selectItems
+													value="#{mBManifestacao.encaminhamentosPadronizados}"
+													var="item" itemLabel="#{item.dsTitulo}"
+													itemValue="#{item.idEncaminhamentoPadronizado}" />
+												<p:ajax update="modeloEncaminhamentoPadronizadoTramite"
+													event="change"
+													listener="#{mBManifestacao.ajustaDescricaoMensagemAreaTecnica()}" />
+											</p:selectOneMenu>
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column colspan="2">
+
+											<p:editor id="modeloEncaminhamentoPadronizadoTramite"
+												width="300" height="334"
+												styleClass="classIdCampo_modeloEncaminhamentoPadronizadoTramite"
+												value="#{mBManifestacao.encaminhamentoPadronizadoTramite.dsConteudo}"
+												disabled="true" />
+											<p:panelGrid style="width: 100%">
+												<p:row>
+													<p:column style="text-align: center; width: 100%"
+														styleClass="ui-widget-header">
+														<center>
+															<p:commandButton value="Utilizar este encaminhamento"
+																process="@this" update="textoMensagemAreaTecnica" />
+														</center>
+													</p:column>
+												</p:row>
+											</p:panelGrid>
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="4">
+								<p:fileUpload id="fileTramite"
+									fileUploadListener="#{mBManifestacao.handleFileUpload}"
+									mode="advanced" update="filesEnviadosTramite" multiple="true"
+									label="Adicionar arquivo"
+									invalidFileMessage="Tipo de arquivo inválido (permitidos: gif, jpeg, jpg, png, doc, docx, pdf, xls, xlsx, zip, rar, rtf, ppt, pptx)"
+									invalidSizeMessage="Tamanho do arquivo inválido (máximo 10 megabytes)"
+									sizeLimit="10485760"
+									allowTypes="/(\.|\/)(gif|jpe?g|png|doc|docx|ppt|pptx|pdf|xls|xlsx|zip|rar|rtf)$/"
+									auto="true" />
+								<p:outputPanel id="filesEnviadosTramite" autoUpdate="true">
+									<table>
+										<ui:repeat value="#{mBManifestacao.arquivosTramite}"
+											var="arquivo" varStatus="x">
+											<tr bgcolor="#CCCCCC">
+												<td>
+													<h:outputText style="font-size: 10px;" value="#{x.index + 1}" /> -
+													<p:commandLink value="#{arquivo.nmAnexo}" action="#{mBManifestacao.baixarArquivo(arquivo)}" immediate="true" ajax="false" /> 
+												</td>
+												<td><p:commandButton icon="ui-icon-close"
+														title="Excluir"
+														actionListener="#{mBManifestacao.removerArquivo(arquivo, mBManifestacao.arquivosTramite)}"
+														process="@this" immediate="true">
+													</p:commandButton></td>
+											</tr>
+										</ui:repeat>
+									</table>
+								</p:outputPanel>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="4">
+								<center>
+									<p:panelGrid style="width: 100%" id="pnlBtnsTramite">
+										<p:row>
+											<p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+												<p:commandButton
+													disabled="#{mBManifestacao.desabilitarBotaoVisualizarTramite()}"
+													update=":frmVisualizarTramite"
+													process="@this,slcUnidadeTramite,textoMensagemAreaTecnica,slcUsuarioTramite"
+													value="Visualizar" id="visualizarTramite"
+													onclick="statusDialog.show()"
+													oncomplete="dlgVisualizarTramite.show()">
+												</p:commandButton>
+												<p:spacer width="20px" />
+												<p:commandButton value="Enviar mensagem"
+													process="@this,slcUnidadeTramite,textoMensagemAreaTecnica,slcUsuarioTramite"
+													update="frmEnviarMensagemTramite"
+													actionListener="#{mBManifestacao.salvaTramite}"
+													oncomplete="if (!args.validationFailed){dlgEnviarMensagemTramiteW.hide()} 
+																else {alert($('.ui-messages-error-summary').html())};">
+													<p:resetInput target="frmEnviarMensagemTramite" />
+												</p:commandButton>
+												<p:spacer width="20px" />
+												<p:commandButton value="Fechar" immediate="true"
+													update="frmEnviarMensagemTramite"
+													style="width: 100px; margin: 10px"
+													onclick="dlgEnviarMensagemTramiteW.hide()">
+													<p:resetInput target="frmEnviarMensagemTramite" />
+												</p:commandButton>
+											</p:column>
+										</p:row>
+									</p:panelGrid>
+								</center>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</h:form>
+			</p:dialog>
+
+
+			<!-- ===================================================== -->
+			<!-- DIALOG de Confirmação de Encerramento de MANIFESTAÇÃO -->
+			<!-- ===================================================== -->
+
+			<!-- DIALOG CONFIR - SEM MENSAGEM FINAL OBRIGATORIA -->
+			<p:confirmDialog id="dialogoEncerraSemMensagemFinal"
+				widgetVar="dlgEncerraSemMensagemFinal"
+				message="Confirma que deseja realmente dar esta Manifestação por Solucionada?"
+				header="Confirmação" severity="alert" styleClass="bold"
+				appendToBody="true" minimizable="true">
+				<h:form id="frmEncerraManifestacaoSemMensagem">
+					<p:panelGrid id="pnlEncerrarManifestacaoSemMensagem"
+						style="width: 1180px; height: 450px; margin: 0 auto">
+						<p:row>
+							<p:column colspan="2" styleClass="bold">Caso deseje acrescentar algo à última resposta enviada ao Manifestante você pode fazer isto incluindo sua mensagem no campo abaixo:</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="ui-widget-header centro" style="width: 50%; vertical-align: top;">Mensagem ao Manifestante</p:column>
+							<p:column styleClass="ui-widget-header centro" style="width: 50%; vertical-align: top;">Respostas Personalizadas</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="width: 50%; vertical-align: top;">
+								<p:editor widgetVar="editorMensagemFinalAoManifestanteSemMsg"
+									id="textoMensagemFinalAoManifestanteSemMsg"
+									value="#{mBManifestacao.dsMensagemAoManifestante}" width="600"
+									height="330" />
+							</p:column>
+							<p:column style="width: 50%; vertical-align: top;">
+								<p:panelGrid style="width: 100%; margin: 0 auto; vertical-align: central;">
+									<p:row>
+										<p:column>
+											<p:selectOneMenu
+												value="#{mBManifestacao.idRespostaManifestacao}"
+												id="slcRespostaManifestacao">
+												<f:selectItem itemLabel="- Selecionar resposta -" itemValue="" />
+												<f:selectItems
+													value="#{mBManifestacao.respostasManifestacao}" var="item"
+													itemLabel="#{item.dsTituloResposta}"
+													itemValue="#{item.idRespostaManifestacao}" />
+												<p:ajax update="modeloRespostaManifestacao" event="change"
+													listener="#{mBManifestacao.ajustaDescricaoMensagemManifestante()}" />
+											</p:selectOneMenu>
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column colspan="2">
+											<p:editor id="modeloRespostaManifestacao"
+												styleClass="classIdCampo_modeloRespostaPadronizado"
+												value="#{mBManifestacao.respostaManifestacao.dsResposta}"
+												disabled="true" />
+											<p:panelGrid>
+												<p:row>
+													<p:column style="text-align: center"
+														styleClass="ui-widget-header">
+														<p:commandButton value="Utilizar esta resposta"
+															process="@this" update="textoMensagemFinalAoManifestanteSemMsg" />
+													</p:column>
+												</p:row>
+											</p:panelGrid>
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<p:fileUpload id="fileComunicacaoExterna"
+									fileUploadListener="#{mBManifestacao.handleFileUpload}"
+									mode="advanced" update="filesEnviadosComunicacaoExterna"
+									multiple="true" label="Adicionar arquivo"
+									invalidFileMessage="Tipo de arquivo inválido (permitidos: gif, jpeg, jpg, png, doc, docx, pdf, xls, xlsx, zip, rar, rtf, ppt, pptx)"
+									invalidSizeMessage="Tamanho do arquivo inválido (máximo 10 megabytes)"
+									sizeLimit="10485760"
+									allowTypes="/(\.|\/)(gif|jpe?g|png|doc|docx|ppt|pptx|pdf|xls|xlsx|zip|rar|rtf)$/"
+									auto="true" />
+								<p:outputPanel id="filesEnviadosComunicacaoExterna"
+									autoUpdate="true">
+									<table>
+										<ui:repeat
+											value="#{mBManifestacao.arquivosComunicacaoExterna}"
+											var="arquivo" varStatus="x">
+											<tr bgcolor="#CCCCCC" style="float: left; height: 40px; margin-right:10px ">
+												<td>
+													<h:outputText style="font-size: 10px;" value="#{x.index + 1}" /> -
+													<p:commandLink value="#{arquivo.nmAnexo}" action="#{mBManifestacao.baixarArquivo(arquivo)}" immediate="true" ajax="false" /> 
+												</td>
+												<td><p:commandButton icon="ui-icon-close"
+														title="Excluir"
+														actionListener="#{mBManifestacao.removerArquivo(arquivo, mBManifestacao.arquivosComunicacaoExterna)}"
+														process="@this" immediate="true" update="@parent">
+													</p:commandButton></td>
+											</tr>
+										</ui:repeat>
+									</table>
+								</p:outputPanel>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="centro" colspan="2">
+								<p:panelGrid style="width: 100%">
+									<p:row>
+										<p:column style="text-align: center; width: 100%"
+											styleClass="ui-widget-header">
+											<p:commandButton
+												update=":frmAdministrarManifestacao,
+                                                             :frmEncaminharManifestacao,
+                                                             :frmTramiteManifestacao,
+                                                             :frmEncerraManifestacaoSemMensagem"
+												process="@this, textoMensagemFinalAoManifestanteSemMsg"
+												value="Sim" id="confirmarEncerrarManifestacaoSemMsg"
+												oncomplete="dlgEncerraSemMensagemFinal.hide()"
+												action="#{mBManifestacao.gravaSolucionarManifestacao()}">
+											</p:commandButton>
+											<p:commandButton id="negarEncerrarManifestacaoSemMsg"
+												value="Não" onclick="dlgEncerraSemMensagemFinal.hide()"
+												type="button">
+												<p:resetInput target="frmEncerraManifestacaoSemMensagem" />
+											</p:commandButton>
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</h:form>
+			</p:confirmDialog>
+
+			<!-- DIALOG CONFIR - COM MENSAGEM FINAL OBRIGATORIA -->
+			<p:dialog id="dialogoEncerraComMensagemFinal"
+				widgetVar="dlgEncerraComMensagemFinal"
+				message="Confirma que deseja realmente dar esta Manifestação por Solucionada?"
+				header="Confirmação" severity="alert" styleClass="bold"
+				appendToBody="true" closable="false" maximizable="true" width="1120" minimizable="true">
+				<h:form id="frmEncerraManifestacaoComMensagem">
+					<p:messages id="msgEncerraManifestacaoComMsg" redisplay="false" />
+					<p:panelGrid id="pnlEncerrarManifestacaoCemMensagem"
+						style="width: 100%; height: 350px; margin: 0 auto">
+						<p:row>
+							<p:column colspan="2" styleClass="bold">Para dar uma Manifestação como Solucionada é necessário enviar uma mensagem conclusiva ao Manifestante, você pode fazer isto incluindo sua mensagem no campo abaixo:</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="ui-widget-header centro" style="width: 50%; vertical-align: top;">Mensagem ao Manifestante</p:column>
+							<p:column styleClass="ui-widget-header centro" style="width: 50%; vertical-align: top;">Respostas Personalizadas</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="width: 50%; vertical-align: top;">
+								<p:editor widgetVar="editorMensagemFinalAoManifestanteComMsg"
+									rendered="true" id="textoMensagemFinalAoManifestanteComMsg"
+									value="#{mBManifestacao.dsMensagemAoManifestante}"
+									height="335"
+									required="true"
+									requiredMessage="Informe um texto para enviar ao manifestante." />
+							</p:column>
+							<p:column style="width: 50%; vertical-align: top;">
+								<p:panelGrid style="width: 100%; margin: 0 auto; vertical-align: central;">
+									<p:row>
+										<p:column>
+											<p:selectOneMenu
+												value="#{mBManifestacao.idRespostaManifestacao}"
+												id="slcRespostaManifestacao">
+												<f:selectItem itemLabel="- Selecionar resposta -" itemValue="" />
+												<f:selectItems
+													value="#{mBManifestacao.respostasManifestacao}" var="item"
+													itemLabel="#{item.dsTituloResposta}"
+													itemValue="#{item.idRespostaManifestacao}" />
+												<p:ajax update="modeloRespostaManifestacao" event="change"
+													listener="#{mBManifestacao.ajustaDescricaoMensagemManifestante()}" />
+											</p:selectOneMenu>
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column colspan="2">
+											<p:editor id="modeloRespostaManifestacao"
+												styleClass="classIdCampo_modeloRespostaPadronizado"
+												value="#{mBManifestacao.respostaManifestacao.dsResposta}"
+												disabled="true" />
+											<p:panelGrid>
+												<p:row>
+													<p:column style="text-align: center"
+														styleClass="ui-widget-header">
+														<p:commandButton value="Utilizar esta resposta"
+															process="@this" update="textoMensagemFinalAoManifestanteComMsg" />
+													</p:column>
+												</p:row>
+											</p:panelGrid>
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<p:fileUpload id="fileComunicacaoExterna"
+									fileUploadListener="#{mBManifestacao.handleFileUpload}"
+									mode="advanced" update="filesEnviadosComunicacaoExterna"
+									multiple="true" label="Adicionar arquivo"
+									invalidFileMessage="Tipo de arquivo inválido (permitidos: gif, jpeg, jpg, png, doc, docx, pdf, xls, xlsx, zip, rar, rtf, ppt, pptx)"
+									invalidSizeMessage="Tamanho do arquivo inválido (máximo 10 megabytes)"
+									sizeLimit="10485760"
+									allowTypes="/(\.|\/)(gif|jpe?g|png|doc|docx|ppt|pptx|pdf|xls|xlsx|zip|rar|rtf)$/"
+									auto="true" />
+								<p:outputPanel id="filesEnviadosComunicacaoExterna"
+									autoUpdate="true">
+									<table>
+										<ui:repeat
+											value="#{mBManifestacao.arquivosComunicacaoExterna}"
+											var="arquivo" varStatus="x">
+											<tr bgcolor="#CCCCCC" style="float: left; height: 40px; margin-right:10px ">
+												<td>
+													<h:outputText style="font-size: 10px;" value="#{x.index + 1}" /> -
+													<p:commandLink value="#{arquivo.nmAnexo}" action="#{mBManifestacao.baixarArquivo(arquivo)}" immediate="true" ajax="false" /> 
+												</td>
+												<td><p:commandButton icon="ui-icon-close"
+														title="Excluir"
+														actionListener="#{mBManifestacao.removerArquivo(arquivo, mBManifestacao.arquivosComunicacaoExterna)}"
+														process="@this" immediate="true" update="@parent">
+													</p:commandButton></td>
+											</tr>
+										</ui:repeat>
+									</table>
+								</p:outputPanel>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="centro" colspan="2">
+								<p:panelGrid style="width: 100%">
+									<p:row>
+										<p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+											<p:commandButton
+												update=":frmVisualizarMensagem"
+												process="@this, textoMensagemFinalAoManifestanteComMsg"
+												value="Visualizar" id="confirmarVisualizarManifestacaoComMsg"
+												onclick="statusDialog.show()"
+												oncomplete="dlgVisualizarMensagem.show()">
+											</p:commandButton>
+											<p:spacer width="20" />
+											<p:commandButton
+												update=":frmAdministrarManifestacao,
+														:frmEncaminharManifestacao,
+														:frmTramiteManifestacao,
+														frmEncerraManifestacaoComMensagem"
+												process="@this, textoMensagemFinalAoManifestanteComMsg"
+												value="Enviar" id="confirmarEncerrarManifestacaoComMsg"
+												onclick="statusDialog.show()"
+												oncomplete="if (!args.validationFailed){dlgEncerraComMensagemFinal.hide()};"
+												action="#{mBManifestacao.gravaSolucionarManifestacao()}">
+												<p:resetInput target="frmEncerraManifestacaoComMensagem" />
+											</p:commandButton>
+											<p:spacer width="20" />
+											<p:commandButton id="negarEncerrarManifestacaoComMsg"
+												update="frmEncerraManifestacaoComMensagem" value="Fechar"
+												onclick="dlgEncerraComMensagemFinal.hide()" type="button">
+												<p:resetInput target="frmEncerraManifestacaoComMensagem" />
+											</p:commandButton>
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</h:form>
+			</p:dialog>
+			
+			<!-- ======================================== -->
+			<!-- DIALOGs Visualziar Textos				  -->
+			<!-- ======================================== -->
+			<!-- DIALOG - VISUALIZAR MENSAGEM AO SOLUCIONAR MANIFSTAÇÃO -->
+			<p:dialog id="dialogoVisualizarMensagem" widgetVar="dlgVisualizarMensagem" dynamic="true" appendToBody="true" 
+				maximizable="false" modal="true" resizable="false" width="1000" header="Visualizar Mensagem">
+				<h:form id="frmVisualizarMensagem" style="max-height: 650px; overflow: auto;">
+					<p:panelGrid style="width: 975px;">
+						<p:row>
+							<p:column>
+								<h:outputText value="#{mBManifestacao.getEmailAoManifestante()}" escape="false" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="text-align: center; width: 100%; height: 30px;" styleClass="ui-widget-header centro">
+								<p:commandButton
+									update=":frmAdministrarManifestacao,
+											:frmEncaminharManifestacao,
+											:frmTramiteManifestacao,
+											:frmEncerraManifestacaoComMensagem,
+											frmVisualizarMensagem"
+									value="Enviar" id="confirmarEncerrarManifestacaoComMsg2"
+									onclick="statusDialog.show()"
+									oncomplete="if (!args.validationFailed){dlgEncerraComMensagemFinal.hide(); dlgVisualizarMensagem.hide()};"
+									action="#{mBManifestacao.gravaSolucionarManifestacao()}">
+									<p:resetInput target="frmVisualizarMensagem, :frmEncerraManifestacaoComMensagem" />
+								</p:commandButton>
+								<p:spacer width="20" />
+								<p:commandButton id="negarEncerrarManifestacaoComMsg2"
+									update="frmVisualizarMensagem" value="Fechar"
+									onclick="dlgVisualizarMensagem.hide()" type="button">
+									<p:resetInput target="frmVisualizarMensagem" />
+								</p:commandButton>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</h:form>
+			</p:dialog>
+			
+			<!-- DIALOG - VISUALIZAR ENCAMINHAMENTO -->
+			<p:dialog id="dialogoVisualizarEncaminhamento" widgetVar="dlgVisualizarEncaminhamento" dynamic="true" appendToBody="true" 
+				maximizable="false" modal="true" resizable="false" width="1000" header="Visualizar Mensagem">
+				<h:form id="frmVisualizarEncaminhamento" style="max-height: 650px; overflow: auto;">
+					<p:panelGrid style="width: 975px;">
+						<p:row>
+							<p:column>
+								<h:outputText value="#{mBManifestacao.getTextoEncaminhamento()}" escape="false" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="text-align: center; width: 100%; height: 30px;" styleClass="ui-widget-header centro">
+								<p:commandButton value="Enviar" id="btnEncaminhar2"
+									process="@this,:frmEncaminharManifestacao:slcUnidade,:frmEncaminharManifestacao:textoEncaminhamentoManifestacao"
+									actionListener="#{mBManifestacao.salvaEncaminhamento}"
+									update=":frmAdministrarManifestacao:dtbStatusManifestacao,
+											:frmAdministrarManifestacao:dtbAdministracao,
+											:frmEncaminharManifestacao"
+									ajax="false"
+									onclick="statusDialog.show()"
+									oncomplete="if (!args.validationFailed){dlgEncaminharManifestacaoW.hide()}; dlgVisualizarEncaminhamento.hide();">
+									<p:resetInput target="frmVisualizarEncaminhamento" />
+								</p:commandButton>
+								<p:spacer width="20" />
+								<p:commandButton id="fecharVisualizarEncaminhamento"
+									update="frmVisualizarEncaminhamento" value="Fechar"
+									onclick="dlgVisualizarEncaminhamento.hide()" type="button">
+									<p:resetInput target="frmVisualizarEncaminhamento, :frmEncaminharManifestacao" />
+								</p:commandButton>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</h:form>
+			</p:dialog>
+			
+			<!-- DIALOG - VISUALIZAR COMUNICAÇÃO EXTERNA -->
+			<p:dialog id="dialogoVisualizarComunicacao" widgetVar="dlgVisualizarComunicacao" dynamic="true" appendToBody="true" 
+				maximizable="false" modal="true" resizable="false" width="1000" header="Visualizar Mensagem">
+				<h:form id="frmVisualizarComunicacao" style="max-height: 650px; overflow: auto;">
+					<p:panelGrid style="width: 975px;">
+						<p:row>
+							<p:column>
+								<h:outputText value="#{mBManifestacao.getEmailAoManifestante()}" escape="false" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="text-align: center; width: 100%; height: 30px;" styleClass="ui-widget-header centro">
+								<p:commandButton value="Enviar" id="btnComunicacaoExterna2"
+									process="@this,:frmEnviarMensagem:textoMensagemAoManifestante"
+									actionListener="#{mBManifestacao.salvaComunicacaoExterna()}"
+									ajax="false"
+									onclick="statusDialog.show()"
+									oncomplete="if (!args.validationFailed){dlgEncaminharManifestacaoW.hide()}; dlgVisualizarComunicacao.hide()">
+									<p:resetInput target="frmVisualizarComunicacao" />
+								</p:commandButton>
+								<p:spacer width="20" />
+								<p:commandButton id="fecharVisualizarComunicacao"
+									update="frmVisualizarComunicacao" value="Fechar"
+									onclick="dlgVisualizarComunicacao.hide()" type="button">
+									<p:resetInput target="frmVisualizarComunicacao, :frmEnviarMensagem" />
+								</p:commandButton>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</h:form>
+			</p:dialog>
+			
+			<!-- DIALOG - VISUALIZAR TRAMITE -->
+			<p:dialog id="dialogoVisualizarTramite" widgetVar="dlgVisualizarTramite" dynamic="true" appendToBody="true" 
+				maximizable="false" modal="true" resizable="false" width="1000" header="Visualizar Mensagem">
+				<h:form id="frmVisualizarTramite" style="max-height: 650px; overflow: auto;">
+					<p:panelGrid style="width: 975px;">
+						<p:row>
+							<p:column>
+								<h:outputText value="#{mBManifestacao.getTextoTramite()}" escape="false" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="text-align: center; width: 100%; height: 30px;" styleClass="ui-widget-header centro">
+								<p:commandButton value="Enviar" id="btnTramite2"
+									process="@this,
+										:frmEnviarMensagemTramite:slcUnidadeTramite,
+										:frmEnviarMensagemTramite:textoMensagemAreaTecnica,
+										:frmEnviarMensagemTramite:slcUsuarioTramite"
+									actionListener="#{mBManifestacao.salvaTramite}"
+									ajax="false"
+									onclick="statusDialog.show()"
+									oncomplete="if (!args.validationFailed){dlgEnviarMensagemTramiteW.hide()}; dlgVisualizarTramite.hide()">
+									<p:resetInput target="frmVisualizarTramite" />
+								</p:commandButton>
+								<p:spacer width="20" />
+								<p:commandButton id="fecharVisualizarTramite"
+									update="frmVisualizarTramite" value="Fechar"
+									onclick="dlgVisualizarTramite.hide()" type="button">
+									<p:resetInput target="frmVisualizarTramite, :frmEnviarMensagemTramite" />
+								</p:commandButton>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</h:form>
+			</p:dialog>
+
+			<!-- ======================================== -->
+			<!-- DIALOG Responder Questionario			  -->
+			<!-- ======================================== -->
+			<p:dialog id="dlgQuestionario" widgetVar="dlgQuestionarioW"
+				modal="true" header="Responder Questionário" resizable="false"
+				appendToBody="true">
+				<p:spacer height="10px" width="100%" />
+				<h:form id="frmQuestionario">
+					<p:outputPanel
+						rendered="#{not mBResponderQuestionario.mostrarDados()}">
+						<h2>Questionário não respondido</h2>
+					</p:outputPanel>
+
+					<p:outputPanel rendered="#{mBResponderQuestionario.mostrarDados()}">
+						<p:messages id="mNovoMessages" redisplay="false" />
+
+						<h:outputText value="#{mBResponderQuestionario.questionario.nmQuestionario}" />
+						<br />
+						<br />
+						<p:outputPanel autoUpdate="true" rendered="#{not mBResponderQuestionario.respondido}">
+							<p:outputPanel rendered="#{mBResponderQuestionario.mostrarPergunta(1)}">
+								<h:outputText value="#{mBResponderQuestionario.descricaoPergunta(1)}" />
+								<h:selectOneRadio value="#{mBResponderQuestionario.resposta1}"
+									required="true" requiredMessage="Resposta a Pergunta"
+									disabled="#{mBManifestacao.desativarBotaoResponderQuestionario()}">
+									<f:selectItems value="#{mBEnum.respostasQuestionariosEnums}"
+										var="r" itemLabel="#{r.descricao}" itemValue="#{r.id}" />
+								</h:selectOneRadio>
+							</p:outputPanel>
+
+							<p:outputPanel rendered="#{mBResponderQuestionario.mostrarPergunta(2)}">
+								<h:outputText value="#{mBResponderQuestionario.descricaoPergunta(2)}" />
+								<h:selectOneRadio value="#{mBResponderQuestionario.resposta2}"
+									required="true" requiredMessage="Resposta a Pergunta"
+									disabled="#{mBManifestacao.desativarBotaoResponderQuestionario()}">
+									<f:selectItems value="#{mBEnum.respostasQuestionariosEnums}"
+										var="r" itemLabel="#{r.descricao}" itemValue="#{r.id}" />
+								</h:selectOneRadio>
+							</p:outputPanel>
+
+							<p:outputPanel rendered="#{mBResponderQuestionario.mostrarPergunta(3)}">
+								<h:outputText value="#{mBResponderQuestionario.descricaoPergunta(3)}" />
+								<h:selectOneRadio value="#{mBResponderQuestionario.resposta3}"
+									required="true" requiredMessage="Resposta a Pergunta"
+									disabled="#{mBManifestacao.desativarBotaoResponderQuestionario()}">
+									<f:selectItems value="#{mBEnum.respostasQuestionariosEnums}"
+										var="r" itemLabel="#{r.descricao}" itemValue="#{r.id}" />
+								</h:selectOneRadio>
+							</p:outputPanel>
+
+							<p:outputPanel rendered="#{mBResponderQuestionario.mostrarPergunta(4)}">
+								<h:outputText value="#{mBResponderQuestionario.descricaoPergunta(4)}" />
+								<h:selectOneRadio value="#{mBResponderQuestionario.resposta4}"
+									required="true" requiredMessage="Resposta a Pergunta"
+									disabled="#{mBManifestacao.desativarBotaoResponderQuestionario()}">
+									<f:selectItems value="#{mBEnum.respostasQuestionariosEnums}"
+										var="r" itemLabel="#{r.descricao}" itemValue="#{r.id}" />
+								</h:selectOneRadio>
+							</p:outputPanel>
+
+							<p:outputPanel rendered="#{mBResponderQuestionario.mostrarPergunta(5)}">
+								<h:outputText value="#{mBResponderQuestionario.descricaoPergunta(5)}" />
+								<h:selectOneRadio value="#{mBResponderQuestionario.resposta5}"
+									required="true" requiredMessage="Resposta a Pergunta"
+									disabled="#{mBManifestacao.desativarBotaoResponderQuestionario()}">
+									<f:selectItems value="#{mBEnum.respostasQuestionariosEnums}"
+										var="r" itemLabel="#{r.descricao}" itemValue="#{r.id}" />
+								</h:selectOneRadio>
+							</p:outputPanel>
+
+							<p:outputPanel rendered="#{mBResponderQuestionario.mostrarPergunta(6)}">
+								<h:outputText value="#{mBResponderQuestionario.descricaoPergunta(6)}" />
+								<h:selectOneRadio value="#{mBResponderQuestionario.resposta6}"
+									required="true" requiredMessage="Resposta a Pergunta"
+									disabled="#{mBManifestacao.desativarBotaoResponderQuestionario()}">
+									<f:selectItems value="#{mBEnum.respostasQuestionariosEnums}"
+										var="r" itemLabel="#{r.descricao}" itemValue="#{r.id}" />
+								</h:selectOneRadio>
+							</p:outputPanel>
+
+							<p:outputPanel rendered="#{mBResponderQuestionario.mostrarPergunta(7)}">
+								<h:outputText value="#{mBResponderQuestionario.descricaoPergunta(7)}" />
+								<h:selectOneRadio value="#{mBResponderQuestionario.resposta7}"
+									required="true" requiredMessage="Resposta a Pergunta"
+									disabled="#{mBManifestacao.desativarBotaoResponderQuestionario()}">
+									<f:selectItems value="#{mBEnum.respostasQuestionariosEnums}"
+										var="r" itemLabel="#{r.descricao}" itemValue="#{r.id}" />
+								</h:selectOneRadio>
+							</p:outputPanel>
+
+							<p:outputPanel rendered="#{mBResponderQuestionario.mostrarPergunta(8)}">
+								<h:outputText value="#{mBResponderQuestionario.descricaoPergunta(8)}" />
+								<h:selectOneRadio value="#{mBResponderQuestionario.resposta8}"
+									required="true" requiredMessage="Resposta a Pergunta"
+									disabled="#{mBManifestacao.desativarBotaoResponderQuestionario()}">
+									<f:selectItems value="#{mBEnum.respostasQuestionariosEnums}"
+										var="r" itemLabel="#{r.descricao}" itemValue="#{r.id}" />
+								</h:selectOneRadio>
+							</p:outputPanel>
+
+							<p:outputPanel rendered="#{mBResponderQuestionario.mostrarPergunta(9)}">
+								<h:outputText value="#{mBResponderQuestionario.descricaoPergunta(9)}" />
+								<h:selectOneRadio value="#{mBResponderQuestionario.resposta9}"
+									required="true" requiredMessage="Resposta a Pergunta"
+									disabled="#{mBManifestacao.desativarBotaoResponderQuestionario()}">
+									<f:selectItems value="#{mBEnum.respostasQuestionariosEnums}"
+										var="r" itemLabel="#{r.descricao}" itemValue="#{r.id}" />
+								</h:selectOneRadio>
+							</p:outputPanel>
+
+							<p:outputPanel rendered="#{mBResponderQuestionario.mostrarPergunta(10)}">
+								<h:outputText value="#{mBResponderQuestionario.descricaoPergunta(10)}" />
+								<h:selectOneRadio value="#{mBResponderQuestionario.resposta10}"
+									required="true" requiredMessage="Resposta a Pergunta"
+									disabled="#{mBManifestacao.desativarBotaoResponderQuestionario()}">
+									<f:selectItems value="#{mBEnum.respostasQuestionariosEnums}"
+										var="r" itemLabel="#{r.descricao}" itemValue="#{r.id}" />
+								</h:selectOneRadio>
+							</p:outputPanel>
+						</p:outputPanel>
+
+						<p:outputPanel autoUpdate="true" rendered="#{mBResponderQuestionario.respondido}">
+							<ui:repeat var="res" value="#{mBResponderQuestionario.respostas}">
+								<p style="font-weight: bold;">#{res.pergunta.dsPergunta}</p>
+								<span>#{mBEnum.getRespostaQuestionarioEnum(res.dsResposta).descricao}</span>
+							</ui:repeat>
+						</p:outputPanel>
+
+						<p:spacer height="10px" width="100%" />
+						
+						<h:outputText value="Comentário" style="font-weight: bold;" />
+						
+						<p:spacer height="10px" width="100%" />
+						
+						<h:inputTextarea value="#{mBResponderQuestionario.comentario}"
+							cols="100" rows="10"
+							disabled="#{mBManifestacao.desativarBotaoResponderQuestionario()}" />
+							
+						<p:spacer height="10px" width="100%" />
+						
+						<p:panelGrid style="width: 100%">
+							<p:row>
+								<p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+									<p:commandButton id="cbResponderSalvar" value="Responder"
+										style="margin-right: 20px;"
+										actionListener="#{mBResponderQuestionario.responder()}"
+										oncomplete="if (!args.validationFailed){dlgQuestionarioW.hide()}"
+										update=":frmAdministrarManifestacao" ajax="true"
+										rendered="#{not mBManifestacao.desativarBotaoResponderQuestionario()}" />
+										
+									<p:commandButton value="Fechar" immediate="true"
+										update="frmQuestionario" process="@this"
+										onclick="dlgQuestionarioW.hide()">
+										<p:resetInput target="frmQuestionario" />
+									</p:commandButton>
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+					</p:outputPanel>
+				</h:form>
+			</p:dialog>
+		</p:panel>
+		
+		<p:dialog id="dialogManifestacaoReativada" appendToBody="true" closable="false" widgetVar="dlManifestacaoReativada" header="Reativar Manifestação">
+            <h:form>
+            	<h:panelGrid columns="1" style="width: 300px; height: 70px; text-align: center">
+            		<h:outputText value="Manifestação reativada com sucesso" />
+            		
+	                <p:commandButton value="Fechar" 
+                                 ajax="true" icon="ui-icon-close"
+                                 styleClass="ui-confirmdialog-no" 
+                                 type="button"
+                                 onclick="dlManifestacaoReativada.hide();" />
+            	</h:panelGrid>
+            </h:form>
+		</p:dialog>
+		
+		<p:dialog id="dialogRespostaSemAlteracao" appendToBody="true" closable="false" widgetVar="dlgRespostaSemAlteracao" header="Resposta Sem Alteração">
+            <h:form>
+            	<h:panelGrid columns="1" style="width: 300px; height: 70px; text-align: center">
+            		<h:outputText value="Você está enviando uma resposta sem alteração, deseja enviar assim mesmo?" />
+            		
+	            	<h:panelGrid columns="2" style="width: 300px; text-align: center">
+		                <p:commandButton value="Não" 
+	                                 ajax="true" icon="ui-icon-close"
+	                                 type="button"
+	                                 onclick="dlgRespostaSemAlteracao.hide();" />
+		                <p:commandButton value="Sim" 
+	                                 ajax="true" icon="ui-icon-check"
+	                                 actionListener="#{mBManifestacao.gravaSolucionarManifestacaoREAL()}"
+	                                 oncomplete="dlgRespostaSemAlteracao.hide();" />
+					</h:panelGrid>
+            	</h:panelGrid>
+            </h:form>
+		</p:dialog>
+		
+		<p:dialog id="dialogNewPassword" appendToBody="true" modal="true" closable="false" widgetVar="dlgNewPassword" header="Gerar Nova Senha?">
+            <h:form>
+            	<h:panelGrid columns="1" style="width: 400px; height: 70px; text-align: center">
+            		<h:outputText value="Deseja gerar uma nova senha para essa manifestação e comunicar o manifestante por e-mail?" />
+            		
+	            	<h:panelGrid columns="2" style="width: 400px; text-align: center">
+		                <p:commandButton value="Sim, gerar nova senha" 
+	                                 ajax="false" icon="ui-icon-check"
+	                                 actionListener="#{mBManifestacao.generateNewPassword()}"
+	                                 oncomplete="dlgNewPassword.hide();" />
+		                <p:commandButton value="Não, cancelar" icon="ui-icon-close"
+	                                 oncomplete="dlgNewPassword.hide();" />
+					</h:panelGrid>
+            	</h:panelGrid>
+            </h:form>
+		</p:dialog>
+		
+		<p:dialog id="dialogRedirectToMainPage" appendToBody="true" modal="true" closable="false" widgetVar="dlgRedirectToMainPage" header="Retornar a página de Gerenciar Manifestações?">
+            <h:form>
+            	<h:panelGrid columns="1" style="width: 400px; height: 70px; text-align: center">
+            		<h:outputText value="Deseja retornar a página de Gerenciar Manifestações?" />
+            		
+	            	<h:panelGrid columns="2" style="width: 400px; text-align: center">
+		                <p:commandButton value="Sim, retornar" 
+	                                 ajax="false" icon="ui-icon-check"
+	                                 actionListener="#{mBManifestacao.sendRedirectToMainPage()}"
+	                                 onclick="dlgRedirectToMainPage.hide();" />
+		                <p:commandButton value="Não, permanecer nesta página" icon="ui-icon-close"
+	                                 oncomplete="dlgRedirectToMainPage.hide(); location.reload();" />
+					</h:panelGrid>
+            	</h:panelGrid>
+            </h:form>
+		</p:dialog>
+		
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+    <ui:define name="bread">
+        <p:breadCrumb>  
+            <p:menuitem value="Home"/>  
+            <p:menuitem value="Extração de Dados"/>  
+        </p:breadCrumb>  
+    </ui:define>
+    
+    <ui:define name="content">
+        <h:form id="form" style="max-width: 1216px; margin: 0 auto">
+            <p:panelGrid style="vertical-align: central; width: 100%">
+                <f:facet name="header">  
+                    <p:row>  
+                        <p:column colspan="4">Manifestações Encaminhadas por Ouvidor (Não Retornadas)
+                        </p:column>
+                    </p:row>
+                </f:facet>
+
+                <p:row>  
+                    <p:column style="width: 33%" styleClass="ui-widget-header">Período de abertura</p:column>
+                    <p:column style="width: 33%" styleClass="ui-widget-header">Ouvidor</p:column>
+                </p:row>  
+                <p:row>
+
+                    <p:column>De: <p:calendar value="#{mBExtracaoDados.dtCadastroInicio}" pattern="dd/MM/yyyy" /> à: <p:calendar value="#{mBExtracaoDados.dtCadastroFim}" pattern="dd/MM/yyyy" /></p:column>
+                    <p:column>
+                         <p:selectOneMenu id="ddlOperador" value="#{mBExtracaoDados.idUsuario}" >
+                            <f:selectItem itemLabel="- Selecione -" itemValue="" />
+                            <f:selectItems var="usuario" value="#{mBUsuario.getTodosUsuariosOuvidor()}" itemValue="#{usuario.idUsuario}" itemLabel="#{usuario.nmUsuario}" />
+                        </p:selectOneMenu>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column colspan="2" styleClass="left">
+                        <p:panelGrid style="width: 100%">
+                            <p:row>
+                                <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                    <p:commandButton value="Consultar" actionListener="#{mBExtracaoDados.consultarManifestacoesEncaminhadasPorTecnico()}"  update="tabelaManifestacoes" ajax="false" />
+                                    <p:spacer width="20px"/>
+                                    <p:commandButton value="Extrair Excel" actionListener="#{mBExtracaoDados.download()}"  ajax="false" />
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:column>
+                </p:row> 
+            </p:panelGrid>
+
+            <p:dataTable id="tabelaManifestacoes"
+                         value="#{mBExtracaoDados.manifestacoes}"
+                         paginator="true" rows="5"
+                         rowsPerPageTemplate="5,10,15"      
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         emptyMessage="Nenhuma manifestação foi encontrada"
+                         var="manifestacao"
+                         rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" 
+                         rowIndexVar="rowIx" >
+                <f:facet name="header">
+                    <h:outputText value="Manifestações Encontradas: #{mBExtracaoDados.manifestacoes.size()}"/>
+                </f:facet>
+                <!-- AMARELO - style="color: #e1cf07;" -->
+                <!-- LARANJA - style="color: #ff8b00;" -->
+                <!-- VERMELHO - style="color: #fe0000;" -->
+                <p:column style="width: 10%;" headerText="Nº" filterBy="#{manifestacao.nrManifestacao}" filterMatchMode="contains" sortBy="#{manifestacao.nrManifestacao}">
+                    <h:outputText value="#{manifestacao.nrManifestacao}"/>
+                </p:column>
+
+                <p:column style="width: 10%;">
+                    <f:facet name="header">
+                        <h:outputText value="Dt. Registro (R)"/><br />
+                        <h:outputText value="Dt. Atualização (A)" style="white-space: nowrap"/>
+                    </f:facet>
+                    <h:outputText value="R: "/>
+                    <h:outputText value="#{manifestacao.dtCadastro}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+                    </h:outputText>
+                    <br />
+                    <h:outputText value="A: "/>
+                    <h:outputText value="#{manifestacao.dtUltimaAtualizacao}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Manifestante" style="width: 23%;" filterBy="#{manifestacao.nmPessoa}" filterMatchMode="contains" sortBy="#{manifestacao.nmPessoa}">
+                    <h:outputText value="#{manifestacao.nmPessoa}" />
+                </p:column>
+
+                <p:column headerText="Tipo" style="width: 10%;" filterBy="#{manifestacao.idTipoManifestacao.nmTipoManifestacao}" filterMatchMode="contains" sortBy="#{manifestacao.idTipoManifestacao.nmTipoManifestacao}">
+                    <h:outputText value="#{manifestacao.idTipoManifestacao.nmTipoManifestacao}"/>
+                </p:column>
+
+                <p:column headerText="Prioridade" style="width: 10%;" filterBy="#{manifestacao.idPrioridade.nmPrioridade}" filterMatchMode="contains" sortBy="#{manifestacao.idPrioridade.nmPrioridade}">
+                    <h:outputText value="#{manifestacao.idPrioridade.nmPrioridade}"/>
+                </p:column>
+
+                <p:column headerText="Status" style="width: 10%;" filterBy="#{mBEnum.getStatusManifestacaoEnum(manifestacao.stStatusManifestacao).descricao}" filterMatchMode="contains" sortBy="#{mBEnum.getStatusManifestacaoEnum(manifestacao.stStatusManifestacao).descricao}">
+                    <h:outputText value="#{mBEnum.getStatusManifestacaoEnum(manifestacao.stStatusManifestacao).descricao}"/>
+                </p:column>
+
+                <p:column headerText="Unidade(s)"  style="width: 20%;" filterBy="#{mBListarManifestacoes.getUnidadesEncaminhadas(manifestacao)}" filterMatchMode="contains" sortBy="#{mBListarManifestacoes.getUnidadesEncaminhadas(manifestacao)}">
+                    <h:outputText value="#{mBListarManifestacoes.getUnidadesEncaminhadas(manifestacao)}"/>
+                </p:column>
+
+            	<p:column headerText="Dias em Atraso" style="width:5%;" sortBy="#{mBListarManifestacoes.diasAtrasoAoManifestante(manifestacao)}">
+					<h:outputText value="#{mBListarManifestacoes.diasAtrasoAoManifestante(manifestacao)}" />
+				</p:column>
+                
+                <p:column headerText="Ver">
+					<div style="width: 50px; display: inline-block;">
+						<p:commandButton id="cbViewManifestacao" icon="ui-icon-search"
+							title="Visualizar"
+							action="/pages/manifestacao/administrar.xhtml"
+							actionListener="#{mBManifestacao.setManifestacao(manifestacao)}"
+							ajax="false" style="float: left">
+							<f:actionListener binding="#{mBManifestacao.init()}" />
+						</p:commandButton>
+					</div>
+				</p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>

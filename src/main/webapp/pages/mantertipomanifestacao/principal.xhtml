@@ -1,0 +1,238 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+    <ui:define name="bread">
+        <p:breadCrumb>  
+            <p:menuitem value="Home"/>  
+            <p:menuitem value="Cadastro de Tipo de Manifestação"/>  
+        </p:breadCrumb>  
+    </ui:define>
+    
+    <ui:define name="content">
+        <p:fieldset legend="Cadastro de Tipo de Manifestação" style="max-width: 1190px; margin: 0 auto">            
+            <h:form id="formTipoManifestacao">
+                <p:dataTable id="tabela1" 
+                             widgetVar="tabela"
+                             value="#{mBTipoManifestacao.todos}"
+                             paginator="true" rows="5"
+                             rowsPerPageTemplate="5,10,15"
+                             paginatorPosition="bottom"                             
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             var="item"
+                             rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx">
+                    <f:facet name="header">                    
+                        <p:commandButton id="cbNovo" 
+                                         type="button"
+                                         value="Novo"
+                                         title="Novo"
+                                         onclick="dlgNovoTipoManifestacao.show();" 
+                                         style="float: left"/>
+                    </f:facet>
+                    <p:column filterBy="#{item.nmTipoManifestacao}" filterMatchMode="contains" sortBy="#{item.nmTipoManifestacao}" >
+                        <f:facet name="header">
+                            <h:outputText value="Tipo de Manifestação"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nmTipoManifestacao}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.dsTipoManifestacao}" filterMatchMode="contains" sortBy="#{item.dsTipoManifestacao}">
+                        <f:facet name="header">
+                            <h:outputText value="Descrição"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dsTipoManifestacao}"/>
+                    </p:column>
+                    
+                    <p:column filterBy="#{item.prazoAreaSolucionadora}" filterMatchMode="contains" sortBy="#{item.prazoAreaSolucionadora}" style="text-align: center">
+                        <f:facet name="header">
+                            <h:outputText value="Prazo Área Solucionadora "/>
+                        </f:facet>
+                        <h:outputText value="#{item.prazoAreaSolucionadora} dia(s)"/>
+                    </p:column>
+                    
+                    <p:column filterBy="#{item.prazoEntrada}" filterMatchMode="contains" sortBy="#{item.prazoEntrada}" style="text-align: center">
+                        <f:facet name="header">
+                            <h:outputText value="Prazo Entrada"/>
+                        </f:facet>
+                        <h:outputText value="#{item.prazoEntrada} dias(s)"/>
+                    </p:column>
+                    
+                    <p:column filterBy="#{item.prazoRespostaCidadao}" filterMatchMode="contains" sortBy="#{item.prazoRespostaCidadao}" style="text-align: center">
+                        <f:facet name="header">
+                            <h:outputText value="Prazo Resposta ao Cidadão"/>
+                        </f:facet>
+                        <h:outputText value="#{item.prazoRespostaCidadao} dias(s)"/>
+                    </p:column>
+                    
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputText value="Editar"/>
+                        </f:facet>
+                        <p:commandButton id="cbViewEditar" 
+                                         icon="ui-icon-pencil"
+                                         title="Editar"
+                                         update=":frmEditarTipoManifestacao"
+                                         oncomplete="dlgEditarTipoManifestacao.show();">
+                            <f:setPropertyActionListener value="#{item}" target="#{mBTipoManifestacao.tipomanifestacao}" />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputLabel value="Excluir"/>
+                        </f:facet>
+                        <p:commandButton id="cbViewExcluir" onclick="dlgExcluirTipoManifestacao.show();"
+                                         icon="ui-icon-close" title="Excluir">
+                            <f:setPropertyActionListener value="#{item}"
+                                                         target="#{mBTipoManifestacao.tipomanifestacao}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            <!-- Caixa de diálogo de exclusão -->
+            <p:confirmDialog id="dialogoExcluirTipoManifestacao" message="Confirmar Operação?"
+                             header="Excluir Tipo de Manifestação" severity="alert"
+                             widgetVar="dlgExcluirTipoManifestacao" appendToBody="true" closable="true" width="300">
+                <h:form id="frmExcluirTipoManifestacao">
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbExcluirContinuar" value="Sim"
+                                                 update=":formTipoManifestacao:tabela1"
+                                                 oncomplete="dlgExcluirTipoManifestacao.hide();tabela.filter()"
+                                                 actionListener="#{mBTipoManifestacao.remover}"/>
+                                <p:commandButton id="cbExcluirCancelar" value="Não" onclick="dlgExcluirTipoManifestacao.hide()" type="button" />                    
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:confirmDialog>
+            <!-- Caixa de diálogo de inclusão -->
+            <p:dialog id="dialogoNovoTipoManifestacao" widgetVar="dlgNovoTipoManifestacao" modal="true" header="Novo Tipo de Manifestação"
+                      resizable="false" appendToBody="true" closable="true">
+                <h:form id="frmNovoTipoManifestacao">
+                    <p:messages id="mNovoMessages" redisplay="false" />
+                    <p:panelGrid columns="2">
+                        <h:outputLabel value="Tipo de Manifestação:*" style="font-weight: bold;" />
+                        <p:inputText value="#{mBTipoManifestacao.tipomanifestacaoNovo.nmTipoManifestacao}" size="50" required="true" requiredMessage="Digite o Tipo de Manifestação" title="Informe o Tipo de Manifestação" />
+                        <h:outputLabel value="Descrição:*" style="font-weight: bold;" />
+                        <p:inputTextarea value="#{mBTipoManifestacao.tipomanifestacaoNovo.dsTipoManifestacao}" rows="5" cols="50" required="true" requiredMessage="Digite a descrição do Tipo de Manifestação" title="Informe a descrição do Tipo de Manifestação" />
+                        <h:outputLabel value="Prazos de Resposta:" style="font-weight: bold;" />
+                        <p:outputPanel id="panelPrazoNovo">
+                            <p:panelGrid style="width: 100%">
+                                <p:row>
+                                    <p:column style="text-align: center; width: 100%" colspan="2" styleClass="ui-widget-header">
+                                        <p:commandButton value="Definir prazo padrão do sistema" update="panelPrazoNovo" actionListener="#{mBTipoManifestacao.ajustaPrazoPadraoNovo()}" process="@this" immediate="true"/>  
+                                        <p:commandButton value="Sem prazo" update="panelPrazoNovo" actionListener="#{mBTipoManifestacao.zeraPrazoPadraoNovo()}" process="@this" immediate="true"/>  
+                                    </p:column>
+                                </p:row>
+                                <p:separator/>
+                                <p:row>
+                                    <p:column><h:outputText value="Prazo Entrada (dias):" /></p:column>
+                                    <p:column><p:inputText value="#{mBTipoManifestacao.tipomanifestacaoNovo.prazoEntrada}" size="20"  required="true" requiredMessage="Digite um Prazo de Entrada (0 para nenhum)"/> (dias)<br/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column><h:outputText value="Prazo Área Solucionadora (dias):" />
+                                    </p:column>
+                                    <p:column><p:inputText value="#{mBTipoManifestacao.tipomanifestacaoNovo.prazoAreaSolucionadora}" size="20"  required="true" requiredMessage="Digite um Prazo de Resposta da Área Solucionadora (0 para nenhum)"/> (dias)<br/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputText value="Prazo Resposta Cidadão (dias):" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText value="#{mBTipoManifestacao.tipomanifestacaoNovo.prazoRespostaCidadao}" size="20"  required="true" requiredMessage="Digite um Prazo de Resposta ao Cidadão (0 para nenhum)"/> (dias)
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:outputPanel>
+                    </p:panelGrid>                        
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbNovoSalvar" value="Salvar"
+                                                 actionListener="#{mBTipoManifestacao.cadastrar}"
+                                                 oncomplete="if (!args.validationFailed){dlgNovoTipoManifestacao.hide()}"
+                                                 update=":formTipoManifestacao:tabela1,frmNovoTipoManifestacao"
+                                                 ajax="true">
+                                    <p:resetInput target="frmNovoTipoManifestacao" />
+                                </p:commandButton>
+                                <p:spacer width="20px"/>
+                                <p:commandButton value="Fechar" immediate="true" update="frmNovoTipoManifestacao" onclick="dlgNovoTipoManifestacao.hide()">                            
+                                    <p:resetInput target="frmNovoTipoManifestacao" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            <!-- Caixa de diálogo de edição -->
+            <p:dialog id="dialogoEditarTipoManifestacao" widgetVar="dlgEditarTipoManifestacao" header="Editar Tipo de Manifestação"
+                      resizable="false" modal="true" appendToBody="true" closable="true">
+                <h:form id="frmEditarTipoManifestacao">
+                    <p:messages id="mEditarMessages" redisplay="false" />
+                    <p:panelGrid columns="2">
+                        <h:outputLabel value="Tipo de Manifestação:*" style="font-weight: bold;"  />
+                        <p:inputText value="#{mBTipoManifestacao.tipomanifestacao.nmTipoManifestacao}" size="50" required="true" requiredMessage="Digite o Tipo de Manifestação" title="Informe o Tipo de Manifestação" />
+                        <h:outputLabel value="Descrição:*" style="font-weight: bold;" />
+                        <p:inputTextarea value="#{mBTipoManifestacao.tipomanifestacao.dsTipoManifestacao}" rows="5" cols="50" required="true" requiredMessage="Digite a descrição do Tipo de Manifestação" title="Informe a descrição do Tipo de Manifestação" />
+                        <h:outputLabel value="Prazos de Resposta:" style="font-weight: bold;" />
+                        <p:outputPanel id="panelPrazoNovo">
+                            <p:panelGrid style="width: 100%">
+                                <p:row>
+                                    <p:column style="text-align: center; width: 100%" colspan="2" styleClass="ui-widget-header">
+                                        <p:commandButton value="Definir prazo padrão do sistema" update="panelPrazoNovo" actionListener="#{mBTipoManifestacao.ajustaPrazoPadraoNovo()}" process="@this" immediate="true"/>  
+                                        <p:commandButton value="Sem prazo" update="panelPrazoNovo" actionListener="#{mBTipoManifestacao.zeraPrazoPadraoNovo()}" process="@this" immediate="true"/>  
+                                    </p:column>
+                                </p:row>
+                                <p:separator/>
+                                <p:row>
+                                    <p:column><h:outputText value="Prazo Entrada (dias):" /></p:column>
+                                    <p:column><p:inputText value="#{mBTipoManifestacao.tipomanifestacao.prazoEntrada}" size="20"  required="true" requiredMessage="Digite um Prazo de Entrada (0 para nenhum)"/> (dias)<br/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column><h:outputText value="Prazo Área Solucionadora (dias):" />
+                                    </p:column>
+                                    <p:column><p:inputText value="#{mBTipoManifestacao.tipomanifestacao.prazoAreaSolucionadora}" size="20"  required="true" requiredMessage="Digite um Prazo de Resposta da Área Solucionadora (0 para nenhum)"/> (dias)<br/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputText value="Prazo Resposta Cidadão (dias):" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText value="#{mBTipoManifestacao.tipomanifestacao.prazoRespostaCidadao}" size="20"  required="true" requiredMessage="Digite um Prazo de Resposta ao Cidadão (0 para nenhum)"/> (dias)
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:outputPanel>
+                    </p:panelGrid>
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbEditarSalvar" value="Salvar"
+                                                 actionListener="#{mBTipoManifestacao.alterar}"
+                                                 oncomplete="if (!args.validationFailed){dlgEditarTipoManifestacao.hide()}"
+                                                 update=":formTipoManifestacao:tabela1,frmEditarTipoManifestacao">
+                                    <p:resetInput target="frmEditarTipoManifestacao" />
+                                </p:commandButton>
+                                <p:spacer width="20px"/>
+                                <p:commandButton value="Fechar" immediate="true" update="frmEditarTipoManifestacao" onclick="dlgEditarTipoManifestacao.hide()">
+                                    <p:resetInput target="frmEditarTipoManifestacao" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+        </p:fieldset>
+    </ui:define>
+</ui:composition>
+
+

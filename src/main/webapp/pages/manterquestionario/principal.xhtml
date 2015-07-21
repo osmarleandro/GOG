@@ -1,0 +1,391 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+    <ui:define name="bread">
+        <p:breadCrumb>  
+            <p:menuitem value="Home"/>  
+            <p:menuitem value="Cadastro de Questionário"/>  
+        </p:breadCrumb>  
+    </ui:define>
+    
+    <ui:define name="content">
+        <p:fieldset legend="Cadastro de Questionário"  style="max-width: 1190px; margin: 0 auto">            
+            <h:form id="formQuestionario">
+                <p:dataTable id="gdQuestionario" 
+                             widgetVar="tabela"
+                             value="#{mBQuestionario.todos}"
+                             paginator="true" rows="5"
+                             rowsPerPageTemplate="5,10,15"
+                             paginatorPosition="bottom"                             
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             var="item"
+                             rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx"
+                             filterEvent="enter"
+                             filterDelay="300"
+                             filteredValue="#{mBQuestionario.questionariosFiltrados}">
+                    <f:facet name="header">                    
+                        <p:commandButton id="cbNovo"                                       
+                                         type="button"
+                                         value="Novo"
+                                         title="Novo"
+                                         onclick="dlgNovoQuestionario.show();" 
+                                         style="float: left">
+                        </p:commandButton>
+                    </f:facet>                                        
+                    <p:column >
+                        <f:facet name="header" >
+                            <h:outputText value="Questionário" />
+                        </f:facet>
+                        <h:outputText value="#{item.nmQuestionario}" />
+                    </p:column>
+                     <p:column >
+                        <f:facet name="header" >
+                            <h:outputText value="Data Inicial" />
+                        </f:facet>
+                         <h:outputText value="#{item.dtInicio}" >
+                          <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+                         </h:outputText> 
+                    </p:column>
+                    <p:column >
+                        <f:facet name="header" >
+                            <h:outputText value="Data Final" />
+                        </f:facet>
+                        <h:outputText value="#{item.dtFinal}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+                        </h:outputText> 
+                    </p:column>
+                     <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputText value="Cadastrar Perguntas"/>
+                        </f:facet>
+						<p:commandButton	id="cbViewCadastrarPergunta" 
+                        					icon="ui-icon-plus"
+                                         	title="Novo"
+                                         	oncomplete="dlgCadastroPergunta.show();"
+                                         	update=":formQuestionario, :frmNovaPergunta">
+                           <f:setPropertyActionListener value="#{item}" target="#{mBPergunta.questionario}" />  
+                        </p:commandButton>
+                        <p:commandButton	id="cbViewVisualizarPergunta"
+                        					icon="ui-icon-search"
+                        					title="Visualizar"
+                        					oncomplete="dlgPerguntaCadastrada.show();"
+                        					actionListener="#{mBPergunta.carregarPerguntas(item)}"
+                        					update=":frmPerguntaCadastrada">
+                        </p:commandButton>
+                    </p:column>
+                     <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputText value="Ativar"/>
+                        </f:facet>
+                        <p:commandButton id="cbViewAtivar" 
+                        				 icon="ui-icon-check"
+                                         title="Ativar"
+                                         update=":formQuestionario"
+                                         oncomplete="dlgAtivarQuestionario.show();"
+                                         actionListener="#{mBQuestionario.preAtivar(item)}"
+                                         rendered="#{not item.status}">
+                        </p:commandButton>
+                    </p:column>
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputText value="Editar"/>
+                        </f:facet>
+                        <p:commandButton id="cbViewEditar" 
+                                         icon="ui-icon-pencil"
+                                         title="Editar"
+                                         update=":frmEditar"
+                                         oncomplete="dlgEditarQuestionario.show();">
+                            <f:setPropertyActionListener value="#{item}" target="#{mBQuestionario.questionario}" />
+                            </p:commandButton>
+                    </p:column>
+                    <p:column style="width: 40px">
+                        <f:facet name="header">
+                            <h:outputLabel value="Excluir"/>
+                        </f:facet>
+                         <p:commandButton id="cbViewExcluir" onclick="dlgExcluirQuestionario.show();"
+                                         icon="ui-icon-close" title="Excluir">
+                            <f:setPropertyActionListener value="#{item}" target="#{mBQuestionario.questionario}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            
+             <!-- Caixa de diálogo de exclusão de QUESTIONARIO -->
+            <p:confirmDialog id="dialogoExcluir" message="Confirma Operação?"
+                             header="Excluir Questionário" severity="alert"
+                             widgetVar="dlgExcluirQuestionario" appendToBody="true" closable="true" width="300">
+                <h:form id="frmExcluir">
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbExcluirContinuar" value="Sim"
+                                                 update=":formQuestionario"
+                                                 oncomplete="dlgExcluirQuestionario.hide(); tabela.filter();"
+                                                 actionListener="#{mBQuestionario.remover}"/>
+                                <p:commandButton id="cbExcluirCancelar" value="Não" onclick="dlgExcluirQuestionario.hide()" type="button" /> 
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:confirmDialog>
+            
+           <!-- Caixa de diálogo de inclusão de QUESTIONARIO -->  
+            <p:dialog id="dialogoNovoQuestionario" widgetVar="dlgNovoQuestionario" modal="true" appendToBody="true" header="Novo Questionário"
+                      resizable="false" closable="true">
+                <h:form id="frmNovoQuestionario">
+                    <p:messages id="mNovoMessages" redisplay="false" />
+                    <p:panelGrid columns="2"  id="pnlNovoQuestionario">
+                        <p:outputLabel id="olNovoNomeQuestionario" value="Nome do Questionário:" style="font-weight: bold;" for="itNovoNomeQuestionario"/>
+                        <p:inputText id="itNovoNomeQuestionario" value="#{mBQuestionario.questionarioNovo.nmQuestionario}" 
+                                     required="true"
+                                     requiredMessage="Digite o nome do questionário"
+                                     style="width:300px;"/>
+                        <p:outputLabel id="olDataInicialQuestionario" value="Data Incial do Questionário:" style="font-weight: bold;" for="cDataInicialQuestionario"/>
+                        <p:calendar id="cDataInicialQuestionario" pattern="dd/MM/yyyy" value="#{mBQuestionario.questionarioNovo.dtInicio}" required="true" requiredMessage="Data Inicial é obrigatória" navigator="true" />
+                        <p:outputLabel id="olDataFinalQuestionario" value="Data Final do Questionário:" style="font-weight: bold;" for="cDataFinalQuestionario"/>
+                        <p:calendar id="cDataFinalQuestionario" pattern="dd/MM/yyyy" value="#{mBQuestionario.questionarioNovo.dtFinal}" required="true" requiredMessage="Data Final é obrigatória" navigator="true" />
+                        <p:outputLabel id="olStatus" value="Status Questionário:" style="font-weight: bold;" for="chkStatus"/>
+                        <p:selectBooleanCheckbox id="chkStatus" value="#{mBQuestionario.questionarioNovo.status}" />
+                    </p:panelGrid>
+                    <p:spacer height="10px" width="100%"/>
+                     <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbNovoSalvar" 
+                                                 value="Salvar"                                             
+                                                 actionListener="#{mBQuestionario.cadastrar}"
+                                                 oncomplete="if (!args.validationFailed){dlgNovoQuestionario.hide()};  tabela.filter();"
+                                                 update=":formQuestionario:gdQuestionario, frmNovoQuestionario"
+                                                 ajax="true">
+                                    <p:resetInput target="frmNovoQuestionario" />
+                                </p:commandButton>
+                                <p:spacer width="20px"/>
+                                <p:commandButton value="Fechar" immediate="true" update="frmNovoQuestionario" process="@this"  onclick="dlgNovoQuestionario.hide()">      
+                                    <p:resetInput target="frmNovoQuestionario" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            
+            <!-- Caixa de diálogo de Edição QUESTIONARIO -->
+            <p:dialog id="dialogoEditar" widgetVar="dlgEditarQuestionario" header="Editar Questionário"
+                      resizable="false" modal="true" appendToBody="true" closable="true">
+                <h:form id="frmEditar">
+                    <p:messages id="mEditarMessages" redisplay="false" />
+                    <p:panelGrid columns="2">
+                        <p:outputLabel id="olEditarNomeQuestioario" value="Nome Questionário:" style="font-weight: bold;" for="itEditarNomeQuestionario"/>
+                        <p:inputText id="itEditarNomeQuestionario" value="#{mBQuestionario.questionario.nmQuestionario}" required="true"
+                                     requiredMessage="Digite o nome do Questionaário."
+                                     style="width:300px;"/>
+                         <p:outputLabel id="olDataInicialQuestionario" value="Data Incial do Questionário:" style="font-weight: bold;" for="cDataInicialQuestionario"/>
+                        <p:calendar id="cDataInicialQuestionario" value="#{mBQuestionario.questionario.dtInicio}" required="true" requiredMessage="Data Inicial é obrigatória" navigator="true" />
+                        <p:outputLabel id="olDataFinalQuestionario" value="Data Final do Questionário:" style="font-weight: bold;" for="cDataFinalQuestionario"/>
+                        <p:calendar id="cDataFinalQuestionario" value="#{mBQuestionario.questionario.dtFinal}" required="true" requiredMessage="Data Inicial é obrigatória" navigator="true" />
+                        <p:outputLabel id="olStatus" value="Status Questionário:" style="font-weight: bold;" for="chkStatus"/>
+                        <p:selectBooleanCheckbox id="chkStatus" value="#{mBQuestionario.questionario.status}" />
+                    </p:panelGrid>
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+
+                                <p:commandButton id="cbEditarSalvar" value="Salvar"
+                                                 actionListener="#{mBQuestionario.alterar}"
+                                                 oncomplete="if (!args.validationFailed){dlgEditarQuestionario.hide()}"
+                                                 update=":formQuestionario:gdQuestionario, frmEditar">
+                                    <p:resetInput target="frmEditar" />
+                                </p:commandButton>
+                                <p:spacer width="20px"/>
+                                <p:commandButton value="Fechar" immediate="true" onclick="dlgEditarQuestionario.hide()">
+                                    <p:resetInput target="frmEditar" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            
+            <!-- Caixa de dialogo de inclusao de perguntas -->  
+            <p:dialog id="dialogoNovaPergunta" widgetVar="dlgCadastroPergunta" modal="true" appendToBody="true" header="Nova Pergunta"
+                      resizable="false" closable="true">
+                <h:form id="frmNovaPergunta">
+                    <p:messages id="mNovoMessages" redisplay="false" />
+                    <p:panelGrid columns="2"  id="pnlNovaPergunta">
+                        <h:outputText value="Questionário:" style="font-weight: bold;" />
+                        <h:outputText value="#{mBPergunta.questionario.nmQuestionario}" style="font-weight: bold;" />
+                    	
+                        <p:outputLabel id="olNovaPergunta" value="Pergunta:" style="font-weight: bold;" for="itNovaPergunta"/>
+                        <p:inputText id="itNovaPergunta" value="#{mBPergunta.perguntaNova.dsPergunta}" 
+                                     required="true"
+                                     requiredMessage="Digite a pergunta"
+                                     style="width:300px;"/>
+                                     
+                        <p:outputLabel id="olPosicao" value="Posição:" style="font-weight: bold;" for="itPosicao"/>
+                        <p:inputText id="itPosicao" value="#{mBPergunta.perguntaNova.posicaoPergunta}" 
+                                     required="true" requiredMessage="Digite a posição"
+                                     style="width:300px;" styleClass="inputPosicao" />
+                    </p:panelGrid>
+                    <p:spacer height="10px" width="100%"/>
+                     <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbNovoSalvar" value="Salvar" 
+                                                 update=":formQuestionario:gdQuestionario"
+                                                 oncomplete="if (!args.validationFailed){dlgCadastroPergunta.hide()}"
+                                                 actionListener="#{mBPergunta.cadastrar}"
+                                                 ajax="true">
+                                    <p:resetInput target="frmNovaPergunta" />
+                                </p:commandButton>
+                                <p:spacer width="20px"/>
+                                <p:commandButton value="Fechar" immediate="true" update="frmNovaPergunta" process="@this"  onclick="dlgCadastroPergunta.hide()">      
+                                    <p:resetInput target="frmNovaPergunta" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            
+            
+            <!-- Caixa de dialogo de edição de perguntas -->  
+            <p:dialog id="dialogoEditarPergunta" widgetVar="dlgEditarPergunta" modal="true" appendToBody="true" header="Editar Pergunta"
+                      resizable="false" closable="true"  width="300">
+                <h:form id="frmEditarPergunta">
+                    <p:messages id="mEditarMessages" redisplay="false" />
+                    <p:panelGrid columns="2"  id="pnlEditarPergunta">
+                        <h:outputText value="Questionário:" style="font-weight: bold;" />
+                        <h:outputText value="#{mBPergunta.questionario.nmQuestionario}" style="font-weight: bold;" />
+                    	
+                        <p:outputLabel id="olNovaPergunta" value="Pergunta:" style="font-weight: bold;" for="itNovaPergunta"/>
+                        <p:inputText id="itNovaPergunta" value="#{mBPergunta.pergunta.dsPergunta}" 
+                                     required="true"
+                                     requiredMessage="Digite a pergunta"
+                                     style="width:300px;"/>
+                                     
+                        <p:outputLabel id="olPosicao" value="Posição:" style="font-weight: bold;" for="itPosicao"/>
+                        <p:inputText id="itPosicao" value="#{mBPergunta.pergunta.posicaoPergunta}" 
+                                     required="true" 
+                                     requiredMessage="Digite a posição"
+                                     style="width:300px;" styleClass="inputPosicao" />
+                    </p:panelGrid>
+                    <p:spacer height="10px" width="100%"/>
+                     <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbEditarSalvar" value="Salvar" 
+                                                 update=":formQuestionario:gdQuestionario, :frmPerguntaCadastrada"
+                                                 oncomplete="if (!args.validationFailed){dlgEditarPergunta.hide()}"
+                                                 actionListener="#{mBPergunta.alterar}"
+                                                 ajax="true">
+                                    <p:resetInput target="frmEditarPergunta" />
+                                </p:commandButton>
+                                <p:spacer width="20px"/>
+                                <p:commandButton value="Fechar" immediate="true" update="frmEditarPergunta" process="@this"  onclick="dlgEditarPergunta.hide()">      
+                                    <p:resetInput target="frmEditarPergunta" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            
+            <!-- Caixa de diálogo de vizualização de perguntas -->  
+            <p:dialog id="dialogoPerguntaCadastrada" widgetVar="dlgPerguntaCadastrada" modal="true" appendToBody="true" header="Perguntas Cadastradas"
+                      resizable="false" closable="true">
+                <h:form id="frmPerguntaCadastrada" style="min-width: 650px;">
+                    <p:messages id="mNovoMessages" redisplay="false" />
+                    <p:dataTable id="gdPerguntaCadstrada" 
+                             widgetVar="tabela"
+                             value="#{mBPergunta.perguntasFiltradas}"
+                             paginator="true" rows="10"
+                             paginatorPosition="none"                             
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             var="itemPergunta"
+                             rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx"
+                             filterEvent="enter"
+                             filterDelay="300"
+                             filteredValue="#{mBPergunta.perguntasFiltradas}">
+	                    <f:facet name="header">#{mBPergunta.questionario.nmQuestionario}</f:facet>                                                            
+	                    <p:column>
+	                        <f:facet name="header" >
+	                            <h:outputText value="Pergunta" />
+	                        </f:facet>
+	                        <h:outputText value="#{itemPergunta.dsPergunta}" />
+	                    </p:column>
+	                    <p:column style="width: 60px">
+	                        <f:facet name="header" >
+	                            <h:outputText value="Posição" />
+	                        </f:facet>
+	                        <h:outputText value="#{itemPergunta.posicaoPergunta}" />
+	                    </p:column>
+	                    <p:column style="width: 40px">
+	                        <f:facet name="header">
+	                            <h:outputLabel value="Editar"/>
+	                        </f:facet>
+	                         <p:commandButton id="cbViewEditar" onclick="dlgEditarPergunta.show();"
+	                                         icon="ui-icon-pencil" title="Excluir"
+	                                         update=":frmEditarPergunta">
+								<f:setPropertyActionListener value="#{itemPergunta}" target="#{mBPergunta.pergunta}" />
+	                        </p:commandButton>
+	                    </p:column>
+	                    <p:column style="width: 40px">
+	                        <f:facet name="header">
+	                            <h:outputLabel value="Excluir"/>
+	                        </f:facet>
+	                         <p:commandButton id="cbViewExcluir" onclick="dlgExcluirPergunta.show();"
+	                                         icon="ui-icon-close" title="Excluir">
+	                            <f:setPropertyActionListener value="#{itemPergunta}" target="#{mBPergunta.pergunta}" />
+	                        </p:commandButton>
+	                    </p:column>
+	                </p:dataTable>
+                </h:form>
+                <p:spacer width="20px"/>
+            </p:dialog>
+            
+            <!-- Caixa de diálogo de exclusão -->
+            <p:confirmDialog id="dialogoExcluirPergunta" message="Confirma Operação?"
+                             header="Excluir Pergunta" severity="alert"
+                             widgetVar="dlgExcluirPergunta" appendToBody="true" closable="false">
+                <h:form id="frmExcluirPergunta">
+                    <p:panelGrid style="width: 100%">
+                        <p:row>
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbExcluirPerguntaContinuar" value="Sim"
+                                                 update=":frmPerguntaCadastrada"
+                                                 oncomplete="dlgExcluirPergunta.hide(); tabela.filter();"
+                                                 actionListener="#{mBPergunta.remover}"/>
+                                <p:commandButton id="cbExcluirPerguntaCancelar" value="Não" onclick="dlgExcluirPergunta.hide()" type="button" /> 
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:confirmDialog>
+            
+            <!-- Caixa de diálogo de Ativar Questionário -->
+            <p:confirmDialog id="dialogoAtivarQuestionario" message="Confirma Operação?"
+                             header="Ativar Questionario" severity="alert"
+                             widgetVar="dlgAtivarQuestionario" appendToBody="true" closable="true" width="300">
+                <h:form id="formAtivarQuestionario">
+                    <p:panelGrid style="width: 100%">
+                        <p:row>              
+                            <p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+                                <p:commandButton id="cbAtivarQuestionarioContinuar" value="Sim"
+                                                 update=":formQuestionario:gdQuestionario, :frmNovaPergunta"
+                                                 oncomplete="if (!args.validationFailed){dlgAtivarQuestionario.hide()}"
+                                                 actionListener="#{mBQuestionario.ativar()}"/>
+                                <p:commandButton id="cbAtivarQuestionarioCancelar" value="Não" onclick="dlgAtivarQuestionario.hide()" type="button" /> 
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:confirmDialog>
+        </p:fieldset>
+    </ui:define>
+</ui:composition>

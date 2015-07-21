@@ -1,0 +1,367 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<title>Sistema de Ouvidoria</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+	<meta http-equiv="refresh" content="${session.maxInactiveInterval};url=#{request.contextPath}/" />
+	<h:outputStylesheet name="default.css" library="css" />
+	<h:outputStylesheet name="cssLayout.css" library="css" />
+	<h:outputStylesheet name="estilo.css" library="css" />
+	<h:outputStylesheet name="estiloGoogle.css" library="css" />
+	<h:outputScript name="locale-primefaces.js" library="js" />
+</h:head>
+
+<h:body>
+	<h:form id="formInfo">
+		<p:growl id="growl" />
+	</h:form>
+	
+	<p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();" />
+	
+	<p:dialog modal="true" widgetVar="statusDialog" header="Carregando" draggable="false" closable="false">
+		<p:graphicImage value="/img/carregando.gif" />
+	</p:dialog>
+	
+	<div id="top">
+		<ui:insert name="top">
+			<h:form prependId="false">
+				<div id="barraGoverno"></div>
+				
+				<div class="bgCabecalho">
+					<div class="cabecalho">
+						<div class="logo">
+							<h:commandLink action="/pages/manifestacao/listarmanifestacoes.xhtml?faces-redirect=true">
+								<h:graphicImage value="/img/logo-ouvidoria-interna.png" />
+							</h:commandLink>
+							<p:outputPanel rendered="#{not empty security.user}">
+								<div class="usuarioSistema">
+									<h:graphicImage value="/img/newOuvidoria/userSistema.png" />
+									<h:outputText id="lblNomeUsuario" value="#{security.userName}" />
+								</div>
+							</p:outputPanel>
+						</div>
+					</div>
+				</div>
+			</h:form>
+			<!-- Menu cabuloso primefaces -->
+			<div class="menu">
+				<div class="menuBar">
+					<h:form id="menubarForm">
+						<p:menubar>
+							<p:submenu label="Manifestação">
+								<p:menuitem value="Cadastrar Manifestação" ajax="false"
+									action="/pages/manifestacao/cadastrar.xhtml?faces-redirect=true" />
+								<p:menuitem value="Gerenciar Manifestação" ajax="false"
+									action="/pages/manifestacao/listarmanifestacoes.xhtml?faces-redirect=true"
+									rendered="#{security.hasRole('GERENCIAR_MANIFESTACAO')}" />
+								<p:menuitem value="Filtro Personalizado" ajax="false"
+									action="/pages/manterfiltropersonalizado/principal.xhtml?faces-redirect=true"
+									rendered="#{security.hasRole('MANTER_FILTROS_PERSONALIZADOS')}" />
+							</p:submenu>
+							<p:submenu label="Administração" rendered="#{security.enableAdministrationMenu()}">
+								<p:menuitem value="Área Entrada" ajax="false"
+									action="/pages/manterareaentrada/principal.xhtml?faces-redirect=true"
+									rendered="#{security.hasRole('MANTER_AREA_DE_ENTRADA')}" />
+								<p:menuitem value="Meio Entrada" ajax="false"
+									action="/pages/mantermeioentrada/principal.xhtml?faces-redirect=true"
+									rendered="#{security.hasRole('MANTER_MEIO_DE_ENTRADA')}" />
+								<p:menuitem value="Meio Resposta" ajax="false"
+									action="/pages/mantermeioresposta/principal.xhtml?faces-redirect=true"
+									rendered="#{security.hasRole('MANTER_MEIO_DE_RESPOSTA')}" />
+								<p:menuitem value="Prioridade" ajax="false"
+									action="/pages/manterprioridade/principal.xhtml?faces-redirect=true"
+									rendered="#{security.hasRole('MANTER_PRIORIDADE')}" />
+								<p:menuitem value="Classificação" ajax="false"
+									action="/pages/manterclassificacao/principal.xhtml?faces-redirect=true"
+									rendered="#{security.hasRole('MANTER_CLASSIFICACOES')}" />
+								<p:menuitem value="Subclassificação" ajax="false"
+									action="/pages/mantersubclassificacao/principal.xhtml?faces-redirect=true"
+									rendered="#{security.hasRole('MANTER_SUBCLASSIFICACOES')}" />
+								<p:menuitem value="Tipo de Manifestação" ajax="false"
+									action="/pages/mantertipomanifestacao/principal.xhtml?faces-redirect=true"
+									rendered="#{security.hasRole('MANTER_TIPO_MANIFESTACAO')}" />
+								<p:menuitem value="Faixa Etária" ajax="false"
+									action="/pages/manterfaixaetaria/principal.xhtml?faces-redirect=true"
+									rendered="#{security.hasRole('MANTER_FAIXA_ETARIA')}" />
+								<p:menuitem value="Unidade" ajax="false"
+									action="/pages/manterunidades/principal.xhtml?faces-redirect=true"
+									rendered="#{security.hasRole('MANTER_UNIDADE')}" />
+								<p:menuitem value="Grau de Instrução" ajax="false"
+									action="/pages/mantergrauinstrucao/principal.xhtml?faces-redirect=true"
+									rendered="#{security.hasRole('MANTER_GRAU_INSTRUCAO')}" />
+								<p:menuitem value="Questionário" ajax="false"
+									action="/pages/manterquestionario/principal.xhtml?faces-redirect=true"
+									rendered="#{security.hasRole('MANTER_QUESTIONARIO')}" />
+							</p:submenu>
+							<p:submenu label="Sistema" rendered="#{security.enableSystemMenu()}">
+								<p:menuitem value="Preferências do Sistema" ajax="false"
+									action="/pages/manterpreferenciasistema/principal.xhtml?faces-redirect=true"
+									rendered="#{security.hasRole('CONFIGURAR_PREFERENCIAS_DE_SISTEMA')}" />
+								<p:menuitem value="Auditoria" ajax="false"
+									action="/pages/logoperacoes/principal.xhtml?faces-redirect=true"
+									rendered="#{security.hasRole('VISUALIZAR_LOG_DE_OPERACOES')}" />
+							</p:submenu>
+							<p:submenu label="Relatório" rendered="#{security.enableReportMenu()}">
+								<p:menuitem value="Extração de Dados" ajax="false"
+									action="/pages/extracaodados/principal.xhtml?faces-redirect=true"
+									rendered="#{security.hasRole('REALIZAR_EXTRACAO_DE_DADOS')}" />
+								<p:menuitem value="Estatística" ajax="false"
+									action="/pages/estatisticas/principal.xhtml?faces-redirect=true"
+									rendered="#{security.hasRole('VISUALIZAR_ESTATISTICAS_DE_MANIFESTACAO')}" />
+								<p:submenu label="Por Unidade"
+									rendered="#{security.hasRole('REALIZAR_EXTRACAO_DE_DADOS')}">
+									<p:menuitem
+										value="• Manifestações com Encaminhamentos retornados por Unidade"
+										ajax="false"
+										action="/pages/extracaodados/unidade-retornadas.xhtml?faces-redirect=true" />
+									<p:menuitem
+										value="• Manifestações com Encaminhamentos não retornados por Unidade"
+										ajax="false"
+										action="/pages/extracaodados/unidade-encaminhadas.xhtml?faces-redirect=true" />
+									<p:menuitem value="• Manifestações por Unidade Solucionadora"
+										ajax="false"
+										action="/pages/extracaodados/unidade-solucionadora.xhtml?faces-redirect=true"
+										rendered="#{security.hasRole('REALIZAR_EXTRACAO_DE_DADOS')}" />
+									<p:menuitem
+										value="• Manifestações Solucionadas/Encerradas por Unidade"
+										ajax="false"
+										action="/pages/extracaodados/unidade-solucionadasEncerradas.xhtml?faces-redirect=true" />
+									<p:menuitem
+										value="• Manifestações sob responsabilidade do Interlocutor (Parada)"
+										ajax="false"
+										action="/pages/extracaodados/unidade-paradas.xhtml?faces-redirect=true" />
+								</p:submenu>
+								<p:submenu label="Por Usuário"
+									rendered="#{security.hasRole('REALIZAR_EXTRACAO_DE_DADOS')}">
+									<p:menuitem
+										value="• Manifestações Encaminhadas por Ouvidor (Retornadas)"
+										ajax="false"
+										action="/pages/extracaodados/usuario-ouvidorRetornadas.xhtml?faces-redirect=true" />
+									<p:menuitem
+										value="• Manifestações Encaminhadas por Ouvidor (Não Retornadas)"
+										ajax="false"
+										action="/pages/extracaodados/usuario-ouvidorEncaminhadas.xhtml?faces-redirect=true" />
+									<p:menuitem value="• Manifestações Em Análise por Ouvidor"
+										ajax="false"
+										action="/pages/extracaodados/usuario-analiseOuvidor.xhtml?faces-redirect=true" />
+									<p:menuitem
+										value="• Manifestações com Encaminhamentos retornados por Operador/Interlocutor"
+										ajax="false"
+										action="/pages/extracaodados/usuario-operadorRetornadas.xhtml?faces-redirect=true" />
+									<p:menuitem
+										value="• Manifestações com Encaminhamentos não retornados por Operador/Interlocutor"
+										ajax="false"
+										action="/pages/extracaodados/usuario-operadorEncaminhadas.xhtml?faces-redirect=true" />
+									<p:menuitem value="• Manifestações Cadastradas por Ouvidor"
+										ajax="false"
+										action="/pages/extracaodados/usuario-cadastradaOuvidor.xhtml?faces-redirect=true" />
+									<p:menuitem value="• Manifestações Solucionadas por Ouvidor"
+										ajax="false"
+										action="/pages/extracaodados/usuario-solucionadaOuvidor.xhtml?faces-redirect=true" />
+									<p:menuitem
+										value="• Manifestações Solucionadas sem Encaminhamento por Ouvidor"
+										ajax="false"
+										action="/pages/extracaodados/usuario-solucionadasSemEncaminhamento.xhtml?faces-redirect=true" />
+									<p:menuitem value="• Manifestações Reativadas por Ouvidor"
+										ajax="false"
+										action="/pages/extracaodados/usuario-reativadaOuvidor.xhtml?faces-redirect=true" />
+								</p:submenu>
+								<p:submenu label="Por Tipo Manifestação"
+									rendered="#{security.hasRole('REALIZAR_EXTRACAO_DE_DADOS')}">
+									<p:menuitem
+										value="• Manifestações com Encaminhamentos retornados por Tipo de Manifestação"
+										ajax="false"
+										action="/pages/extracaodados/tipoManifestacao-retornadas.xhtml?faces-redirect=true" />
+									<p:menuitem
+										value="• Manifestações com Encaminhamentos não retornados por Tipo de Manifestação"
+										ajax="false"
+										action="/pages/extracaodados/tipoManifestacao-encaminhadas.xhtml?faces-redirect=true" />
+								</p:submenu>
+								<p:submenu label="Por Classificação"
+									rendered="#{security.hasRole('REALIZAR_EXTRACAO_DE_DADOS')}">
+									<p:menuitem
+										value="• Manifestações com Encaminhamentos retornados por Classificação"
+										ajax="false"
+										action="/pages/extracaodados/classificacao-retornadas.xhtml?faces-redirect=true" />
+									<p:menuitem
+										value="• Manifestações com Encaminhamentos não retornados por Classificação"
+										ajax="false"
+										action="/pages/extracaodados/classificacao-encaminhadas.xhtml?faces-redirect=true" />
+								</p:submenu>
+								<p:submenu label="Por Prioridade"
+									rendered="#{security.hasRole('REALIZAR_EXTRACAO_DE_DADOS')}">
+									<p:menuitem
+										value="• Manifestações com Encaminhamentos retornados por Prioridade"
+										ajax="false"
+										action="/pages/extracaodados/prioridade-retornadas.xhtml?faces-redirect=true" />
+									<p:menuitem
+										value="• Manifestações com Encaminhamentos não retornados por Prioridade"
+										ajax="false"
+										action="/pages/extracaodados/prioridade-encaminhadas.xhtml?faces-redirect=true" />
+								</p:submenu>
+								<p:submenu label="Por Grau Instrução"
+									rendered="#{security.hasRole('REALIZAR_EXTRACAO_DE_DADOS')}">
+									<p:menuitem
+										value="• Manifestações Solucionadas/Encerradas por Grau de Instrução"
+										ajax="false"
+										action="/pages/extracaodados/grauInstrucao-encerradas.xhtml?faces-redirect=true" />
+									<p:menuitem
+										value="• Manifestações não solucionadas por Grau de Instrução"
+										ajax="false"
+										action="/pages/extracaodados/grauInstrucao-novas.xhtml?faces-redirect=true" />
+								</p:submenu>
+								<p:submenu label="Por Faixa Etária"
+									rendered="#{security.hasRole('REALIZAR_EXTRACAO_DE_DADOS')}">
+									<p:menuitem
+										value="• Manifestações Solucionadas/Encerradas por Faixa Etária"
+										ajax="false"
+										action="/pages/extracaodados/faixaEtaria-encerradas.xhtml?faces-redirect=true" />
+									<p:menuitem
+										value="• Manifestações não solucionadas por Faixa Etária"
+										ajax="false"
+										action="/pages/extracaodados/faixaEtaria-novas.xhtml?faces-redirect=true" />
+								</p:submenu>
+								<p:submenu label="Por Sexo"
+									rendered="#{security.hasRole('REALIZAR_EXTRACAO_DE_DADOS')}">
+									<p:menuitem
+										value="• Manifestações Solucionadas/Encerradas por Sexo"
+										ajax="false"
+										action="/pages/extracaodados/sexo-encerradas.xhtml?faces-redirect=true" />
+									<p:menuitem value="• Manifestações não solucionadas por Sexo"
+										ajax="false" action="/pages/extracaodados/sexo-novas.xhtml?faces-redirect=true" />
+								</p:submenu>
+								<p:submenu label="Por Raça"
+									rendered="#{security.hasRole('REALIZAR_EXTRACAO_DE_DADOS')}">
+									<p:menuitem
+										value="• Manifestações Solucionadas/Encerradas por Raça"
+										ajax="false"
+										action="/pages/extracaodados/raca-encerradas.xhtml?faces-redirect=true" />
+									<p:menuitem value="• Manifestações não solucionadas por Raça"
+										ajax="false" action="/pages/extracaodados/raca-novas.xhtml?faces-redirect=true" />
+								</p:submenu>
+								<p:submenu label="Por UF"
+									rendered="#{security.hasRole('REALIZAR_EXTRACAO_DE_DADOS')}">
+									<p:menuitem
+										value="• Manifestações Solucionadas/Encerradas por UF"
+										ajax="false" action="/pages/extracaodados/uf-encerradas.xhtml?faces-redirect=true" />
+									<p:menuitem value="• Manifestações não solucionadas por UF"
+										ajax="false" action="/pages/extracaodados/uf-novas.xhtml?faces-redirect=true" />
+									<p:menuitem
+										value="• Manifestações com Encaminhamentos retornados por UF"
+										ajax="false" action="/pages/extracaodados/uf-retornadas.xhtml?faces-redirect=true" />
+									<p:menuitem
+										value="• Manifestações com Encaminhamentos não retornados por UF"
+										ajax="false"
+										action="/pages/extracaodados/uf-encaminhadas.xhtml?faces-redirect=true" />
+								</p:submenu>
+								<p:submenu label="Atrasadas"
+									rendered="#{security.hasRole('REALIZAR_EXTRACAO_DE_DADOS')}">
+									<p:menuitem
+										value="• Manifestações Status Em Atraso de resposta a Ouvidoria"
+										ajax="false"
+										action="/pages/extracaodados/atrasadas-relatorio1.xhtml?faces-redirect=true" />
+									<p:menuitem
+										value="• Manifestações Status Em Atraso para encaminhamento"
+										ajax="false"
+										action="/pages/extracaodados/atrasadas-relatorio2.xhtml?faces-redirect=true" />
+									<p:menuitem
+										value="• Manifestações Status Em Atraso para resposta ao manifestante"
+										ajax="false"
+										action="/pages/extracaodados/atrasadas-relatorio3.xhtml?faces-redirect=true" />
+								</p:submenu>
+							</p:submenu>
+							<p:submenu label="Gráfico" rendered="#{security.enableChartMenu()}">
+								<p:menuitem value="Total de Mensagens Recebidas por Mês" ajax="false"
+									action="/pages/grafico/totalMensagensRecebidasGeral.xhtml?faces-redirect=true" />
+								<p:menuitem value="Total de Mensagens - Internas x Vinculadas" ajax="false"
+									action="/pages/grafico/totalMensagensRecebidasInternaVinculada.xhtml?faces-redirect=true" />
+								<p:menuitem value="Total de Mensagens Enviadas às Unidades do MinC" ajax="false"
+									action="/pages/grafico/totalMensagensEnviadasUnidadesMinc.xhtml?faces-redirect=true" />
+								<p:menuitem value="Total de Mensagens Enviadas às Unidades Vinculadas" ajax="false"
+									action="/pages/grafico/totalMensagensEnviadasUnidadesVinculadas.xhtml?faces-redirect=true" />
+								<p:menuitem value="Tipos de Mensagens Recebidas - Unidades do MinC" ajax="false"
+									action="/pages/grafico/tiposMensagensRecebidasUnidadesMinc.xhtml?faces-redirect=true" />
+								<p:menuitem value="Tipos de Mensagens Recebidas - Unidades Vinculadas" ajax="false"
+									action="/pages/grafico/tiposMensagensRecebidasUnidadesVinculadas.xhtml?faces-redirect=true" />
+								<p:menuitem value="Total de Mensagens Recebidas por Região Econômica" ajax="false"
+									action="/pages/grafico/totalMensagensRecebidasRegiaoEconomica.xhtml?faces-redirect=true" />
+								<p:menuitem value="Total de Mensagens Solucionadas por Mês" ajax="false"
+									action="/pages/grafico/totalMensagensSolucionadasGeral.xhtml?faces-redirect=true" />
+								<p:menuitem value="Questionários" ajax="false"
+									action="/pages/grafico/respostasQuestionarios.xhtml?faces-redirect=true" />
+								<p:menuitem value="Total de Mensagens - Classificação x Tipos" ajax="false"
+									action="/pages/grafico/totalMensagensClassificacaoTipo.xhtml?faces-redirect=true" />
+								<p:menuitem value="Classificações Mais Usadas" ajax="false"
+									action="/pages/grafico/classificacoesCincoMais.xhtml?faces-redirect=true" />
+								<p:menuitem value="Total de Mensagens Solucionadas - Geral" ajax="false"
+									action="/pages/grafico/totalMensagensSolucionadasUnidadeSolucionadora.xhtml?faces-redirect=true" />
+								<p:menuitem value="Média Dias Resposta à Ouvidoria" ajax="false"
+									action="/pages/grafico/mediaDiasRespostaOuvidoria.xhtml?faces-redirect=true" />
+							</p:submenu>
+							<p:submenu label="Comunicação" rendered="#{security.enableCommunicationMenu()}">
+								<p:menuitem value="E-mail de Notificação" ajax="false"
+									action="/pages/manteremailnotificacao/principal.xhtml?faces-redirect=true"
+									rendered="#{security.hasRole('MANTER_EMAILS_DE_NOTIFICACAO')}" />
+								<p:menuitem value="Encaminhamento Padronizado" ajax="false"
+									action="/pages/manterencaminhamentopadronizado/principal.xhtml?faces-redirect=true"
+									rendered="#{security.hasRole('MANTER_ENCAMINHAMENTO_PADRONIZADO')}" />
+								<p:menuitem value="Respostas de Manifestação" ajax="false"
+									action="/pages/manterrespostasmanifestacao/principal.xhtml?faces-redirect=true"
+									rendered="#{security.hasRole('MANTER_RESPOSTAS_MANIFESTACOES')}" />
+								<p:menuitem value="Avisos" ajax="false"
+									action="/pages/manteravisos/principal.xhtml?faces-redirect=true"
+									rendered="#{security.hasRole('MANTER_AVISO')}" />
+							</p:submenu>
+							<p:submenu label="Usuário" rendered="#{security.manifestanteLogged}">
+								<p:menuitem value="Minhas Informações" ajax="false"
+									action="/pages/manterusuarios/minhasInformacoes.xhtml?faces-redirect=true" />
+							</p:submenu>
+							<p:menuitem value="Salic" ajax="false" target="blank"
+								url="http://novosalic.cultura.gov.br/index/" 
+								rendered="#{not security.manifestante}" />
+							<p:submenu style="float: right; margin-right: 130px" icon="ui-icon-gear">
+								<p:menuitem value="Usuário" ajax="false"
+									action="/pages/manterusuarios/principal.xhtml?faces-redirect=true"
+									rendered="#{security.hasRole('MANTER_USUARIOS')}" />
+								<p:menuitem value="Perfil" ajax="false"
+									action="/pages/manterperfil/principal.xhtml?faces-redirect=true"
+									rendered="#{security.hasRole('MANTER_PERFIL')}" />
+								<p:menuitem value="Perfil Funcionalidades" ajax="false"
+									action="/pages/manterperfilfuncionalidade/principal.xhtml?faces-redirect=true"
+									rendered="#{security.hasRole('MANTER_PERFIL_X_FUNCIONALIDADES')}" />
+								<p:menuitem value="Minhas Informações" ajax="false"
+									action="/pages/manterusuarios/minhasInformacoes.xhtml?faces-redirect=true"
+									rendered="#{security.hasRole('ATUALIZAR_MINHAS_INFORMACOES') and not security.manifestante}" />
+								<p:separator />
+								<p:menuitem value="Sair" action="#{security.logout()}" />
+							</p:submenu>
+						</p:menubar>
+					</h:form>
+				</div>
+			</div>
+		</ui:insert>
+	</div>
+	<div id="content" class="left_content">
+		<ui:insert name="content">
+			conteudo
+		</ui:insert>
+	</div>
+	<div id="bottom">
+		<ui:insert name="bottom">
+			<div class="endereco" style="padding-top: 20px;">
+				Copyright © 2013-2015 CGTI - Coordenação Geral de Tecnologia da Informação
+				- Ministério da Cultura. Todos os Direitos Reservados.
+				<a href="http://www.cultura.gov.br/" target="_blank">MinC</a>
+			</div>
+		</ui:insert>
+	</div>
+
+</h:body>
+</html>
