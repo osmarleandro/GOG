@@ -24,35 +24,20 @@ import br.com.xti.ouvidoria.helper.DataHelper;
 import br.com.xti.ouvidoria.helper.FiltroHelper;
 import br.com.xti.ouvidoria.helper.ValidacaoHelper;
 import br.com.xti.ouvidoria.model.TbAreaEntrada;
-import br.com.xti.ouvidoria.model.TbAreaEntrada_;
 import br.com.xti.ouvidoria.model.TbClassificacao;
-import br.com.xti.ouvidoria.model.TbClassificacao_;
 import br.com.xti.ouvidoria.model.TbEncaminhamento;
-import br.com.xti.ouvidoria.model.TbEncaminhamento_;
 import br.com.xti.ouvidoria.model.TbFaixaEtaria;
-import br.com.xti.ouvidoria.model.TbFaixaEtaria_;
 import br.com.xti.ouvidoria.model.TbGrauInstrucao;
-import br.com.xti.ouvidoria.model.TbGrauInstrucao_;
 import br.com.xti.ouvidoria.model.TbManifestacao;
-import br.com.xti.ouvidoria.model.TbManifestacao_;
 import br.com.xti.ouvidoria.model.TbMeioEntrada;
-import br.com.xti.ouvidoria.model.TbMeioEntrada_;
 import br.com.xti.ouvidoria.model.TbPais;
-import br.com.xti.ouvidoria.model.TbPais_;
 import br.com.xti.ouvidoria.model.TbPrioridade;
-import br.com.xti.ouvidoria.model.TbPrioridade_;
 import br.com.xti.ouvidoria.model.TbSubClassificacao;
-import br.com.xti.ouvidoria.model.TbSubClassificacao_;
 import br.com.xti.ouvidoria.model.TbTipoManifestacao;
-import br.com.xti.ouvidoria.model.TbTipoManifestacao_;
 import br.com.xti.ouvidoria.model.TbTramite;
-import br.com.xti.ouvidoria.model.TbTramite_;
 import br.com.xti.ouvidoria.model.TbUF;
-import br.com.xti.ouvidoria.model.TbUF_;
 import br.com.xti.ouvidoria.model.TbUnidade;
-import br.com.xti.ouvidoria.model.TbUnidade_;
 import br.com.xti.ouvidoria.model.TbUsuario;
-import br.com.xti.ouvidoria.model.TbUsuario_;
 import br.com.xti.ouvidoria.model.enums.BooleanEnum;
 import br.com.xti.ouvidoria.model.enums.StatusEncaminhamentoEnum;
 import br.com.xti.ouvidoria.model.enums.StatusManifestacaoEnum;
@@ -138,7 +123,7 @@ public class ManifestacaoDAO extends AbstractDAO<TbManifestacao> {
             Root<TbManifestacao> m = query.from(TbManifestacao.class);
             query.select(m);
             query.distinct(true);
-            query.orderBy(cb.desc(m.get(TbManifestacao_.nrManifestacao)));
+//            query.orderBy(cb.desc(m.get(TbManifestacao_.nrManifestacao)));
 
             List<Predicate> restricoesLista = new ArrayList<>();
             for (FiltroPersonalizado filtro : filtrosPersonalizados) {
@@ -166,8 +151,13 @@ public class ManifestacaoDAO extends AbstractDAO<TbManifestacao> {
         }
     }
 
+    
     private Predicate[] getFiltros(CriteriaBuilder cb, Root<TbManifestacao> m, FiltroPersonalizado filtro) {
-        // Define os JOINs com as tabelas para ser realizado os filtros
+    	// Lista que recebe todas as restrições do filtro escolhido
+    	List<Predicate> restricoesLista = new ArrayList<>();
+
+    	// Define os JOINs com as tabelas para ser realizado os filtros
+    	/*
         Join<TbManifestacao, TbUsuario> joinManifestante = m.join(TbManifestacao_.idUsuarioManifestante, JoinType.LEFT);
         Join<TbManifestacao, TbUnidade> joinAreaSolucionadora = m.join(TbManifestacao_.tbUnidadeAreaSolucionadoraCollection, JoinType.LEFT);
         Join<TbManifestacao, TbTipoManifestacao> joinTipoManifestacao = m.join(TbManifestacao_.idTipoManifestacao, JoinType.LEFT);
@@ -187,8 +177,6 @@ public class ManifestacaoDAO extends AbstractDAO<TbManifestacao> {
         Join<TbEncaminhamento, TbUsuario> joinUsuarioEnviou = joinEncaminhamento.join(TbEncaminhamento_.idUsuarioEnviou, JoinType.LEFT);
         Join<TbEncaminhamento, TbTramite> joinTramite = joinEncaminhamento.join(TbEncaminhamento_.tbTramiteCollection, JoinType.LEFT);
         
-        // Lista que recebe todas as restrições do filtro escolhido
-        List<Predicate> restricoesLista = new ArrayList<>();
 
         // Id da Manifestação
         if (ValidacaoHelper.isNotEmpty(filtro.getManIdRangeDe()) && ValidacaoHelper.isNotEmpty(filtro.getManIdRangeAte())) {
@@ -389,7 +377,7 @@ public class ManifestacaoDAO extends AbstractDAO<TbManifestacao> {
         if (filtro.getEncDataRespostaDe() != null && filtro.getEncDataRespostaAte() != null) {
             restricoesLista.add(cb.between(joinEncaminhamento.get(TbEncaminhamento_.dtRespostaTramite), DataHelper.getDataMin(filtro.getEncDataRespostaDe()), DataHelper.getDataMax(filtro.getEncDataRespostaAte())));
         }
-        
+        */
         Predicate[] restricoesArray = restricoesLista.toArray(new Predicate[restricoesLista.size()]);
         return restricoesArray;
     }
@@ -421,7 +409,7 @@ public class ManifestacaoDAO extends AbstractDAO<TbManifestacao> {
             
             select += " and enc.idManifestacao.dtCadastro <= :dataFinal";
         }
-
+        
         List<TbManifestacao> res = new ArrayList<>();
         try {
             res = selectList(select, params);

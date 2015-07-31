@@ -1,80 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-	
-	<display-name>Sistema de Ouvidoria do MinC</display-name>
-	
-	<!-- Parâmetros -->
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+	<display-name>Gestão de Ouvidoria Governamental - GOG - Sistema de Ouvidoria do MinC</display-name>
 	<context-param>
 		<param-name>javax.faces.PROJECT_STAGE</param-name>
 		<param-value>Production</param-value>
 	</context-param>
-	
 	<context-param>
 		<param-name>javax.faces.SKIP_COMMENTS</param-name>
 		<param-value>true</param-value>
 	</context-param>
-	
 	<context-param>
 		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
 		<param-value>server</param-value>
 	</context-param>
-	
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
 		<param-value>xti-ouvidoria</param-value>
 	</context-param>
-	
 	<context-param>
 		<param-name>com.sun.faces.enableRestoreView11Compatibility</param-name>
 		<param-value>true</param-value>
 	</context-param>
-	
-	<!-- Declaração e mapeamento dos servlets da aplicação -->
 	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
-	
-	<!-- Mapeamento das páginas de erro da aplicação -->
 	<error-page>
 		<exception-type>javax.faces.application.ViewExpiredException</exception-type>
 		<location>/login.jsp?logout=expired</location>
 	</error-page>
-	
 	<error-page>
 		<exception-type>br.com.xti.ouvidoria.exception.FacesFileNotFoundException</exception-type>
 		<location>/pages/erro/erro.xhtml?type=1</location>
 	</error-page>
-
 	<error-page>
 		<error-code>404</error-code>
 		<location>/pages/erro/erro.xhtml?type=1</location>
 	</error-page>
-
 	<error-page>
 		<error-code>500</error-code>
 		<location>/pages/erro/erro.xhtml?type=3</location>
 	</error-page>
-
 	<error-page>
 		<exception-type>br.com.xti.ouvidoria.exception.SessionExpiredException</exception-type>
 		<location>/login.jsp?logout=expired</location>
 	</error-page>
-
 	<error-page>
 		<exception-type>br.com.xti.ouvidoria.exception.PermissionDeniedException</exception-type>
 		<location>/pages/erro/permissao.xhtml</location>
 	</error-page>
-	
-	<!-- Filtros -->
 	<filter>
 		<filter-name>PrimeFaces FileUpload Filter</filter-name>
 		<filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
@@ -87,406 +69,310 @@
 			<param-value>/tmp</param-value>
 		</init-param>
 	</filter>
-	
 	<filter-mapping>
 		<filter-name>PrimeFaces FileUpload Filter</filter-name>
 		<servlet-name>Faces Servlet</servlet-name>
 	</filter-mapping>
-
-	<!-- Configuração do tempo de timeout da aplicação -->
 	<session-config>
 		<session-timeout>30</session-timeout>
 	</session-config>
-
-	<!-- Lista de páginas de boas vindas da aplicação -->
 	<welcome-file-list>
 		<welcome-file>/index.jsp</welcome-file>
 	</welcome-file-list>
-	
-	<!-- Configuração do tipo de autenticação da aplicação -->
 	<login-config>
 		<auth-method>FORM</auth-method>
-		<realm-name>ouvidoria</realm-name>
+		<realm-name>GOG</realm-name>
 		<form-login-config>
 			<form-login-page>/login.jsp</form-login-page>
 			<form-error-page>/login.jsp</form-error-page>
 		</form-login-config>
 	</login-config>
-	
-	
-	
-	
-	
-	<!-- SECURITY CONSTRAINTS -->
-	<!-- Páginas Públicas -->
 	<security-constraint>
-	    <display-name>Sistema Ouvidoria - Páginas Públicas</display-name>
-	    <web-resource-collection>
-	        <web-resource-name>ouvidoriaPaginasPublicas</web-resource-name>
-	        <url-pattern>/pages/manifestacao/administrar.xhtml</url-pattern>
-	        <url-pattern>/pages/manifestacao/cadastrar.xhtml</url-pattern>
-	        
-	        <url-pattern>/anexos/*</url-pattern>
-	        <url-pattern>/img/*</url-pattern>
-	        <url-pattern>/resources/*</url-pattern>
-	        <url-pattern>/pages/erro/*</url-pattern>
-	        <url-pattern>/pages/externo/*</url-pattern>
-	        
-	        <url-pattern>/login</url-pattern>
-	        <url-pattern>/logout</url-pattern>
-	    </web-resource-collection>
+		<display-name>GOG - Sistema Ouvidoria - Páginas Públicas</display-name>
+		<web-resource-collection>
+			<web-resource-name>ouvidoriaPaginasPublicas</web-resource-name>
+			<url-pattern>/pages/manifestacao/administrar.xhtml</url-pattern>
+			<url-pattern>/pages/manifestacao/cadastrar.xhtml</url-pattern>
+			<url-pattern>/anexos/*</url-pattern>
+			<url-pattern>/img/*</url-pattern>
+			<url-pattern>/resources/*</url-pattern>
+			<url-pattern>/pages/erro/*</url-pattern>
+			<url-pattern>/pages/externo/*</url-pattern>
+			<url-pattern>/login</url-pattern>
+			<url-pattern>/logout</url-pattern>
+		</web-resource-collection>
 	</security-constraint>
-	
-	<!-- Acesso ao Sistema -->
 	<security-constraint>
-	    <display-name>Sistema Ouvidoria</display-name>
-	    <web-resource-collection>
-	        <web-resource-name>ouvidoria</web-resource-name>
-	        <url-pattern>/pages/*</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
+		<display-name>GOG - Sistema Ouvidoria</display-name>
+		<web-resource-collection>
+			<web-resource-name>GOG</web-resource-name>
+			<url-pattern>/pages/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
 			<role-name>*</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-	
-	
-	<!-- 1 - Manifestação -->
-	<!-- 1.2 - Sistema >> Gerenciar Manifestação -->
 	<security-constraint>
-	    <display-name>Gerenciar Manifestação</display-name>
-	    <web-resource-collection>
-	    	<web-resource-name>gerenciarManifestacao</web-resource-name>
-	        <url-pattern>/pages/manifestacao/listarmanifestacoes.xhtml</url-pattern>
-	        <url-pattern>/pages/manifestacao/administrar.xhtml</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
+		<display-name>Gerenciar Manifestação</display-name>
+		<web-resource-collection>
+			<web-resource-name>gerenciarManifestacao</web-resource-name>
+			<url-pattern>/pages/manifestacao/listarmanifestacoes.xhtml</url-pattern>
+			<url-pattern>/pages/manifestacao/administrar.xhtml</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
 			<role-name>gerenciar_manifestacao</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-	<!-- 1.3 - Sistema >> Filtro Personalizado -->
 	<security-constraint>
-	    <display-name>Filtro Personalizado</display-name>
-	    <web-resource-collection>
-	    	<web-resource-name>filtroPersonalizado</web-resource-name>
-	        <url-pattern>/pages/manterfiltropersonalizado/*</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
+		<display-name>Filtro Personalizado</display-name>
+		<web-resource-collection>
+			<web-resource-name>filtroPersonalizado</web-resource-name>
+			<url-pattern>/pages/manterfiltropersonalizado/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
 			<role-name>manter_filtros_personalizados</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-	
-	
-	<!-- 2 - Administração -->
-	<!-- 2.1 - Administração >> Área de Entrada -->
 	<security-constraint>
-	    <display-name>Manter Área de Entrada</display-name>
-	    <web-resource-collection>
-	    	<web-resource-name>manterAreaEntrada</web-resource-name>
-	        <url-pattern>/pages/manterareaentrada/*</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
+		<display-name>Manter Área de Entrada</display-name>
+		<web-resource-collection>
+			<web-resource-name>manterAreaEntrada</web-resource-name>
+			<url-pattern>/pages/manterareaentrada/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
 			<role-name>manter_area_de_entrada</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-	<!-- 2.2 - Administração >> Meio de Entrada -->
 	<security-constraint>
-	    <display-name>Manter Meio de Entrada</display-name>
-	    <web-resource-collection>
-	    	<web-resource-name>manterMeioEntrada</web-resource-name>
-	        <url-pattern>/pages/mantermeioentrada/*</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
+		<display-name>Manter Meio de Entrada</display-name>
+		<web-resource-collection>
+			<web-resource-name>manterMeioEntrada</web-resource-name>
+			<url-pattern>/pages/mantermeioentrada/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
 			<role-name>manter_meio_de_entrada</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-	<!-- 2.3 - Administração >> Meio de Resposta -->
 	<security-constraint>
-	    <display-name>Manter Meio de Resposta</display-name>
-	    <web-resource-collection>
-	    	<web-resource-name>manterMeioResposta</web-resource-name>
-	        <url-pattern>/pages/mantermeioresposta/*</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
+		<display-name>Manter Meio de Resposta</display-name>
+		<web-resource-collection>
+			<web-resource-name>manterMeioResposta</web-resource-name>
+			<url-pattern>/pages/mantermeioresposta/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
 			<role-name>manter_meio_de_resposta</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-	<!-- 2.4 - Administração >> Prioridade -->
 	<security-constraint>
-	    <display-name>Manter Prioridade</display-name>
-	    <web-resource-collection>
-	    	<web-resource-name>manterPrioridade</web-resource-name>
-	        <url-pattern>/pages/manterprioridade/*</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
+		<display-name>Manter Prioridade</display-name>
+		<web-resource-collection>
+			<web-resource-name>manterPrioridade</web-resource-name>
+			<url-pattern>/pages/manterprioridade/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
 			<role-name>manter_prioridade</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-	<!-- 2.5 - Administração >> Classificação -->
 	<security-constraint>
-	    <display-name>Manter Classificação</display-name>
-	    <web-resource-collection>
-	    	<web-resource-name>manterClassificacao</web-resource-name>
-	        <url-pattern>/pages/manterclassificacao/*</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
+		<display-name>Manter Classificação</display-name>
+		<web-resource-collection>
+			<web-resource-name>manterClassificacao</web-resource-name>
+			<url-pattern>/pages/manterclassificacao/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
 			<role-name>manter_classificacoes</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-	<!-- 2.6 - Administração >> Subclassificação -->
 	<security-constraint>
-	    <display-name>Manter Subclassificação</display-name>
-	    <web-resource-collection>
-	    	<web-resource-name>manterSubclassificacao</web-resource-name>
-	        <url-pattern>/pages/mantersubclassificacao/*</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
+		<display-name>Manter Subclassificação</display-name>
+		<web-resource-collection>
+			<web-resource-name>manterSubclassificacao</web-resource-name>
+			<url-pattern>/pages/mantersubclassificacao/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
 			<role-name>manter_subclassificacoes</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-	<!-- 2.7 - Administração >> Tipo de Manifestação -->
 	<security-constraint>
-	    <display-name>Manter Tipo de Manifestação</display-name>
-	    <web-resource-collection>
-	    	<web-resource-name>manterTipoManifestacao</web-resource-name>
-	        <url-pattern>/pages/mantertipomanifestacao/*</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
+		<display-name>Manter Tipo de Manifestação</display-name>
+		<web-resource-collection>
+			<web-resource-name>manterTipoManifestacao</web-resource-name>
+			<url-pattern>/pages/mantertipomanifestacao/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
 			<role-name>manter_tipo_manifestacao</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-	<!-- 2.8 - Administração >> Faixa Etária -->
 	<security-constraint>
-	    <display-name>Manter Faixa Etária</display-name>
-	    <web-resource-collection>
-	    	<web-resource-name>manterFaixaEtaria</web-resource-name>
-	        <url-pattern>/pages/manterfaixaetaria/*</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
+		<display-name>Manter Faixa Etária</display-name>
+		<web-resource-collection>
+			<web-resource-name>manterFaixaEtaria</web-resource-name>
+			<url-pattern>/pages/manterfaixaetaria/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
 			<role-name>manter_faixa_etaria</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-	<!-- 2.9 - Administração >> Unidade -->
 	<security-constraint>
-	    <display-name>Manter Unidade</display-name>
-	    <web-resource-collection>
-	    	<web-resource-name>manterUnidade</web-resource-name>
-	        <url-pattern>/pages/manterunidades/*</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
+		<display-name>Manter Unidade</display-name>
+		<web-resource-collection>
+			<web-resource-name>manterUnidade</web-resource-name>
+			<url-pattern>/pages/manterunidades/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
 			<role-name>manter_unidade</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-	<!-- 2.10 - Administração >> Grau de Instrução -->
 	<security-constraint>
-	    <display-name>Manter Grau de Instrução</display-name>
-	    <web-resource-collection>
-	    	<web-resource-name>manterGrauInstrucao</web-resource-name>
-	        <url-pattern>/pages/mantergrauinstrucao/*</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
+		<display-name>Manter Grau de Instrução</display-name>
+		<web-resource-collection>
+			<web-resource-name>manterGrauInstrucao</web-resource-name>
+			<url-pattern>/pages/mantergrauinstrucao/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
 			<role-name>manter_grau_instrucao</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-	<!-- 2.11 - Administração >> Questionário -->
 	<security-constraint>
-	    <display-name>Manter Questionário</display-name>
-	    <web-resource-collection>
-	    	<web-resource-name>manterQuestionario</web-resource-name>
-	        <url-pattern>/pages/manterquestionario/*</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
+		<display-name>Manter Questionário</display-name>
+		<web-resource-collection>
+			<web-resource-name>manterQuestionario</web-resource-name>
+			<url-pattern>/pages/manterquestionario/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
 			<role-name>manter_questionario</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-	
-	
-	<!-- 3 - Sistema -->
-	<!-- 3.1 - Sistema >> Preferências do Sistema -->
 	<security-constraint>
-	    <display-name>Preferências do Sistema</display-name>
-	    <web-resource-collection>
-	    	<web-resource-name>preferenciaSistema</web-resource-name>
-	        <url-pattern>/pages/manterpreferenciasistema/*</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
+		<display-name>Preferências do Sistema</display-name>
+		<web-resource-collection>
+			<web-resource-name>preferenciaSistema</web-resource-name>
+			<url-pattern>/pages/manterpreferenciasistema/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
 			<role-name>configurar_preferencias_de_sistema</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-	<!-- 3.2 - Sistema >> Auditoria -->
 	<security-constraint>
-	    <display-name>Auditoria</display-name>
-	    <web-resource-collection>
-	    	<web-resource-name>auditoria</web-resource-name>
-	        <url-pattern>/pages/logoperacoes/*</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
+		<display-name>Auditoria</display-name>
+		<web-resource-collection>
+			<web-resource-name>auditoria</web-resource-name>
+			<url-pattern>/pages/logoperacoes/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
 			<role-name>visualizar_log_de_operacoes</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-	
-	
-	<!-- 4 - Relatório -->
-	<!-- 4.1 - Relatório >> Extração de Dados -->
 	<security-constraint>
-	    <display-name>Extração de Dados</display-name>
-	    <web-resource-collection>
-	    	<web-resource-name>extracaoDados</web-resource-name>
-	        <url-pattern>/pages/extracaodados/*</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
+		<display-name>Extração de Dados</display-name>
+		<web-resource-collection>
+			<web-resource-name>extracaoDados</web-resource-name>
+			<url-pattern>/pages/extracaodados/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
 			<role-name>realizar_extracao_de_dados</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-	<!-- 4.2 - Relatório >> Estatísicas -->
 	<security-constraint>
-	    <display-name>Estatísticas das Manifestações</display-name>
-	    <web-resource-collection>
-	    	<web-resource-name>relatorioEstatisticas</web-resource-name>
-	        <url-pattern>/pages/estatisticas/*</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
+		<display-name>Estatísticas das Manifestações</display-name>
+		<web-resource-collection>
+			<web-resource-name>relatorioEstatisticas</web-resource-name>
+			<url-pattern>/pages/estatisticas/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
 			<role-name>visualizar_estatisticas_de_manifestacao</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-	
-	
-	<!-- 5 - Gráficos -->
 	<security-constraint>
-	    <display-name>Gráficos</display-name>
-	    <web-resource-collection>
-	    	<web-resource-name>graficos</web-resource-name>
-	        <url-pattern>/pages/grafico/*</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
+		<display-name>Gráficos</display-name>
+		<web-resource-collection>
+			<web-resource-name>graficos</web-resource-name>
+			<url-pattern>/pages/grafico/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
 			<role-name>gerar_graficos</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-	
-	
-	<!-- 6 - Comunicação -->
-	<!-- 6.1 - Comunicação >> E-mail de notificação -->
 	<security-constraint>
-	    <display-name>Comunicação >> E-mail de notificação</display-name>
-	    <web-resource-collection>
-	    	<web-resource-name>comunicacaoEmailNotificacao</web-resource-name>
-	        <url-pattern>/pages/manteremailnotificacao/*</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
+		<display-name>Comunicação >> E-mail de notificação</display-name>
+		<web-resource-collection>
+			<web-resource-name>comunicacaoEmailNotificacao</web-resource-name>
+			<url-pattern>/pages/manteremailnotificacao/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
 			<role-name>manter_emails_de_notificacao</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-	<!-- 6.2 - Comunicação >> Encaminhamento padronizado -->
 	<security-constraint>
-	    <display-name>Comunicação >> Encaminhamento padronizado</display-name>
-	    <web-resource-collection>
-	    	<web-resource-name>comunicacaoEncaminhamentoPadronizado</web-resource-name>
-	        <url-pattern>/pages/manterencaminhamentopadronizado/*</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
+		<display-name>Comunicação >> Encaminhamento padronizado</display-name>
+		<web-resource-collection>
+			<web-resource-name>comunicacaoEncaminhamentoPadronizado</web-resource-name>
+			<url-pattern>/pages/manterencaminhamentopadronizado/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
 			<role-name>manter_encaminhamento_padronizado</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-	<!-- 6.3 - Comunicação >> Respostas de Manifestação -->
 	<security-constraint>
-	    <display-name>Comunicação >> Respostas de Manifestação</display-name>
-	    <web-resource-collection>
-	    	<web-resource-name>comunicacaoRespostasManifestacao</web-resource-name>
-	        <url-pattern>/pages/manterrespostasmanifestacao/*</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
+		<display-name>Comunicação >> Respostas de Manifestação</display-name>
+		<web-resource-collection>
+			<web-resource-name>comunicacaoRespostasManifestacao</web-resource-name>
+			<url-pattern>/pages/manterrespostasmanifestacao/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
 			<role-name>manter_respostas_manifestacoes</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-	<!-- 6.4 - Comunicação >> Avisos -->
 	<security-constraint>
-	    <display-name>Comunicação >> Avisos</display-name>
-	    <web-resource-collection>
-	    	<web-resource-name>comunicacaoAvisos</web-resource-name>
-	        <url-pattern>/pages/manteravisos/*</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
+		<display-name>Comunicação >> Avisos</display-name>
+		<web-resource-collection>
+			<web-resource-name>comunicacaoAvisos</web-resource-name>
+			<url-pattern>/pages/manteravisos/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
 			<role-name>manter_aviso</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-	
-	
-	<!-- 0 - Outros -->
-	<!-- 0.1 - Outros >> Usuário -->
 	<security-constraint>
-	    <display-name>Manter Usuário</display-name>
-	    <web-resource-collection>
-	    	<web-resource-name>manterUsuario</web-resource-name>
-	        <url-pattern>/pages/manterusuarios/principal.xhtml</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
+		<display-name>Manter Usuário</display-name>
+		<web-resource-collection>
+			<web-resource-name>manterUsuario</web-resource-name>
+			<url-pattern>/pages/manterusuarios/principal.xhtml</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
 			<role-name>manter_usuarios</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-	<!-- 0.2 - Outros >> Perfil -->
 	<security-constraint>
-	    <display-name>Manter Perfil</display-name>
-	    <web-resource-collection>
-	    	<web-resource-name>manterPerfil</web-resource-name>
-	        <url-pattern>/pages/manterperfil/*</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
+		<display-name>Manter Perfil</display-name>
+		<web-resource-collection>
+			<web-resource-name>manterPerfil</web-resource-name>
+			<url-pattern>/pages/manterperfil/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
 			<role-name>manter_perfil</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-	<!-- 0.3 - Outros >> Perfil Funcionalidade -->
 	<security-constraint>
-	    <display-name>Manter Perfil Funcionalidades</display-name>
-	    <web-resource-collection>
-	    	<web-resource-name>manterPerfilFuncionalidades</web-resource-name>
-	        <url-pattern>/pages/manterperfilfuncionalidade/*</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
+		<display-name>Manter Perfil Funcionalidades</display-name>
+		<web-resource-collection>
+			<web-resource-name>manterPerfilFuncionalidades</web-resource-name>
+			<url-pattern>/pages/manterperfilfuncionalidade/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
 			<role-name>manter_perfil_x_funcionalidades</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-	<!-- 0.4 - Outros >> Minhas Informações -->
 	<security-constraint>
-	    <display-name>Minhas Informações</display-name>
-	    <web-resource-collection>
-	    	<web-resource-name>minhasInformacoes</web-resource-name>
-	        <url-pattern>/pages/manterusuarios/minhasInformacoes.xhtml</url-pattern>
-	    </web-resource-collection>
-	    <auth-constraint>
+		<display-name>Minhas Informações</display-name>
+		<web-resource-collection>
+			<web-resource-name>minhasInformacoes</web-resource-name>
+			<url-pattern>/pages/manterusuarios/minhasInformacoes.xhtml</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
 			<role-name>atualizar_minhas_informacoes</role-name>
 		</auth-constraint>
 	</security-constraint>
-	
-	
-	
-	
-	
-	<!-- Roles (permissões) da aplicação -->
 	<security-role>
 		<role-name>atualizar_minhas_informacoes</role-name>
 	</security-role>
