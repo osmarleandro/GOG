@@ -1,3 +1,22 @@
+<script src="https://raw.githubusercontent.com/DmitryBaranovskiy/raphael/master/raphael-min.js"></script>
+<script src="http://adrai.github.io/flowchart.js/flowchart-latest.js"></script>
+<div id="diagram"></div>
+<script>
+  var diagram = flowchart.parse("st=>start: Iniciara\n" + 
+"e=>end\n" + 
+"op=>operation: Configurar o Banco de Dados\n" + 
+"op0=>operation: Configurar o projeto no Eclipse\n" + 
+"op1=>operation: Configurar o Jboss\n" + 
+"op2=>operation: Executar carga inicial\n" + 
+"op3=>operation: Ajustar as configurações\n" + 
+"cond=>condition: Aplicação Montada?\n" + 
+"st->op0->op->op1->cond\n" + 
+"cond(yes)->op2->op3->e\n" + 
+"cond(no)->op");
+  diagram.drawSVG('diagram');
+</script>
+
+
 GOG Documentação 
 ================
 Aqui algumas informações sobre a configuração e montagem dos ambientes para utilização do sistema GOG.
@@ -33,12 +52,14 @@ cond(no)->op
 
 ## Configuração do projeto no Eclipse
 O projeto foi desenvolvido em Java, com uso do Maven. O arquivo "pom.xml" pode ser adequamente utilizado para importar o projeto em um IDE.
+
 No Eclipse basta solicitar a importação de um novo projeto (Import ==> Import Existing Maven Projects) e apontar para a raiz do projeto.
 
 ## Configuração do Banco de Dados
 Inicialmente, o projeto GOG foi desenvolvido para a plataforma SQLServer, utilizando a API EclipseLink para o mapeamento objeto relacional - ORM.
-A versão mais atual do projeto passou a utilizar JPA (com hibernate), mantendo o mapeamento objeto relacional mais transparente.
-Com isto, podemos utilizar o SGBD Postgresql como Banco de Dados do projeto GOG.
+A versão mais atual do projeto passou a utilizar JPA (com hibernate), mantendo o mapeamento objeto relacional mais transparente. 
+
+Com o mapeamento JPA, podemos utlizar qualquer gerenciador de banco de dados, bastando ajustar os drivers e os arquivos de configuração. Com isto, podemos utilizar o SGBD Postgresql como Banco de Dados do projeto GOG.
 
 ### Configuração do dataSource no projeto (arquivo "persistence.xml") 
 Path: /GOG/src/main/resources/META-INF/persistence.xml
@@ -65,12 +86,12 @@ Path: /GOG/src/main/resources/META-INF/persistence.xml
 
 > **Nota:** 
 
-> - A criação da DLL do banco de dados pode ser comentada no arquivo de persistence, após a primeira disponibilização do projeto
+> - A criação da DLL do banco de dados pode ser comentada no arquivo de persistence, após a primeira disponibilização do projeto. Este procedimento garante a instalação do banco de dados durante a primeira execução do sistema.
 ```
 <!-- 			<property name="hibernate.hbm2ddl.auto" value="create-drop" /> -->
 ```
 
-> - Pode-se configurar também para não exibir os scritps SQL durante a execução do sistema, alterando o valor da propriedade.
+> - Pode-se configurar a aplicação para não exibir os scritps SQL durante a execução do sistema, alterando o valor da propriedade.
 
 ```
  			<property name="hibernate.show_sql" value="false" /> 
@@ -81,12 +102,11 @@ Path: /GOG/src/main/resources/META-INF/persistence.xml
 
 A configuração do Jboss é feita basicamente em um único arquivo de propriedades, o 'standalone.xml', para ajustar a conexão com o banco de dados e para configurar os parâmetros de autenticação e segurança, conforme os seguintes passos:
 
-- <i class="icon-pencil"></i> Criar o datasource
-O data source precisar definir o jndi-name="java:/datasources/GOGDSPostreSQL" e as configurações de conexão com o banco de dados.
+- <i class="icon-pencil"></i> Criar o datasource: O data source precisa definir o jndi-name="java:/datasources/GOGDSPostreSQL" e as configurações de conexão com o banco de dados.
 
 > - Para configurar o datasource no Jboss 7.1.1 será necessário criar e configurar um "module" para o funcionamento do driver do Banco de Dados ('jar' contendo as classes para acesso ao banco).
 
-```
+```xml
                 <datasource jndi-name="java:/datasources/GOGDSPostreSQL" pool-name="GOGDSPostreSQL" enabled="true" use-java-context="true" use-ccm="true">
                     <connection-url>jdbc:postgresql://localhost:5432/GOG</connection-url>
                     <driver>org.postgresql</driver>
@@ -124,11 +144,10 @@ O data source precisar definir o jndi-name="java:/datasources/GOGDSPostreSQL" e 
 ```
 
 
-- <i class="icon-pencil"></i> Criar o driver referenciado no datasource
-O driver para o Postgresql deve referenciar o módulo a ser carregado com o necessário arquivo '*.jar' de conexão.
+- <i class="icon-pencil"></i> Criar o driver referenciado no datasource: O driver para o Postgresql deve referenciar o módulo a ser carregado com o necessário arquivo '*.jar' de conexão.
 - <i class="icon-pencil"></i> Criar o security domain - configuração de autenticação
 
-```
+```xml
 <security-domain name="OuvidoriaSecurityDomain">
 	<authentication>
 		<login-module code="br.com.xti.ouvidoria.security.OuvidoriaLoginModule" flag="required"/>
