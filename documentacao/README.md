@@ -1,20 +1,22 @@
-<script src="https://raw.githubusercontent.com/DmitryBaranovskiy/raphael/master/raphael-min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="http://adrai.github.io/flowchart.js/flowchart-latest.js"></script>
 <script>
-  var diagram = flowchart.parse("st=>start: Iniciara\n" + 
-"e=>end\n" + 
-"op=>operation: Configurar o Banco de Dados\n" + 
-"op0=>operation: Configurar o projeto no Eclipse\n" + 
-"op1=>operation: Configurar o Jboss\n" + 
-"op2=>operation: Executar carga inicial\n" + 
-"op3=>operation: Ajustar as configurações\n" + 
-"cond=>condition: Aplicação Montada?\n" + 
-"st->op0->op->op1->cond\n" + 
-"cond(yes)->op2->op3->e\n" + 
-"cond(no)->op");
-  diagram.drawSVG('diagram');
+	window.onload = function () {
+		var diagram = flowchart.parse("st=>start: Iniciar\n" + 
+			"e=>end\n" + 
+			"op=>operation: Configurar o Banco de Dados\n" + 
+			"op0=>operation: Configurar o projeto no Eclipse\n" + 
+			"op1=>operation: Configurar o Jboss\n" + 
+			"op2=>operation: Executar carga inicial\n" + 
+			"op3=>operation: Ajustar as configurações\n" + 
+			"cond=>condition: Aplicação Montada?\n" + 
+			"st->op0->op->op1->cond\n" + 
+			"cond(yes)->op2->op3->e\n" + 
+			"cond(no)->op");
+		diagram.drawSVG('diagram');
+	};
 </script>
-
 
 GOG Documentação 
 ================
@@ -24,28 +26,13 @@ Aqui algumas informações sobre a configuração e montagem dos ambientes para 
 
 ## Montagem do ambiente de desenvolvimento
 
-<div id="diagram">
+<div id='diagram' />
 
-```flow
-st=>start: Iniciar
-e=>end
-op=>operation: Configurar o Banco de Dados
-op0=>operation: Configurar o projeto no Eclipse
-op1=>operation: Configurar o Jboss
-op2=>operation: Executar carga inicial
-op3=>operation: Ajustar as configurações
-cond=>condition: Aplicação Montada?
-
-st->op0->op->op1->cond
-cond(yes)->op2->op3->e
-cond(no)->op
-```
-</div>
-- Configurar o projeto no Eclipse
-- Configurar o Banco de Dados
-- Configurar o Jboss
-- Executar carga inicial
-- Ajustar as configurações
+1. Configurar o projeto no Eclipse
+2. Configurar o Banco de Dados
+3. Configurar o Jboss
+4. Executar carga inicial
+5. Ajustar as configurações
 
 
 
@@ -158,4 +145,30 @@ A configuração do Jboss é feita basicamente em um único arquivo de proprieda
 
 ## Executar carga inicial
 
-A carga inicial do sistema, com o povoamento dos dados das tabelas de domínio utilizadas no sistema, deve ser realizado com a execução do scritp disponibilizado no arquivo 
+A carga inicial do sistema, com o povoamento dos dados das tabelas de domínio utilizadas no sistema, deve ser realizada com a execução do script disponibilizado no arquivo src/main/resources/ScriptCargaDominio.sql
+
+
+## Ajustar as configurações
+### Criar as views sql utilizadas pela aplicação
+* Deletar as tabelas criadas na execução da DLL durante o primeiro deploy
+```sql
+DROP TABLE vwestatisticasmanifestacao;
+DROP TABLE vwultimotramite;
+```
+- Executar o script disponibilizado nos arquivos listados a seguir, para criação das views que serão utilizadas:
+  - src/main/resources/CREATE VwEstatisticasManifestacao.sql 
+  - src/main/resources/CREATE vwUltimoTramite.sql
+
+
+### Ajustar a tabela de parâmetros da aplicação
+A tabela 'TbPreferenciaSistema' deve ser ajustada para configuração de alguns parâmetros da aplicação. 
+```sql
+INSERT INTO TbPreferenciaSistema
+	(idPreferenciaSistema, nomeOuvidoria, emailOuvidoria, hostEmail, portaEmail, usuarioEmail, 
+	senhaEmail, sslEmail, encerrarTramiteEncaminhada, retornarTramiteOuvidoria, ctlPrazoManifSoluc,
+	RespostasImediatas, prazoEntrada, prazoAreaSolucionadora, prazoRespostaCidadao)
+VALUES 
+	(1, 'Ouvidoria MinC', 'naoresponda.ouvidoria@cultura.gov.br', '10.0.0.54', 25, 'ouvidoria@cultura.gov.br',
+	'', '2', '1', '1', '1', 
+	'1', 1, 28, 1);
+```
