@@ -172,3 +172,28 @@ VALUES
 	'', '2', '1', '1', '1', 
 	'1', 1, 28, 1);
 ```
+
+A tabela 'TbPreferenciaSistema' também pode ser editada internamente no sistema, utilizando-se de um usuário cadastrado como "Administrador" e acessando o menu "Sistema" - "Preferências do Sistema".
+
+### Realizar a configuração/criação de usuários do sistema
+A tabela 'tbUsuario' deve ser carregada com um usuário com função de Administrador. 
+Esta configuração é oferecida no script de carga de dados iniciais (disponibilizado no arquivo src/main/resources/ScriptCargaDominio.sql), pelo seguinte trecho:
+
+```sql
+--tbUsuario
+/*
+Insere um usuário Administrador (tpFuncao=5) com a senha 123456 e login = 'root'. Este usuário deve ser criado para permitir a configuração interna do sistema,
+como a inclusão de novos usuários.
+*/
+INSERT INTO tbUsuario 
+	(idUsuario, nmUsuario, stStatus, eeEmail, idUnidade, tpUsuario, nmLogin, 
+	numTelefone, nmSenha, tpFuncao) 
+VALUES 
+	(1, 'root', 1, 'email@email.com', 1, '1', 'root', 
+	'(61)99999999', 'A0729799124513324E1BC0FE8AA1F046', '5');
+
+```
+
+> **Nota:** 
+
+> - Um usuário com função de Administrador tem permissão de editar o cadastro de usuários do sistema e de acessar as funcionalidades disponíveis.
