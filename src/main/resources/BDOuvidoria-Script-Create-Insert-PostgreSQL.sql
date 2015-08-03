@@ -1,5 +1,5 @@
---
--- PostgreSQL database dump
+﻿--
+-- javaQL database dump
 --
 
 -- Dumped from database version 9.3.4
@@ -16,13 +16,13 @@ SET client_min_messages = warning;
 DROP DATABASE ouvidoria;
 --
 -- TOC entry 3387 (class 1262 OID 31181)
--- Name: ouvidoria; Type: DATABASE; Schema: -; Owner: postgres
+-- Name: ouvidoria; Type: DATABASE; Schema: -; Owner: java
 --
 
 CREATE DATABASE ouvidoria WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8';
 
 
-ALTER DATABASE ouvidoria OWNER TO postgres;
+ALTER DATABASE ouvidoria OWNER TO java;
 
 \connect ouvidoria
 
@@ -35,18 +35,18 @@ SET client_min_messages = warning;
 
 --
 -- TOC entry 5 (class 2615 OID 2200)
--- Name: public; Type: SCHEMA; Schema: -; Owner: postgres
+-- Name: public; Type: SCHEMA; Schema: -; Owner: java
 --
 
 CREATE SCHEMA public;
 
 
-ALTER SCHEMA public OWNER TO postgres;
+ALTER SCHEMA public OWNER TO java;
 
 --
 -- TOC entry 3388 (class 0 OID 0)
 -- Dependencies: 5
--- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: postgres
+-- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: java
 --
 
 COMMENT ON SCHEMA public IS 'standard public schema';
@@ -77,7 +77,7 @@ SET default_with_oids = false;
 
 --
 -- TOC entry 171 (class 1259 OID 32441)
--- Name: tbajuda; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbajuda; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbajuda (
@@ -88,11 +88,11 @@ CREATE TABLE tbajuda (
 );
 
 
-ALTER TABLE public.tbajuda OWNER TO postgres;
+ALTER TABLE public.tbajuda OWNER TO java;
 
 --
 -- TOC entry 170 (class 1259 OID 32439)
--- Name: tbajuda_idajuda_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbajuda_idajuda_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbajuda_idajuda_seq
@@ -103,12 +103,12 @@ CREATE SEQUENCE tbajuda_idajuda_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbajuda_idajuda_seq OWNER TO postgres;
+ALTER TABLE public.tbajuda_idajuda_seq OWNER TO java;
 
 --
 -- TOC entry 3391 (class 0 OID 0)
 -- Dependencies: 170
--- Name: tbajuda_idajuda_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbajuda_idajuda_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbajuda_idajuda_seq OWNED BY tbajuda.idajuda;
@@ -116,7 +116,7 @@ ALTER SEQUENCE tbajuda_idajuda_seq OWNED BY tbajuda.idajuda;
 
 --
 -- TOC entry 173 (class 1259 OID 32452)
--- Name: tbanexo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbanexo; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbanexo (
@@ -126,11 +126,11 @@ CREATE TABLE tbanexo (
 );
 
 
-ALTER TABLE public.tbanexo OWNER TO postgres;
+ALTER TABLE public.tbanexo OWNER TO java;
 
 --
 -- TOC entry 172 (class 1259 OID 32450)
--- Name: tbanexo_idanexo_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbanexo_idanexo_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbanexo_idanexo_seq
@@ -141,12 +141,12 @@ CREATE SEQUENCE tbanexo_idanexo_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbanexo_idanexo_seq OWNER TO postgres;
+ALTER TABLE public.tbanexo_idanexo_seq OWNER TO java;
 
 --
 -- TOC entry 3392 (class 0 OID 0)
 -- Dependencies: 172
--- Name: tbanexo_idanexo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbanexo_idanexo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbanexo_idanexo_seq OWNED BY tbanexo.idanexo;
@@ -154,7 +154,7 @@ ALTER SEQUENCE tbanexo_idanexo_seq OWNED BY tbanexo.idanexo;
 
 --
 -- TOC entry 175 (class 1259 OID 32463)
--- Name: tbareaentrada; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbareaentrada; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbareaentrada (
@@ -163,11 +163,11 @@ CREATE TABLE tbareaentrada (
 );
 
 
-ALTER TABLE public.tbareaentrada OWNER TO postgres;
+ALTER TABLE public.tbareaentrada OWNER TO java;
 
 --
 -- TOC entry 174 (class 1259 OID 32461)
--- Name: tbareaentrada_idareaentrada_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbareaentrada_idareaentrada_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbareaentrada_idareaentrada_seq
@@ -178,12 +178,12 @@ CREATE SEQUENCE tbareaentrada_idareaentrada_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbareaentrada_idareaentrada_seq OWNER TO postgres;
+ALTER TABLE public.tbareaentrada_idareaentrada_seq OWNER TO java;
 
 --
 -- TOC entry 3393 (class 0 OID 0)
 -- Dependencies: 174
--- Name: tbareaentrada_idareaentrada_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbareaentrada_idareaentrada_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbareaentrada_idareaentrada_seq OWNED BY tbareaentrada.idareaentrada;
@@ -191,7 +191,7 @@ ALTER SEQUENCE tbareaentrada_idareaentrada_seq OWNED BY tbareaentrada.idareaentr
 
 --
 -- TOC entry 177 (class 1259 OID 32471)
--- Name: tbaviso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbaviso; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbaviso (
@@ -204,11 +204,11 @@ CREATE TABLE tbaviso (
 );
 
 
-ALTER TABLE public.tbaviso OWNER TO postgres;
+ALTER TABLE public.tbaviso OWNER TO java;
 
 --
 -- TOC entry 176 (class 1259 OID 32469)
--- Name: tbaviso_idavisos_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbaviso_idavisos_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbaviso_idavisos_seq
@@ -219,12 +219,12 @@ CREATE SEQUENCE tbaviso_idavisos_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbaviso_idavisos_seq OWNER TO postgres;
+ALTER TABLE public.tbaviso_idavisos_seq OWNER TO java;
 
 --
 -- TOC entry 3394 (class 0 OID 0)
 -- Dependencies: 176
--- Name: tbaviso_idavisos_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbaviso_idavisos_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbaviso_idavisos_seq OWNED BY tbaviso.idavisos;
@@ -232,7 +232,7 @@ ALTER SEQUENCE tbaviso_idavisos_seq OWNED BY tbaviso.idavisos;
 
 --
 -- TOC entry 178 (class 1259 OID 32480)
--- Name: tbcep; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbcep; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbcep (
@@ -244,11 +244,11 @@ CREATE TABLE tbcep (
 );
 
 
-ALTER TABLE public.tbcep OWNER TO postgres;
+ALTER TABLE public.tbcep OWNER TO java;
 
 --
 -- TOC entry 180 (class 1259 OID 32490)
--- Name: tbclassificacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbclassificacao; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbclassificacao (
@@ -257,11 +257,11 @@ CREATE TABLE tbclassificacao (
 );
 
 
-ALTER TABLE public.tbclassificacao OWNER TO postgres;
+ALTER TABLE public.tbclassificacao OWNER TO java;
 
 --
 -- TOC entry 179 (class 1259 OID 32488)
--- Name: tbclassificacao_idclassificacao_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbclassificacao_idclassificacao_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbclassificacao_idclassificacao_seq
@@ -272,12 +272,12 @@ CREATE SEQUENCE tbclassificacao_idclassificacao_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbclassificacao_idclassificacao_seq OWNER TO postgres;
+ALTER TABLE public.tbclassificacao_idclassificacao_seq OWNER TO java;
 
 --
 -- TOC entry 3395 (class 0 OID 0)
 -- Dependencies: 179
--- Name: tbclassificacao_idclassificacao_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbclassificacao_idclassificacao_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbclassificacao_idclassificacao_seq OWNED BY tbclassificacao.idclassificacao;
@@ -285,7 +285,7 @@ ALTER SEQUENCE tbclassificacao_idclassificacao_seq OWNED BY tbclassificacao.idcl
 
 --
 -- TOC entry 261 (class 1259 OID 32875)
--- Name: tbclassificacao_tbsubclassificacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbclassificacao_tbsubclassificacao; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbclassificacao_tbsubclassificacao (
@@ -294,11 +294,11 @@ CREATE TABLE tbclassificacao_tbsubclassificacao (
 );
 
 
-ALTER TABLE public.tbclassificacao_tbsubclassificacao OWNER TO postgres;
+ALTER TABLE public.tbclassificacao_tbsubclassificacao OWNER TO java;
 
 --
 -- TOC entry 262 (class 1259 OID 32880)
--- Name: tbclassificacao_tbunidade; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbclassificacao_tbunidade; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbclassificacao_tbunidade (
@@ -307,11 +307,11 @@ CREATE TABLE tbclassificacao_tbunidade (
 );
 
 
-ALTER TABLE public.tbclassificacao_tbunidade OWNER TO postgres;
+ALTER TABLE public.tbclassificacao_tbunidade OWNER TO java;
 
 --
 -- TOC entry 181 (class 1259 OID 32496)
--- Name: tbcomentarioquestionario; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbcomentarioquestionario; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbcomentarioquestionario (
@@ -320,11 +320,11 @@ CREATE TABLE tbcomentarioquestionario (
 );
 
 
-ALTER TABLE public.tbcomentarioquestionario OWNER TO postgres;
+ALTER TABLE public.tbcomentarioquestionario OWNER TO java;
 
 --
 -- TOC entry 183 (class 1259 OID 32503)
--- Name: tbcomunicacaoexterna; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbcomunicacaoexterna; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbcomunicacaoexterna (
@@ -337,11 +337,11 @@ CREATE TABLE tbcomunicacaoexterna (
 );
 
 
-ALTER TABLE public.tbcomunicacaoexterna OWNER TO postgres;
+ALTER TABLE public.tbcomunicacaoexterna OWNER TO java;
 
 --
 -- TOC entry 182 (class 1259 OID 32501)
--- Name: tbcomunicacaoexterna_idcomunicacaoexterna_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbcomunicacaoexterna_idcomunicacaoexterna_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbcomunicacaoexterna_idcomunicacaoexterna_seq
@@ -352,12 +352,12 @@ CREATE SEQUENCE tbcomunicacaoexterna_idcomunicacaoexterna_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbcomunicacaoexterna_idcomunicacaoexterna_seq OWNER TO postgres;
+ALTER TABLE public.tbcomunicacaoexterna_idcomunicacaoexterna_seq OWNER TO java;
 
 --
 -- TOC entry 3396 (class 0 OID 0)
 -- Dependencies: 182
--- Name: tbcomunicacaoexterna_idcomunicacaoexterna_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbcomunicacaoexterna_idcomunicacaoexterna_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbcomunicacaoexterna_idcomunicacaoexterna_seq OWNED BY tbcomunicacaoexterna.idcomunicacaoexterna;
@@ -365,7 +365,7 @@ ALTER SEQUENCE tbcomunicacaoexterna_idcomunicacaoexterna_seq OWNED BY tbcomunica
 
 --
 -- TOC entry 185 (class 1259 OID 32514)
--- Name: tbcomunicacaoexternaxanexo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbcomunicacaoexternaxanexo; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbcomunicacaoexternaxanexo (
@@ -375,11 +375,11 @@ CREATE TABLE tbcomunicacaoexternaxanexo (
 );
 
 
-ALTER TABLE public.tbcomunicacaoexternaxanexo OWNER TO postgres;
+ALTER TABLE public.tbcomunicacaoexternaxanexo OWNER TO java;
 
 --
 -- TOC entry 184 (class 1259 OID 32512)
--- Name: tbcomunicacaoexternaxanexo_idcomunicacaoexternaxanexo_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbcomunicacaoexternaxanexo_idcomunicacaoexternaxanexo_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbcomunicacaoexternaxanexo_idcomunicacaoexternaxanexo_seq
@@ -390,12 +390,12 @@ CREATE SEQUENCE tbcomunicacaoexternaxanexo_idcomunicacaoexternaxanexo_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbcomunicacaoexternaxanexo_idcomunicacaoexternaxanexo_seq OWNER TO postgres;
+ALTER TABLE public.tbcomunicacaoexternaxanexo_idcomunicacaoexternaxanexo_seq OWNER TO java;
 
 --
 -- TOC entry 3397 (class 0 OID 0)
 -- Dependencies: 184
--- Name: tbcomunicacaoexternaxanexo_idcomunicacaoexternaxanexo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbcomunicacaoexternaxanexo_idcomunicacaoexternaxanexo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbcomunicacaoexternaxanexo_idcomunicacaoexternaxanexo_seq OWNED BY tbcomunicacaoexternaxanexo.idcomunicacaoexternaxanexo;
@@ -403,7 +403,7 @@ ALTER SEQUENCE tbcomunicacaoexternaxanexo_idcomunicacaoexternaxanexo_seq OWNED B
 
 --
 -- TOC entry 187 (class 1259 OID 32522)
--- Name: tbemailautomatizado; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbemailautomatizado; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbemailautomatizado (
@@ -414,11 +414,11 @@ CREATE TABLE tbemailautomatizado (
 );
 
 
-ALTER TABLE public.tbemailautomatizado OWNER TO postgres;
+ALTER TABLE public.tbemailautomatizado OWNER TO java;
 
 --
 -- TOC entry 186 (class 1259 OID 32520)
--- Name: tbemailautomatizado_idemailautomatizado_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbemailautomatizado_idemailautomatizado_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbemailautomatizado_idemailautomatizado_seq
@@ -429,12 +429,12 @@ CREATE SEQUENCE tbemailautomatizado_idemailautomatizado_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbemailautomatizado_idemailautomatizado_seq OWNER TO postgres;
+ALTER TABLE public.tbemailautomatizado_idemailautomatizado_seq OWNER TO java;
 
 --
 -- TOC entry 3398 (class 0 OID 0)
 -- Dependencies: 186
--- Name: tbemailautomatizado_idemailautomatizado_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbemailautomatizado_idemailautomatizado_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbemailautomatizado_idemailautomatizado_seq OWNED BY tbemailautomatizado.idemailautomatizado;
@@ -442,7 +442,7 @@ ALTER SEQUENCE tbemailautomatizado_idemailautomatizado_seq OWNED BY tbemailautom
 
 --
 -- TOC entry 189 (class 1259 OID 32533)
--- Name: tbencaminhamento; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbencaminhamento; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbencaminhamento (
@@ -458,11 +458,11 @@ CREATE TABLE tbencaminhamento (
 );
 
 
-ALTER TABLE public.tbencaminhamento OWNER TO postgres;
+ALTER TABLE public.tbencaminhamento OWNER TO java;
 
 --
 -- TOC entry 188 (class 1259 OID 32531)
--- Name: tbencaminhamento_idencaminhamento_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbencaminhamento_idencaminhamento_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbencaminhamento_idencaminhamento_seq
@@ -473,12 +473,12 @@ CREATE SEQUENCE tbencaminhamento_idencaminhamento_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbencaminhamento_idencaminhamento_seq OWNER TO postgres;
+ALTER TABLE public.tbencaminhamento_idencaminhamento_seq OWNER TO java;
 
 --
 -- TOC entry 3399 (class 0 OID 0)
 -- Dependencies: 188
--- Name: tbencaminhamento_idencaminhamento_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbencaminhamento_idencaminhamento_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbencaminhamento_idencaminhamento_seq OWNED BY tbencaminhamento.idencaminhamento;
@@ -486,7 +486,7 @@ ALTER SEQUENCE tbencaminhamento_idencaminhamento_seq OWNED BY tbencaminhamento.i
 
 --
 -- TOC entry 191 (class 1259 OID 32544)
--- Name: tbencaminhamentopadronizado; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbencaminhamentopadronizado; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbencaminhamentopadronizado (
@@ -497,11 +497,11 @@ CREATE TABLE tbencaminhamentopadronizado (
 );
 
 
-ALTER TABLE public.tbencaminhamentopadronizado OWNER TO postgres;
+ALTER TABLE public.tbencaminhamentopadronizado OWNER TO java;
 
 --
 -- TOC entry 190 (class 1259 OID 32542)
--- Name: tbencaminhamentopadronizado_idencaminhamentopadronizado_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbencaminhamentopadronizado_idencaminhamentopadronizado_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbencaminhamentopadronizado_idencaminhamentopadronizado_seq
@@ -512,12 +512,12 @@ CREATE SEQUENCE tbencaminhamentopadronizado_idencaminhamentopadronizado_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbencaminhamentopadronizado_idencaminhamentopadronizado_seq OWNER TO postgres;
+ALTER TABLE public.tbencaminhamentopadronizado_idencaminhamentopadronizado_seq OWNER TO java;
 
 --
 -- TOC entry 3400 (class 0 OID 0)
 -- Dependencies: 190
--- Name: tbencaminhamentopadronizado_idencaminhamentopadronizado_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbencaminhamentopadronizado_idencaminhamentopadronizado_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbencaminhamentopadronizado_idencaminhamentopadronizado_seq OWNED BY tbencaminhamentopadronizado.idencaminhamentopadronizado;
@@ -525,7 +525,7 @@ ALTER SEQUENCE tbencaminhamentopadronizado_idencaminhamentopadronizado_seq OWNED
 
 --
 -- TOC entry 193 (class 1259 OID 32555)
--- Name: tbencaminhamentoxanexo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbencaminhamentoxanexo; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbencaminhamentoxanexo (
@@ -535,11 +535,11 @@ CREATE TABLE tbencaminhamentoxanexo (
 );
 
 
-ALTER TABLE public.tbencaminhamentoxanexo OWNER TO postgres;
+ALTER TABLE public.tbencaminhamentoxanexo OWNER TO java;
 
 --
 -- TOC entry 192 (class 1259 OID 32553)
--- Name: tbencaminhamentoxanexo_idencaminhamentoxanexo_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbencaminhamentoxanexo_idencaminhamentoxanexo_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbencaminhamentoxanexo_idencaminhamentoxanexo_seq
@@ -550,12 +550,12 @@ CREATE SEQUENCE tbencaminhamentoxanexo_idencaminhamentoxanexo_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbencaminhamentoxanexo_idencaminhamentoxanexo_seq OWNER TO postgres;
+ALTER TABLE public.tbencaminhamentoxanexo_idencaminhamentoxanexo_seq OWNER TO java;
 
 --
 -- TOC entry 3401 (class 0 OID 0)
 -- Dependencies: 192
--- Name: tbencaminhamentoxanexo_idencaminhamentoxanexo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbencaminhamentoxanexo_idencaminhamentoxanexo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbencaminhamentoxanexo_idencaminhamentoxanexo_seq OWNED BY tbencaminhamentoxanexo.idencaminhamentoxanexo;
@@ -563,7 +563,7 @@ ALTER SEQUENCE tbencaminhamentoxanexo_idencaminhamentoxanexo_seq OWNED BY tbenca
 
 --
 -- TOC entry 195 (class 1259 OID 32563)
--- Name: tbfaixaetaria; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbfaixaetaria; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbfaixaetaria (
@@ -572,11 +572,11 @@ CREATE TABLE tbfaixaetaria (
 );
 
 
-ALTER TABLE public.tbfaixaetaria OWNER TO postgres;
+ALTER TABLE public.tbfaixaetaria OWNER TO java;
 
 --
 -- TOC entry 194 (class 1259 OID 32561)
--- Name: tbfaixaetaria_idfaixaetaria_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbfaixaetaria_idfaixaetaria_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbfaixaetaria_idfaixaetaria_seq
@@ -587,12 +587,12 @@ CREATE SEQUENCE tbfaixaetaria_idfaixaetaria_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbfaixaetaria_idfaixaetaria_seq OWNER TO postgres;
+ALTER TABLE public.tbfaixaetaria_idfaixaetaria_seq OWNER TO java;
 
 --
 -- TOC entry 3402 (class 0 OID 0)
 -- Dependencies: 194
--- Name: tbfaixaetaria_idfaixaetaria_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbfaixaetaria_idfaixaetaria_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbfaixaetaria_idfaixaetaria_seq OWNED BY tbfaixaetaria.idfaixaetaria;
@@ -600,7 +600,7 @@ ALTER SEQUENCE tbfaixaetaria_idfaixaetaria_seq OWNED BY tbfaixaetaria.idfaixaeta
 
 --
 -- TOC entry 197 (class 1259 OID 32571)
--- Name: tbfiltropersonalizado; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbfiltropersonalizado; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbfiltropersonalizado (
@@ -611,11 +611,11 @@ CREATE TABLE tbfiltropersonalizado (
 );
 
 
-ALTER TABLE public.tbfiltropersonalizado OWNER TO postgres;
+ALTER TABLE public.tbfiltropersonalizado OWNER TO java;
 
 --
 -- TOC entry 196 (class 1259 OID 32569)
--- Name: tbfiltropersonalizado_idfiltropersonalizado_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbfiltropersonalizado_idfiltropersonalizado_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbfiltropersonalizado_idfiltropersonalizado_seq
@@ -626,12 +626,12 @@ CREATE SEQUENCE tbfiltropersonalizado_idfiltropersonalizado_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbfiltropersonalizado_idfiltropersonalizado_seq OWNER TO postgres;
+ALTER TABLE public.tbfiltropersonalizado_idfiltropersonalizado_seq OWNER TO java;
 
 --
 -- TOC entry 3403 (class 0 OID 0)
 -- Dependencies: 196
--- Name: tbfiltropersonalizado_idfiltropersonalizado_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbfiltropersonalizado_idfiltropersonalizado_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbfiltropersonalizado_idfiltropersonalizado_seq OWNED BY tbfiltropersonalizado.idfiltropersonalizado;
@@ -639,7 +639,7 @@ ALTER SEQUENCE tbfiltropersonalizado_idfiltropersonalizado_seq OWNED BY tbfiltro
 
 --
 -- TOC entry 199 (class 1259 OID 32582)
--- Name: tbfiltrospam; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbfiltrospam; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbfiltrospam (
@@ -649,11 +649,11 @@ CREATE TABLE tbfiltrospam (
 );
 
 
-ALTER TABLE public.tbfiltrospam OWNER TO postgres;
+ALTER TABLE public.tbfiltrospam OWNER TO java;
 
 --
 -- TOC entry 198 (class 1259 OID 32580)
--- Name: tbfiltrospam_idfiltrosspam_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbfiltrospam_idfiltrosspam_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbfiltrospam_idfiltrosspam_seq
@@ -664,12 +664,12 @@ CREATE SEQUENCE tbfiltrospam_idfiltrosspam_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbfiltrospam_idfiltrosspam_seq OWNER TO postgres;
+ALTER TABLE public.tbfiltrospam_idfiltrosspam_seq OWNER TO java;
 
 --
 -- TOC entry 3404 (class 0 OID 0)
 -- Dependencies: 198
--- Name: tbfiltrospam_idfiltrosspam_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbfiltrospam_idfiltrosspam_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbfiltrospam_idfiltrosspam_seq OWNED BY tbfiltrospam.idfiltrosspam;
@@ -677,7 +677,7 @@ ALTER SEQUENCE tbfiltrospam_idfiltrosspam_seq OWNED BY tbfiltrospam.idfiltrosspa
 
 --
 -- TOC entry 201 (class 1259 OID 32593)
--- Name: tbfuncionalidade; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbfuncionalidade; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbfuncionalidade (
@@ -686,11 +686,11 @@ CREATE TABLE tbfuncionalidade (
 );
 
 
-ALTER TABLE public.tbfuncionalidade OWNER TO postgres;
+ALTER TABLE public.tbfuncionalidade OWNER TO java;
 
 --
 -- TOC entry 200 (class 1259 OID 32591)
--- Name: tbfuncionalidade_idfuncionalidade_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbfuncionalidade_idfuncionalidade_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbfuncionalidade_idfuncionalidade_seq
@@ -701,12 +701,12 @@ CREATE SEQUENCE tbfuncionalidade_idfuncionalidade_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbfuncionalidade_idfuncionalidade_seq OWNER TO postgres;
+ALTER TABLE public.tbfuncionalidade_idfuncionalidade_seq OWNER TO java;
 
 --
 -- TOC entry 3405 (class 0 OID 0)
 -- Dependencies: 200
--- Name: tbfuncionalidade_idfuncionalidade_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbfuncionalidade_idfuncionalidade_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbfuncionalidade_idfuncionalidade_seq OWNED BY tbfuncionalidade.idfuncionalidade;
@@ -714,7 +714,7 @@ ALTER SEQUENCE tbfuncionalidade_idfuncionalidade_seq OWNED BY tbfuncionalidade.i
 
 --
 -- TOC entry 203 (class 1259 OID 32601)
--- Name: tbgrauinstrucao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbgrauinstrucao; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbgrauinstrucao (
@@ -723,11 +723,11 @@ CREATE TABLE tbgrauinstrucao (
 );
 
 
-ALTER TABLE public.tbgrauinstrucao OWNER TO postgres;
+ALTER TABLE public.tbgrauinstrucao OWNER TO java;
 
 --
 -- TOC entry 202 (class 1259 OID 32599)
--- Name: tbgrauinstrucao_idgrauinstrucao_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbgrauinstrucao_idgrauinstrucao_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbgrauinstrucao_idgrauinstrucao_seq
@@ -738,12 +738,12 @@ CREATE SEQUENCE tbgrauinstrucao_idgrauinstrucao_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbgrauinstrucao_idgrauinstrucao_seq OWNER TO postgres;
+ALTER TABLE public.tbgrauinstrucao_idgrauinstrucao_seq OWNER TO java;
 
 --
 -- TOC entry 3406 (class 0 OID 0)
 -- Dependencies: 202
--- Name: tbgrauinstrucao_idgrauinstrucao_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbgrauinstrucao_idgrauinstrucao_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbgrauinstrucao_idgrauinstrucao_seq OWNED BY tbgrauinstrucao.idgrauinstrucao;
@@ -751,7 +751,7 @@ ALTER SEQUENCE tbgrauinstrucao_idgrauinstrucao_seq OWNED BY tbgrauinstrucao.idgr
 
 --
 -- TOC entry 205 (class 1259 OID 32609)
--- Name: tbgrupo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbgrupo; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbgrupo (
@@ -761,11 +761,11 @@ CREATE TABLE tbgrupo (
 );
 
 
-ALTER TABLE public.tbgrupo OWNER TO postgres;
+ALTER TABLE public.tbgrupo OWNER TO java;
 
 --
 -- TOC entry 204 (class 1259 OID 32607)
--- Name: tbgrupo_idgrupo_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbgrupo_idgrupo_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbgrupo_idgrupo_seq
@@ -776,12 +776,12 @@ CREATE SEQUENCE tbgrupo_idgrupo_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbgrupo_idgrupo_seq OWNER TO postgres;
+ALTER TABLE public.tbgrupo_idgrupo_seq OWNER TO java;
 
 --
 -- TOC entry 3407 (class 0 OID 0)
 -- Dependencies: 204
--- Name: tbgrupo_idgrupo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbgrupo_idgrupo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbgrupo_idgrupo_seq OWNED BY tbgrupo.idgrupo;
@@ -789,7 +789,7 @@ ALTER SEQUENCE tbgrupo_idgrupo_seq OWNED BY tbgrupo.idgrupo;
 
 --
 -- TOC entry 207 (class 1259 OID 32617)
--- Name: tblogoperacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tblogoperacao; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tblogoperacao (
@@ -801,11 +801,11 @@ CREATE TABLE tblogoperacao (
 );
 
 
-ALTER TABLE public.tblogoperacao OWNER TO postgres;
+ALTER TABLE public.tblogoperacao OWNER TO java;
 
 --
 -- TOC entry 206 (class 1259 OID 32615)
--- Name: tblogoperacao_idlogoperacoes_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tblogoperacao_idlogoperacoes_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tblogoperacao_idlogoperacoes_seq
@@ -816,12 +816,12 @@ CREATE SEQUENCE tblogoperacao_idlogoperacoes_seq
     CACHE 1;
 
 
-ALTER TABLE public.tblogoperacao_idlogoperacoes_seq OWNER TO postgres;
+ALTER TABLE public.tblogoperacao_idlogoperacoes_seq OWNER TO java;
 
 --
 -- TOC entry 3408 (class 0 OID 0)
 -- Dependencies: 206
--- Name: tblogoperacao_idlogoperacoes_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tblogoperacao_idlogoperacoes_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tblogoperacao_idlogoperacoes_seq OWNED BY tblogoperacao.idlogoperacoes;
@@ -829,7 +829,7 @@ ALTER SEQUENCE tblogoperacao_idlogoperacoes_seq OWNED BY tblogoperacao.idlogoper
 
 --
 -- TOC entry 209 (class 1259 OID 32628)
--- Name: tbmanifestacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbmanifestacao; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbmanifestacao (
@@ -883,11 +883,11 @@ CREATE TABLE tbmanifestacao (
 );
 
 
-ALTER TABLE public.tbmanifestacao OWNER TO postgres;
+ALTER TABLE public.tbmanifestacao OWNER TO java;
 
 --
 -- TOC entry 208 (class 1259 OID 32626)
--- Name: tbmanifestacao_idmanifestacao_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbmanifestacao_idmanifestacao_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbmanifestacao_idmanifestacao_seq
@@ -898,12 +898,12 @@ CREATE SEQUENCE tbmanifestacao_idmanifestacao_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbmanifestacao_idmanifestacao_seq OWNER TO postgres;
+ALTER TABLE public.tbmanifestacao_idmanifestacao_seq OWNER TO java;
 
 --
 -- TOC entry 3409 (class 0 OID 0)
 -- Dependencies: 208
--- Name: tbmanifestacao_idmanifestacao_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbmanifestacao_idmanifestacao_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbmanifestacao_idmanifestacao_seq OWNED BY tbmanifestacao.idmanifestacao;
@@ -911,7 +911,7 @@ ALTER SEQUENCE tbmanifestacao_idmanifestacao_seq OWNED BY tbmanifestacao.idmanif
 
 --
 -- TOC entry 260 (class 1259 OID 32870)
--- Name: tbmanifestacao_tbclassificacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbmanifestacao_tbclassificacao; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbmanifestacao_tbclassificacao (
@@ -920,11 +920,11 @@ CREATE TABLE tbmanifestacao_tbclassificacao (
 );
 
 
-ALTER TABLE public.tbmanifestacao_tbclassificacao OWNER TO postgres;
+ALTER TABLE public.tbmanifestacao_tbclassificacao OWNER TO java;
 
 --
 -- TOC entry 263 (class 1259 OID 32885)
--- Name: tbmanifestacao_tbsubclassificacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbmanifestacao_tbsubclassificacao; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbmanifestacao_tbsubclassificacao (
@@ -933,11 +933,11 @@ CREATE TABLE tbmanifestacao_tbsubclassificacao (
 );
 
 
-ALTER TABLE public.tbmanifestacao_tbsubclassificacao OWNER TO postgres;
+ALTER TABLE public.tbmanifestacao_tbsubclassificacao OWNER TO java;
 
 --
 -- TOC entry 264 (class 1259 OID 32890)
--- Name: tbmanifestacao_unidadeareasolucionadora; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbmanifestacao_unidadeareasolucionadora; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbmanifestacao_unidadeareasolucionadora (
@@ -946,11 +946,11 @@ CREATE TABLE tbmanifestacao_unidadeareasolucionadora (
 );
 
 
-ALTER TABLE public.tbmanifestacao_unidadeareasolucionadora OWNER TO postgres;
+ALTER TABLE public.tbmanifestacao_unidadeareasolucionadora OWNER TO java;
 
 --
 -- TOC entry 211 (class 1259 OID 32639)
--- Name: tbmanifestacaoxanexo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbmanifestacaoxanexo; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbmanifestacaoxanexo (
@@ -960,11 +960,11 @@ CREATE TABLE tbmanifestacaoxanexo (
 );
 
 
-ALTER TABLE public.tbmanifestacaoxanexo OWNER TO postgres;
+ALTER TABLE public.tbmanifestacaoxanexo OWNER TO java;
 
 --
 -- TOC entry 210 (class 1259 OID 32637)
--- Name: tbmanifestacaoxanexo_idmanifestacaoxanexo_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbmanifestacaoxanexo_idmanifestacaoxanexo_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbmanifestacaoxanexo_idmanifestacaoxanexo_seq
@@ -975,12 +975,12 @@ CREATE SEQUENCE tbmanifestacaoxanexo_idmanifestacaoxanexo_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbmanifestacaoxanexo_idmanifestacaoxanexo_seq OWNER TO postgres;
+ALTER TABLE public.tbmanifestacaoxanexo_idmanifestacaoxanexo_seq OWNER TO java;
 
 --
 -- TOC entry 3410 (class 0 OID 0)
 -- Dependencies: 210
--- Name: tbmanifestacaoxanexo_idmanifestacaoxanexo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbmanifestacaoxanexo_idmanifestacaoxanexo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbmanifestacaoxanexo_idmanifestacaoxanexo_seq OWNED BY tbmanifestacaoxanexo.idmanifestacaoxanexo;
@@ -988,7 +988,7 @@ ALTER SEQUENCE tbmanifestacaoxanexo_idmanifestacaoxanexo_seq OWNED BY tbmanifest
 
 --
 -- TOC entry 213 (class 1259 OID 32647)
--- Name: tbmeioentrada; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbmeioentrada; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbmeioentrada (
@@ -997,11 +997,11 @@ CREATE TABLE tbmeioentrada (
 );
 
 
-ALTER TABLE public.tbmeioentrada OWNER TO postgres;
+ALTER TABLE public.tbmeioentrada OWNER TO java;
 
 --
 -- TOC entry 212 (class 1259 OID 32645)
--- Name: tbmeioentrada_idmeioentrada_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbmeioentrada_idmeioentrada_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbmeioentrada_idmeioentrada_seq
@@ -1012,12 +1012,12 @@ CREATE SEQUENCE tbmeioentrada_idmeioentrada_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbmeioentrada_idmeioentrada_seq OWNER TO postgres;
+ALTER TABLE public.tbmeioentrada_idmeioentrada_seq OWNER TO java;
 
 --
 -- TOC entry 3411 (class 0 OID 0)
 -- Dependencies: 212
--- Name: tbmeioentrada_idmeioentrada_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbmeioentrada_idmeioentrada_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbmeioentrada_idmeioentrada_seq OWNED BY tbmeioentrada.idmeioentrada;
@@ -1025,7 +1025,7 @@ ALTER SEQUENCE tbmeioentrada_idmeioentrada_seq OWNED BY tbmeioentrada.idmeioentr
 
 --
 -- TOC entry 215 (class 1259 OID 32655)
--- Name: tbmeioresposta; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbmeioresposta; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbmeioresposta (
@@ -1034,11 +1034,11 @@ CREATE TABLE tbmeioresposta (
 );
 
 
-ALTER TABLE public.tbmeioresposta OWNER TO postgres;
+ALTER TABLE public.tbmeioresposta OWNER TO java;
 
 --
 -- TOC entry 214 (class 1259 OID 32653)
--- Name: tbmeioresposta_idmeioresposta_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbmeioresposta_idmeioresposta_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbmeioresposta_idmeioresposta_seq
@@ -1049,12 +1049,12 @@ CREATE SEQUENCE tbmeioresposta_idmeioresposta_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbmeioresposta_idmeioresposta_seq OWNER TO postgres;
+ALTER TABLE public.tbmeioresposta_idmeioresposta_seq OWNER TO java;
 
 --
 -- TOC entry 3412 (class 0 OID 0)
 -- Dependencies: 214
--- Name: tbmeioresposta_idmeioresposta_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbmeioresposta_idmeioresposta_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbmeioresposta_idmeioresposta_seq OWNED BY tbmeioresposta.idmeioresposta;
@@ -1062,7 +1062,7 @@ ALTER SEQUENCE tbmeioresposta_idmeioresposta_seq OWNED BY tbmeioresposta.idmeior
 
 --
 -- TOC entry 217 (class 1259 OID 32663)
--- Name: tbmunicipio; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbmunicipio; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbmunicipio (
@@ -1072,11 +1072,11 @@ CREATE TABLE tbmunicipio (
 );
 
 
-ALTER TABLE public.tbmunicipio OWNER TO postgres;
+ALTER TABLE public.tbmunicipio OWNER TO java;
 
 --
 -- TOC entry 216 (class 1259 OID 32661)
--- Name: tbmunicipio_idmunicipio_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbmunicipio_idmunicipio_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbmunicipio_idmunicipio_seq
@@ -1087,12 +1087,12 @@ CREATE SEQUENCE tbmunicipio_idmunicipio_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbmunicipio_idmunicipio_seq OWNER TO postgres;
+ALTER TABLE public.tbmunicipio_idmunicipio_seq OWNER TO java;
 
 --
 -- TOC entry 3413 (class 0 OID 0)
 -- Dependencies: 216
--- Name: tbmunicipio_idmunicipio_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbmunicipio_idmunicipio_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbmunicipio_idmunicipio_seq OWNED BY tbmunicipio.idmunicipio;
@@ -1100,7 +1100,7 @@ ALTER SEQUENCE tbmunicipio_idmunicipio_seq OWNED BY tbmunicipio.idmunicipio;
 
 --
 -- TOC entry 219 (class 1259 OID 32671)
--- Name: tbpais; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbpais; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbpais (
@@ -1109,11 +1109,11 @@ CREATE TABLE tbpais (
 );
 
 
-ALTER TABLE public.tbpais OWNER TO postgres;
+ALTER TABLE public.tbpais OWNER TO java;
 
 --
 -- TOC entry 218 (class 1259 OID 32669)
--- Name: tbpais_idpais_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbpais_idpais_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbpais_idpais_seq
@@ -1124,12 +1124,12 @@ CREATE SEQUENCE tbpais_idpais_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbpais_idpais_seq OWNER TO postgres;
+ALTER TABLE public.tbpais_idpais_seq OWNER TO java;
 
 --
 -- TOC entry 3414 (class 0 OID 0)
 -- Dependencies: 218
--- Name: tbpais_idpais_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbpais_idpais_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbpais_idpais_seq OWNED BY tbpais.idpais;
@@ -1137,7 +1137,7 @@ ALTER SEQUENCE tbpais_idpais_seq OWNED BY tbpais.idpais;
 
 --
 -- TOC entry 221 (class 1259 OID 32679)
--- Name: tbparametro; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbparametro; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbparametro (
@@ -1147,11 +1147,11 @@ CREATE TABLE tbparametro (
 );
 
 
-ALTER TABLE public.tbparametro OWNER TO postgres;
+ALTER TABLE public.tbparametro OWNER TO java;
 
 --
 -- TOC entry 220 (class 1259 OID 32677)
--- Name: tbparametro_idparametro_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbparametro_idparametro_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbparametro_idparametro_seq
@@ -1162,12 +1162,12 @@ CREATE SEQUENCE tbparametro_idparametro_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbparametro_idparametro_seq OWNER TO postgres;
+ALTER TABLE public.tbparametro_idparametro_seq OWNER TO java;
 
 --
 -- TOC entry 3415 (class 0 OID 0)
 -- Dependencies: 220
--- Name: tbparametro_idparametro_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbparametro_idparametro_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbparametro_idparametro_seq OWNED BY tbparametro.idparametro;
@@ -1175,7 +1175,7 @@ ALTER SEQUENCE tbparametro_idparametro_seq OWNED BY tbparametro.idparametro;
 
 --
 -- TOC entry 223 (class 1259 OID 32690)
--- Name: tbperfil; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbperfil; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbperfil (
@@ -1185,11 +1185,11 @@ CREATE TABLE tbperfil (
 );
 
 
-ALTER TABLE public.tbperfil OWNER TO postgres;
+ALTER TABLE public.tbperfil OWNER TO java;
 
 --
 -- TOC entry 222 (class 1259 OID 32688)
--- Name: tbperfil_idperfil_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbperfil_idperfil_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbperfil_idperfil_seq
@@ -1200,12 +1200,12 @@ CREATE SEQUENCE tbperfil_idperfil_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbperfil_idperfil_seq OWNER TO postgres;
+ALTER TABLE public.tbperfil_idperfil_seq OWNER TO java;
 
 --
 -- TOC entry 3416 (class 0 OID 0)
 -- Dependencies: 222
--- Name: tbperfil_idperfil_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbperfil_idperfil_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbperfil_idperfil_seq OWNED BY tbperfil.idperfil;
@@ -1213,7 +1213,7 @@ ALTER SEQUENCE tbperfil_idperfil_seq OWNED BY tbperfil.idperfil;
 
 --
 -- TOC entry 225 (class 1259 OID 32701)
--- Name: tbperfilxfuncionalidade; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbperfilxfuncionalidade; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbperfilxfuncionalidade (
@@ -1223,11 +1223,11 @@ CREATE TABLE tbperfilxfuncionalidade (
 );
 
 
-ALTER TABLE public.tbperfilxfuncionalidade OWNER TO postgres;
+ALTER TABLE public.tbperfilxfuncionalidade OWNER TO java;
 
 --
 -- TOC entry 224 (class 1259 OID 32699)
--- Name: tbperfilxfuncionalidade_idperfilxfuncionalidade_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbperfilxfuncionalidade_idperfilxfuncionalidade_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbperfilxfuncionalidade_idperfilxfuncionalidade_seq
@@ -1238,12 +1238,12 @@ CREATE SEQUENCE tbperfilxfuncionalidade_idperfilxfuncionalidade_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbperfilxfuncionalidade_idperfilxfuncionalidade_seq OWNER TO postgres;
+ALTER TABLE public.tbperfilxfuncionalidade_idperfilxfuncionalidade_seq OWNER TO java;
 
 --
 -- TOC entry 3417 (class 0 OID 0)
 -- Dependencies: 224
--- Name: tbperfilxfuncionalidade_idperfilxfuncionalidade_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbperfilxfuncionalidade_idperfilxfuncionalidade_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbperfilxfuncionalidade_idperfilxfuncionalidade_seq OWNED BY tbperfilxfuncionalidade.idperfilxfuncionalidade;
@@ -1251,7 +1251,7 @@ ALTER SEQUENCE tbperfilxfuncionalidade_idperfilxfuncionalidade_seq OWNED BY tbpe
 
 --
 -- TOC entry 227 (class 1259 OID 32709)
--- Name: tbperfilxgrupo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbperfilxgrupo; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbperfilxgrupo (
@@ -1261,11 +1261,11 @@ CREATE TABLE tbperfilxgrupo (
 );
 
 
-ALTER TABLE public.tbperfilxgrupo OWNER TO postgres;
+ALTER TABLE public.tbperfilxgrupo OWNER TO java;
 
 --
 -- TOC entry 226 (class 1259 OID 32707)
--- Name: tbperfilxgrupo_idperfilxgrupo_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbperfilxgrupo_idperfilxgrupo_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbperfilxgrupo_idperfilxgrupo_seq
@@ -1276,12 +1276,12 @@ CREATE SEQUENCE tbperfilxgrupo_idperfilxgrupo_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbperfilxgrupo_idperfilxgrupo_seq OWNER TO postgres;
+ALTER TABLE public.tbperfilxgrupo_idperfilxgrupo_seq OWNER TO java;
 
 --
 -- TOC entry 3418 (class 0 OID 0)
 -- Dependencies: 226
--- Name: tbperfilxgrupo_idperfilxgrupo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbperfilxgrupo_idperfilxgrupo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbperfilxgrupo_idperfilxgrupo_seq OWNED BY tbperfilxgrupo.idperfilxgrupo;
@@ -1289,7 +1289,7 @@ ALTER SEQUENCE tbperfilxgrupo_idperfilxgrupo_seq OWNED BY tbperfilxgrupo.idperfi
 
 --
 -- TOC entry 237 (class 1259 OID 32758)
--- Name: tbperguntaquestionario; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbperguntaquestionario; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbperguntaquestionario (
@@ -1300,11 +1300,11 @@ CREATE TABLE tbperguntaquestionario (
 );
 
 
-ALTER TABLE public.tbperguntaquestionario OWNER TO postgres;
+ALTER TABLE public.tbperguntaquestionario OWNER TO java;
 
 --
 -- TOC entry 236 (class 1259 OID 32756)
--- Name: tbperguntaquestionario_idpergunta_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbperguntaquestionario_idpergunta_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbperguntaquestionario_idpergunta_seq
@@ -1315,12 +1315,12 @@ CREATE SEQUENCE tbperguntaquestionario_idpergunta_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbperguntaquestionario_idpergunta_seq OWNER TO postgres;
+ALTER TABLE public.tbperguntaquestionario_idpergunta_seq OWNER TO java;
 
 --
 -- TOC entry 3419 (class 0 OID 0)
 -- Dependencies: 236
--- Name: tbperguntaquestionario_idpergunta_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbperguntaquestionario_idpergunta_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbperguntaquestionario_idpergunta_seq OWNED BY tbperguntaquestionario.idpergunta;
@@ -1328,7 +1328,7 @@ ALTER SEQUENCE tbperguntaquestionario_idpergunta_seq OWNED BY tbperguntaquestion
 
 --
 -- TOC entry 229 (class 1259 OID 32717)
--- Name: tbprazoesic; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbprazoesic; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbprazoesic (
@@ -1340,11 +1340,11 @@ CREATE TABLE tbprazoesic (
 );
 
 
-ALTER TABLE public.tbprazoesic OWNER TO postgres;
+ALTER TABLE public.tbprazoesic OWNER TO java;
 
 --
 -- TOC entry 228 (class 1259 OID 32715)
--- Name: tbprazoesic_idprazoesic_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbprazoesic_idprazoesic_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbprazoesic_idprazoesic_seq
@@ -1355,12 +1355,12 @@ CREATE SEQUENCE tbprazoesic_idprazoesic_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbprazoesic_idprazoesic_seq OWNER TO postgres;
+ALTER TABLE public.tbprazoesic_idprazoesic_seq OWNER TO java;
 
 --
 -- TOC entry 3420 (class 0 OID 0)
 -- Dependencies: 228
--- Name: tbprazoesic_idprazoesic_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbprazoesic_idprazoesic_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbprazoesic_idprazoesic_seq OWNED BY tbprazoesic.idprazoesic;
@@ -1368,7 +1368,7 @@ ALTER SEQUENCE tbprazoesic_idprazoesic_seq OWNED BY tbprazoesic.idprazoesic;
 
 --
 -- TOC entry 231 (class 1259 OID 32728)
--- Name: tbpreferenciasistema; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbpreferenciasistema; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbpreferenciasistema (
@@ -1390,11 +1390,11 @@ CREATE TABLE tbpreferenciasistema (
 );
 
 
-ALTER TABLE public.tbpreferenciasistema OWNER TO postgres;
+ALTER TABLE public.tbpreferenciasistema OWNER TO java;
 
 --
 -- TOC entry 230 (class 1259 OID 32726)
--- Name: tbpreferenciasistema_idpreferenciasistema_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbpreferenciasistema_idpreferenciasistema_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbpreferenciasistema_idpreferenciasistema_seq
@@ -1405,12 +1405,12 @@ CREATE SEQUENCE tbpreferenciasistema_idpreferenciasistema_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbpreferenciasistema_idpreferenciasistema_seq OWNER TO postgres;
+ALTER TABLE public.tbpreferenciasistema_idpreferenciasistema_seq OWNER TO java;
 
 --
 -- TOC entry 3421 (class 0 OID 0)
 -- Dependencies: 230
--- Name: tbpreferenciasistema_idpreferenciasistema_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbpreferenciasistema_idpreferenciasistema_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbpreferenciasistema_idpreferenciasistema_seq OWNED BY tbpreferenciasistema.idpreferenciasistema;
@@ -1418,7 +1418,7 @@ ALTER SEQUENCE tbpreferenciasistema_idpreferenciasistema_seq OWNED BY tbpreferen
 
 --
 -- TOC entry 233 (class 1259 OID 32739)
--- Name: tbprioridade; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbprioridade; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbprioridade (
@@ -1427,11 +1427,11 @@ CREATE TABLE tbprioridade (
 );
 
 
-ALTER TABLE public.tbprioridade OWNER TO postgres;
+ALTER TABLE public.tbprioridade OWNER TO java;
 
 --
 -- TOC entry 232 (class 1259 OID 32737)
--- Name: tbprioridade_idprioridade_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbprioridade_idprioridade_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbprioridade_idprioridade_seq
@@ -1442,12 +1442,12 @@ CREATE SEQUENCE tbprioridade_idprioridade_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbprioridade_idprioridade_seq OWNER TO postgres;
+ALTER TABLE public.tbprioridade_idprioridade_seq OWNER TO java;
 
 --
 -- TOC entry 3422 (class 0 OID 0)
 -- Dependencies: 232
--- Name: tbprioridade_idprioridade_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbprioridade_idprioridade_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbprioridade_idprioridade_seq OWNED BY tbprioridade.idprioridade;
@@ -1455,7 +1455,7 @@ ALTER SEQUENCE tbprioridade_idprioridade_seq OWNED BY tbprioridade.idprioridade;
 
 --
 -- TOC entry 235 (class 1259 OID 32747)
--- Name: tbquestionario; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbquestionario; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbquestionario (
@@ -1467,11 +1467,11 @@ CREATE TABLE tbquestionario (
 );
 
 
-ALTER TABLE public.tbquestionario OWNER TO postgres;
+ALTER TABLE public.tbquestionario OWNER TO java;
 
 --
 -- TOC entry 234 (class 1259 OID 32745)
--- Name: tbquestionario_idquestionario_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbquestionario_idquestionario_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbquestionario_idquestionario_seq
@@ -1482,12 +1482,12 @@ CREATE SEQUENCE tbquestionario_idquestionario_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbquestionario_idquestionario_seq OWNER TO postgres;
+ALTER TABLE public.tbquestionario_idquestionario_seq OWNER TO java;
 
 --
 -- TOC entry 3423 (class 0 OID 0)
 -- Dependencies: 234
--- Name: tbquestionario_idquestionario_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbquestionario_idquestionario_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbquestionario_idquestionario_seq OWNED BY tbquestionario.idquestionario;
@@ -1495,7 +1495,7 @@ ALTER SEQUENCE tbquestionario_idquestionario_seq OWNED BY tbquestionario.idquest
 
 --
 -- TOC entry 241 (class 1259 OID 32774)
--- Name: tbrespostamanifestacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbrespostamanifestacao; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbrespostamanifestacao (
@@ -1506,11 +1506,11 @@ CREATE TABLE tbrespostamanifestacao (
 );
 
 
-ALTER TABLE public.tbrespostamanifestacao OWNER TO postgres;
+ALTER TABLE public.tbrespostamanifestacao OWNER TO java;
 
 --
 -- TOC entry 240 (class 1259 OID 32772)
--- Name: tbrespostamanifestacao_idrespostamanifestacao_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbrespostamanifestacao_idrespostamanifestacao_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbrespostamanifestacao_idrespostamanifestacao_seq
@@ -1521,12 +1521,12 @@ CREATE SEQUENCE tbrespostamanifestacao_idrespostamanifestacao_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbrespostamanifestacao_idrespostamanifestacao_seq OWNER TO postgres;
+ALTER TABLE public.tbrespostamanifestacao_idrespostamanifestacao_seq OWNER TO java;
 
 --
 -- TOC entry 3424 (class 0 OID 0)
 -- Dependencies: 240
--- Name: tbrespostamanifestacao_idrespostamanifestacao_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbrespostamanifestacao_idrespostamanifestacao_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbrespostamanifestacao_idrespostamanifestacao_seq OWNED BY tbrespostamanifestacao.idrespostamanifestacao;
@@ -1534,7 +1534,7 @@ ALTER SEQUENCE tbrespostamanifestacao_idrespostamanifestacao_seq OWNED BY tbresp
 
 --
 -- TOC entry 239 (class 1259 OID 32766)
--- Name: tbrespostaquestionario; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbrespostaquestionario; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbrespostaquestionario (
@@ -1545,11 +1545,11 @@ CREATE TABLE tbrespostaquestionario (
 );
 
 
-ALTER TABLE public.tbrespostaquestionario OWNER TO postgres;
+ALTER TABLE public.tbrespostaquestionario OWNER TO java;
 
 --
 -- TOC entry 238 (class 1259 OID 32764)
--- Name: tbrespostaquestionario_idresposta_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbrespostaquestionario_idresposta_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbrespostaquestionario_idresposta_seq
@@ -1560,12 +1560,12 @@ CREATE SEQUENCE tbrespostaquestionario_idresposta_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbrespostaquestionario_idresposta_seq OWNER TO postgres;
+ALTER TABLE public.tbrespostaquestionario_idresposta_seq OWNER TO java;
 
 --
 -- TOC entry 3425 (class 0 OID 0)
 -- Dependencies: 238
--- Name: tbrespostaquestionario_idresposta_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbrespostaquestionario_idresposta_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbrespostaquestionario_idresposta_seq OWNED BY tbrespostaquestionario.idresposta;
@@ -1573,7 +1573,7 @@ ALTER SEQUENCE tbrespostaquestionario_idresposta_seq OWNED BY tbrespostaquestion
 
 --
 -- TOC entry 243 (class 1259 OID 32785)
--- Name: tbsubclassificacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbsubclassificacao; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbsubclassificacao (
@@ -1582,11 +1582,11 @@ CREATE TABLE tbsubclassificacao (
 );
 
 
-ALTER TABLE public.tbsubclassificacao OWNER TO postgres;
+ALTER TABLE public.tbsubclassificacao OWNER TO java;
 
 --
 -- TOC entry 242 (class 1259 OID 32783)
--- Name: tbsubclassificacao_idsubclassificacao_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbsubclassificacao_idsubclassificacao_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbsubclassificacao_idsubclassificacao_seq
@@ -1597,12 +1597,12 @@ CREATE SEQUENCE tbsubclassificacao_idsubclassificacao_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbsubclassificacao_idsubclassificacao_seq OWNER TO postgres;
+ALTER TABLE public.tbsubclassificacao_idsubclassificacao_seq OWNER TO java;
 
 --
 -- TOC entry 3426 (class 0 OID 0)
 -- Dependencies: 242
--- Name: tbsubclassificacao_idsubclassificacao_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbsubclassificacao_idsubclassificacao_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbsubclassificacao_idsubclassificacao_seq OWNED BY tbsubclassificacao.idsubclassificacao;
@@ -1610,7 +1610,7 @@ ALTER SEQUENCE tbsubclassificacao_idsubclassificacao_seq OWNED BY tbsubclassific
 
 --
 -- TOC entry 245 (class 1259 OID 32793)
--- Name: tbtipomanifestacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbtipomanifestacao; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbtipomanifestacao (
@@ -1623,11 +1623,11 @@ CREATE TABLE tbtipomanifestacao (
 );
 
 
-ALTER TABLE public.tbtipomanifestacao OWNER TO postgres;
+ALTER TABLE public.tbtipomanifestacao OWNER TO java;
 
 --
 -- TOC entry 244 (class 1259 OID 32791)
--- Name: tbtipomanifestacao_idtipomanifestacao_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbtipomanifestacao_idtipomanifestacao_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbtipomanifestacao_idtipomanifestacao_seq
@@ -1638,12 +1638,12 @@ CREATE SEQUENCE tbtipomanifestacao_idtipomanifestacao_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbtipomanifestacao_idtipomanifestacao_seq OWNER TO postgres;
+ALTER TABLE public.tbtipomanifestacao_idtipomanifestacao_seq OWNER TO java;
 
 --
 -- TOC entry 3427 (class 0 OID 0)
 -- Dependencies: 244
--- Name: tbtipomanifestacao_idtipomanifestacao_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbtipomanifestacao_idtipomanifestacao_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbtipomanifestacao_idtipomanifestacao_seq OWNED BY tbtipomanifestacao.idtipomanifestacao;
@@ -1651,7 +1651,7 @@ ALTER SEQUENCE tbtipomanifestacao_idtipomanifestacao_seq OWNED BY tbtipomanifest
 
 --
 -- TOC entry 247 (class 1259 OID 32804)
--- Name: tbtramite; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbtramite; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbtramite (
@@ -1666,11 +1666,11 @@ CREATE TABLE tbtramite (
 );
 
 
-ALTER TABLE public.tbtramite OWNER TO postgres;
+ALTER TABLE public.tbtramite OWNER TO java;
 
 --
 -- TOC entry 246 (class 1259 OID 32802)
--- Name: tbtramite_idtramite_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbtramite_idtramite_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbtramite_idtramite_seq
@@ -1681,12 +1681,12 @@ CREATE SEQUENCE tbtramite_idtramite_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbtramite_idtramite_seq OWNER TO postgres;
+ALTER TABLE public.tbtramite_idtramite_seq OWNER TO java;
 
 --
 -- TOC entry 3428 (class 0 OID 0)
 -- Dependencies: 246
--- Name: tbtramite_idtramite_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbtramite_idtramite_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbtramite_idtramite_seq OWNED BY tbtramite.idtramite;
@@ -1694,7 +1694,7 @@ ALTER SEQUENCE tbtramite_idtramite_seq OWNED BY tbtramite.idtramite;
 
 --
 -- TOC entry 249 (class 1259 OID 32815)
--- Name: tbtramitexanexo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbtramitexanexo; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbtramitexanexo (
@@ -1704,11 +1704,11 @@ CREATE TABLE tbtramitexanexo (
 );
 
 
-ALTER TABLE public.tbtramitexanexo OWNER TO postgres;
+ALTER TABLE public.tbtramitexanexo OWNER TO java;
 
 --
 -- TOC entry 248 (class 1259 OID 32813)
--- Name: tbtramitexanexo_idtramitexanexo_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbtramitexanexo_idtramitexanexo_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbtramitexanexo_idtramitexanexo_seq
@@ -1719,12 +1719,12 @@ CREATE SEQUENCE tbtramitexanexo_idtramitexanexo_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbtramitexanexo_idtramitexanexo_seq OWNER TO postgres;
+ALTER TABLE public.tbtramitexanexo_idtramitexanexo_seq OWNER TO java;
 
 --
 -- TOC entry 3429 (class 0 OID 0)
 -- Dependencies: 248
--- Name: tbtramitexanexo_idtramitexanexo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbtramitexanexo_idtramitexanexo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbtramitexanexo_idtramitexanexo_seq OWNED BY tbtramitexanexo.idtramitexanexo;
@@ -1732,7 +1732,7 @@ ALTER SEQUENCE tbtramitexanexo_idtramitexanexo_seq OWNED BY tbtramitexanexo.idtr
 
 --
 -- TOC entry 251 (class 1259 OID 32823)
--- Name: tbuf; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbuf; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbuf (
@@ -1742,11 +1742,11 @@ CREATE TABLE tbuf (
 );
 
 
-ALTER TABLE public.tbuf OWNER TO postgres;
+ALTER TABLE public.tbuf OWNER TO java;
 
 --
 -- TOC entry 250 (class 1259 OID 32821)
--- Name: tbuf_iduf_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbuf_iduf_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbuf_iduf_seq
@@ -1757,12 +1757,12 @@ CREATE SEQUENCE tbuf_iduf_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbuf_iduf_seq OWNER TO postgres;
+ALTER TABLE public.tbuf_iduf_seq OWNER TO java;
 
 --
 -- TOC entry 3430 (class 0 OID 0)
 -- Dependencies: 250
--- Name: tbuf_iduf_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbuf_iduf_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbuf_iduf_seq OWNED BY tbuf.iduf;
@@ -1770,7 +1770,7 @@ ALTER SEQUENCE tbuf_iduf_seq OWNED BY tbuf.iduf;
 
 --
 -- TOC entry 253 (class 1259 OID 32834)
--- Name: tbunidade; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbunidade; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbunidade (
@@ -1783,11 +1783,11 @@ CREATE TABLE tbunidade (
 );
 
 
-ALTER TABLE public.tbunidade OWNER TO postgres;
+ALTER TABLE public.tbunidade OWNER TO java;
 
 --
 -- TOC entry 252 (class 1259 OID 32832)
--- Name: tbunidade_idunidade_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbunidade_idunidade_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbunidade_idunidade_seq
@@ -1798,12 +1798,12 @@ CREATE SEQUENCE tbunidade_idunidade_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbunidade_idunidade_seq OWNER TO postgres;
+ALTER TABLE public.tbunidade_idunidade_seq OWNER TO java;
 
 --
 -- TOC entry 3431 (class 0 OID 0)
 -- Dependencies: 252
--- Name: tbunidade_idunidade_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbunidade_idunidade_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbunidade_idunidade_seq OWNED BY tbunidade.idunidade;
@@ -1811,7 +1811,7 @@ ALTER SEQUENCE tbunidade_idunidade_seq OWNED BY tbunidade.idunidade;
 
 --
 -- TOC entry 255 (class 1259 OID 32845)
--- Name: tbunidadexmanifestacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbunidadexmanifestacao; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbunidadexmanifestacao (
@@ -1821,11 +1821,11 @@ CREATE TABLE tbunidadexmanifestacao (
 );
 
 
-ALTER TABLE public.tbunidadexmanifestacao OWNER TO postgres;
+ALTER TABLE public.tbunidadexmanifestacao OWNER TO java;
 
 --
 -- TOC entry 254 (class 1259 OID 32843)
--- Name: tbunidadexmanifestacao_idunidademanifestacao_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbunidadexmanifestacao_idunidademanifestacao_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbunidadexmanifestacao_idunidademanifestacao_seq
@@ -1836,12 +1836,12 @@ CREATE SEQUENCE tbunidadexmanifestacao_idunidademanifestacao_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbunidadexmanifestacao_idunidademanifestacao_seq OWNER TO postgres;
+ALTER TABLE public.tbunidadexmanifestacao_idunidademanifestacao_seq OWNER TO java;
 
 --
 -- TOC entry 3432 (class 0 OID 0)
 -- Dependencies: 254
--- Name: tbunidadexmanifestacao_idunidademanifestacao_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbunidadexmanifestacao_idunidademanifestacao_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbunidadexmanifestacao_idunidademanifestacao_seq OWNED BY tbunidadexmanifestacao.idunidademanifestacao;
@@ -1849,7 +1849,7 @@ ALTER SEQUENCE tbunidadexmanifestacao_idunidademanifestacao_seq OWNED BY tbunida
 
 --
 -- TOC entry 257 (class 1259 OID 32853)
--- Name: tbusuario; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbusuario; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbusuario (
@@ -1866,11 +1866,11 @@ CREATE TABLE tbusuario (
 );
 
 
-ALTER TABLE public.tbusuario OWNER TO postgres;
+ALTER TABLE public.tbusuario OWNER TO java;
 
 --
 -- TOC entry 256 (class 1259 OID 32851)
--- Name: tbusuario_idusuario_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbusuario_idusuario_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbusuario_idusuario_seq
@@ -1881,12 +1881,12 @@ CREATE SEQUENCE tbusuario_idusuario_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbusuario_idusuario_seq OWNER TO postgres;
+ALTER TABLE public.tbusuario_idusuario_seq OWNER TO java;
 
 --
 -- TOC entry 3433 (class 0 OID 0)
 -- Dependencies: 256
--- Name: tbusuario_idusuario_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbusuario_idusuario_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbusuario_idusuario_seq OWNED BY tbusuario.idusuario;
@@ -1894,7 +1894,7 @@ ALTER SEQUENCE tbusuario_idusuario_seq OWNED BY tbusuario.idusuario;
 
 --
 -- TOC entry 259 (class 1259 OID 32864)
--- Name: tbusuarioxperfil; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbusuarioxperfil; Type: TABLE; Schema: public; Owner: java; Tablespace: 
 --
 
 CREATE TABLE tbusuarioxperfil (
@@ -1906,11 +1906,11 @@ CREATE TABLE tbusuarioxperfil (
 );
 
 
-ALTER TABLE public.tbusuarioxperfil OWNER TO postgres;
+ALTER TABLE public.tbusuarioxperfil OWNER TO java;
 
 --
 -- TOC entry 258 (class 1259 OID 32862)
--- Name: tbusuarioxperfil_idusuarioperfil_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: tbusuarioxperfil_idusuarioperfil_seq; Type: SEQUENCE; Schema: public; Owner: java
 --
 
 CREATE SEQUENCE tbusuarioxperfil_idusuarioperfil_seq
@@ -1921,12 +1921,12 @@ CREATE SEQUENCE tbusuarioxperfil_idusuarioperfil_seq
     CACHE 1;
 
 
-ALTER TABLE public.tbusuarioxperfil_idusuarioperfil_seq OWNER TO postgres;
+ALTER TABLE public.tbusuarioxperfil_idusuarioperfil_seq OWNER TO java;
 
 --
 -- TOC entry 3434 (class 0 OID 0)
 -- Dependencies: 258
--- Name: tbusuarioxperfil_idusuarioperfil_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: tbusuarioxperfil_idusuarioperfil_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: java
 --
 
 ALTER SEQUENCE tbusuarioxperfil_idusuarioperfil_seq OWNED BY tbusuarioxperfil.idusuarioperfil;
@@ -1934,7 +1934,7 @@ ALTER SEQUENCE tbusuarioxperfil_idusuarioperfil_seq OWNED BY tbusuarioxperfil.id
 
 --
 -- TOC entry 265 (class 1259 OID 33034)
--- Name: vwestatisticasmanifestacao; Type: VIEW; Schema: public; Owner: postgres
+-- Name: vwestatisticasmanifestacao; Type: VIEW; Schema: public; Owner: java
 --
 
 CREATE VIEW vwestatisticasmanifestacao AS
@@ -2006,11 +2006,11 @@ UNION ALL
      WHERE (((m.ststatusmanifestacao)::text = ANY ((ARRAY['2'::character varying, '3'::character varying])::text[])) AND ((enc.stencaminhamento)::text = '2'::text));
 
 
-ALTER TABLE public.vwestatisticasmanifestacao OWNER TO postgres;
+ALTER TABLE public.vwestatisticasmanifestacao OWNER TO java;
 
 --
 -- TOC entry 266 (class 1259 OID 33039)
--- Name: vwultimotramite; Type: VIEW; Schema: public; Owner: postgres
+-- Name: vwultimotramite; Type: VIEW; Schema: public; Owner: java
 --
 
 CREATE VIEW vwultimotramite AS
@@ -2028,11 +2028,11 @@ CREATE VIEW vwultimotramite AS
   GROUP BY m.idmanifestacao, e.idencaminhamento) ulttram ON ((ulttram.idtramite = t.idtramite)));
 
 
-ALTER TABLE public.vwultimotramite OWNER TO postgres;
+ALTER TABLE public.vwultimotramite OWNER TO java;
 
 --
 -- TOC entry 3006 (class 2604 OID 32444)
--- Name: idajuda; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idajuda; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbajuda ALTER COLUMN idajuda SET DEFAULT nextval('tbajuda_idajuda_seq'::regclass);
@@ -2040,7 +2040,7 @@ ALTER TABLE ONLY tbajuda ALTER COLUMN idajuda SET DEFAULT nextval('tbajuda_idaju
 
 --
 -- TOC entry 3007 (class 2604 OID 32455)
--- Name: idanexo; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idanexo; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbanexo ALTER COLUMN idanexo SET DEFAULT nextval('tbanexo_idanexo_seq'::regclass);
@@ -2048,7 +2048,7 @@ ALTER TABLE ONLY tbanexo ALTER COLUMN idanexo SET DEFAULT nextval('tbanexo_idane
 
 --
 -- TOC entry 3008 (class 2604 OID 32466)
--- Name: idareaentrada; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idareaentrada; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbareaentrada ALTER COLUMN idareaentrada SET DEFAULT nextval('tbareaentrada_idareaentrada_seq'::regclass);
@@ -2056,7 +2056,7 @@ ALTER TABLE ONLY tbareaentrada ALTER COLUMN idareaentrada SET DEFAULT nextval('t
 
 --
 -- TOC entry 3009 (class 2604 OID 32474)
--- Name: idavisos; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idavisos; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbaviso ALTER COLUMN idavisos SET DEFAULT nextval('tbaviso_idavisos_seq'::regclass);
@@ -2064,7 +2064,7 @@ ALTER TABLE ONLY tbaviso ALTER COLUMN idavisos SET DEFAULT nextval('tbaviso_idav
 
 --
 -- TOC entry 3010 (class 2604 OID 32493)
--- Name: idclassificacao; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idclassificacao; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbclassificacao ALTER COLUMN idclassificacao SET DEFAULT nextval('tbclassificacao_idclassificacao_seq'::regclass);
@@ -2072,7 +2072,7 @@ ALTER TABLE ONLY tbclassificacao ALTER COLUMN idclassificacao SET DEFAULT nextva
 
 --
 -- TOC entry 3011 (class 2604 OID 32506)
--- Name: idcomunicacaoexterna; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idcomunicacaoexterna; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbcomunicacaoexterna ALTER COLUMN idcomunicacaoexterna SET DEFAULT nextval('tbcomunicacaoexterna_idcomunicacaoexterna_seq'::regclass);
@@ -2080,7 +2080,7 @@ ALTER TABLE ONLY tbcomunicacaoexterna ALTER COLUMN idcomunicacaoexterna SET DEFA
 
 --
 -- TOC entry 3012 (class 2604 OID 32517)
--- Name: idcomunicacaoexternaxanexo; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idcomunicacaoexternaxanexo; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbcomunicacaoexternaxanexo ALTER COLUMN idcomunicacaoexternaxanexo SET DEFAULT nextval('tbcomunicacaoexternaxanexo_idcomunicacaoexternaxanexo_seq'::regclass);
@@ -2088,7 +2088,7 @@ ALTER TABLE ONLY tbcomunicacaoexternaxanexo ALTER COLUMN idcomunicacaoexternaxan
 
 --
 -- TOC entry 3013 (class 2604 OID 32525)
--- Name: idemailautomatizado; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idemailautomatizado; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbemailautomatizado ALTER COLUMN idemailautomatizado SET DEFAULT nextval('tbemailautomatizado_idemailautomatizado_seq'::regclass);
@@ -2096,7 +2096,7 @@ ALTER TABLE ONLY tbemailautomatizado ALTER COLUMN idemailautomatizado SET DEFAUL
 
 --
 -- TOC entry 3014 (class 2604 OID 32536)
--- Name: idencaminhamento; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idencaminhamento; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbencaminhamento ALTER COLUMN idencaminhamento SET DEFAULT nextval('tbencaminhamento_idencaminhamento_seq'::regclass);
@@ -2104,7 +2104,7 @@ ALTER TABLE ONLY tbencaminhamento ALTER COLUMN idencaminhamento SET DEFAULT next
 
 --
 -- TOC entry 3015 (class 2604 OID 32547)
--- Name: idencaminhamentopadronizado; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idencaminhamentopadronizado; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbencaminhamentopadronizado ALTER COLUMN idencaminhamentopadronizado SET DEFAULT nextval('tbencaminhamentopadronizado_idencaminhamentopadronizado_seq'::regclass);
@@ -2112,7 +2112,7 @@ ALTER TABLE ONLY tbencaminhamentopadronizado ALTER COLUMN idencaminhamentopadron
 
 --
 -- TOC entry 3016 (class 2604 OID 32558)
--- Name: idencaminhamentoxanexo; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idencaminhamentoxanexo; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbencaminhamentoxanexo ALTER COLUMN idencaminhamentoxanexo SET DEFAULT nextval('tbencaminhamentoxanexo_idencaminhamentoxanexo_seq'::regclass);
@@ -2120,7 +2120,7 @@ ALTER TABLE ONLY tbencaminhamentoxanexo ALTER COLUMN idencaminhamentoxanexo SET 
 
 --
 -- TOC entry 3017 (class 2604 OID 32566)
--- Name: idfaixaetaria; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idfaixaetaria; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbfaixaetaria ALTER COLUMN idfaixaetaria SET DEFAULT nextval('tbfaixaetaria_idfaixaetaria_seq'::regclass);
@@ -2128,7 +2128,7 @@ ALTER TABLE ONLY tbfaixaetaria ALTER COLUMN idfaixaetaria SET DEFAULT nextval('t
 
 --
 -- TOC entry 3018 (class 2604 OID 32574)
--- Name: idfiltropersonalizado; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idfiltropersonalizado; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbfiltropersonalizado ALTER COLUMN idfiltropersonalizado SET DEFAULT nextval('tbfiltropersonalizado_idfiltropersonalizado_seq'::regclass);
@@ -2136,7 +2136,7 @@ ALTER TABLE ONLY tbfiltropersonalizado ALTER COLUMN idfiltropersonalizado SET DE
 
 --
 -- TOC entry 3019 (class 2604 OID 32585)
--- Name: idfiltrosspam; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idfiltrosspam; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbfiltrospam ALTER COLUMN idfiltrosspam SET DEFAULT nextval('tbfiltrospam_idfiltrosspam_seq'::regclass);
@@ -2144,7 +2144,7 @@ ALTER TABLE ONLY tbfiltrospam ALTER COLUMN idfiltrosspam SET DEFAULT nextval('tb
 
 --
 -- TOC entry 3020 (class 2604 OID 32596)
--- Name: idfuncionalidade; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idfuncionalidade; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbfuncionalidade ALTER COLUMN idfuncionalidade SET DEFAULT nextval('tbfuncionalidade_idfuncionalidade_seq'::regclass);
@@ -2152,7 +2152,7 @@ ALTER TABLE ONLY tbfuncionalidade ALTER COLUMN idfuncionalidade SET DEFAULT next
 
 --
 -- TOC entry 3021 (class 2604 OID 32604)
--- Name: idgrauinstrucao; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idgrauinstrucao; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbgrauinstrucao ALTER COLUMN idgrauinstrucao SET DEFAULT nextval('tbgrauinstrucao_idgrauinstrucao_seq'::regclass);
@@ -2160,7 +2160,7 @@ ALTER TABLE ONLY tbgrauinstrucao ALTER COLUMN idgrauinstrucao SET DEFAULT nextva
 
 --
 -- TOC entry 3022 (class 2604 OID 32612)
--- Name: idgrupo; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idgrupo; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbgrupo ALTER COLUMN idgrupo SET DEFAULT nextval('tbgrupo_idgrupo_seq'::regclass);
@@ -2168,7 +2168,7 @@ ALTER TABLE ONLY tbgrupo ALTER COLUMN idgrupo SET DEFAULT nextval('tbgrupo_idgru
 
 --
 -- TOC entry 3023 (class 2604 OID 32620)
--- Name: idlogoperacoes; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idlogoperacoes; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tblogoperacao ALTER COLUMN idlogoperacoes SET DEFAULT nextval('tblogoperacao_idlogoperacoes_seq'::regclass);
@@ -2176,7 +2176,7 @@ ALTER TABLE ONLY tblogoperacao ALTER COLUMN idlogoperacoes SET DEFAULT nextval('
 
 --
 -- TOC entry 3024 (class 2604 OID 32631)
--- Name: idmanifestacao; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idmanifestacao; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbmanifestacao ALTER COLUMN idmanifestacao SET DEFAULT nextval('tbmanifestacao_idmanifestacao_seq'::regclass);
@@ -2184,7 +2184,7 @@ ALTER TABLE ONLY tbmanifestacao ALTER COLUMN idmanifestacao SET DEFAULT nextval(
 
 --
 -- TOC entry 3025 (class 2604 OID 32642)
--- Name: idmanifestacaoxanexo; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idmanifestacaoxanexo; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbmanifestacaoxanexo ALTER COLUMN idmanifestacaoxanexo SET DEFAULT nextval('tbmanifestacaoxanexo_idmanifestacaoxanexo_seq'::regclass);
@@ -2192,7 +2192,7 @@ ALTER TABLE ONLY tbmanifestacaoxanexo ALTER COLUMN idmanifestacaoxanexo SET DEFA
 
 --
 -- TOC entry 3026 (class 2604 OID 32650)
--- Name: idmeioentrada; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idmeioentrada; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbmeioentrada ALTER COLUMN idmeioentrada SET DEFAULT nextval('tbmeioentrada_idmeioentrada_seq'::regclass);
@@ -2200,7 +2200,7 @@ ALTER TABLE ONLY tbmeioentrada ALTER COLUMN idmeioentrada SET DEFAULT nextval('t
 
 --
 -- TOC entry 3027 (class 2604 OID 32658)
--- Name: idmeioresposta; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idmeioresposta; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbmeioresposta ALTER COLUMN idmeioresposta SET DEFAULT nextval('tbmeioresposta_idmeioresposta_seq'::regclass);
@@ -2208,7 +2208,7 @@ ALTER TABLE ONLY tbmeioresposta ALTER COLUMN idmeioresposta SET DEFAULT nextval(
 
 --
 -- TOC entry 3028 (class 2604 OID 32666)
--- Name: idmunicipio; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idmunicipio; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbmunicipio ALTER COLUMN idmunicipio SET DEFAULT nextval('tbmunicipio_idmunicipio_seq'::regclass);
@@ -2216,7 +2216,7 @@ ALTER TABLE ONLY tbmunicipio ALTER COLUMN idmunicipio SET DEFAULT nextval('tbmun
 
 --
 -- TOC entry 3029 (class 2604 OID 32674)
--- Name: idpais; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idpais; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbpais ALTER COLUMN idpais SET DEFAULT nextval('tbpais_idpais_seq'::regclass);
@@ -2224,7 +2224,7 @@ ALTER TABLE ONLY tbpais ALTER COLUMN idpais SET DEFAULT nextval('tbpais_idpais_s
 
 --
 -- TOC entry 3030 (class 2604 OID 32682)
--- Name: idparametro; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idparametro; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbparametro ALTER COLUMN idparametro SET DEFAULT nextval('tbparametro_idparametro_seq'::regclass);
@@ -2232,7 +2232,7 @@ ALTER TABLE ONLY tbparametro ALTER COLUMN idparametro SET DEFAULT nextval('tbpar
 
 --
 -- TOC entry 3031 (class 2604 OID 32693)
--- Name: idperfil; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idperfil; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbperfil ALTER COLUMN idperfil SET DEFAULT nextval('tbperfil_idperfil_seq'::regclass);
@@ -2240,7 +2240,7 @@ ALTER TABLE ONLY tbperfil ALTER COLUMN idperfil SET DEFAULT nextval('tbperfil_id
 
 --
 -- TOC entry 3032 (class 2604 OID 32704)
--- Name: idperfilxfuncionalidade; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idperfilxfuncionalidade; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbperfilxfuncionalidade ALTER COLUMN idperfilxfuncionalidade SET DEFAULT nextval('tbperfilxfuncionalidade_idperfilxfuncionalidade_seq'::regclass);
@@ -2248,7 +2248,7 @@ ALTER TABLE ONLY tbperfilxfuncionalidade ALTER COLUMN idperfilxfuncionalidade SE
 
 --
 -- TOC entry 3033 (class 2604 OID 32712)
--- Name: idperfilxgrupo; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idperfilxgrupo; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbperfilxgrupo ALTER COLUMN idperfilxgrupo SET DEFAULT nextval('tbperfilxgrupo_idperfilxgrupo_seq'::regclass);
@@ -2256,7 +2256,7 @@ ALTER TABLE ONLY tbperfilxgrupo ALTER COLUMN idperfilxgrupo SET DEFAULT nextval(
 
 --
 -- TOC entry 3038 (class 2604 OID 32761)
--- Name: idpergunta; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idpergunta; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbperguntaquestionario ALTER COLUMN idpergunta SET DEFAULT nextval('tbperguntaquestionario_idpergunta_seq'::regclass);
@@ -2264,7 +2264,7 @@ ALTER TABLE ONLY tbperguntaquestionario ALTER COLUMN idpergunta SET DEFAULT next
 
 --
 -- TOC entry 3034 (class 2604 OID 32720)
--- Name: idprazoesic; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idprazoesic; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbprazoesic ALTER COLUMN idprazoesic SET DEFAULT nextval('tbprazoesic_idprazoesic_seq'::regclass);
@@ -2272,7 +2272,7 @@ ALTER TABLE ONLY tbprazoesic ALTER COLUMN idprazoesic SET DEFAULT nextval('tbpra
 
 --
 -- TOC entry 3035 (class 2604 OID 32731)
--- Name: idpreferenciasistema; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idpreferenciasistema; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbpreferenciasistema ALTER COLUMN idpreferenciasistema SET DEFAULT nextval('tbpreferenciasistema_idpreferenciasistema_seq'::regclass);
@@ -2282,7 +2282,7 @@ VALUES (1, 'Ouvidoria MinC', 'naoresponda.ouvidoria@cultura.gov.br', '10.0.0.54'
 
 --
 -- TOC entry 3036 (class 2604 OID 32742)
--- Name: idprioridade; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idprioridade; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbprioridade ALTER COLUMN idprioridade SET DEFAULT nextval('tbprioridade_idprioridade_seq'::regclass);
@@ -2290,7 +2290,7 @@ ALTER TABLE ONLY tbprioridade ALTER COLUMN idprioridade SET DEFAULT nextval('tbp
 
 --
 -- TOC entry 3037 (class 2604 OID 32750)
--- Name: idquestionario; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idquestionario; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbquestionario ALTER COLUMN idquestionario SET DEFAULT nextval('tbquestionario_idquestionario_seq'::regclass);
@@ -2298,7 +2298,7 @@ ALTER TABLE ONLY tbquestionario ALTER COLUMN idquestionario SET DEFAULT nextval(
 
 --
 -- TOC entry 3040 (class 2604 OID 32777)
--- Name: idrespostamanifestacao; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idrespostamanifestacao; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbrespostamanifestacao ALTER COLUMN idrespostamanifestacao SET DEFAULT nextval('tbrespostamanifestacao_idrespostamanifestacao_seq'::regclass);
@@ -2306,7 +2306,7 @@ ALTER TABLE ONLY tbrespostamanifestacao ALTER COLUMN idrespostamanifestacao SET 
 
 --
 -- TOC entry 3039 (class 2604 OID 32769)
--- Name: idresposta; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idresposta; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbrespostaquestionario ALTER COLUMN idresposta SET DEFAULT nextval('tbrespostaquestionario_idresposta_seq'::regclass);
@@ -2314,7 +2314,7 @@ ALTER TABLE ONLY tbrespostaquestionario ALTER COLUMN idresposta SET DEFAULT next
 
 --
 -- TOC entry 3041 (class 2604 OID 32788)
--- Name: idsubclassificacao; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idsubclassificacao; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbsubclassificacao ALTER COLUMN idsubclassificacao SET DEFAULT nextval('tbsubclassificacao_idsubclassificacao_seq'::regclass);
@@ -2322,7 +2322,7 @@ ALTER TABLE ONLY tbsubclassificacao ALTER COLUMN idsubclassificacao SET DEFAULT 
 
 --
 -- TOC entry 3042 (class 2604 OID 32796)
--- Name: idtipomanifestacao; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idtipomanifestacao; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbtipomanifestacao ALTER COLUMN idtipomanifestacao SET DEFAULT nextval('tbtipomanifestacao_idtipomanifestacao_seq'::regclass);
@@ -2330,7 +2330,7 @@ ALTER TABLE ONLY tbtipomanifestacao ALTER COLUMN idtipomanifestacao SET DEFAULT 
 
 --
 -- TOC entry 3043 (class 2604 OID 32807)
--- Name: idtramite; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idtramite; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbtramite ALTER COLUMN idtramite SET DEFAULT nextval('tbtramite_idtramite_seq'::regclass);
@@ -2338,7 +2338,7 @@ ALTER TABLE ONLY tbtramite ALTER COLUMN idtramite SET DEFAULT nextval('tbtramite
 
 --
 -- TOC entry 3044 (class 2604 OID 32818)
--- Name: idtramitexanexo; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idtramitexanexo; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbtramitexanexo ALTER COLUMN idtramitexanexo SET DEFAULT nextval('tbtramitexanexo_idtramitexanexo_seq'::regclass);
@@ -2346,7 +2346,7 @@ ALTER TABLE ONLY tbtramitexanexo ALTER COLUMN idtramitexanexo SET DEFAULT nextva
 
 --
 -- TOC entry 3045 (class 2604 OID 32826)
--- Name: iduf; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: iduf; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbuf ALTER COLUMN iduf SET DEFAULT nextval('tbuf_iduf_seq'::regclass);
@@ -2354,7 +2354,7 @@ ALTER TABLE ONLY tbuf ALTER COLUMN iduf SET DEFAULT nextval('tbuf_iduf_seq'::reg
 
 --
 -- TOC entry 3046 (class 2604 OID 32837)
--- Name: idunidade; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idunidade; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbunidade ALTER COLUMN idunidade SET DEFAULT nextval('tbunidade_idunidade_seq'::regclass);
@@ -2362,7 +2362,7 @@ ALTER TABLE ONLY tbunidade ALTER COLUMN idunidade SET DEFAULT nextval('tbunidade
 
 --
 -- TOC entry 3047 (class 2604 OID 32848)
--- Name: idunidademanifestacao; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idunidademanifestacao; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbunidadexmanifestacao ALTER COLUMN idunidademanifestacao SET DEFAULT nextval('tbunidadexmanifestacao_idunidademanifestacao_seq'::regclass);
@@ -2370,7 +2370,7 @@ ALTER TABLE ONLY tbunidadexmanifestacao ALTER COLUMN idunidademanifestacao SET D
 
 --
 -- TOC entry 3048 (class 2604 OID 32856)
--- Name: idusuario; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idusuario; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbusuario ALTER COLUMN idusuario SET DEFAULT nextval('tbusuario_idusuario_seq'::regclass);
@@ -2378,7 +2378,7 @@ ALTER TABLE ONLY tbusuario ALTER COLUMN idusuario SET DEFAULT nextval('tbusuario
 
 --
 -- TOC entry 3049 (class 2604 OID 32867)
--- Name: idusuarioperfil; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: idusuarioperfil; Type: DEFAULT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbusuarioxperfil ALTER COLUMN idusuarioperfil SET DEFAULT nextval('tbusuarioxperfil_idusuarioperfil_seq'::regclass);
@@ -2387,7 +2387,7 @@ ALTER TABLE ONLY tbusuarioxperfil ALTER COLUMN idusuarioperfil SET DEFAULT nextv
 --
 -- TOC entry 3289 (class 0 OID 32441)
 -- Dependencies: 171
--- Data for Name: tbajuda; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbajuda; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -2395,7 +2395,7 @@ ALTER TABLE ONLY tbusuarioxperfil ALTER COLUMN idusuarioperfil SET DEFAULT nextv
 --
 -- TOC entry 3435 (class 0 OID 0)
 -- Dependencies: 170
--- Name: tbajuda_idajuda_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbajuda_idajuda_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbajuda_idajuda_seq', 1, false);
@@ -2404,7 +2404,7 @@ SELECT pg_catalog.setval('tbajuda_idajuda_seq', 1, false);
 --
 -- TOC entry 3291 (class 0 OID 32452)
 -- Dependencies: 173
--- Data for Name: tbanexo; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbanexo; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -2412,7 +2412,7 @@ SELECT pg_catalog.setval('tbajuda_idajuda_seq', 1, false);
 --
 -- TOC entry 3436 (class 0 OID 0)
 -- Dependencies: 172
--- Name: tbanexo_idanexo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbanexo_idanexo_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbanexo_idanexo_seq', 1, false);
@@ -2421,7 +2421,7 @@ SELECT pg_catalog.setval('tbanexo_idanexo_seq', 1, false);
 --
 -- TOC entry 3293 (class 0 OID 32463)
 -- Dependencies: 175
--- Data for Name: tbareaentrada; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbareaentrada; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 INSERT INTO tbareaentrada (idareaentrada, nmareaentrada) VALUES (1, 'Página eletrônica');
@@ -2431,7 +2431,7 @@ INSERT INTO tbareaentrada (idareaentrada, nmareaentrada) VALUES (169, 'E-SIC');
 --
 -- TOC entry 3437 (class 0 OID 0)
 -- Dependencies: 174
--- Name: tbareaentrada_idareaentrada_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbareaentrada_idareaentrada_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbareaentrada_idareaentrada_seq', 1, false);
@@ -2440,7 +2440,7 @@ SELECT pg_catalog.setval('tbareaentrada_idareaentrada_seq', 1, false);
 --
 -- TOC entry 3295 (class 0 OID 32471)
 -- Dependencies: 177
--- Data for Name: tbaviso; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbaviso; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -2448,7 +2448,7 @@ SELECT pg_catalog.setval('tbareaentrada_idareaentrada_seq', 1, false);
 --
 -- TOC entry 3438 (class 0 OID 0)
 -- Dependencies: 176
--- Name: tbaviso_idavisos_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbaviso_idavisos_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbaviso_idavisos_seq', 1, false);
@@ -2457,7 +2457,7 @@ SELECT pg_catalog.setval('tbaviso_idavisos_seq', 1, false);
 --
 -- TOC entry 3296 (class 0 OID 32480)
 -- Dependencies: 178
--- Data for Name: tbcep; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbcep; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -2465,7 +2465,7 @@ SELECT pg_catalog.setval('tbaviso_idavisos_seq', 1, false);
 --
 -- TOC entry 3298 (class 0 OID 32490)
 -- Dependencies: 180
--- Data for Name: tbclassificacao; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbclassificacao; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -2473,7 +2473,7 @@ SELECT pg_catalog.setval('tbaviso_idavisos_seq', 1, false);
 --
 -- TOC entry 3439 (class 0 OID 0)
 -- Dependencies: 179
--- Name: tbclassificacao_idclassificacao_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbclassificacao_idclassificacao_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbclassificacao_idclassificacao_seq', 1, false);
@@ -2482,7 +2482,7 @@ SELECT pg_catalog.setval('tbclassificacao_idclassificacao_seq', 1, false);
 --
 -- TOC entry 3379 (class 0 OID 32875)
 -- Dependencies: 261
--- Data for Name: tbclassificacao_tbsubclassificacao; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbclassificacao_tbsubclassificacao; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -2490,7 +2490,7 @@ SELECT pg_catalog.setval('tbclassificacao_idclassificacao_seq', 1, false);
 --
 -- TOC entry 3380 (class 0 OID 32880)
 -- Dependencies: 262
--- Data for Name: tbclassificacao_tbunidade; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbclassificacao_tbunidade; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -2498,7 +2498,7 @@ SELECT pg_catalog.setval('tbclassificacao_idclassificacao_seq', 1, false);
 --
 -- TOC entry 3299 (class 0 OID 32496)
 -- Dependencies: 181
--- Data for Name: tbcomentarioquestionario; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbcomentarioquestionario; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -2506,7 +2506,7 @@ SELECT pg_catalog.setval('tbclassificacao_idclassificacao_seq', 1, false);
 --
 -- TOC entry 3301 (class 0 OID 32503)
 -- Dependencies: 183
--- Data for Name: tbcomunicacaoexterna; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbcomunicacaoexterna; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -2514,7 +2514,7 @@ SELECT pg_catalog.setval('tbclassificacao_idclassificacao_seq', 1, false);
 --
 -- TOC entry 3440 (class 0 OID 0)
 -- Dependencies: 182
--- Name: tbcomunicacaoexterna_idcomunicacaoexterna_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbcomunicacaoexterna_idcomunicacaoexterna_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbcomunicacaoexterna_idcomunicacaoexterna_seq', 1, false);
@@ -2523,7 +2523,7 @@ SELECT pg_catalog.setval('tbcomunicacaoexterna_idcomunicacaoexterna_seq', 1, fal
 --
 -- TOC entry 3303 (class 0 OID 32514)
 -- Dependencies: 185
--- Data for Name: tbcomunicacaoexternaxanexo; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbcomunicacaoexternaxanexo; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -2531,7 +2531,7 @@ SELECT pg_catalog.setval('tbcomunicacaoexterna_idcomunicacaoexterna_seq', 1, fal
 --
 -- TOC entry 3441 (class 0 OID 0)
 -- Dependencies: 184
--- Name: tbcomunicacaoexternaxanexo_idcomunicacaoexternaxanexo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbcomunicacaoexternaxanexo_idcomunicacaoexternaxanexo_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbcomunicacaoexternaxanexo_idcomunicacaoexternaxanexo_seq', 1, false);
@@ -2540,7 +2540,7 @@ SELECT pg_catalog.setval('tbcomunicacaoexternaxanexo_idcomunicacaoexternaxanexo_
 --
 -- TOC entry 3305 (class 0 OID 32522)
 -- Dependencies: 187
--- Data for Name: tbemailautomatizado; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbemailautomatizado; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -2548,7 +2548,7 @@ SELECT pg_catalog.setval('tbcomunicacaoexternaxanexo_idcomunicacaoexternaxanexo_
 --
 -- TOC entry 3442 (class 0 OID 0)
 -- Dependencies: 186
--- Name: tbemailautomatizado_idemailautomatizado_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbemailautomatizado_idemailautomatizado_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbemailautomatizado_idemailautomatizado_seq', 1, false);
@@ -2557,7 +2557,7 @@ SELECT pg_catalog.setval('tbemailautomatizado_idemailautomatizado_seq', 1, false
 --
 -- TOC entry 3307 (class 0 OID 32533)
 -- Dependencies: 189
--- Data for Name: tbencaminhamento; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbencaminhamento; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -2565,7 +2565,7 @@ SELECT pg_catalog.setval('tbemailautomatizado_idemailautomatizado_seq', 1, false
 --
 -- TOC entry 3443 (class 0 OID 0)
 -- Dependencies: 188
--- Name: tbencaminhamento_idencaminhamento_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbencaminhamento_idencaminhamento_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbencaminhamento_idencaminhamento_seq', 1, false);
@@ -2574,7 +2574,7 @@ SELECT pg_catalog.setval('tbencaminhamento_idencaminhamento_seq', 1, false);
 --
 -- TOC entry 3309 (class 0 OID 32544)
 -- Dependencies: 191
--- Data for Name: tbencaminhamentopadronizado; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbencaminhamentopadronizado; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -2582,7 +2582,7 @@ SELECT pg_catalog.setval('tbencaminhamento_idencaminhamento_seq', 1, false);
 --
 -- TOC entry 3444 (class 0 OID 0)
 -- Dependencies: 190
--- Name: tbencaminhamentopadronizado_idencaminhamentopadronizado_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbencaminhamentopadronizado_idencaminhamentopadronizado_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbencaminhamentopadronizado_idencaminhamentopadronizado_seq', 1, false);
@@ -2591,7 +2591,7 @@ SELECT pg_catalog.setval('tbencaminhamentopadronizado_idencaminhamentopadronizad
 --
 -- TOC entry 3311 (class 0 OID 32555)
 -- Dependencies: 193
--- Data for Name: tbencaminhamentoxanexo; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbencaminhamentoxanexo; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -2599,7 +2599,7 @@ SELECT pg_catalog.setval('tbencaminhamentopadronizado_idencaminhamentopadronizad
 --
 -- TOC entry 3445 (class 0 OID 0)
 -- Dependencies: 192
--- Name: tbencaminhamentoxanexo_idencaminhamentoxanexo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbencaminhamentoxanexo_idencaminhamentoxanexo_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbencaminhamentoxanexo_idencaminhamentoxanexo_seq', 1, false);
@@ -2608,7 +2608,7 @@ SELECT pg_catalog.setval('tbencaminhamentoxanexo_idencaminhamentoxanexo_seq', 1,
 --
 -- TOC entry 3313 (class 0 OID 32563)
 -- Dependencies: 195
--- Data for Name: tbfaixaetaria; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbfaixaetaria; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 INSERT INTO tbfaixaetaria (idfaixaetaria, nmfaixaetaria) VALUES (5, 'Até 15 anos');
@@ -2621,7 +2621,7 @@ INSERT INTO tbfaixaetaria (idfaixaetaria, nmfaixaetaria) VALUES (2024, 'Mais que
 --
 -- TOC entry 3446 (class 0 OID 0)
 -- Dependencies: 194
--- Name: tbfaixaetaria_idfaixaetaria_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbfaixaetaria_idfaixaetaria_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbfaixaetaria_idfaixaetaria_seq', 1, false);
@@ -2630,7 +2630,7 @@ SELECT pg_catalog.setval('tbfaixaetaria_idfaixaetaria_seq', 1, false);
 --
 -- TOC entry 3315 (class 0 OID 32571)
 -- Dependencies: 197
--- Data for Name: tbfiltropersonalizado; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbfiltropersonalizado; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -2638,7 +2638,7 @@ SELECT pg_catalog.setval('tbfaixaetaria_idfaixaetaria_seq', 1, false);
 --
 -- TOC entry 3447 (class 0 OID 0)
 -- Dependencies: 196
--- Name: tbfiltropersonalizado_idfiltropersonalizado_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbfiltropersonalizado_idfiltropersonalizado_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbfiltropersonalizado_idfiltropersonalizado_seq', 1, false);
@@ -2647,7 +2647,7 @@ SELECT pg_catalog.setval('tbfiltropersonalizado_idfiltropersonalizado_seq', 1, f
 --
 -- TOC entry 3317 (class 0 OID 32582)
 -- Dependencies: 199
--- Data for Name: tbfiltrospam; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbfiltrospam; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -2655,7 +2655,7 @@ SELECT pg_catalog.setval('tbfiltropersonalizado_idfiltropersonalizado_seq', 1, f
 --
 -- TOC entry 3448 (class 0 OID 0)
 -- Dependencies: 198
--- Name: tbfiltrospam_idfiltrosspam_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbfiltrospam_idfiltrosspam_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbfiltrospam_idfiltrosspam_seq', 1, false);
@@ -2664,7 +2664,7 @@ SELECT pg_catalog.setval('tbfiltrospam_idfiltrosspam_seq', 1, false);
 --
 -- TOC entry 3319 (class 0 OID 32593)
 -- Dependencies: 201
--- Data for Name: tbfuncionalidade; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbfuncionalidade; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 INSERT INTO tbfuncionalidade (idfuncionalidade, dsfuncionalidade) VALUES (1, 'Atualizar Minhas Informações');
@@ -2714,7 +2714,7 @@ INSERT INTO tbfuncionalidade (idfuncionalidade, dsfuncionalidade) VALUES (42, 'G
 --
 -- TOC entry 3449 (class 0 OID 0)
 -- Dependencies: 200
--- Name: tbfuncionalidade_idfuncionalidade_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbfuncionalidade_idfuncionalidade_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbfuncionalidade_idfuncionalidade_seq', 1, false);
@@ -2723,7 +2723,7 @@ SELECT pg_catalog.setval('tbfuncionalidade_idfuncionalidade_seq', 1, false);
 --
 -- TOC entry 3321 (class 0 OID 32601)
 -- Dependencies: 203
--- Data for Name: tbgrauinstrucao; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbgrauinstrucao; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 INSERT INTO tbgrauinstrucao (idgrauinstrucao, nmgrauinstrucao) VALUES (2, 'Analfabeto');
@@ -2744,7 +2744,7 @@ INSERT INTO tbgrauinstrucao (idgrauinstrucao, nmgrauinstrucao) VALUES (14, 'Dout
 --
 -- TOC entry 3450 (class 0 OID 0)
 -- Dependencies: 202
--- Name: tbgrauinstrucao_idgrauinstrucao_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbgrauinstrucao_idgrauinstrucao_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbgrauinstrucao_idgrauinstrucao_seq', 1, false);
@@ -2753,7 +2753,7 @@ SELECT pg_catalog.setval('tbgrauinstrucao_idgrauinstrucao_seq', 1, false);
 --
 -- TOC entry 3323 (class 0 OID 32609)
 -- Dependencies: 205
--- Data for Name: tbgrupo; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbgrupo; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -2761,7 +2761,7 @@ SELECT pg_catalog.setval('tbgrauinstrucao_idgrauinstrucao_seq', 1, false);
 --
 -- TOC entry 3451 (class 0 OID 0)
 -- Dependencies: 204
--- Name: tbgrupo_idgrupo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbgrupo_idgrupo_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbgrupo_idgrupo_seq', 1, false);
@@ -2770,7 +2770,7 @@ SELECT pg_catalog.setval('tbgrupo_idgrupo_seq', 1, false);
 --
 -- TOC entry 3325 (class 0 OID 32617)
 -- Dependencies: 207
--- Data for Name: tblogoperacao; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tblogoperacao; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -2778,7 +2778,7 @@ SELECT pg_catalog.setval('tbgrupo_idgrupo_seq', 1, false);
 --
 -- TOC entry 3452 (class 0 OID 0)
 -- Dependencies: 206
--- Name: tblogoperacao_idlogoperacoes_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tblogoperacao_idlogoperacoes_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tblogoperacao_idlogoperacoes_seq', 1, false);
@@ -2787,7 +2787,7 @@ SELECT pg_catalog.setval('tblogoperacao_idlogoperacoes_seq', 1, false);
 --
 -- TOC entry 3327 (class 0 OID 32628)
 -- Dependencies: 209
--- Data for Name: tbmanifestacao; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbmanifestacao; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -2795,7 +2795,7 @@ SELECT pg_catalog.setval('tblogoperacao_idlogoperacoes_seq', 1, false);
 --
 -- TOC entry 3453 (class 0 OID 0)
 -- Dependencies: 208
--- Name: tbmanifestacao_idmanifestacao_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbmanifestacao_idmanifestacao_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbmanifestacao_idmanifestacao_seq', 1, false);
@@ -2804,7 +2804,7 @@ SELECT pg_catalog.setval('tbmanifestacao_idmanifestacao_seq', 1, false);
 --
 -- TOC entry 3378 (class 0 OID 32870)
 -- Dependencies: 260
--- Data for Name: tbmanifestacao_tbclassificacao; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbmanifestacao_tbclassificacao; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -2812,7 +2812,7 @@ SELECT pg_catalog.setval('tbmanifestacao_idmanifestacao_seq', 1, false);
 --
 -- TOC entry 3381 (class 0 OID 32885)
 -- Dependencies: 263
--- Data for Name: tbmanifestacao_tbsubclassificacao; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbmanifestacao_tbsubclassificacao; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -2820,7 +2820,7 @@ SELECT pg_catalog.setval('tbmanifestacao_idmanifestacao_seq', 1, false);
 --
 -- TOC entry 3382 (class 0 OID 32890)
 -- Dependencies: 264
--- Data for Name: tbmanifestacao_unidadeareasolucionadora; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbmanifestacao_unidadeareasolucionadora; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -2828,7 +2828,7 @@ SELECT pg_catalog.setval('tbmanifestacao_idmanifestacao_seq', 1, false);
 --
 -- TOC entry 3329 (class 0 OID 32639)
 -- Dependencies: 211
--- Data for Name: tbmanifestacaoxanexo; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbmanifestacaoxanexo; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -2836,7 +2836,7 @@ SELECT pg_catalog.setval('tbmanifestacao_idmanifestacao_seq', 1, false);
 --
 -- TOC entry 3454 (class 0 OID 0)
 -- Dependencies: 210
--- Name: tbmanifestacaoxanexo_idmanifestacaoxanexo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbmanifestacaoxanexo_idmanifestacaoxanexo_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbmanifestacaoxanexo_idmanifestacaoxanexo_seq', 1, false);
@@ -2845,7 +2845,7 @@ SELECT pg_catalog.setval('tbmanifestacaoxanexo_idmanifestacaoxanexo_seq', 1, fal
 --
 -- TOC entry 3331 (class 0 OID 32647)
 -- Dependencies: 213
--- Data for Name: tbmeioentrada; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbmeioentrada; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 INSERT INTO tbmeioentrada (idmeioentrada, nmmeioentrada) VALUES (1, 'Formulário eletrônico');
@@ -2858,7 +2858,7 @@ INSERT INTO tbmeioentrada (idmeioentrada, nmmeioentrada) VALUES (1059, 'E-mail')
 --
 -- TOC entry 3455 (class 0 OID 0)
 -- Dependencies: 212
--- Name: tbmeioentrada_idmeioentrada_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbmeioentrada_idmeioentrada_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbmeioentrada_idmeioentrada_seq', 1, false);
@@ -2867,7 +2867,7 @@ SELECT pg_catalog.setval('tbmeioentrada_idmeioentrada_seq', 1, false);
 --
 -- TOC entry 3333 (class 0 OID 32655)
 -- Dependencies: 215
--- Data for Name: tbmeioresposta; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbmeioresposta; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 INSERT INTO tbmeioresposta (idmeioresposta, nmmeioresposta) VALUES (1, 'E-mail (Correio Eletrônicos)');
@@ -2879,7 +2879,7 @@ INSERT INTO tbmeioresposta (idmeioresposta, nmmeioresposta) VALUES (5, 'Telefone
 --
 -- TOC entry 3456 (class 0 OID 0)
 -- Dependencies: 214
--- Name: tbmeioresposta_idmeioresposta_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbmeioresposta_idmeioresposta_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbmeioresposta_idmeioresposta_seq', 1, false);
@@ -2888,7 +2888,7 @@ SELECT pg_catalog.setval('tbmeioresposta_idmeioresposta_seq', 1, false);
 --
 -- TOC entry 3335 (class 0 OID 32663)
 -- Dependencies: 217
--- Data for Name: tbmunicipio; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbmunicipio; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 INSERT INTO tbmunicipio (idmunicipio, iduf, nmmunicipio) VALUES (1, 21, 'Alta Floresta D Oeste');
@@ -8461,7 +8461,7 @@ INSERT INTO tbmunicipio (idmunicipio, iduf, nmmunicipio) VALUES (5565, 7, 'Bras�
 --
 -- TOC entry 3457 (class 0 OID 0)
 -- Dependencies: 216
--- Name: tbmunicipio_idmunicipio_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbmunicipio_idmunicipio_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbmunicipio_idmunicipio_seq', 1, false);
@@ -8470,7 +8470,7 @@ SELECT pg_catalog.setval('tbmunicipio_idmunicipio_seq', 1, false);
 --
 -- TOC entry 3337 (class 0 OID 32671)
 -- Dependencies: 219
--- Data for Name: tbpais; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbpais; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 INSERT INTO tbpais (idpais, nmpais) VALUES (1, 'Afeganistão');
@@ -8730,7 +8730,7 @@ INSERT INTO tbpais (idpais, nmpais) VALUES (252, 'Wallis e Futuna');
 --
 -- TOC entry 3458 (class 0 OID 0)
 -- Dependencies: 218
--- Name: tbpais_idpais_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbpais_idpais_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbpais_idpais_seq', 1, false);
@@ -8739,7 +8739,7 @@ SELECT pg_catalog.setval('tbpais_idpais_seq', 1, false);
 --
 -- TOC entry 3339 (class 0 OID 32679)
 -- Dependencies: 221
--- Data for Name: tbparametro; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbparametro; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 INSERT INTO tbparametro (idparametro, nmparametro, vlrparametro) VALUES (1, 'Sequencial da Manifestação', '1');
@@ -8751,7 +8751,7 @@ INSERT INTO tbparametro (idparametro, nmparametro, vlrparametro) VALUES (4, 'URL
 --
 -- TOC entry 3459 (class 0 OID 0)
 -- Dependencies: 220
--- Name: tbparametro_idparametro_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbparametro_idparametro_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbparametro_idparametro_seq', 1, false);
@@ -8760,7 +8760,7 @@ SELECT pg_catalog.setval('tbparametro_idparametro_seq', 1, false);
 --
 -- TOC entry 3341 (class 0 OID 32690)
 -- Dependencies: 223
--- Data for Name: tbperfil; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbperfil; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 INSERT INTO tbperfil (idperfil, tpperfil, nmperfil) VALUES (1, '1', 'Administrar Usuário');
@@ -8775,7 +8775,7 @@ INSERT INTO tbperfil (idperfil, tpperfil, nmperfil) VALUES (2046, '1', 'Filtro P
 --
 -- TOC entry 3460 (class 0 OID 0)
 -- Dependencies: 222
--- Name: tbperfil_idperfil_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbperfil_idperfil_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbperfil_idperfil_seq', 1, false);
@@ -8784,7 +8784,7 @@ SELECT pg_catalog.setval('tbperfil_idperfil_seq', 1, false);
 --
 -- TOC entry 3343 (class 0 OID 32701)
 -- Dependencies: 225
--- Data for Name: tbperfilxfuncionalidade; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbperfilxfuncionalidade; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -8792,7 +8792,7 @@ SELECT pg_catalog.setval('tbperfil_idperfil_seq', 1, false);
 --
 -- TOC entry 3461 (class 0 OID 0)
 -- Dependencies: 224
--- Name: tbperfilxfuncionalidade_idperfilxfuncionalidade_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbperfilxfuncionalidade_idperfilxfuncionalidade_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbperfilxfuncionalidade_idperfilxfuncionalidade_seq', 1, false);
@@ -8801,7 +8801,7 @@ SELECT pg_catalog.setval('tbperfilxfuncionalidade_idperfilxfuncionalidade_seq', 
 --
 -- TOC entry 3345 (class 0 OID 32709)
 -- Dependencies: 227
--- Data for Name: tbperfilxgrupo; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbperfilxgrupo; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -8809,7 +8809,7 @@ SELECT pg_catalog.setval('tbperfilxfuncionalidade_idperfilxfuncionalidade_seq', 
 --
 -- TOC entry 3462 (class 0 OID 0)
 -- Dependencies: 226
--- Name: tbperfilxgrupo_idperfilxgrupo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbperfilxgrupo_idperfilxgrupo_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbperfilxgrupo_idperfilxgrupo_seq', 1, false);
@@ -8818,7 +8818,7 @@ SELECT pg_catalog.setval('tbperfilxgrupo_idperfilxgrupo_seq', 1, false);
 --
 -- TOC entry 3355 (class 0 OID 32758)
 -- Dependencies: 237
--- Data for Name: tbperguntaquestionario; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbperguntaquestionario; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -8826,7 +8826,7 @@ SELECT pg_catalog.setval('tbperfilxgrupo_idperfilxgrupo_seq', 1, false);
 --
 -- TOC entry 3463 (class 0 OID 0)
 -- Dependencies: 236
--- Name: tbperguntaquestionario_idpergunta_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbperguntaquestionario_idpergunta_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbperguntaquestionario_idpergunta_seq', 1, false);
@@ -8835,7 +8835,7 @@ SELECT pg_catalog.setval('tbperguntaquestionario_idpergunta_seq', 1, false);
 --
 -- TOC entry 3347 (class 0 OID 32717)
 -- Dependencies: 229
--- Data for Name: tbprazoesic; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbprazoesic; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -8843,7 +8843,7 @@ SELECT pg_catalog.setval('tbperguntaquestionario_idpergunta_seq', 1, false);
 --
 -- TOC entry 3464 (class 0 OID 0)
 -- Dependencies: 228
--- Name: tbprazoesic_idprazoesic_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbprazoesic_idprazoesic_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbprazoesic_idprazoesic_seq', 1, false);
@@ -8852,7 +8852,7 @@ SELECT pg_catalog.setval('tbprazoesic_idprazoesic_seq', 1, false);
 --
 -- TOC entry 3349 (class 0 OID 32728)
 -- Dependencies: 231
--- Data for Name: tbpreferenciasistema; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbpreferenciasistema; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -8860,7 +8860,7 @@ SELECT pg_catalog.setval('tbprazoesic_idprazoesic_seq', 1, false);
 --
 -- TOC entry 3465 (class 0 OID 0)
 -- Dependencies: 230
--- Name: tbpreferenciasistema_idpreferenciasistema_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbpreferenciasistema_idpreferenciasistema_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbpreferenciasistema_idpreferenciasistema_seq', 1, false);
@@ -8869,7 +8869,7 @@ SELECT pg_catalog.setval('tbpreferenciasistema_idpreferenciasistema_seq', 1, fal
 --
 -- TOC entry 3351 (class 0 OID 32739)
 -- Dependencies: 233
--- Data for Name: tbprioridade; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbprioridade; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 INSERT INTO tbprioridade (idprioridade, nmprioridade) VALUES (1, 'Normal');
@@ -8881,7 +8881,7 @@ INSERT INTO tbprioridade (idprioridade, nmprioridade) VALUES (1021, 'Alta');
 --
 -- TOC entry 3466 (class 0 OID 0)
 -- Dependencies: 232
--- Name: tbprioridade_idprioridade_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbprioridade_idprioridade_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbprioridade_idprioridade_seq', 1, false);
@@ -8890,7 +8890,7 @@ SELECT pg_catalog.setval('tbprioridade_idprioridade_seq', 1, false);
 --
 -- TOC entry 3353 (class 0 OID 32747)
 -- Dependencies: 235
--- Data for Name: tbquestionario; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbquestionario; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -8898,7 +8898,7 @@ SELECT pg_catalog.setval('tbprioridade_idprioridade_seq', 1, false);
 --
 -- TOC entry 3467 (class 0 OID 0)
 -- Dependencies: 234
--- Name: tbquestionario_idquestionario_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbquestionario_idquestionario_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbquestionario_idquestionario_seq', 1, false);
@@ -8907,7 +8907,7 @@ SELECT pg_catalog.setval('tbquestionario_idquestionario_seq', 1, false);
 --
 -- TOC entry 3359 (class 0 OID 32774)
 -- Dependencies: 241
--- Data for Name: tbrespostamanifestacao; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbrespostamanifestacao; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -8915,7 +8915,7 @@ SELECT pg_catalog.setval('tbquestionario_idquestionario_seq', 1, false);
 --
 -- TOC entry 3468 (class 0 OID 0)
 -- Dependencies: 240
--- Name: tbrespostamanifestacao_idrespostamanifestacao_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbrespostamanifestacao_idrespostamanifestacao_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbrespostamanifestacao_idrespostamanifestacao_seq', 1, false);
@@ -8924,7 +8924,7 @@ SELECT pg_catalog.setval('tbrespostamanifestacao_idrespostamanifestacao_seq', 1,
 --
 -- TOC entry 3357 (class 0 OID 32766)
 -- Dependencies: 239
--- Data for Name: tbrespostaquestionario; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbrespostaquestionario; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -8932,7 +8932,7 @@ SELECT pg_catalog.setval('tbrespostamanifestacao_idrespostamanifestacao_seq', 1,
 --
 -- TOC entry 3469 (class 0 OID 0)
 -- Dependencies: 238
--- Name: tbrespostaquestionario_idresposta_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbrespostaquestionario_idresposta_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbrespostaquestionario_idresposta_seq', 1, false);
@@ -8941,7 +8941,7 @@ SELECT pg_catalog.setval('tbrespostaquestionario_idresposta_seq', 1, false);
 --
 -- TOC entry 3361 (class 0 OID 32785)
 -- Dependencies: 243
--- Data for Name: tbsubclassificacao; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbsubclassificacao; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -8949,7 +8949,7 @@ SELECT pg_catalog.setval('tbrespostaquestionario_idresposta_seq', 1, false);
 --
 -- TOC entry 3470 (class 0 OID 0)
 -- Dependencies: 242
--- Name: tbsubclassificacao_idsubclassificacao_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbsubclassificacao_idsubclassificacao_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbsubclassificacao_idsubclassificacao_seq', 1, false);
@@ -8958,7 +8958,7 @@ SELECT pg_catalog.setval('tbsubclassificacao_idsubclassificacao_seq', 1, false);
 --
 -- TOC entry 3363 (class 0 OID 32793)
 -- Dependencies: 245
--- Data for Name: tbtipomanifestacao; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbtipomanifestacao; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 INSERT INTO tbtipomanifestacao (idtipomanifestacao, nmtipomanifestacao, dstipomanifestacao, prazoentrada, prazoareasolucionadora, prazorespostacidadao) VALUES (1, 'Reclamação', 'Manifestação que apresenta uma insatisfação do cidadão ou de uma organização para com um dos programas, serviços, política ou diretrizes do Ministério da Cultura.', 1, 5, 1);
@@ -8972,7 +8972,7 @@ INSERT INTO tbtipomanifestacao (idtipomanifestacao, nmtipomanifestacao, dstipoma
 --
 -- TOC entry 3471 (class 0 OID 0)
 -- Dependencies: 244
--- Name: tbtipomanifestacao_idtipomanifestacao_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbtipomanifestacao_idtipomanifestacao_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbtipomanifestacao_idtipomanifestacao_seq', 1, false);
@@ -8981,7 +8981,7 @@ SELECT pg_catalog.setval('tbtipomanifestacao_idtipomanifestacao_seq', 1, false);
 --
 -- TOC entry 3365 (class 0 OID 32804)
 -- Dependencies: 247
--- Data for Name: tbtramite; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbtramite; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -8989,7 +8989,7 @@ SELECT pg_catalog.setval('tbtipomanifestacao_idtipomanifestacao_seq', 1, false);
 --
 -- TOC entry 3472 (class 0 OID 0)
 -- Dependencies: 246
--- Name: tbtramite_idtramite_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbtramite_idtramite_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbtramite_idtramite_seq', 1, false);
@@ -8998,7 +8998,7 @@ SELECT pg_catalog.setval('tbtramite_idtramite_seq', 1, false);
 --
 -- TOC entry 3367 (class 0 OID 32815)
 -- Dependencies: 249
--- Data for Name: tbtramitexanexo; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbtramitexanexo; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -9006,7 +9006,7 @@ SELECT pg_catalog.setval('tbtramite_idtramite_seq', 1, false);
 --
 -- TOC entry 3473 (class 0 OID 0)
 -- Dependencies: 248
--- Name: tbtramitexanexo_idtramitexanexo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbtramitexanexo_idtramitexanexo_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbtramitexanexo_idtramitexanexo_seq', 1, false);
@@ -9015,7 +9015,7 @@ SELECT pg_catalog.setval('tbtramitexanexo_idtramitexanexo_seq', 1, false);
 --
 -- TOC entry 3369 (class 0 OID 32823)
 -- Dependencies: 251
--- Data for Name: tbuf; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbuf; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 INSERT INTO tbuf (iduf, sguf, nmuf) VALUES (1, 'AC', 'Acre');
@@ -9050,7 +9050,7 @@ INSERT INTO tbuf (iduf, sguf, nmuf) VALUES (27, 'TO', 'Tocantins');
 --
 -- TOC entry 3474 (class 0 OID 0)
 -- Dependencies: 250
--- Name: tbuf_iduf_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbuf_iduf_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbuf_iduf_seq', 1, false);
@@ -9059,7 +9059,7 @@ SELECT pg_catalog.setval('tbuf_iduf_seq', 1, false);
 --
 -- TOC entry 3371 (class 0 OID 32834)
 -- Dependencies: 253
--- Data for Name: tbunidade; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbunidade; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 INSERT INTO tbunidade (idunidade, nmunidade, sgunidade, eeemail, stretornoouvidoria, stvinculada) VALUES (1, 'Ouvidoria', 'Ouvidoria', NULL, '1', '2');
@@ -9068,7 +9068,7 @@ INSERT INTO tbunidade (idunidade, nmunidade, sgunidade, eeemail, stretornoouvido
 --
 -- TOC entry 3475 (class 0 OID 0)
 -- Dependencies: 252
--- Name: tbunidade_idunidade_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbunidade_idunidade_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbunidade_idunidade_seq', 1, false);
@@ -9077,7 +9077,7 @@ SELECT pg_catalog.setval('tbunidade_idunidade_seq', 1, false);
 --
 -- TOC entry 3373 (class 0 OID 32845)
 -- Dependencies: 255
--- Data for Name: tbunidadexmanifestacao; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbunidadexmanifestacao; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -9085,7 +9085,7 @@ SELECT pg_catalog.setval('tbunidade_idunidade_seq', 1, false);
 --
 -- TOC entry 3476 (class 0 OID 0)
 -- Dependencies: 254
--- Name: tbunidadexmanifestacao_idunidademanifestacao_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbunidadexmanifestacao_idunidademanifestacao_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbunidadexmanifestacao_idunidademanifestacao_seq', 1, false);
@@ -9094,7 +9094,7 @@ SELECT pg_catalog.setval('tbunidadexmanifestacao_idunidademanifestacao_seq', 1, 
 --
 -- TOC entry 3375 (class 0 OID 32853)
 -- Dependencies: 257
--- Data for Name: tbusuario; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbusuario; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 INSERT INTO tbusuario (idusuario, nmusuario, ststatus, eeemail, idunidade, tpusuario, nmlogin, numtelefone, nmsenha, tpfuncao) VALUES (1, 'root', 1, 'root@root.com', 1, '1', 'root', '(61)99999999', 'E10ADC3949BA59ABBE56E057F20F883E', '5');
@@ -9103,7 +9103,7 @@ INSERT INTO tbusuario (idusuario, nmusuario, ststatus, eeemail, idunidade, tpusu
 --
 -- TOC entry 3477 (class 0 OID 0)
 -- Dependencies: 256
--- Name: tbusuario_idusuario_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbusuario_idusuario_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbusuario_idusuario_seq', 1, false);
@@ -9112,7 +9112,7 @@ SELECT pg_catalog.setval('tbusuario_idusuario_seq', 1, false);
 --
 -- TOC entry 3377 (class 0 OID 32864)
 -- Dependencies: 259
--- Data for Name: tbusuarioxperfil; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tbusuarioxperfil; Type: TABLE DATA; Schema: public; Owner: java
 --
 
 
@@ -9120,7 +9120,7 @@ SELECT pg_catalog.setval('tbusuario_idusuario_seq', 1, false);
 --
 -- TOC entry 3478 (class 0 OID 0)
 -- Dependencies: 258
--- Name: tbusuarioxperfil_idusuarioperfil_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: tbusuarioxperfil_idusuarioperfil_seq; Type: SEQUENCE SET; Schema: public; Owner: java
 --
 
 SELECT pg_catalog.setval('tbusuarioxperfil_idusuarioperfil_seq', 1, false);
@@ -9132,7 +9132,7 @@ VALUES (1, 'Ouvidoria MinC', 'naoresponda.ouvidoria@cultura.gov.br', '10.0.0.54'
 
 --
 -- TOC entry 3051 (class 2606 OID 32449)
--- Name: tbajuda_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbajuda_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbajuda
@@ -9141,7 +9141,7 @@ ALTER TABLE ONLY tbajuda
 
 --
 -- TOC entry 3053 (class 2606 OID 32460)
--- Name: tbanexo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbanexo_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbanexo
@@ -9150,7 +9150,7 @@ ALTER TABLE ONLY tbanexo
 
 --
 -- TOC entry 3055 (class 2606 OID 32468)
--- Name: tbareaentrada_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbareaentrada_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbareaentrada
@@ -9159,7 +9159,7 @@ ALTER TABLE ONLY tbareaentrada
 
 --
 -- TOC entry 3057 (class 2606 OID 32479)
--- Name: tbaviso_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbaviso_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbaviso
@@ -9168,7 +9168,7 @@ ALTER TABLE ONLY tbaviso
 
 --
 -- TOC entry 3059 (class 2606 OID 32487)
--- Name: tbcep_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbcep_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbcep
@@ -9177,7 +9177,7 @@ ALTER TABLE ONLY tbcep
 
 --
 -- TOC entry 3061 (class 2606 OID 32495)
--- Name: tbclassificacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbclassificacao_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbclassificacao
@@ -9186,7 +9186,7 @@ ALTER TABLE ONLY tbclassificacao
 
 --
 -- TOC entry 3145 (class 2606 OID 32879)
--- Name: tbclassificacao_tbsubclassificacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbclassificacao_tbsubclassificacao_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbclassificacao_tbsubclassificacao
@@ -9195,7 +9195,7 @@ ALTER TABLE ONLY tbclassificacao_tbsubclassificacao
 
 --
 -- TOC entry 3147 (class 2606 OID 32884)
--- Name: tbclassificacao_tbunidade_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbclassificacao_tbunidade_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbclassificacao_tbunidade
@@ -9204,7 +9204,7 @@ ALTER TABLE ONLY tbclassificacao_tbunidade
 
 --
 -- TOC entry 3063 (class 2606 OID 32500)
--- Name: tbcomentarioquestionario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbcomentarioquestionario_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbcomentarioquestionario
@@ -9213,7 +9213,7 @@ ALTER TABLE ONLY tbcomentarioquestionario
 
 --
 -- TOC entry 3065 (class 2606 OID 32511)
--- Name: tbcomunicacaoexterna_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbcomunicacaoexterna_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbcomunicacaoexterna
@@ -9222,7 +9222,7 @@ ALTER TABLE ONLY tbcomunicacaoexterna
 
 --
 -- TOC entry 3067 (class 2606 OID 32519)
--- Name: tbcomunicacaoexternaxanexo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbcomunicacaoexternaxanexo_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbcomunicacaoexternaxanexo
@@ -9231,7 +9231,7 @@ ALTER TABLE ONLY tbcomunicacaoexternaxanexo
 
 --
 -- TOC entry 3069 (class 2606 OID 32530)
--- Name: tbemailautomatizado_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbemailautomatizado_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbemailautomatizado
@@ -9240,7 +9240,7 @@ ALTER TABLE ONLY tbemailautomatizado
 
 --
 -- TOC entry 3071 (class 2606 OID 32541)
--- Name: tbencaminhamento_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbencaminhamento_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbencaminhamento
@@ -9249,7 +9249,7 @@ ALTER TABLE ONLY tbencaminhamento
 
 --
 -- TOC entry 3073 (class 2606 OID 32552)
--- Name: tbencaminhamentopadronizado_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbencaminhamentopadronizado_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbencaminhamentopadronizado
@@ -9258,7 +9258,7 @@ ALTER TABLE ONLY tbencaminhamentopadronizado
 
 --
 -- TOC entry 3075 (class 2606 OID 32560)
--- Name: tbencaminhamentoxanexo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbencaminhamentoxanexo_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbencaminhamentoxanexo
@@ -9267,7 +9267,7 @@ ALTER TABLE ONLY tbencaminhamentoxanexo
 
 --
 -- TOC entry 3077 (class 2606 OID 32568)
--- Name: tbfaixaetaria_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbfaixaetaria_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbfaixaetaria
@@ -9276,7 +9276,7 @@ ALTER TABLE ONLY tbfaixaetaria
 
 --
 -- TOC entry 3079 (class 2606 OID 32579)
--- Name: tbfiltropersonalizado_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbfiltropersonalizado_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbfiltropersonalizado
@@ -9285,7 +9285,7 @@ ALTER TABLE ONLY tbfiltropersonalizado
 
 --
 -- TOC entry 3081 (class 2606 OID 32590)
--- Name: tbfiltrospam_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbfiltrospam_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbfiltrospam
@@ -9294,7 +9294,7 @@ ALTER TABLE ONLY tbfiltrospam
 
 --
 -- TOC entry 3083 (class 2606 OID 32598)
--- Name: tbfuncionalidade_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbfuncionalidade_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbfuncionalidade
@@ -9303,7 +9303,7 @@ ALTER TABLE ONLY tbfuncionalidade
 
 --
 -- TOC entry 3085 (class 2606 OID 32606)
--- Name: tbgrauinstrucao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbgrauinstrucao_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbgrauinstrucao
@@ -9312,7 +9312,7 @@ ALTER TABLE ONLY tbgrauinstrucao
 
 --
 -- TOC entry 3087 (class 2606 OID 32614)
--- Name: tbgrupo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbgrupo_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbgrupo
@@ -9321,7 +9321,7 @@ ALTER TABLE ONLY tbgrupo
 
 --
 -- TOC entry 3089 (class 2606 OID 32625)
--- Name: tblogoperacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tblogoperacao_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tblogoperacao
@@ -9330,7 +9330,7 @@ ALTER TABLE ONLY tblogoperacao
 
 --
 -- TOC entry 3091 (class 2606 OID 32636)
--- Name: tbmanifestacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbmanifestacao_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbmanifestacao
@@ -9339,7 +9339,7 @@ ALTER TABLE ONLY tbmanifestacao
 
 --
 -- TOC entry 3143 (class 2606 OID 32874)
--- Name: tbmanifestacao_tbclassificacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbmanifestacao_tbclassificacao_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbmanifestacao_tbclassificacao
@@ -9348,7 +9348,7 @@ ALTER TABLE ONLY tbmanifestacao_tbclassificacao
 
 --
 -- TOC entry 3149 (class 2606 OID 32889)
--- Name: tbmanifestacao_tbsubclassificacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbmanifestacao_tbsubclassificacao_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbmanifestacao_tbsubclassificacao
@@ -9357,7 +9357,7 @@ ALTER TABLE ONLY tbmanifestacao_tbsubclassificacao
 
 --
 -- TOC entry 3151 (class 2606 OID 32894)
--- Name: tbmanifestacao_unidadeareasolucionadora_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbmanifestacao_unidadeareasolucionadora_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbmanifestacao_unidadeareasolucionadora
@@ -9366,7 +9366,7 @@ ALTER TABLE ONLY tbmanifestacao_unidadeareasolucionadora
 
 --
 -- TOC entry 3093 (class 2606 OID 32644)
--- Name: tbmanifestacaoxanexo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbmanifestacaoxanexo_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbmanifestacaoxanexo
@@ -9375,7 +9375,7 @@ ALTER TABLE ONLY tbmanifestacaoxanexo
 
 --
 -- TOC entry 3095 (class 2606 OID 32652)
--- Name: tbmeioentrada_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbmeioentrada_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbmeioentrada
@@ -9384,7 +9384,7 @@ ALTER TABLE ONLY tbmeioentrada
 
 --
 -- TOC entry 3097 (class 2606 OID 32660)
--- Name: tbmeioresposta_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbmeioresposta_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbmeioresposta
@@ -9393,7 +9393,7 @@ ALTER TABLE ONLY tbmeioresposta
 
 --
 -- TOC entry 3099 (class 2606 OID 32668)
--- Name: tbmunicipio_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbmunicipio_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbmunicipio
@@ -9402,7 +9402,7 @@ ALTER TABLE ONLY tbmunicipio
 
 --
 -- TOC entry 3101 (class 2606 OID 32676)
--- Name: tbpais_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbpais_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbpais
@@ -9411,7 +9411,7 @@ ALTER TABLE ONLY tbpais
 
 --
 -- TOC entry 3103 (class 2606 OID 32687)
--- Name: tbparametro_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbparametro_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbparametro
@@ -9420,7 +9420,7 @@ ALTER TABLE ONLY tbparametro
 
 --
 -- TOC entry 3105 (class 2606 OID 32698)
--- Name: tbperfil_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbperfil_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbperfil
@@ -9429,7 +9429,7 @@ ALTER TABLE ONLY tbperfil
 
 --
 -- TOC entry 3107 (class 2606 OID 32706)
--- Name: tbperfilxfuncionalidade_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbperfilxfuncionalidade_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbperfilxfuncionalidade
@@ -9438,7 +9438,7 @@ ALTER TABLE ONLY tbperfilxfuncionalidade
 
 --
 -- TOC entry 3109 (class 2606 OID 32714)
--- Name: tbperfilxgrupo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbperfilxgrupo_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbperfilxgrupo
@@ -9447,7 +9447,7 @@ ALTER TABLE ONLY tbperfilxgrupo
 
 --
 -- TOC entry 3119 (class 2606 OID 32763)
--- Name: tbperguntaquestionario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbperguntaquestionario_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbperguntaquestionario
@@ -9456,7 +9456,7 @@ ALTER TABLE ONLY tbperguntaquestionario
 
 --
 -- TOC entry 3111 (class 2606 OID 32725)
--- Name: tbprazoesic_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbprazoesic_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbprazoesic
@@ -9465,7 +9465,7 @@ ALTER TABLE ONLY tbprazoesic
 
 --
 -- TOC entry 3113 (class 2606 OID 32736)
--- Name: tbpreferenciasistema_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbpreferenciasistema_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbpreferenciasistema
@@ -9474,7 +9474,7 @@ ALTER TABLE ONLY tbpreferenciasistema
 
 --
 -- TOC entry 3115 (class 2606 OID 32744)
--- Name: tbprioridade_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbprioridade_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbprioridade
@@ -9483,7 +9483,7 @@ ALTER TABLE ONLY tbprioridade
 
 --
 -- TOC entry 3117 (class 2606 OID 32755)
--- Name: tbquestionario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbquestionario_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbquestionario
@@ -9492,7 +9492,7 @@ ALTER TABLE ONLY tbquestionario
 
 --
 -- TOC entry 3123 (class 2606 OID 32782)
--- Name: tbrespostamanifestacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbrespostamanifestacao_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbrespostamanifestacao
@@ -9501,7 +9501,7 @@ ALTER TABLE ONLY tbrespostamanifestacao
 
 --
 -- TOC entry 3121 (class 2606 OID 32771)
--- Name: tbrespostaquestionario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbrespostaquestionario_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbrespostaquestionario
@@ -9510,7 +9510,7 @@ ALTER TABLE ONLY tbrespostaquestionario
 
 --
 -- TOC entry 3125 (class 2606 OID 32790)
--- Name: tbsubclassificacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbsubclassificacao_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbsubclassificacao
@@ -9519,7 +9519,7 @@ ALTER TABLE ONLY tbsubclassificacao
 
 --
 -- TOC entry 3127 (class 2606 OID 32801)
--- Name: tbtipomanifestacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbtipomanifestacao_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbtipomanifestacao
@@ -9528,7 +9528,7 @@ ALTER TABLE ONLY tbtipomanifestacao
 
 --
 -- TOC entry 3129 (class 2606 OID 32812)
--- Name: tbtramite_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbtramite_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbtramite
@@ -9537,7 +9537,7 @@ ALTER TABLE ONLY tbtramite
 
 --
 -- TOC entry 3131 (class 2606 OID 32820)
--- Name: tbtramitexanexo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbtramitexanexo_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbtramitexanexo
@@ -9546,7 +9546,7 @@ ALTER TABLE ONLY tbtramitexanexo
 
 --
 -- TOC entry 3133 (class 2606 OID 32831)
--- Name: tbuf_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbuf_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbuf
@@ -9555,7 +9555,7 @@ ALTER TABLE ONLY tbuf
 
 --
 -- TOC entry 3135 (class 2606 OID 32842)
--- Name: tbunidade_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbunidade_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbunidade
@@ -9564,7 +9564,7 @@ ALTER TABLE ONLY tbunidade
 
 --
 -- TOC entry 3137 (class 2606 OID 32850)
--- Name: tbunidadexmanifestacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbunidadexmanifestacao_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbunidadexmanifestacao
@@ -9573,7 +9573,7 @@ ALTER TABLE ONLY tbunidadexmanifestacao
 
 --
 -- TOC entry 3139 (class 2606 OID 32861)
--- Name: tbusuario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbusuario_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbusuario
@@ -9582,7 +9582,7 @@ ALTER TABLE ONLY tbusuario
 
 --
 -- TOC entry 3141 (class 2606 OID 32869)
--- Name: tbusuarioxperfil_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tbusuarioxperfil_pkey; Type: CONSTRAINT; Schema: public; Owner: java; Tablespace: 
 --
 
 ALTER TABLE ONLY tbusuarioxperfil
@@ -9591,7 +9591,7 @@ ALTER TABLE ONLY tbusuarioxperfil
 
 --
 -- TOC entry 3152 (class 2606 OID 32898)
--- Name: fk_tbajuda_idgrupo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fk_tbajuda_idgrupo; Type: FK CONSTRAINT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbajuda
@@ -9600,7 +9600,7 @@ ALTER TABLE ONLY tbajuda
 
 --
 -- TOC entry 3153 (class 2606 OID 32903)
--- Name: fk_tbaviso_idusuario; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fk_tbaviso_idusuario; Type: FK CONSTRAINT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbaviso
@@ -9609,7 +9609,7 @@ ALTER TABLE ONLY tbaviso
 
 --
 -- TOC entry 3176 (class 2606 OID 33018)
--- Name: fk_tbclassificacao_tbunidade_tbclassificacao_idclassificacao; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fk_tbclassificacao_tbunidade_tbclassificacao_idclassificacao; Type: FK CONSTRAINT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbclassificacao_tbunidade
@@ -9618,7 +9618,7 @@ ALTER TABLE ONLY tbclassificacao_tbunidade
 
 --
 -- TOC entry 3154 (class 2606 OID 32908)
--- Name: fk_tbcomunicacaoexterna_idusuario; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fk_tbcomunicacaoexterna_idusuario; Type: FK CONSTRAINT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbcomunicacaoexterna
@@ -9627,7 +9627,7 @@ ALTER TABLE ONLY tbcomunicacaoexterna
 
 --
 -- TOC entry 3155 (class 2606 OID 32913)
--- Name: fk_tbcomunicacaoexternaxanexo_idanexo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fk_tbcomunicacaoexternaxanexo_idanexo; Type: FK CONSTRAINT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbcomunicacaoexternaxanexo
@@ -9636,7 +9636,7 @@ ALTER TABLE ONLY tbcomunicacaoexternaxanexo
 
 --
 -- TOC entry 3156 (class 2606 OID 32918)
--- Name: fk_tbencaminhamento_idusuarioouvidor; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fk_tbencaminhamento_idusuarioouvidor; Type: FK CONSTRAINT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbencaminhamento
@@ -9645,7 +9645,7 @@ ALTER TABLE ONLY tbencaminhamento
 
 --
 -- TOC entry 3157 (class 2606 OID 32923)
--- Name: fk_tbencaminhamentoxanexo_idanexo; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fk_tbencaminhamentoxanexo_idanexo; Type: FK CONSTRAINT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbencaminhamentoxanexo
@@ -9654,7 +9654,7 @@ ALTER TABLE ONLY tbencaminhamentoxanexo
 
 --
 -- TOC entry 3158 (class 2606 OID 32928)
--- Name: fk_tbfiltropersonalizado_idusuario; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fk_tbfiltropersonalizado_idusuario; Type: FK CONSTRAINT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbfiltropersonalizado
@@ -9663,7 +9663,7 @@ ALTER TABLE ONLY tbfiltropersonalizado
 
 --
 -- TOC entry 3159 (class 2606 OID 32933)
--- Name: fk_tbgrupo_idgrupopai; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fk_tbgrupo_idgrupopai; Type: FK CONSTRAINT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbgrupo
@@ -9672,7 +9672,7 @@ ALTER TABLE ONLY tbgrupo
 
 --
 -- TOC entry 3160 (class 2606 OID 32938)
--- Name: fk_tblogoperacao_idusuario; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fk_tblogoperacao_idusuario; Type: FK CONSTRAINT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tblogoperacao
@@ -9681,7 +9681,7 @@ ALTER TABLE ONLY tblogoperacao
 
 --
 -- TOC entry 3161 (class 2606 OID 32943)
--- Name: fk_tbmanifestacao_iduf; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fk_tbmanifestacao_iduf; Type: FK CONSTRAINT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbmanifestacao
@@ -9690,7 +9690,7 @@ ALTER TABLE ONLY tbmanifestacao
 
 --
 -- TOC entry 3178 (class 2606 OID 33028)
--- Name: fk_tbmanifestacao_unidadeareasolucionadora_idmanifestacao; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fk_tbmanifestacao_unidadeareasolucionadora_idmanifestacao; Type: FK CONSTRAINT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbmanifestacao_unidadeareasolucionadora
@@ -9699,7 +9699,7 @@ ALTER TABLE ONLY tbmanifestacao_unidadeareasolucionadora
 
 --
 -- TOC entry 3162 (class 2606 OID 32948)
--- Name: fk_tbmanifestacaoxanexo_idmanifestacao; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fk_tbmanifestacaoxanexo_idmanifestacao; Type: FK CONSTRAINT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbmanifestacaoxanexo
@@ -9708,7 +9708,7 @@ ALTER TABLE ONLY tbmanifestacaoxanexo
 
 --
 -- TOC entry 3163 (class 2606 OID 32953)
--- Name: fk_tbmunicipio_iduf; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fk_tbmunicipio_iduf; Type: FK CONSTRAINT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbmunicipio
@@ -9717,7 +9717,7 @@ ALTER TABLE ONLY tbmunicipio
 
 --
 -- TOC entry 3164 (class 2606 OID 32958)
--- Name: fk_tbperfilxfuncionalidade_idperfil; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fk_tbperfilxfuncionalidade_idperfil; Type: FK CONSTRAINT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbperfilxfuncionalidade
@@ -9726,7 +9726,7 @@ ALTER TABLE ONLY tbperfilxfuncionalidade
 
 --
 -- TOC entry 3165 (class 2606 OID 32963)
--- Name: fk_tbperfilxgrupo_idperfil; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fk_tbperfilxgrupo_idperfil; Type: FK CONSTRAINT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbperfilxgrupo
@@ -9735,7 +9735,7 @@ ALTER TABLE ONLY tbperfilxgrupo
 
 --
 -- TOC entry 3167 (class 2606 OID 32973)
--- Name: fk_tbperguntaquestionario_idquestionario; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fk_tbperguntaquestionario_idquestionario; Type: FK CONSTRAINT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbperguntaquestionario
@@ -9744,7 +9744,7 @@ ALTER TABLE ONLY tbperguntaquestionario
 
 --
 -- TOC entry 3166 (class 2606 OID 32968)
--- Name: fk_tbprazoesic_idmanifestacao; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fk_tbprazoesic_idmanifestacao; Type: FK CONSTRAINT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbprazoesic
@@ -9753,7 +9753,7 @@ ALTER TABLE ONLY tbprazoesic
 
 --
 -- TOC entry 3168 (class 2606 OID 32978)
--- Name: fk_tbrespostaquestionario_idmanifestacao; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fk_tbrespostaquestionario_idmanifestacao; Type: FK CONSTRAINT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbrespostaquestionario
@@ -9762,7 +9762,7 @@ ALTER TABLE ONLY tbrespostaquestionario
 
 --
 -- TOC entry 3169 (class 2606 OID 32983)
--- Name: fk_tbtramite_idusuarioemissor; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fk_tbtramite_idusuarioemissor; Type: FK CONSTRAINT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbtramite
@@ -9771,7 +9771,7 @@ ALTER TABLE ONLY tbtramite
 
 --
 -- TOC entry 3170 (class 2606 OID 32988)
--- Name: fk_tbtramitexanexo_idtramite; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fk_tbtramitexanexo_idtramite; Type: FK CONSTRAINT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbtramitexanexo
@@ -9780,7 +9780,7 @@ ALTER TABLE ONLY tbtramitexanexo
 
 --
 -- TOC entry 3171 (class 2606 OID 32993)
--- Name: fk_tbunidadexmanifestacao_idmanifestacao; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fk_tbunidadexmanifestacao_idmanifestacao; Type: FK CONSTRAINT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbunidadexmanifestacao
@@ -9789,7 +9789,7 @@ ALTER TABLE ONLY tbunidadexmanifestacao
 
 --
 -- TOC entry 3172 (class 2606 OID 32998)
--- Name: fk_tbusuario_idunidade; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fk_tbusuario_idunidade; Type: FK CONSTRAINT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbusuario
@@ -9798,7 +9798,7 @@ ALTER TABLE ONLY tbusuario
 
 --
 -- TOC entry 3173 (class 2606 OID 33003)
--- Name: fk_tbusuarioxperfil_idusuario; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fk_tbusuarioxperfil_idusuario; Type: FK CONSTRAINT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbusuarioxperfil
@@ -9807,7 +9807,7 @@ ALTER TABLE ONLY tbusuarioxperfil
 
 --
 -- TOC entry 3175 (class 2606 OID 33013)
--- Name: tbclassificacaotbsubclassificacaotbclassificacaoidclassificacao; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tbclassificacaotbsubclassificacaotbclassificacaoidclassificacao; Type: FK CONSTRAINT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbclassificacao_tbsubclassificacao
@@ -9816,7 +9816,7 @@ ALTER TABLE ONLY tbclassificacao_tbsubclassificacao
 
 --
 -- TOC entry 3174 (class 2606 OID 33008)
--- Name: tbmanifestacao_tbclassificacao_tbclassificacao_idclassificacao; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tbmanifestacao_tbclassificacao_tbclassificacao_idclassificacao; Type: FK CONSTRAINT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbmanifestacao_tbclassificacao
@@ -9825,7 +9825,7 @@ ALTER TABLE ONLY tbmanifestacao_tbclassificacao
 
 --
 -- TOC entry 3177 (class 2606 OID 33023)
--- Name: tbmanifestacao_tbsubclassificacao_tbmanifestacao_idmanifestacao; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tbmanifestacao_tbsubclassificacao_tbmanifestacao_idmanifestacao; Type: FK CONSTRAINT; Schema: public; Owner: java
 --
 
 ALTER TABLE ONLY tbmanifestacao_tbsubclassificacao
@@ -9835,18 +9835,18 @@ ALTER TABLE ONLY tbmanifestacao_tbsubclassificacao
 --
 -- TOC entry 3389 (class 0 OID 0)
 -- Dependencies: 5
--- Name: public; Type: ACL; Schema: -; Owner: postgres
+-- Name: public; Type: ACL; Schema: -; Owner: java
 --
 
 REVOKE ALL ON SCHEMA public FROM PUBLIC;
-REVOKE ALL ON SCHEMA public FROM postgres;
-GRANT ALL ON SCHEMA public TO postgres;
+REVOKE ALL ON SCHEMA public FROM java;
+GRANT ALL ON SCHEMA public TO java;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
 -- Completed on 2014-08-01 11:16:54
 
 --
--- PostgreSQL database dump complete
+-- javaQL database dump complete
 --
 
