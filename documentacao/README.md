@@ -1,6 +1,5 @@
 <script src="https://raw.githubusercontent.com/DmitryBaranovskiy/raphael/master/raphael-min.js"></script>
 <script src="http://adrai.github.io/flowchart.js/flowchart-latest.js"></script>
-<div id="diagram"></div>
 <script>
   var diagram = flowchart.parse("st=>start: Iniciara\n" + 
 "e=>end\n" + 
@@ -25,6 +24,7 @@ Aqui algumas informações sobre a configuração e montagem dos ambientes para 
 
 ## Montagem do ambiente de desenvolvimento
 
+<div id="diagram">
 
 ```flow
 st=>start: Iniciar
@@ -40,7 +40,7 @@ st->op0->op->op1->cond
 cond(yes)->op2->op3->e
 cond(no)->op
 ```
-
+</div>
 - Configurar o projeto no Eclipse
 - Configurar o Banco de Dados
 - Configurar o Jboss
@@ -156,3 +156,6 @@ A configuração do Jboss é feita basicamente em um único arquivo de proprieda
 ```
 
 
+## Executar carga inicial
+
+A carga inicial do sistema, com o povoamento dos dados das tabelas de domínio utilizadas no sistema, deve ser realizado com a execução do scritp disponibilizado no arquivo 
