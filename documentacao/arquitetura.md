@@ -72,6 +72,6 @@ A seguir apresentamos algumas perguntas que foram encaminhadas a esta CGTI e as 
 - Existem dois arquivos de dump, sendo assim será necessário configurar ambos: SQLServer e PostgreSQL? Ou é possível escolher entre eles?
 > Deve-se escolher qual Sistema Gerenciador de Banco de Dados será utilizado.
 > O sistema GOG foi desenvolvido inicialmente para funcionar no SGDB SqlServer 2012.
-> Posteriormente foi realizada uma migração da aplicação para utilizar o SBDB PostgreSQL 9.3. A versão com PostgreSQL está sendo utilizada por outros órgãos para os quais a aplicação foi cedida.
+> Posteriormente foi realizada uma migração da aplicação para utilizar o SGDB PostgreSQL 9.3. A versão com PostgreSQL está sendo utilizada por outros órgãos para os quais a aplicação foi cedida.
 
 
