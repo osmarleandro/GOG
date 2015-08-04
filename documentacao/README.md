@@ -3,6 +3,12 @@
 GOG Documentação 
 ================
 
+
+Arquitetura do sistema
+----------------------
+
+Acesse [aqui uma visão simplificada da arquitetura do GOG](arquitetura.md)
+
 Montagem dos ambientes do sistema
 ---------------------------------
 
