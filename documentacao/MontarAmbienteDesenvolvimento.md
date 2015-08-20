@@ -31,6 +31,7 @@ As versões dos pacotes de instalação foram expressamente declaradas neste doc
 1. Preparação do ambiente
    * Configuração do sistema operacional
      * Instalação do Git
+     * Instalação do Java JDK 8
      * Instalação do JBoss AS 7.1.1.Final
    * Configurar o Eclipse
      * Configurar projeto no Eclipse
@@ -65,6 +66,12 @@ $ cd /opt/desenv/GOG
 >   * *Utilizar o texto "**HTTPS clone URL**" oferecido no repositório do projeto*
 ```
 $ git clone https://github.com/culturagovbr/GOG.git
+```
+
+#### Instalação do Java JDK 8
+
+```
+http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 ```
 
 #### Instalação do JBoss AS 7.1.1.Final
