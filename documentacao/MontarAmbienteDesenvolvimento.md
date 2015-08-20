@@ -18,24 +18,75 @@
 	};
 </script>
 
-#Ambiente de Desenvolvimento
-Neste documento apresentamos informações necessárias para realizar a montagem, configuração e utilização do ambiente de desenvolvimento do sistema GOG.
+# Ambiente de Desenvolvimento
+Neste documento apresentamos informações necessárias para realizar a montagem, configuração e utilização do ambiente de desenvolvimento do sistema GOG. 
+
+As versões dos pacotes de instalação foram expressamente declaradas neste documentos com o simples objetivo de refletir a realidade vivenciada pela equipe de desenvolvimento do MinC. A intenção é garantir que este guia possa conduzir seu leitor a uma instalação de sucesso; entretanto, nada impede que o leitor tente utilizar novas versões das aplicações ou pacotes aqui citados.
 
 
 ## Montagem do ambiente de desenvolvimento
 
 <div id='diagram' />
 
-1. Configurar o projeto no Eclipse
+1. Preparação do ambiente
+   * Configuração do sistema operacional
+     * Instalação do Git
+     * Instalação do JBoss AS 7.1.1.Final
+   * Configurar o Eclipse
+     * Configurar projeto no Eclipse
 2. Configurar o Banco de Dados
 3. Configurar o Jboss
 4. Executar carga inicial
 5. Ajustar as configurações
 
 
+## Preparação do ambiente
+
+### Configuração do sistema operacional
+Utilizamos o linux como sistema operacional e adotamos o Ubuntu como distribuição preferida. 
+
+#### Instalação do Git
+Faz-se necessária a instalação do git para integração com o repositório, o que pode ser configurado com a utilização dos seguintes comandos:
+
+> **Instalação do GIT:**
+```
+$ sudo apt-get install git
+```
+
+> **Definição do repositório**
+
+> * Definir o diretório do sistema
+```
+$ sudo mkdir /opt/desenv/GOG
+$ cd /opt/desenv/GOG
+```
+
+> * Clonar o git no diretório definido
+>   * *Utilizar o texto "**HTTPS clone URL**" oferecido no repositório do projeto*
+```
+$ git clone https://github.com/culturagovbr/GOG.git
+```
+
+#### Instalação do JBoss AS 7.1.1.Final
+* O Jboss pode ser instalado a partir do download do arquivo disponibilizado na página:
+```
+http://jbossas.jboss.org/downloads
+```
 
 
-## Configuração do projeto no Eclipse
+### Configurar o Eclipse
+
+Instalar a versão do eclipse. Sugerimos dar preferência à versão **Eclipse Luna Package - Eclipse IDE for Java Developers** disponível para desenvolvedores Java JEE
+```
+http://www.eclipse.org/downloads/packages/eclipse-ide-java-developers/lunasr2
+```
+
+Instalar o plugin JbossTools (*JBoss Tools 4.2.3.Final*), para utilizar o servidor de aplicação na IDE, dentre outras facilidades
+```
+http://tools.jboss.org/downloads/jbosstools/luna/4.2.3.Final.html
+```
+
+#### Configuração do projeto no Eclipse
 O projeto foi desenvolvido em Java, com uso do Maven. O arquivo "pom.xml" pode ser adequamente utilizado para importar o projeto em um IDE.
 
 No Eclipse basta solicitar a importação de um novo projeto (Import ==> Import Existing Maven Projects) e apontar para a raiz do projeto.
@@ -77,7 +128,6 @@ Path: /GOG/src/main/resources/META-INF/persistence.xml
 ```
 
 > - Pode-se configurar a aplicação para não exibir os scritps SQL durante a execução do sistema, alterando o valor da propriedade.
-
 ```
  			<property name="hibernate.show_sql" value="false" /> 
 ```
@@ -90,7 +140,6 @@ A configuração do Jboss é feita basicamente em um único arquivo de proprieda
 - <i class="icon-pencil"></i> Criar o datasource: O data source precisa definir o jndi-name="java:/datasources/GOGDSPostreSQL" e as configurações de conexão com o banco de dados.
 
 > - Para configurar o datasource no Jboss 7.1.1 será necessário criar e configurar um "module" para o funcionamento do driver do Banco de Dados ('jar' contendo as classes para acesso ao banco).
-
 ```xml
                 <datasource jndi-name="java:/datasources/GOGDSPostreSQL" pool-name="GOGDSPostreSQL" enabled="true" use-java-context="true" use-ccm="true">
                     <connection-url>jdbc:postgresql://localhost:5432/GOG</connection-url>
@@ -131,7 +180,6 @@ A configuração do Jboss é feita basicamente em um único arquivo de proprieda
 
 - <i class="icon-pencil"></i> Criar o driver referenciado no datasource: O driver para o Postgresql deve referenciar o módulo a ser carregado com o necessário arquivo '*.jar' de conexão.
 - <i class="icon-pencil"></i> Criar o security domain - configuração de autenticação
-
 ```xml
 <security-domain name="OuvidoriaSecurityDomain">
 	<authentication>
@@ -148,6 +196,7 @@ A carga inicial do sistema, com o povoamento dos dados das tabelas de domínio u
 
 ## Ajustar as configurações
 ### Criar as views sql utilizadas pela aplicação
+
 * Deletar as tabelas criadas na execução da DLL durante o primeiro deploy
 ```sql
 DROP TABLE vwestatisticasmanifestacao;
