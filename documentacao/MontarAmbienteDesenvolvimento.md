@@ -186,6 +186,25 @@ A configuração do Jboss é feita basicamente em um único arquivo de proprieda
 
 
 - <i class="icon-pencil"></i> Criar o driver referenciado no datasource: O driver para o Postgresql deve referenciar o módulo a ser carregado com o necessário arquivo '*.jar' de conexão.
+
+> **Criação do módulo para conexão com Banco de Dados Postgres**
+> - Crie uma estrutura de diretórios correspondente ao jar do driver do Postgres, a partir do diretório "modules" do Jboss. 
+>   - Exemplo: jboss-7.1.1/modules/org/postgresql/main
+> - Inclua o arquivo do driver do Postgres 
+> - Crie um arquivo "module.xml" com o seguinte conteúdo:
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+  <module xmlns="urn:jboss:module:1.0" name="org.postgresql">
+  <resources>
+    <resource-root path="postgresql-9.3-1102.jdbc4.jar"/>
+  </resources>
+  <dependencies>
+    <module name="javax.api"/>
+    <module name="javax.transaction.api"/>
+  </dependencies>
+</module>
+```
+
 - <i class="icon-pencil"></i> Criar o security domain - configuração de autenticação
 ```xml
 <security-domain name="OuvidoriaSecurityDomain">
