@@ -263,7 +263,7 @@ INSERT INTO tbUsuario
 	numTelefone, nmSenha, tpFuncao) 
 VALUES 
 	(1, 'root', 1, 'email@email.com', 1, '1', 'root', 
-	'(61)99999999', 'A0729799124513324E1BC0FE8AA1F046', '5');
+	'(61)99999999', 'E10ADC3949BA59ABBE56E057F20F883E', '5');
 
 ```
 
