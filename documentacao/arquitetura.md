@@ -25,7 +25,7 @@ A imagem a seguir ilustra a arquitetura utilizada:
 ## Mais detalhes:
 
 * A aplicação utiliza o Maven, para geração de pacotes de entregas (builds) e gerenciamento de dependências, o que facilita o controle das APIs utilizadas e a definição de suas versões.
-* A camada de persitência foi desenvolvida com a API Eclipse Link (versão 2.5.0)
+* A camada de persitência foi desenvolvida com a API JPA
 * O Servidor de Aplicação utilizado aqui no MinC é o Jboss 7.1.1 
 * Utilizamos configuração de módulos do Jboss e a integração com Apache para publicação na intranet
 * Quanto ao Servidor de Banco de Dados:
@@ -39,22 +39,28 @@ A imagem a seguir ilustra a arquitetura utilizada:
   * Os dados de usuário estão modelados na tabela TBUsuario. 
   * O campo senha está gravado na tabela TBUsuario com HASH MD5.
 * IDE de desenvolvimento
-  * O ambiente de desenvolvimento faz uso do Eclipse June - Release 4.3.2
+  * O ambiente de desenvolvimento faz uso do Eclipse Luna - acrescido do JBoss Tools 4.2.3.Final
 
 ##Perguntas & Respostas
 
 A seguir apresentamos algumas perguntas que foram encaminhadas a esta CGTI e as respectivas respostas oferecidas por nossos técnicos:
 
 - Qual é o Sistema Operacional utilizado?
+
 > Linux. Utilizamos o modelo de configuração web baseado na integração entre as tecnologias Linux – Apache – Jboss.
+> No ambiente de desenvolvimento utilizamos a distribuição Linux Ubuntu.
+> Já no ambiente de PRODUÇÃO utilizamos CentOS 6
 
 - Se utiliza Jboss ou Tomcat e qual a versão? Qual a versão do Java?
+
 > Jboss 7.1.1. A aplicação utiliza o maven (maven-compiler-plugin 3.1 e maven-war-plugin 2.4). Para compilar estamos utilizando o java 1.7 (JDK).
 
 - Utiliza algum arquivo de data source para conexão com banco?
+
 > Sim. Como a aplicação está sendo disponibilizada no Jboss 7.1.1, utilizamos o arquivo “\jboss-7.1.1\standalone\configuration\standalone.xml” para configurar o dataSource
 
 - Alguma configuração do serviço de envio de e-mail para o servidor SMTP?
+
 > O envio de e-mail é realizado pela classe “br.com.xti.ouvidoria.helper.EmailHelper”, que acessa a tabela de configuração do sistema “TbPreferenciaSistema”.
 > Na tabela são armazenados parâmetros para o envio de e-mail, tais como:
 >  * HostEmail
@@ -66,10 +72,12 @@ A seguir apresentamos algumas perguntas que foram encaminhadas a esta CGTI e as 
 >  * SslEmail
 
 - É possível integrar a autenticação com LDAP, nos acessos internos?
->O sistema não utiliza LDAP para autenticação.
+
+> O sistema não utiliza LDAP para autenticação.
 > A autenticação de usuários é realizada na própria aplicação. Os dados de usuário estão modelados na tabela TBUsuario. O campo senha está gravado na tabela TBUsuario com HASH MD5.
 
 - Existem dois arquivos de dump, sendo assim será necessário configurar ambos: SQLServer e PostgreSQL? Ou é possível escolher entre eles?
+
 > Deve-se escolher qual Sistema Gerenciador de Banco de Dados será utilizado.
 > O sistema GOG foi desenvolvido inicialmente para funcionar no SGDB SqlServer 2012.
 > Posteriormente foi realizada uma migração da aplicação para utilizar o SGDB PostgreSQL 9.3. A versão com PostgreSQL está sendo utilizada por outros órgãos para os quais a aplicação foi cedida.
