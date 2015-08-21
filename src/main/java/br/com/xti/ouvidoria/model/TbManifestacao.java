@@ -242,7 +242,7 @@ public class TbManifestacao implements Serializable {
     private Collection<TbSubClassificacao> tbSubClassificacaoCollection = new ArrayList<>();
     @OneToMany
     @JoinTable(
-    		name="[TbManifestacao_UnidadeAreaSolucionadora]",
+    		name="TbManifestacao_UnidadeAreaSolucionadora",
     		joinColumns={@JoinColumn(name="idManifestacao", referencedColumnName="idManifestacao")},
     		inverseJoinColumns={@JoinColumn(name="idUnidade", referencedColumnName="idUnidade")})
     private Collection<TbUnidade> tbUnidadeAreaSolucionadoraCollection = new ArrayList<>();
