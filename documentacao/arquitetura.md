@@ -48,7 +48,9 @@ A seguir apresentamos algumas perguntas que foram encaminhadas a esta CGTI e as 
 - Qual é o Sistema Operacional utilizado?
 
 > Linux. Utilizamos o modelo de configuração web baseado na integração entre as tecnologias Linux – Apache – Jboss.
+
 > No ambiente de desenvolvimento utilizamos a distribuição Linux Ubuntu.
+
 > Já no ambiente de PRODUÇÃO utilizamos CentOS 6
 
 - Se utiliza Jboss ou Tomcat e qual a versão? Qual a versão do Java?
@@ -62,6 +64,7 @@ A seguir apresentamos algumas perguntas que foram encaminhadas a esta CGTI e as 
 - Alguma configuração do serviço de envio de e-mail para o servidor SMTP?
 
 > O envio de e-mail é realizado pela classe “br.com.xti.ouvidoria.helper.EmailHelper”, que acessa a tabela de configuração do sistema “TbPreferenciaSistema”.
+
 > Na tabela são armazenados parâmetros para o envio de e-mail, tais como:
 >  * HostEmail
 >  * EmailOuvidoria (remetente)
@@ -74,12 +77,15 @@ A seguir apresentamos algumas perguntas que foram encaminhadas a esta CGTI e as 
 - É possível integrar a autenticação com LDAP, nos acessos internos?
 
 > O sistema não utiliza LDAP para autenticação.
+
 > A autenticação de usuários é realizada na própria aplicação. Os dados de usuário estão modelados na tabela TBUsuario. O campo senha está gravado na tabela TBUsuario com HASH MD5.
 
 - Existem dois arquivos de dump, sendo assim será necessário configurar ambos: SQLServer e PostgreSQL? Ou é possível escolher entre eles?
 
 > Deve-se escolher qual Sistema Gerenciador de Banco de Dados será utilizado.
+
 > O sistema GOG foi desenvolvido inicialmente para funcionar no SGDB SqlServer 2012.
+
 > Posteriormente foi realizada uma migração da aplicação para utilizar o SGDB PostgreSQL 9.3. A versão com PostgreSQL está sendo utilizada por outros órgãos para os quais a aplicação foi cedida.
 
 
