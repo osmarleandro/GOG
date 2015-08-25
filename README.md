@@ -1,6 +1,14 @@
 # GOG
 Gestão de Ouvidoria Governamental - GOG
 
+Documentação do sistema
+-----------------------
+
+Acesse [aqui alguns artefatos que foram gerados, durante o desenvolvimento do sistema GOG,](documentacao/artefatos.md) e que servem como referência e documentação de algumas funcionalidades.
+
+> **Nota**
+> - Os artefatos disponibilizados nesta documentação podem conter informações desatualizadas. Estes documentos devem ser utilizados apenas como referência ou consulta.
+
 Arquitetura do sistema
 ----------------------
 
