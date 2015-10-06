@@ -1,6 +1,6 @@
 # GOG
 
-[![Join the chat at https://gitter.im/culturagovbr/GOG](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/culturagovbr/GOG?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Ente no bate papo em https://gitter.im/culturagovbr/GOG](https://badges.gitter.im/Fale%20conosco.svg)](https://gitter.im/culturagovbr/GOG?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Gestão de Ouvidoria Governamental - GOG
 
