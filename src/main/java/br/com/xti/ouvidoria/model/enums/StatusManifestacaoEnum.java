@@ -16,7 +16,8 @@ public enum StatusManifestacaoEnum {
     SOLUCIONADA("4", "Solucionada"), 
     INATIVADA("6", "Inativa"),
     SOLICITADA_INFORMACAO("7", "Solicitada Informação"), 
-    SOLICITACAO_RESPONDIDA("8", "Solicitação Respondida"); 
+    SOLICITACAO_RESPONDIDA("8", "Solicitação Respondida"),
+    EM_MONITORAMENTO("9", "Em Monitoramento"),; 
     
     private String id;
     private String descricao;
