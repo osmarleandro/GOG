@@ -11,7 +11,7 @@
 	<h:form id="frmTramiteManifestacao" style="margin: 0 auto;">
 		<p:accordionPanel id="tbvEncaminhamentos"
 			widgetVar="tbvEncaminhamentos" value="#{bean.tabs}"
-			var="tabItem" cache="false"
+			var="tabItem" cache="false" multiple="true"
 			activeIndex="-1">
 			<p:tab title="#{tabItem.titulo}">
 				<!-- INICIO - PAINEL - COMUNICACAO EXTERNA -->
