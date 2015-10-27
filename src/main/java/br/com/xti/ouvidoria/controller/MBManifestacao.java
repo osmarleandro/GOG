@@ -1030,14 +1030,31 @@ public class MBManifestacao extends AbstractManifestationController implements S
     		if(dsMensagemAoManifestante.equals(textoPadraoSemPalavrasChave)) {
     			JSFUtils.executeJavaScript("dlgRespostaSemAlteracao.show()");
     		} else {
-    			gravaSolucionarManifestacaoREAL();
+    			gravaManifestacaoREAL(StatusManifestacaoEnum.SOLUCIONADA);
     		}
         } else {
-			gravaSolucionarManifestacaoREAL();
+        	gravaManifestacaoREAL(StatusManifestacaoEnum.SOLUCIONADA);
 		}
     }
     
-    public void gravaSolucionarManifestacaoREAL() {
+    public void gravaMonitorarManifestacao() {
+    	// Verifica se o Texto enviado é o padrão
+    	TbRespostaManifestacao respostaManifestacao = getRespostaManifestacao();
+    	if(respostaManifestacao != null) {
+    		String textoPadraoComPalavrasChave = respostaManifestacao.getDsResposta();
+    		String textoPadraoSemPalavrasChave = PalavrasChavesHelper.converterPalavrasChaves(textoPadraoComPalavrasChave, manifestacao, false);
+    		if(dsMensagemAoManifestante.equals(textoPadraoSemPalavrasChave)) {
+    			JSFUtils.executeJavaScript("dlgRespostaSemAlteracaoMonitoramento.show()");
+    		} else {
+    			gravaManifestacaoREAL(StatusManifestacaoEnum.EM_MONITORAMENTO);
+    		}
+        } else {
+        	gravaManifestacaoREAL(StatusManifestacaoEnum.EM_MONITORAMENTO);
+		}
+    }
+    
+
+    public void gravaManifestacaoREAL(StatusManifestacaoEnum status) {
     	if(ValidacaoHelper.isNotEmpty(idUnidadeAreaSolucionadora)) {
 	    	Set<TbUnidade> listAreaSolucionadora = new HashSet<>();
 			for (String id : idUnidadeAreaSolucionadora) {
@@ -1054,7 +1071,8 @@ public class MBManifestacao extends AbstractManifestationController implements S
             //atualiza data de modificação e status da manifestação
             manifestacao.setDtUltimaAtualizacao(new Date());
             manifestacao.setDtFechamento(new Date());
-            manifestacao.setStStatusManifestacao(StatusManifestacaoEnum.SOLUCIONADA.getId());
+            //Configura o status da manifestação conforme informado no parâmetro
+            manifestacao.setStStatusManifestacao(status.getId());
             manifestacao.setIdUsuarioAnalisador(securityService.getUser());
             
             // Seta todos os tramites como retornados
@@ -1080,7 +1098,9 @@ public class MBManifestacao extends AbstractManifestationController implements S
             if(ValidacaoHelper.isNotEmpty(dsMensagemAoManifestante.trim())) {
                 comunicacaoExterna.setDsComunicacao(dsMensagemAoManifestante);
             } else {
-                comunicacaoExterna.setDsComunicacao("<b>Manifestação Solucionada sem mensagem adicional do Ouvidor ao Manifestante. \nConsiderar a última mensagem como resposta final. \n<span style='font-size:10px'>(Esta mensagem foi gerada automaticamente pelo sistema)</span></b>");
+                comunicacaoExterna.setDsComunicacao("<b>Manifestação "
+                		+ status.getDescricao() // "Solucionada"
+                		+ " sem mensagem adicional do Ouvidor ao Manifestante. \nConsiderar a última mensagem como resposta final. \n<span style='font-size:10px'>(Esta mensagem foi gerada automaticamente pelo sistema)</span></b>");
             }
             comunicacaoExternaDAO.create(comunicacaoExterna);
             

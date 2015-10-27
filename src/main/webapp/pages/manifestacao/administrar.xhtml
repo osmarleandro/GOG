@@ -1476,6 +1476,19 @@
 												<p:resetInput target="frmEncerraManifestacaoComMensagem" />
 											</p:commandButton>
 											<p:spacer width="20" />
+											<p:commandButton
+												update=":frmAdministrarManifestacao,
+														:frmEncaminharManifestacao,
+														:frmTramiteManifestacao,
+														frmEncerraManifestacaoComMensagem"
+												process="@this, textoMensagemFinalAoManifestanteComMsg"
+												value="Monitorar" id="confirmarMonitorarManifestacaoComMsg"
+												onclick="statusDialog.show()"
+												oncomplete="if (!args.validationFailed){dlgEncerraComMensagemFinal.hide()};"
+												action="#{mBManifestacao.gravaMonitorarManifestacao()}">
+												<p:resetInput target="frmEncerraManifestacaoComMensagem" />
+											</p:commandButton>
+											<p:spacer width="20" />
 											<p:commandButton id="negarEncerrarManifestacaoComMsg"
 												update="frmEncerraManifestacaoComMensagem" value="Fechar"
 												onclick="dlgEncerraComMensagemFinal.hide()" type="button">
@@ -1515,6 +1528,19 @@
 									onclick="statusDialog.show()"
 									oncomplete="if (!args.validationFailed){dlgEncerraComMensagemFinal.hide(); dlgVisualizarMensagem.hide()};"
 									action="#{mBManifestacao.gravaSolucionarManifestacao()}">
+									<p:resetInput target="frmVisualizarMensagem, :frmEncerraManifestacaoComMensagem" />
+								</p:commandButton>
+								<p:spacer width="20" />
+								<p:commandButton
+									update=":frmAdministrarManifestacao,
+											:frmEncaminharManifestacao,
+											:frmTramiteManifestacao,
+											:frmEncerraManifestacaoComMensagem,
+											frmVisualizarMensagem"
+									value="Monitorar" id="confirmarMonitorarManifestacaoComMsg2"
+									onclick="statusDialog.show()"
+									oncomplete="if (!args.validationFailed){dlgEncerraComMensagemFinal.hide(); dlgVisualizarMensagem.hide()};"
+									action="#{mBManifestacao.gravaMonitorarManifestacao()}">
 									<p:resetInput target="frmVisualizarMensagem, :frmEncerraManifestacaoComMensagem" />
 								</p:commandButton>
 								<p:spacer width="20" />
@@ -1820,13 +1846,32 @@
 	                                 onclick="dlgRespostaSemAlteracao.hide();" />
 		                <p:commandButton value="Sim" 
 	                                 ajax="true" icon="ui-icon-check"
-	                                 actionListener="#{mBManifestacao.gravaSolucionarManifestacaoREAL()}"
+	                                 actionListener="#{mBManifestacao.gravaManifestacaoREAL(mBEnum.statusManifestacaoSOLUCIONADA)}"
 	                                 oncomplete="dlgRespostaSemAlteracao.hide();" />
 					</h:panelGrid>
             	</h:panelGrid>
             </h:form>
 		</p:dialog>
 		
+		<p:dialog id="dialogRespostaSemAlteracaoMonitoramento" appendToBody="true" closable="false" widgetVar="dlgRespostaSemAlteracaoMonitoramento" header="Resposta Sem Alteração">
+            <h:form>
+            	<h:panelGrid columns="1" style="width: 300px; height: 70px; text-align: center">
+            		<h:outputText value="Você está enviando uma resposta sem alteração, deseja enviar assim mesmo?" />
+            		
+	            	<h:panelGrid columns="2" style="width: 300px; text-align: center">
+		                <p:commandButton value="Não" 
+	                                 ajax="true" icon="ui-icon-close"
+	                                 type="button"
+	                                 onclick="dlgRespostaSemAlteracaoMonitoramento.hide();" />
+		                <p:commandButton value="Sim" 
+	                                 ajax="true" icon="ui-icon-check"
+	                                 actionListener="#{mBManifestacao.gravaManifestacaoREAL(mBEnum.statusManifestacaoEM_MONITORAMENTO)}"
+	                                 oncomplete="dlgRespostaSemAlteracaoMonitoramento.hide();" />
+					</h:panelGrid>
+            	</h:panelGrid>
+            </h:form>
+		</p:dialog>
+
 		<p:dialog id="dialogNewPassword" appendToBody="true" modal="true" closable="false" widgetVar="dlgNewPassword" header="Gerar Nova Senha?">
             <h:form>
             	<h:panelGrid columns="1" style="width: 400px; height: 70px; text-align: center">

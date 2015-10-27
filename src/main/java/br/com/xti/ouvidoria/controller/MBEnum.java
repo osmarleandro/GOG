@@ -33,6 +33,7 @@ public class MBEnum {
     private String codStatusManifestacaoEM_ANALISE = StatusManifestacaoEnum.EM_ANALISE.getId();
     private String codStatusManifestacaoEM_ANDAMENTO = StatusManifestacaoEnum.EM_ANDAMENTO.getId();
     private String codStatusManifestacaoSOLUCIONADA = StatusManifestacaoEnum.SOLUCIONADA.getId();
+    private String codStatusManifestacaoEM_MONITORAMENTO = StatusManifestacaoEnum.EM_MONITORAMENTO.getId();
     
     
     
@@ -150,6 +151,18 @@ public class MBEnum {
 
 	public String getCodStatusManifestacaoSOLUCIONADA() {
 		return codStatusManifestacaoSOLUCIONADA;
+	}
+
+	public String getCodStatusManifestacaoEM_MONITORAMENTO() {
+		return codStatusManifestacaoEM_MONITORAMENTO;
+	}
+	
+	public StatusManifestacaoEnum getStatusManifestacaoEM_MONITORAMENTO() {
+		return StatusManifestacaoEnum.EM_MONITORAMENTO;
+	}
+
+	public StatusManifestacaoEnum getStatusManifestacaoSOLUCIONADA() {
+		return StatusManifestacaoEnum.SOLUCIONADA;
 	}
 
 }

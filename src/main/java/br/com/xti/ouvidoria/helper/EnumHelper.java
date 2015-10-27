@@ -81,6 +81,7 @@ public class EnumHelper {
             case "6": return StatusManifestacaoEnum.INATIVADA;
             case "7": return StatusManifestacaoEnum.SOLICITADA_INFORMACAO;
             case "8": return StatusManifestacaoEnum.SOLICITACAO_RESPONDIDA;
+            case "9": return StatusManifestacaoEnum.EM_MONITORAMENTO;
             default: return null;
         }
     }
