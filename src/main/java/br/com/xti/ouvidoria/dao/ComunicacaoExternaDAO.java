@@ -39,4 +39,18 @@ public class ComunicacaoExternaDAO extends AbstractDAO<TbComunicacaoExterna> {
         }
         return retorno;
     }
+    
+    
+    public Collection<TbComunicacaoExterna> getPorIdManifestacao(Integer idManifestacao) {
+        Collection<TbComunicacaoExterna> retorno = null;
+        try {
+        	HashMap<String, Object> map = new HashMap<String, Object>();
+            map.put("idManifestacao", idManifestacao);
+            retorno = selectList("SELECT t FROM TbComunicacaoExterna t WHERE t.idManifestacao.idManifestacao = :idManifestacao", map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return retorno;
+    }
+
 }

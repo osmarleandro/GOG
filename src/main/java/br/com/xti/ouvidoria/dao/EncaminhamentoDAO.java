@@ -37,6 +37,18 @@ public class EncaminhamentoDAO extends AbstractDAO<TbEncaminhamento> {
         return retorno;
     }
     
+    public Collection<TbEncaminhamento> getPorIdManifestacao(Integer idManifestacao) {
+        Collection<TbEncaminhamento> retorno = null;
+        try {
+        	HashMap<String, Object> map = new HashMap<String, Object>();
+            map.put("idManifestacao", idManifestacao);
+            retorno = selectList("SELECT t FROM TbEncaminhamento t WHERE t.idManifestacao.idManifestacao = :idManifestacao", map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return retorno;
+    }
+
     public Collection<TbEncaminhamento> getPorManifestacaoUnidade(TbManifestacao idManifestacao, TbUnidade idUnidade) {
         Collection<TbEncaminhamento> retorno = null;
         try {
