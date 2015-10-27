@@ -8,6 +8,12 @@ import br.com.xti.ouvidoria.model.TbClassificacao;
 import br.com.xti.ouvidoria.model.TbSubClassificacao;
 
 public class FiltroPersonalizado {
+	public static final Integer REGISTRO_INICIAL = 0;
+	public static final Integer QUANTIDADE_REGISTRO_PADRAO = 10;
+	
+	private Integer registroInicial;
+	private Integer quantidadeRegistros;
+	private boolean filtroPaginacao;
 
     private String metodoBusca;
     // Informações referentes a Manifestação
@@ -73,7 +79,14 @@ public class FiltroPersonalizado {
     private Date encDataRespostaDe;
     private Date encDataRespostaAte;
     private String manLocalidade;
-
+    
+    public FiltroPersonalizado() {
+		// TODO Auto-generated constructor stub
+    	setRegistroInicial(REGISTRO_INICIAL);
+    	setQuantidadeRegistros(QUANTIDADE_REGISTRO_PADRAO);
+	}
+    
+    
     public String getManOculto() {
         return manOculto;
     }
@@ -742,6 +755,50 @@ public class FiltroPersonalizado {
 			this.manIdTipoManifestante = new ArrayList<String>();
 		}
 		this.manIdTipoManifestante.add(idTipoManifestante);
+	}
+
+	/**
+	 * @return the registroInicial
+	 */
+	public Integer getRegistroInicial() {
+		return registroInicial;
+	}
+
+	/**
+	 * @param registroInicial the registroInicial to set
+	 */
+	public void setRegistroInicial(Integer registroInicial) {
+		this.registroInicial = registroInicial;
+	}
+
+	/**
+	 * @return the quantidadeRegistros
+	 */
+	public Integer getQuantidadeRegistros() {
+		return quantidadeRegistros;
+	}
+
+	/**
+	 * @param quantidadeRegistros the quantidadeRegistros to set
+	 */
+	public void setQuantidadeRegistros(Integer quantidadeRegistros) {
+		this.quantidadeRegistros = quantidadeRegistros;
+	}
+
+
+	/**
+	 * @return the filtroPaginacao
+	 */
+	public boolean isFiltroPaginacao() {
+		return filtroPaginacao;
+	}
+
+
+	/**
+	 * @param filtroPaginacao the filtroPaginacao to set
+	 */
+	public void setFiltroPaginacao(boolean filtroPaginacao) {
+		this.filtroPaginacao = filtroPaginacao;
 	}
 
 }
