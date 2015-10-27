@@ -99,10 +99,9 @@ O projeto foi desenvolvido em Java, com uso do Maven. O arquivo "pom.xml" pode s
 No Eclipse basta solicitar a importação de um novo projeto (Import ==> Import Existing Maven Projects) e apontar para a raiz do projeto.
 
 ## Configuração do Banco de Dados
-Inicialmente, o projeto GOG foi desenvolvido para a plataforma SQLServer, utilizando a API EclipseLink para o mapeamento objeto relacional - ORM.
-A versão mais atual do projeto passou a utilizar JPA (com hibernate), mantendo o mapeamento objeto relacional mais transparente. 
+O projeto GOG utiliza para o mapeamento objeto relacional - ORM - a especificação JPA (com hibernate), mantendo o mapeamento objeto relacional mais transparente. 
 
-Com o mapeamento JPA, podemos utlizar qualquer gerenciador de banco de dados, bastando ajustar os drivers e os arquivos de configuração. Com isto, podemos utilizar o SGBD Postgresql como Banco de Dados do projeto GOG.
+Com o mapeamento JPA, podemos utilizar qualquer gerenciador de banco de dados, bastando ajustar os drivers e os arquivos de configuração. Com isto, podemos utilizar o SGBD Postgresql como Banco de Dados do projeto GOG.
 
 ### Configuração do dataSource no projeto (arquivo "persistence.xml") 
 Path: /GOG/src/main/resources/META-INF/persistence.xml

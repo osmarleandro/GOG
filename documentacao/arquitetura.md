@@ -11,7 +11,6 @@ Java | Linguagem de programação utilizada
 JEE | Especificação ou padrão arquitetural utilizado 
 Primefaces | JSF – implementação interface dinâmica 
 JPA | API de persistência
-SqlServer 2012 | Banco de Dados - SGDB
 PostgreSQL 9.3 | Banco de Dados - SGDB
 Jboss 7.1.1 | (servidor de aplicação)
 Maven | Automação de build e controle de dependências 
@@ -29,12 +28,11 @@ A imagem a seguir ilustra a arquitetura utilizada:
 * O Servidor de Aplicação utilizado aqui no MinC é o Jboss 7.1.1 
 * Utilizamos configuração de módulos do Jboss e a integração com Apache para publicação na intranet
 * Quanto ao Servidor de Banco de Dados:
-  * O sistema GOG foi desenvolvido inicialmente para funcionar no SGDB SqlServer 2012.
-  * Posteriormente foi realizada uma migração da aplicação para utilizar o SBDB PostgreSQL 9.3. A versão com PostgreSQL está sendo utilizada por outros órgãos para os quais a aplicação foi cedida.
+  * O sistema GOG está codificado e testado para utilizar o SGBD PostgreSQL 9.3, sendo esta versão com PostgreSQL  utilizada por outros órgãos para os quais a aplicação foi cedida.
   * O mapeamento objeto-relacional foi desenvolvido independentemente de tecnologia de SGDB
     1. utiliza queries no padrão SQL ANSI
     2. permite a utilização de “ddl-generation” de forma transparente e direta
-    3. facilita a geração dos objetos de banco de dados para outras tecnologias de banco além do PostgreSQL e do SQLServer
+    3. facilita a geração dos objetos de banco de dados para outras tecnologias de banco além do PostgreSQL
 * A autenticação de usuários é realizada na própria aplicação. 
   * Os dados de usuário estão modelados na tabela TBUsuario. 
   * O campo senha está gravado na tabela TBUsuario com HASH MD5.
@@ -79,13 +77,3 @@ A seguir apresentamos algumas perguntas que foram encaminhadas a esta CGTI e as 
 > O sistema não utiliza LDAP para autenticação.
 
 > A autenticação de usuários é realizada na própria aplicação. Os dados de usuário estão modelados na tabela TBUsuario. O campo senha está gravado na tabela TBUsuario com HASH MD5.
-
-- Existem dois arquivos de dump, sendo assim será necessário configurar ambos: SQLServer e PostgreSQL? Ou é possível escolher entre eles?
-
-> Deve-se escolher qual Sistema Gerenciador de Banco de Dados será utilizado.
-
-> O sistema GOG foi desenvolvido inicialmente para funcionar no SGDB SqlServer 2012.
-
-> Posteriormente foi realizada uma migração da aplicação para utilizar o SGDB PostgreSQL 9.3. A versão com PostgreSQL está sendo utilizada por outros órgãos para os quais a aplicação foi cedida.
-
-
