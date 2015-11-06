@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.html.HtmlSelectOneMenu;
@@ -23,6 +25,7 @@ import org.apache.commons.collections.Predicate;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.mail.EmailException;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.SlideEndEvent;
 import org.primefaces.model.UploadedFile;
 
 import br.com.xti.ouvidoria.comparator.UnidadeSiglaComparator;
@@ -161,6 +164,9 @@ public class MBManifestacao extends AbstractManifestationController implements S
     private List<String> idOrgaoDestino;
     private List<Integer> tramitesEscolhidos;
     
+    private boolean monitorar;
+    private Date 	dataMonitoramento;
+    private int 	quantidadeDias;
     
     // VALIDADOS
     /** Prioridade selecionada para a manifestação */
@@ -1030,31 +1036,32 @@ public class MBManifestacao extends AbstractManifestationController implements S
     		if(dsMensagemAoManifestante.equals(textoPadraoSemPalavrasChave)) {
     			JSFUtils.executeJavaScript("dlgRespostaSemAlteracao.show()");
     		} else {
-    			gravaManifestacaoREAL(StatusManifestacaoEnum.SOLUCIONADA);
+    			gravaManifestacao();
     		}
         } else {
-        	gravaManifestacaoREAL(StatusManifestacaoEnum.SOLUCIONADA);
+        	gravaManifestacao();
 		}
     }
     
-    public void gravaMonitorarManifestacao() {
-    	// Verifica se o Texto enviado é o padrão
-    	TbRespostaManifestacao respostaManifestacao = getRespostaManifestacao();
-    	if(respostaManifestacao != null) {
-    		String textoPadraoComPalavrasChave = respostaManifestacao.getDsResposta();
-    		String textoPadraoSemPalavrasChave = PalavrasChavesHelper.converterPalavrasChaves(textoPadraoComPalavrasChave, manifestacao, false);
-    		if(dsMensagemAoManifestante.equals(textoPadraoSemPalavrasChave)) {
-    			JSFUtils.executeJavaScript("dlgRespostaSemAlteracaoMonitoramento.show()");
-    		} else {
-    			gravaManifestacaoREAL(StatusManifestacaoEnum.EM_MONITORAMENTO);
-    		}
-        } else {
-        	gravaManifestacaoREAL(StatusManifestacaoEnum.EM_MONITORAMENTO);
-		}
+    public void controlaMonitoramento() {
+    	if (monitorar){
+    		quantidadeDias = 5;
+    		setDataMonitoramento(Calendar.getInstance().getTime());
+    	}
+    	else{
+    		quantidadeDias = 0;
+    		setDataMonitoramento(null);
+    	}
     }
-    
 
-    public void gravaManifestacaoREAL(StatusManifestacaoEnum status) {
+    public void defineQuantidadeDias(SlideEndEvent event) {
+    	setQuantidadeDias(event.getValue());
+    	Calendar dataInformada = Calendar.getInstance();
+    	dataInformada.add(Calendar.DAY_OF_MONTH, quantidadeDias);
+    	setDataMonitoramento(dataInformada.getTime());
+    }
+    
+    public void gravaManifestacao() {
     	if(ValidacaoHelper.isNotEmpty(idUnidadeAreaSolucionadora)) {
 	    	Set<TbUnidade> listAreaSolucionadora = new HashSet<>();
 			for (String id : idUnidadeAreaSolucionadora) {
@@ -1071,8 +1078,18 @@ public class MBManifestacao extends AbstractManifestationController implements S
             //atualiza data de modificação e status da manifestação
             manifestacao.setDtUltimaAtualizacao(new Date());
             manifestacao.setDtFechamento(new Date());
-            //Configura o status da manifestação conforme informado no parâmetro
-            manifestacao.setStStatusManifestacao(status.getId());
+            //Configura o status da manifestação 
+            if (monitorar){ // Configura os dados de monitoramento da manifestação
+            	if (dataMonitoramento == null){
+            		MensagemFaceUtil.erro("Para monitorar uma manifestação deve ser informada uma data para o monitoramento", "Monitoramento");
+            		return;
+            	}
+                manifestacao.setStStatusManifestacao(StatusManifestacaoEnum.EM_MONITORAMENTO.getId());
+                manifestacao.setDataMonitoramento(dataMonitoramento);
+            }else{
+                manifestacao.setStStatusManifestacao(StatusManifestacaoEnum.SOLUCIONADA.getId());
+                manifestacao.setDataMonitoramento(null);
+            }
             manifestacao.setIdUsuarioAnalisador(securityService.getUser());
             
             // Seta todos os tramites como retornados
@@ -1099,7 +1116,7 @@ public class MBManifestacao extends AbstractManifestationController implements S
                 comunicacaoExterna.setDsComunicacao(dsMensagemAoManifestante);
             } else {
                 comunicacaoExterna.setDsComunicacao("<b>Manifestação "
-                		+ status.getDescricao() // "Solucionada"
+                		+ (isMonitorar() ? "Em Monitoramento" : "Solucionada")
                 		+ " sem mensagem adicional do Ouvidor ao Manifestante. \nConsiderar a última mensagem como resposta final. \n<span style='font-size:10px'>(Esta mensagem foi gerada automaticamente pelo sistema)</span></b>");
             }
             comunicacaoExternaDAO.create(comunicacaoExterna);
@@ -2477,5 +2494,47 @@ public class MBManifestacao extends AbstractManifestationController implements S
     public void setIdUnidadeEncaminhamento(Integer idUnidadeEncaminhamento) {
         this.idUnidadeEncaminhamento = idUnidadeEncaminhamento;
     }
+
+	/**
+	 * @return the monitorar
+	 */
+	public boolean isMonitorar() {
+		return monitorar;
+	}
+
+	/**
+	 * @param monitorar the monitorar to set
+	 */
+	public void setMonitorar(boolean monitorar) {
+		this.monitorar = monitorar;
+	}
+
+	/**
+	 * @return the dataMonitoramento
+	 */
+	public Date getDataMonitoramento() {
+		return dataMonitoramento;
+	}
+
+	/**
+	 * @param dataMonitoramento the dataMonitoramento to set
+	 */
+	public void setDataMonitoramento(Date dataMonitoramento) {
+		this.dataMonitoramento = dataMonitoramento;
+	}
+
+	/**
+	 * @return the quantidadeDias
+	 */
+	public int getQuantidadeDias() {
+		return quantidadeDias;
+	}
+
+	/**
+	 * @param quantidadeDias the quantidadeDias to set
+	 */
+	public void setQuantidadeDias(int quantidadeDias) {
+		this.quantidadeDias = quantidadeDias;
+	}
 
 }

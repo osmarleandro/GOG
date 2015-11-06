@@ -13,11 +13,11 @@ import br.com.xti.ouvidoria.model.enums.StatusManifestacaoEnum;
 
 
 public class DTOManifestacao {
-	private Integer 				nrManifestacao;
+	private Integer 				numeroManifestacao;
 	private Integer 				idManifestacao;
 
-	private Date 					dtCadastro;
-	private Date 					dtUltimaAtualizacao;
+	private Date 					dataCadastro;
+	private Date 					dataUltimaAtualizacao;
 	
 	private String 					nomeManifestante;
 	
@@ -29,7 +29,7 @@ public class DTOManifestacao {
 	private Integer 				prazoRespostaAoManifestante;
 
 	
-	private Integer 				ddPrioridade;
+	private Integer 				idPrioridade;
 	private String					nomePrioridade;
 	
 	private String 					idStatusManifestacao;
@@ -50,9 +50,10 @@ public class DTOManifestacao {
 	
 	private boolean 				oculta;
 	
-	private String 					dsTextoManifestacao;
+	private String 					textoManifestacao;
 	private String 					motivoOcultacao;
 	
+	private Date					dataMonitoramento;
 	
 	private Collection<TbEncaminhamento>		encaminhamentos;
 	private Collection<TbComunicacaoExterna>	comunicacaoExterna; 
@@ -62,7 +63,7 @@ public class DTOManifestacao {
 	
     public String getDsTextoManifestacaoFormatado() {
     	// Remove os caracteres problemáticos (travam a tela do sistema)
-    	return Jsoup.parse(dsTextoManifestacao).html();
+    	return Jsoup.parse(textoManifestacao).html();
     }
 
     public String verificaAtrasoStyleClass() {
@@ -71,21 +72,6 @@ public class DTOManifestacao {
 
 		return styleClass;
     }
-
-	
-	/**
-	 * @return the nrManifestacao
-	 */
-	public Integer getNrManifestacao() {
-		return nrManifestacao;
-	}
-
-	/**
-	 * @param nrManifestacao the nrManifestacao to set
-	 */
-	public void setNrManifestacao(Integer nrManifestacao) {
-		this.nrManifestacao = nrManifestacao;
-	}
 
 	/**
 	 * @return the idManifestacao
@@ -101,33 +87,6 @@ public class DTOManifestacao {
 		this.idManifestacao = idManifestacao;
 	}
 
-	/**
-	 * @return the dtCadastro
-	 */
-	public Date getDtCadastro() {
-		return dtCadastro;
-	}
-
-	/**
-	 * @param dtCadastro the dtCadastro to set
-	 */
-	public void setDtCadastro(Date dtCadastro) {
-		this.dtCadastro = dtCadastro;
-	}
-
-	/**
-	 * @return the dtUltimaAtualizacao
-	 */
-	public Date getDtUltimaAtualizacao() {
-		return dtUltimaAtualizacao;
-	}
-
-	/**
-	 * @param dtUltimaAtualizacao the dtUltimaAtualizacao to set
-	 */
-	public void setDtUltimaAtualizacao(Date dtUltimaAtualizacao) {
-		this.dtUltimaAtualizacao = dtUltimaAtualizacao;
-	}
 
 	/**
 	 * @return the nomeManifestante
@@ -170,21 +129,6 @@ public class DTOManifestacao {
 	public void setNomeTipoManifestacao(String nomeTipoManifestacao) {
 		this.nomeTipoManifestacao = nomeTipoManifestacao;
 	}
-
-	/**
-	 * @return the ddPrioridade
-	 */
-	public Integer getDdPrioridade() {
-		return ddPrioridade;
-	}
-
-	/**
-	 * @param ddPrioridade the ddPrioridade to set
-	 */
-	public void setDdPrioridade(Integer ddPrioridade) {
-		this.ddPrioridade = ddPrioridade;
-	}
-
 	/**
 	 * @return the nomePrioridade
 	 */
@@ -220,6 +164,13 @@ public class DTOManifestacao {
         }
     }
 
+	/**
+	 * Verificar se o status da Manifestação está configurado para EM MONITORAMENTO
+	 * @return
+	 */
+	public boolean isStatusMonitoramento(){
+		return idStatusManifestacao.equals(StatusManifestacaoEnum.EM_MONITORAMENTO.getId());
+	}
 
 	/**
 	 * @return the nomesUnidades
@@ -332,22 +283,6 @@ public class DTOManifestacao {
 	 */
 	public void setOculta(boolean oculta) {
 		this.oculta = oculta;
-	}
-
-
-	/**
-	 * @return the dsTextoManifestacao
-	 */
-	public String getDsTextoManifestacao() {
-		return dsTextoManifestacao;
-	}
-
-
-	/**
-	 * @param dsTextoManifestacao the dsTextoManifestacao to set
-	 */
-	public void setDsTextoManifestacao(String dsTextoManifestacao) {
-		this.dsTextoManifestacao = dsTextoManifestacao;
 	}
 
 
@@ -465,6 +400,90 @@ public class DTOManifestacao {
 	 */
 	public void setEncaminhamentoUsuario(TbEncaminhamento encaminhamentoUsuario) {
 		this.encaminhamentoUsuario = encaminhamentoUsuario;
+	}
+
+	/**
+	 * @return the numeroManifestacao
+	 */
+	public Integer getNumeroManifestacao() {
+		return numeroManifestacao;
+	}
+
+	/**
+	 * @param numeroManifestacao the numeroManifestacao to set
+	 */
+	public void setNumeroManifestacao(Integer numeroManifestacao) {
+		this.numeroManifestacao = numeroManifestacao;
+	}
+
+	/**
+	 * @return the dataCadastro
+	 */
+	public Date getDataCadastro() {
+		return dataCadastro;
+	}
+
+	/**
+	 * @param dataCadastro the dataCadastro to set
+	 */
+	public void setDataCadastro(Date dataCadastro) {
+		this.dataCadastro = dataCadastro;
+	}
+
+	/**
+	 * @return the dataUltimaAtualizacao
+	 */
+	public Date getDataUltimaAtualizacao() {
+		return dataUltimaAtualizacao;
+	}
+
+	/**
+	 * @param dataUltimaAtualizacao the dataUltimaAtualizacao to set
+	 */
+	public void setDataUltimaAtualizacao(Date dataUltimaAtualizacao) {
+		this.dataUltimaAtualizacao = dataUltimaAtualizacao;
+	}
+
+	/**
+	 * @return the idPrioridade
+	 */
+	public Integer getIdPrioridade() {
+		return idPrioridade;
+	}
+
+	/**
+	 * @param idPrioridade the idPrioridade to set
+	 */
+	public void setIdPrioridade(Integer idPrioridade) {
+		this.idPrioridade = idPrioridade;
+	}
+
+	/**
+	 * @return the textoManifestacao
+	 */
+	public String getTextoManifestacao() {
+		return textoManifestacao;
+	}
+
+	/**
+	 * @param textoManifestacao the textoManifestacao to set
+	 */
+	public void setTextoManifestacao(String textoManifestacao) {
+		this.textoManifestacao = textoManifestacao;
+	}
+
+	/**
+	 * @return the dataMonitoramento
+	 */
+	public Date getDataMonitoramento() {
+		return dataMonitoramento;
+	}
+
+	/**
+	 * @param dataMonitoramento the dataMonitoramento to set
+	 */
+	public void setDataMonitoramento(Date dataMonitoramento) {
+		this.dataMonitoramento = dataMonitoramento;
 	}
 	
 	

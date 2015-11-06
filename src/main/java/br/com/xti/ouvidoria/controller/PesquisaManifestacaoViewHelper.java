@@ -1,27 +1,25 @@
-package br.com.xti.ouvidoria.dto.manifestacao;
+package br.com.xti.ouvidoria.controller;
 
 import java.util.List;
 import java.util.Map;
 
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.lang.StringUtils;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.model.SortOrder;
 
-import br.com.xti.ouvidoria.dto.DTOPesquisaEntidade;
+import br.com.xti.ouvidoria.dto.manifestacao.DTOManifestacao;
 import br.com.xti.ouvidoria.model.TbFiltroPersonalizado;
 import br.com.xti.ouvidoria.negocio.ManifestacaoService;
 
 
-public class DTOPesquisaManifestacao extends DTOPesquisaEntidade<DTOManifestacao> {
-//	@EJB
+public class PesquisaManifestacaoViewHelper extends PesquisaEntidadeViewHelper<DTOManifestacao> {
 	private ManifestacaoService manifestacaoService;
 	
-	private DTOManifestacao filtroPesquisa = new DTOManifestacao();
 	private String cenarioPesquisa;
 	private String nomeFiltroPersonalizado;
 	private TbFiltroPersonalizado filtroEscolhido;
-	private boolean reiniciarPaginacao;
 
 	
 	public static final String CENARIO_PESQUISA_TODOS 					= "Todos";
@@ -35,9 +33,10 @@ public class DTOPesquisaManifestacao extends DTOPesquisaEntidade<DTOManifestacao
 	public static final String CENARIO_PESQUISA_COM_OUVIDORIA	 		= "Com a Ouvidoria";
 	public static final String CENARIO_PESQUISA_FILTRO_PERSONALIZADO	= "Filtro Personalizado";
 	
-	public DTOPesquisaManifestacao(ManifestacaoService manifestacaoService){
-		cenarioPesquisa = CENARIO_PESQUISA_TODOS;
+	public PesquisaManifestacaoViewHelper(ManifestacaoService manifestacaoService){
+		cenarioPesquisa = CENARIO_PESQUISA_CAIXA_ENTRADA;
 		this.manifestacaoService = manifestacaoService;
+		super.setFiltroPesquisa(new DTOManifestacao());
 	}
 	
 	private void DTOPesquisaManifestacao() {
@@ -83,20 +82,6 @@ public class DTOPesquisaManifestacao extends DTOPesquisaEntidade<DTOManifestacao
 	}
 
 
-	/**
-	 * @return the filtroPesquisa
-	 */
-	public DTOManifestacao getFiltroPesquisa() {
-		return filtroPesquisa;
-	}
-
-	/**
-	 * @param filtroPesquisa the filtroPesquisa to set
-	 */
-	public void setFiltroPesquisa(DTOManifestacao filtroPesquisa) {
-		this.filtroPesquisa = filtroPesquisa;
-	}
-
 	@Override
 	public Class getClassResultado() {
 		return DTOManifestacao.class;
@@ -107,12 +92,12 @@ public class DTOPesquisaManifestacao extends DTOPesquisaEntidade<DTOManifestacao
 	@Override
 	public List<DTOManifestacao> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
 		// Configura a paginação da tabela de resultados
-		if (reiniciarPaginacao){
+		if (isReiniciarPaginacao()){
 			this.setPrimeiroRegistro(0);
 			DataTable dataTable = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formListarManifestacoes:tabelaManifestacoes");
 			if (dataTable != null)
 				dataTable.setFirst(0);
-			reiniciarPaginacao = false;
+			setReiniciarPaginacao(false);
 		}
 		else{
 			this.setPrimeiroRegistro(first);
@@ -194,20 +179,6 @@ public class DTOPesquisaManifestacao extends DTOPesquisaEntidade<DTOManifestacao
 	 */
 	public void setNomeFiltroPersonalizado(String nomeFiltroPersonalizado) {
 		this.nomeFiltroPersonalizado = nomeFiltroPersonalizado;
-	}
-
-	/**
-	 * @return the reiniciarPaginacao
-	 */
-	public boolean isReiniciarPaginacao() {
-		return reiniciarPaginacao;
-	}
-
-	/**
-	 * @param reiniciarPaginacao the reiniciarPaginacao to set
-	 */
-	public void setReiniciarPaginacao(boolean reiniciarPaginacao) {
-		this.reiniciarPaginacao = reiniciarPaginacao;
 	}
 
 	/**

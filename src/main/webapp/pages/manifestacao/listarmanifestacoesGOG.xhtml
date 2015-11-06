@@ -38,30 +38,9 @@
                     </p:column>
 				</p:row>
 				<p:row>
-					<p:column colspan="2" style="text-align: left" styleClass="ui-widget-header" rendered="#{not security.manifestante}">
-						<p:inputText value="#{mBListarManifestacoesGOG.textoBuscaManifestacao}" id="buscaManifestacao" size="50" style="margin-right: 10px;" />
-						<p:watermark value="Pesquisar nas Manifestações" for="buscaManifestacao" />
-						<p:commandButton id="btnBuscarManifestacao" value="Buscar"
-							actionListener="#{mBListarManifestacoesGOG.buscarManifestacao}"
-							update="tabelaManifestacoes"
-							style="width: 100px; margin-right: 20px;" 
-							title="Pesquisar nas Manifestações" />
-						
-						<p:outputPanel rendered="#{not security.manifestante}">
-							<p:inputText value="#{mBListarManifestacoesGOG.textoBuscaEncaminhamento}" id="buscaEncaminhamento" size="50" style="margin-right: 10px;" />
-							<p:watermark value="Pesquisar nos Encaminhamentos" for="buscaEncaminhamento" />
-							<p:commandButton id="btnBuscarEncaminhamento" value="Buscar"
-								actionListener="#{mBListarManifestacoesGOG.buscarEncaminhamento}"
-								style="width: 100px;" 
-								update="tabelaManifestacoes"
-								title="Pesquisar nos Encaminhamentos" />
-						</p:outputPanel>
-					</p:column>
-				</p:row>
-				<p:row>
-					<p:column styleClass="ui-widget-header" style="text-align: left; width: 250px;" rendered="#{not security.manifestante}">
+					<p:column styleClass="ui-widget-header" style="text-align: left; width: 250px; vertical-align: top;" rendered="#{not security.manifestante}">
 						<p:row>
-							<p:column colspan="2" style="text-align: left; width: 250px"
+							<p:column colspan="2" style="text-align: left; width: 250px; vertical-align: top;"
 								styleClass="ui-widget-header">
 								<p:outputPanel autoUpdate="true">
 <!--  Caixa com opções (na barra à direita) -->
@@ -73,7 +52,7 @@
 										update="tabelaManifestacoes,btnCaixaEntrada,
 												btnSolicitadaInformacao,btnDevolvidas,
 												btnComAOuvidoria,btnEmAndamento,
-												btnRetornadas,btnFechadas" /> 
+												btnRetornadas,btnFechadas,painelPesquisaManifestacoes" /> 
 									
 									<p:commandButton id="btnSolicitadaInformacao" value="Solicitada Informação"
 										style="width: 100%; margin-bottom: 10px;"
@@ -84,7 +63,7 @@
 										update="tabelaManifestacoes,btnCaixaEntrada,
 												btnSolicitadaInformacao,btnDevolvidas,
 												btnComAOuvidoria,btnEmAndamento,
-												btnRetornadas,btnFechadas" /> 
+												btnRetornadas,btnFechadas,painelPesquisaManifestacoes" /> 
 										
 									<p:commandButton id="btnEmAndamento" value="Em Andamento"
 										style="width: 100%; margin-bottom: 10px;"
@@ -93,7 +72,7 @@
 										update="tabelaManifestacoes,btnCaixaEntrada,
 												btnSolicitadaInformacao,btnDevolvidas,
 												btnComAOuvidoria,btnEmAndamento,
-												btnRetornadas,btnFechadas" 
+												btnRetornadas,btnFechadas,painelPesquisaManifestacoes" 
 										title="Em Andamento"
 										rendered="#{!security.operador}" />
 	
@@ -104,7 +83,7 @@
 										update="tabelaManifestacoes,btnCaixaEntrada,
 												btnSolicitadaInformacao,btnDevolvidas,
 												btnComAOuvidoria,btnEmAndamento,
-												btnRetornadas,btnFechadas" 
+												btnRetornadas,btnFechadas,painelPesquisaManifestacoes" 
 										title="Em Monitoramento"
 										rendered="#{!security.operador}" />
 
@@ -115,7 +94,7 @@
 										update="tabelaManifestacoes,btnCaixaEntrada,
 												btnSolicitadaInformacao,btnDevolvidas,
 												btnComAOuvidoria,btnEmAndamento,
-												btnRetornadas,btnFechadas" 
+												btnRetornadas,btnFechadas,painelPesquisaManifestacoes" 
 										title="Retornadas"
 										rendered="#{!security.operador}" />
 	
@@ -126,7 +105,7 @@
 										update="tabelaManifestacoes,btnCaixaEntrada,
 												btnSolicitadaInformacao,btnDevolvidas,
 												btnComAOuvidoria,btnEmAndamento,
-												btnRetornadas,btnFechadas" 
+												btnRetornadas,btnFechadas,painelPesquisaManifestacoes" 
 										title="Devolvidas"
 										rendered="#{security.operador}" />
 										
@@ -137,7 +116,7 @@
 										update="tabelaManifestacoes,btnCaixaEntrada,
 												btnSolicitadaInformacao,btnDevolvidas,
 												btnComAOuvidoria,btnEmAndamento,
-												btnRetornadas,btnFechadas" 
+												btnRetornadas,btnFechadas,painelPesquisaManifestacoes" 
 										title="Com a Ouvidoria"
 										rendered="#{security.interlocutor || security.operador}" />
 										
@@ -148,8 +127,19 @@
 										update="tabelaManifestacoes,btnCaixaEntrada,
 												btnSolicitadaInformacao,btnDevolvidas,
 												btnComAOuvidoria,btnEmAndamento,
-												btnRetornadas,btnFechadas" 
+												btnRetornadas,btnFechadas,painelPesquisaManifestacoes" 
 										title="Solucionadas" />
+
+									<p:commandButton id="btnCaixaTodos" value="TODOS"
+										style="width: 100%; margin-bottom: 10px;" 
+										styleClass="#{mBListarManifestacoesGOG.dtoManifestacao.cenarioPesquisaTodos ? 'botaoCaixaSelecionado' : ''}"
+										actionListener="#{mBListarManifestacoesGOG.getCaixaTodos}"
+										title="TODOS"
+										update="tabelaManifestacoes,btnCaixaEntrada,
+												btnSolicitadaInformacao,btnDevolvidas,
+												btnComAOuvidoria,btnEmAndamento,
+												btnRetornadas,btnFechadas,painelPesquisaManifestacoes" /> 
+
 
 <!--  Caixa com opção para relatório (na barra à direita) ... value="Extrair Relatório"
 -->										
@@ -175,57 +165,9 @@
 													itemValue="#{filtro}" />
 												<p:ajax
 													listener="#{mBListarManifestacoesGOG.getFiltroPersonalizado}"
-													update="tabelaManifestacoes" />
+													update="tabelaManifestacoes,painelPesquisaManifestacoes" />
 											</p:selectOneListbox>
 										</p:outputPanel>
-									</p:column>
-								</p:row>
-							</p:panelGrid>
-							<p:panelGrid style="width: 100%;">
-								<p:row>
-									<p:column style="text-align: center; width: 100%"
-										styleClass="ui-widget-header">
-                                        Legenda
-                                    </p:column>
-								</p:row>
-								<p:row>
-									<p:column>
-<!--  Retiradas as opções (Atraso e ocultar) (na barra à direita) -->
-										<table width="100%" style="font-size: 10px;" class="corLinkLegenda">
-											<tr>
-												<td style="background-color: #CFDBB9;">
-													<h:outputText
-														value="Atraso para Encaminhamento" />
-												</td>
-											</tr>
-											<tr>
-												<td style="background-color: #ffc1c1;">
-													<h:outputText
-														value="Atraso de Resposta à Ouvidoria" />
-												</td>
-											</tr>
-											<tr>
-												<td style="background-color: #FAC798;">
-													<h:outputText
-														value="Atraso para Resposta ao Cidadão" />
-												</td>
-											</tr>
-											<tr>
-												<td style="background-color: #C0C0C0;">
-													<h:outputText
-														value="Sem Atraso"  />
-												</td>
-											</tr>
-											<p:outputPanel rendered="#{security.administrador}">
-												<tr>
-													<td style="background-color: #D9D9D9;">
-														<p:commandLink
-															value="Ocultas" update="tabelaManifestacoes"
-															actionListener="#{mBListarManifestacoesGOG.filtraOcultas()}" />
-													</td>
-												</tr>
-											</p:outputPanel>
-										</table>
 									</p:column>
 								</p:row>
 							</p:panelGrid>
@@ -233,87 +175,122 @@
 					</p:column>
 					
 					<p:column style="vertical-align: top; ">
-						<p:panelGrid style="width: 100%">
+						<p:panelGrid style="width: 100%" id="painelPesquisaManifestacoes">
 	                        <p:row>
-	                            <p:column style="width: 15%">
-	                                <h:outputLabel value="Número da Manifestação: " styleClass="bold" />
-	                            </p:column>
 	                            <p:column >
-	                                <p:inputText value="#{mBListarManifestacoesGOG.dtoManifestacao.filtroPesquisa.numeroManifestacao}" size="15"	                                	converterMessage="Número da manifestação deve conter um ou mais dígitos numéricos." />
-	                            </p:column>
-	                            <p:column style="width: 15%">
-	                                <h:outputLabel value="Nome do Manifestante: "  styleClass="bold"/>
-	                            </p:column>
-	                            <p:column colspan="3">
-	                                <p:inputText value="#{mBListarManifestacoesGOG.dtoManifestacao.filtroPesquisa.nomeManifestante}" size="80"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 15%">
-	                                <h:outputLabel value="Data de Registro: "  styleClass="bold"/>
-	                            </p:column>
-	                            <p:column style="width: 15%">
-	                                <p:calendar id="dtRegistro" 
-	                                	value="#{mBListarManifestacoesGOG.dtoManifestacao.filtroPesquisa.dataCadastro}" pattern="dd/MM/yyyy" />
-	                            </p:column>
-	                            <p:column style="width: 15%">
-	                                <h:outputLabel value="Data de Atualização: "  styleClass="bold"/>
-	                            </p:column>
-	                            <p:column colspan="3">
-	                                <p:calendar id="dtAtualizacao" 
-	                                	value="#{mBListarManifestacoesGOG.dtoManifestacao.filtroPesquisa.dataUltimaAtualizaca}" pattern="dd/MM/yyyy" />
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 15%">
-	                                <h:outputLabel value="Tipo da Manifestação: "  styleClass="bold"/>
-	                            </p:column>
-	                            <p:column>
-	                                <p:selectOneMenu value="#{mBListarManifestacoesGOG.dtoManifestacao.filtroPesquisa.idTipoManifestacao}">
-	                                    <f:selectItem itemLabel=" - Todos -" itemValue="0" />
-	                                    <f:selectItems value="#{mBListarManifestacoesGOG.listaTipoManifestacao}" 
-	                                    	var="tipoManifestacao" itemLabel="#{tipoManifestacao.nmTipoManifestacao}" itemValue="#{tipoManifestacao.idTipoManifestacao}" />
-	                                </p:selectOneMenu>
-	                            </p:column>
 
-	                            <p:column style="width: 15%">
-	                                <h:outputLabel value="Prioridade: "  styleClass="bold"/>
-	                            </p:column>
-	                            <p:column>
-	                                <p:selectOneMenu value="#{mBListarManifestacoesGOG.dtoManifestacao.filtroPesquisa.idPrioridade}">
-	                                    <f:selectItem itemLabel=" - Todos -" itemValue="0" />
-	                                    <f:selectItems value="#{mBListarManifestacoesGOG.listaPrioridade}" 
-	                                    	var="prioridade" itemLabel="#{prioridade.nmPrioridade}" itemValue="#{prioridade.idPrioridade}" />
-	                                </p:selectOneMenu>
-	                            </p:column>
-	                            
-	                            <p:column style="width: 15%">
-	                                <h:outputLabel value="Status: "  styleClass="bold"/>
-	                            </p:column>
-	                            <p:column>
-	                                <p:selectOneMenu value="#{mBListarManifestacoesGOG.dtoManifestacao.filtroPesquisa.idStatusManifestacao}">
-	                                    <f:selectItem itemLabel=" - Todos -" itemValue="0" />
-	                                    <f:selectItems value="#{mBEnum.statusManifestacaoEnums}" var="status" itemLabel="#{status.descricao}" itemValue="#{status.id}" />
-	                                </p:selectOneMenu>
-	                            </p:column>
-	                            
-	                        </p:row>
-	                        
-	                        <p:row>
-	                            <p:column colspan="6" style="text-align: right">
-									<p:commandButton id="btnFiltrarManifestacoes" value="Pesquisar"
-										actionListener="#{mBListarManifestacoesGOG.pesquisarManifestacoes}"
-										style="width: 100px;" 
-										update="tabelaManifestacoes"
-										title="Pesquisar Manifestações" />
+	                                <h:outputLabel value="Número da Manifestação: " styleClass="bold" />
+									<p:spacer width="10px" height="10px" />
+	                                <p:inputText value="#{mBListarManifestacoesGOG.dtoManifestacao.filtroPesquisa.numeroManifestacao}" size="15"	                                	converterMessage="Número da manifestação deve conter um ou mais dígitos numéricos." />
+
+									<p:spacer width="25px" height="10px"/>
+
+	                                <h:outputLabel value="Nome do Manifestante: "  styleClass="bold"/>
+									<p:spacer width="10px" height="10px"/>
+	                                <p:inputText value="#{mBListarManifestacoesGOG.dtoManifestacao.filtroPesquisa.nomeManifestante}" size="50"/>
+
+									<div style="min-height: 10px" />
+									
+									<p:accordionPanel multiple="true" style="padding: 0em" styleClass="" activeIndex="-1">
+										<p:tab title="Pesquisa Avançada" style="padding: 0em" titleStyle="padding: 0em" >
+											<p:panelGrid style="width: 100%">
+						                        <p:row>
+						                            <p:column style="width: 15%">
+						                                <h:outputLabel value="Data de Registro: "  styleClass="bold"/>
+						                            </p:column>
+						                            <p:column style="width: 15%">
+						                                <p:calendar id="dtRegistro" 
+						                                	value="#{mBListarManifestacoesGOG.dtoManifestacao.filtroPesquisa.dataCadastro}" pattern="dd/MM/yyyy" />
+						                            </p:column>
+						                            <p:column style="width: 15%">
+						                                <h:outputLabel value="Data de Atualização: "  styleClass="bold"/>
+						                            </p:column>
+						                            <p:column colspan="3">
+						                                <p:calendar id="dtAtualizacao" 
+						                                	value="#{mBListarManifestacoesGOG.dtoManifestacao.filtroPesquisa.dataUltimaAtualizacao}" pattern="dd/MM/yyyy" />
+						                            </p:column>
+						                        </p:row>
+						                        <p:row>
+						                            <p:column style="width: 15%">
+						                                <h:outputLabel value="Tipo da Manifestação: "  styleClass="bold"/>
+						                            </p:column>
+						                            <p:column>
+						                                <p:selectOneMenu value="#{mBListarManifestacoesGOG.dtoManifestacao.filtroPesquisa.idTipoManifestacao}">
+						                                    <f:selectItem itemLabel=" - Todos -" itemValue="0" />
+						                                    <f:selectItems value="#{mBListarManifestacoesGOG.listaTipoManifestacao}" 
+						                                    	var="tipoManifestacao" itemLabel="#{tipoManifestacao.nmTipoManifestacao}" itemValue="#{tipoManifestacao.idTipoManifestacao}" />
+						                                </p:selectOneMenu>
+						                            </p:column>
+					
+						                            <p:column style="width: 15%">
+						                                <h:outputLabel value="Prioridade: "  styleClass="bold"/>
+						                            </p:column>
+						                            <p:column>
+						                                <p:selectOneMenu value="#{mBListarManifestacoesGOG.dtoManifestacao.filtroPesquisa.idPrioridade}">
+						                                    <f:selectItem itemLabel=" - Todos -" itemValue="0" />
+						                                    <f:selectItems value="#{mBListarManifestacoesGOG.listaPrioridade}" 
+						                                    	var="prioridade" itemLabel="#{prioridade.nmPrioridade}" itemValue="#{prioridade.idPrioridade}" />
+						                                </p:selectOneMenu>
+						                            </p:column>
+						                            
+						                            <p:column style="width: 15%">
+						                                <h:outputLabel value="Status: "  styleClass="bold"/>
+						                            </p:column>
+						                            <p:column>
+						                                <p:selectOneMenu value="#{mBListarManifestacoesGOG.dtoManifestacao.filtroPesquisa.idStatusManifestacao}">
+						                                    <f:selectItem itemLabel=" - Todos -" itemValue="0" />
+						                                    <f:selectItems value="#{mBEnum.statusManifestacaoEnums}" var="status" itemLabel="#{status.descricao}" itemValue="#{status.id}" />
+						                                </p:selectOneMenu>
+						                            </p:column>
+						                            
+						                        </p:row>
+		
+		
+												<p:row rendered="false"> <!-- A pesquisa avançada será implementada em outra iteração -->
+													<p:column colspan="2" style="text-align: left" styleClass="ui-widget-header" rendered="#{not security.manifestante}">
+														<p:inputText value="#{mBListarManifestacoesGOG.textoBuscaManifestacao}" id="buscaManifestacao" size="50" style="margin-right: 10px;" />
+														<p:watermark value="Pesquisar nas Manifestações" for="buscaManifestacao" />
+														<p:commandButton id="btnBuscarManifestacao" value="Buscar"
+															actionListener="#{mBListarManifestacoesGOG.buscarManifestacao}"
+															update="tabelaManifestacoes"
+															style="width: 100px; margin-right: 20px;" 
+															title="Pesquisar nas Manifestações" />
+														
+														<p:outputPanel rendered="#{not security.manifestante}">
+															<p:inputText value="#{mBListarManifestacoesGOG.textoBuscaEncaminhamento}" id="buscaEncaminhamento" size="50" style="margin-right: 10px;" />
+															<p:watermark value="Pesquisar nos Encaminhamentos" for="buscaEncaminhamento" />
+															<p:commandButton id="btnBuscarEncaminhamento" value="Buscar"
+																actionListener="#{mBListarManifestacoesGOG.buscarEncaminhamento}"
+																style="width: 100px;" 
+																update="tabelaManifestacoes"
+																title="Pesquisar nos Encaminhamentos" />
+														</p:outputPanel>
+													</p:column>
+												</p:row>
+		
+						                    </p:panelGrid>
+										</p:tab>
+										</p:accordionPanel>
+								
+										<div style="text-align: right; width: 100%; padding: 5px;">
+											<p:commandButton id="btnFiltrarManifestacoes" value="Pesquisar"
+												actionListener="#{mBListarManifestacoesGOG.pesquisarManifestacoes}"
+												style="width: 100px;" 
+												update="tabelaManifestacoes"
+												title="Pesquisar Manifestações" />
+										</div>
+
+									
 								</p:column>
-							</p:row>
+							</p:row>								
+							
+
 	                        
 						</p:panelGrid>
 
         					
 						<p:dataTable id="tabelaManifestacoes"
-							value="#{mBListarManifestacoesGOG.dtoManifestacao}"
+							value="#{mBListarManifestacoesGOG.dtoManifestacao}" 
 							paginator="true" rows="10" paginatorPosition="bottom"
 							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 							rowsPerPageTemplate="5,10,15" 
@@ -335,23 +312,23 @@
 								<p:rowToggler />
 							</p:column>
 
-							<p:column style="width: 5%;" headerText="Nº" sortBy="#{manifestacao.nrManifestacao}" >
-								<h:outputText value="#{manifestacao.nrManifestacao}" />
+							<p:column style="width: 5%;" headerText="Nº" sortBy="#{manifestacao.numeroManifestacao}" >
+								<h:outputText value="#{manifestacao.numeroManifestacao}" />
 							</p:column>
 
-							<p:column style="width: 5%;" sortBy="#{manifestacao.dtUltimaAtualizacao}" >
+							<p:column style="width: 5%;" sortBy="#{manifestacao.dataUltimaAtualizacao}" >
 								<f:facet name="header">
 									<h:outputText value="Dt. Registro (R)" />
 									<br />
 									<h:outputText value="Dt. Atualização (A)" style="white-space: nowrap" />
 								</f:facet>
 								<h:outputText value="R: " />
-								<h:outputText value="#{manifestacao.dtCadastro}">
+								<h:outputText value="#{manifestacao.dataCadastro}">
 									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
 								</h:outputText>
 								<br />
 								<h:outputText value="A: " />
-								<h:outputText value="#{manifestacao.dtUltimaAtualizacao}">
+								<h:outputText value="#{manifestacao.dataUltimaAtualizacao}">
 									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
 								</h:outputText>
 							</p:column>
@@ -362,24 +339,33 @@
 									rendered="#{mBListarManifestacoesGOG.showSecretData(manifestacao)}" />
 							</p:column>
 
-							<p:column headerText="Tipo" style="width: 10%;">
+							<p:column headerText="Tipo" style="width: 10%;" sortBy="#{manifestacao.nomeTipoManifestacao}">
 								<h:outputText
 									value="#{manifestacao.nomeTipoManifestacao}" />
 							</p:column>
 
-							<p:column headerText="Prioridade" style="width: 10%;"
+							<p:column headerText="Prioridade" style="width: 10%;" sortBy="#{manifestacao.nomePrioridade}"
 								rendered="#{!security.interlocutor}">
 								<h:outputText value="#{manifestacao.nomePrioridade}" />
 							</p:column>
 							
 							<p:column headerText="Operador" style="width: 10%;" 
-								rendered="#{security.interlocutor}">
+								rendered="#{security.interlocutor}" >
 								<h:outputText value="#{manifestacao.nomesOperadores}" />
 							</p:column>
 
-							<p:column headerText="Status" style="width: 10%;" >
+							<p:column headerText="Status" style="width: 12%;" >
 								<h:outputText
 									value="#{manifestacao.statusManifestacao}" />
+								<h:panelGroup rendered="#{manifestacao.statusMonitoramento}">
+									<br />
+									<h:outputText value="Data: " />
+									<h:outputText value="#{manifestacao.dataMonitoramento}">
+										<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+									</h:outputText>
+								
+								</h:panelGroup>
+
 							</p:column>
 
 							<p:column headerText="Unidade(s)" style="width:20%;" 
@@ -449,6 +435,50 @@
 								</div>
 							</p:rowExpansion>
 						</p:dataTable>
+						
+						
+							<p:panelGrid style="width: 100%;" rendered="#{not security.manifestante}">
+								<p:row>
+									<p:column>
+<!--  Retiradas as opções (Atraso e ocultar) (na barra à direita) -->
+										<table width="100%" style="font-size: 10px;" class="corLinkLegenda">
+											<tr>
+												<td style="font-weight: bold; width: 10%" >
+													<h:outputText
+														value="Legenda" />
+												</td>
+												<td style="background-color: #CFDBB9; text-align: center; width: 20%; ">
+													<h:outputText
+														value="Atraso para Encaminhamento" />
+												</td>
+												<td style="background-color: #ffc1c1; text-align: center; width: 20%; ">
+													<h:outputText
+														value="Atraso de Resposta à Ouvidoria" />
+												</td>
+												<td style="background-color: #FAC798; text-align: center; width: 20%; ">
+													<h:outputText
+														value="Atraso para Resposta ao Cidadão" />
+												</td>
+												<td style="background-color: #C0C0C0; text-align: center; width: 20%; ">
+													<h:outputText
+														value="Sem Atraso"  />
+												</td>
+
+												<p:outputPanel rendered="#{security.administrador}">
+												<td style="background-color: #D9D9D9; text-align: center; width: 10%; ">
+													<p:commandLink
+														value="Ocultas" update="tabelaManifestacoes,painelPesquisaManifestacoes"
+														actionListener="#{mBListarManifestacoesGOG.filtraOcultas()}" />
+												</td>
+												</p:outputPanel>
+
+												</tr>
+										</table>
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+						
+						
 					</p:column>
 				</p:row>
 			</p:panelGrid>
@@ -469,7 +499,7 @@
 							<h:outputText value="Número da Manifestação: " />
 						</p:column>
 						<p:column>
-							<h:outputText value="#{mBListarManifestacoesGOG.manifestacaoSelecionada.nrManifestacao}" />
+							<h:outputText value="#{mBListarManifestacoesGOG.manifestacaoSelecionada.numeroManifestacao}" />
 						</p:column>
 					</p:row>
 					<p:row>
@@ -506,7 +536,7 @@
 							<h:outputText value="Número da Manifestação: " />
 						</p:column>
 						<p:column>
-							<h:outputText value="#{mBListarManifestacoesGOG.manifestacaoSelecionada.nrManifestacao}" />
+							<h:outputText value="#{mBListarManifestacoesGOG.manifestacaoSelecionada.numeroManifestacao}" />
 						</p:column>
 					</p:row>
 					<p:row>

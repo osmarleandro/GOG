@@ -15,7 +15,6 @@ import br.com.xti.ouvidoria.dao.FiltroPersonalizadoDAO;
 import br.com.xti.ouvidoria.dao.PrioridadeDAO;
 import br.com.xti.ouvidoria.dao.TipoManifestacaoDAO;
 import br.com.xti.ouvidoria.dto.manifestacao.DTOManifestacao;
-import br.com.xti.ouvidoria.dto.manifestacao.DTOPesquisaManifestacao;
 import br.com.xti.ouvidoria.helper.ValidacaoHelper;
 import br.com.xti.ouvidoria.model.TbFiltroPersonalizado;
 import br.com.xti.ouvidoria.model.TbManifestacao;
@@ -69,7 +68,7 @@ public class MBListarManifestacoesGOG implements Serializable{
     private String textoBuscaEncaminhamento;
 */
 	private TbFiltroPersonalizado 		filtroEscolhido;
-    private DTOPesquisaManifestacao 	dtoManifestacao;
+    private PesquisaManifestacaoViewHelper 	dtoManifestacao;
     
     private DTOManifestacao				manifestacaoSelecionada;
     
@@ -98,24 +97,29 @@ public class MBListarManifestacoesGOG implements Serializable{
     
 
     private void carregaListaManifestacao(){
-    	if (dtoManifestacao == null)
-    		dtoManifestacao = new DTOPesquisaManifestacao(manifestacaoService);
+    	if (dtoManifestacao == null){
+    		dtoManifestacao = new PesquisaManifestacaoViewHelper(manifestacaoService);
+    	}
     	
 //    	manifestacaoDAO.pesquisaManifestacoes(dtoManifestacao);
 		
     }
-    
+
     /**
      * Pesquisa manifestações utilizando os parâmetros de pesquisa, utilizando os atributos configurados em dtoManifestacao.filtroPesquisa
+     * 
+     * @param actionEvent
      */
-    public void pesquisarManifestacoes(){
+    public void pesquisarManifestacoes(ActionEvent actionEvent){
     	
     	// Limpar os filtros de pesquisa
+    	/*
     	DTOManifestacao filtroPesquisa = dtoManifestacao.getFiltroPesquisa();
     	dtoManifestacao = new DTOPesquisaManifestacao(manifestacaoService);
     	dtoManifestacao.setFiltroPesquisa(filtroPesquisa);
     	
     	dtoManifestacao.setCenarioPesquisa(DTOPesquisaManifestacao.CENARIO_PESQUISA_TODOS);
+    	*/
     	dtoManifestacao.setReiniciarPaginacao(true);
     	
     }
@@ -145,7 +149,7 @@ public class MBListarManifestacoesGOG implements Serializable{
 
 
     public String getManifestacaoUrl(DTOManifestacao dtoManifestacao) {
-    	return String.format(URL_MANAGE_MANIFESTATION, dtoManifestacao.getNrManifestacao());
+    	return String.format(URL_MANAGE_MANIFESTATION, dtoManifestacao.getNumeroManifestacao());
     }
     
 
@@ -157,8 +161,8 @@ public class MBListarManifestacoesGOG implements Serializable{
 
     public void getSolicitadaInformacao(ActionEvent actionEvent) {
     	// Limpar os filtros de pesquisa
-    	dtoManifestacao = new DTOPesquisaManifestacao(manifestacaoService);
-    	dtoManifestacao.setCenarioPesquisa(DTOPesquisaManifestacao.CENARIO_PESQUISA_SOLICITADA_INFORMACAO);
+    	dtoManifestacao = new PesquisaManifestacaoViewHelper(manifestacaoService);
+    	dtoManifestacao.setCenarioPesquisa(PesquisaManifestacaoViewHelper.CENARIO_PESQUISA_SOLICITADA_INFORMACAO);
     	dtoManifestacao.setReiniciarPaginacao(true);
     	
 //    	manifestacaoService.pesquisaManifestacoes(dtoManifestacao);
@@ -166,8 +170,8 @@ public class MBListarManifestacoesGOG implements Serializable{
     
     public void getCaixaEntrada(ActionEvent actionEvent) {
     	// Limpar os filtros de pesquisa
-    	dtoManifestacao = new DTOPesquisaManifestacao(manifestacaoService);
-    	dtoManifestacao.setCenarioPesquisa(DTOPesquisaManifestacao.CENARIO_PESQUISA_CAIXA_ENTRADA);
+    	dtoManifestacao = new PesquisaManifestacaoViewHelper(manifestacaoService);
+    	dtoManifestacao.setCenarioPesquisa(PesquisaManifestacaoViewHelper.CENARIO_PESQUISA_CAIXA_ENTRADA);
     	dtoManifestacao.setReiniciarPaginacao(true);
     	
 //    	manifestacaoService.pesquisaManifestacoes(dtoManifestacao);
@@ -176,8 +180,8 @@ public class MBListarManifestacoesGOG implements Serializable{
 
     public void getEmAndamento(ActionEvent actionEvent) {
     	// Limpar os filtros de pesquisa
-    	dtoManifestacao = new DTOPesquisaManifestacao(manifestacaoService);
-    	dtoManifestacao.setCenarioPesquisa(DTOPesquisaManifestacao.CENARIO_PESQUISA_EM_ANDAMENTO);
+    	dtoManifestacao = new PesquisaManifestacaoViewHelper(manifestacaoService);
+    	dtoManifestacao.setCenarioPesquisa(PesquisaManifestacaoViewHelper.CENARIO_PESQUISA_EM_ANDAMENTO);
     	dtoManifestacao.setReiniciarPaginacao(true);
     	
 //    	manifestacaoService.pesquisaManifestacoes(dtoManifestacao);
@@ -185,8 +189,8 @@ public class MBListarManifestacoesGOG implements Serializable{
 
     public void getEmMonitoramento(ActionEvent actionEvent) {
     	// Limpar os filtros de pesquisa
-    	dtoManifestacao = new DTOPesquisaManifestacao(manifestacaoService);
-    	dtoManifestacao.setCenarioPesquisa(DTOPesquisaManifestacao.CENARIO_PESQUISA_EM_MONITORAMENTO);
+    	dtoManifestacao = new PesquisaManifestacaoViewHelper(manifestacaoService);
+    	dtoManifestacao.setCenarioPesquisa(PesquisaManifestacaoViewHelper.CENARIO_PESQUISA_EM_MONITORAMENTO);
     	dtoManifestacao.setReiniciarPaginacao(true);
     	
 //    	manifestacaoService.pesquisaManifestacoes(dtoManifestacao);
@@ -194,8 +198,8 @@ public class MBListarManifestacoesGOG implements Serializable{
     
     public void getRetornadas(ActionEvent actionEvent) {
     	// Limpar os filtros de pesquisa
-    	dtoManifestacao = new DTOPesquisaManifestacao(manifestacaoService);
-    	dtoManifestacao.setCenarioPesquisa(DTOPesquisaManifestacao.CENARIO_PESQUISA_RETORNADAS);
+    	dtoManifestacao = new PesquisaManifestacaoViewHelper(manifestacaoService);
+    	dtoManifestacao.setCenarioPesquisa(PesquisaManifestacaoViewHelper.CENARIO_PESQUISA_RETORNADAS);
     	dtoManifestacao.setReiniciarPaginacao(true);
     	
 //    	manifestacaoService.pesquisaManifestacoes(dtoManifestacao);
@@ -204,8 +208,8 @@ public class MBListarManifestacoesGOG implements Serializable{
     
     public void getSolucionadas(ActionEvent actionEvent) {
     	// Limpar os filtros de pesquisa
-    	dtoManifestacao = new DTOPesquisaManifestacao(manifestacaoService);
-    	dtoManifestacao.setCenarioPesquisa(DTOPesquisaManifestacao.CENARIO_PESQUISA_SOLUCIONADAS);
+    	dtoManifestacao = new PesquisaManifestacaoViewHelper(manifestacaoService);
+    	dtoManifestacao.setCenarioPesquisa(PesquisaManifestacaoViewHelper.CENARIO_PESQUISA_SOLUCIONADAS);
     	dtoManifestacao.setReiniciarPaginacao(true);
 
 //    	manifestacaoService.pesquisaManifestacoes(dtoManifestacao);
@@ -213,8 +217,8 @@ public class MBListarManifestacoesGOG implements Serializable{
     
     public void getDevolvidas(ActionEvent actionEvent) {
     	// Limpar os filtros de pesquisa
-    	dtoManifestacao = new DTOPesquisaManifestacao(manifestacaoService);
-    	dtoManifestacao.setCenarioPesquisa(DTOPesquisaManifestacao.CENARIO_PESQUISA_DEVOLVIDAS);
+    	dtoManifestacao = new PesquisaManifestacaoViewHelper(manifestacaoService);
+    	dtoManifestacao.setCenarioPesquisa(PesquisaManifestacaoViewHelper.CENARIO_PESQUISA_DEVOLVIDAS);
     	dtoManifestacao.setReiniciarPaginacao(true);
 
 //    	manifestacaoService.pesquisaManifestacoes(dtoManifestacao);
@@ -224,17 +228,26 @@ public class MBListarManifestacoesGOG implements Serializable{
     
     public void getComAOuvidoria(ActionEvent actionEvent) {
     	// Limpar os filtros de pesquisa
-    	dtoManifestacao = new DTOPesquisaManifestacao(manifestacaoService);
-    	dtoManifestacao.setCenarioPesquisa(DTOPesquisaManifestacao.CENARIO_PESQUISA_COM_OUVIDORIA);
+    	dtoManifestacao = new PesquisaManifestacaoViewHelper(manifestacaoService);
+    	dtoManifestacao.setCenarioPesquisa(PesquisaManifestacaoViewHelper.CENARIO_PESQUISA_COM_OUVIDORIA);
     	dtoManifestacao.setReiniciarPaginacao(true);
 
 //    	manifestacaoService.pesquisaManifestacoes(dtoManifestacao);
     }
     
+    public void getCaixaTodos(ActionEvent actionEvent) {
+    	// Limpar os filtros de pesquisa
+    	dtoManifestacao = new PesquisaManifestacaoViewHelper(manifestacaoService);
+    	dtoManifestacao.setCenarioPesquisa(PesquisaManifestacaoViewHelper.CENARIO_PESQUISA_TODOS);
+    	dtoManifestacao.setReiniciarPaginacao(true);
+
+//    	manifestacaoService.pesquisaManifestacoes(dtoManifestacao);
+    }
+
     public void getFiltroPersonalizado(AjaxBehaviorEvent ajaxBehaviorEvent) {
     	// Limpar os filtros de pesquisa
-    	dtoManifestacao = new DTOPesquisaManifestacao(manifestacaoService);
-    	dtoManifestacao.setCenarioPesquisa(DTOPesquisaManifestacao.CENARIO_PESQUISA_FILTRO_PERSONALIZADO);
+    	dtoManifestacao = new PesquisaManifestacaoViewHelper(manifestacaoService);
+    	dtoManifestacao.setCenarioPesquisa(PesquisaManifestacaoViewHelper.CENARIO_PESQUISA_FILTRO_PERSONALIZADO);
     	dtoManifestacao.setReiniciarPaginacao(true);
 
     	filtroEscolhido = filtroPersonalizadoDAO.find(filtroEscolhido.getIdFiltroPersonalizado());
@@ -245,7 +258,7 @@ public class MBListarManifestacoesGOG implements Serializable{
 
     public void filtraOcultas() {
     	if (dtoManifestacao == null)
-    		dtoManifestacao = new DTOPesquisaManifestacao(manifestacaoService);
+    		dtoManifestacao = new PesquisaManifestacaoViewHelper(manifestacaoService);
     	dtoManifestacao.setReiniciarPaginacao(true);
 
     	if (dtoManifestacao.isCenarioPesquisaFiltroPersonalizado()){
@@ -260,14 +273,14 @@ public class MBListarManifestacoesGOG implements Serializable{
     }
 
     
-    public void buscarManifestacao(ActionEvent actionEvent) {
+    public void buscarManifestacao() {
     	if (!textoBuscaManifestacao.isEmpty()) {
     		// TODO Realizar a busca de manifestações a partir do texto informado
     	} else {
     	}
     }
     
-    public void buscarEncaminhamento(ActionEvent actionEvent) {
+    public void buscarEncaminhamento() {
         if (!textoBuscaEncaminhamento.isEmpty()) {
     		// TODO Realizar a busca de manifestações a partir do texto informado para os encaminhamentos
         }else {
@@ -347,14 +360,14 @@ public class MBListarManifestacoesGOG implements Serializable{
 	/**
 	 * @return the dtoManifestacao
 	 */
-	public DTOPesquisaManifestacao getDtoManifestacao() {
+	public PesquisaManifestacaoViewHelper getDtoManifestacao() {
 		return dtoManifestacao;
 	}
 
 	/**
 	 * @param dtoManifestacao the dtoManifestacao to set
 	 */
-	public void setDtoManifestacao(DTOPesquisaManifestacao dtoManifestacao) {
+	public void setDtoManifestacao(PesquisaManifestacaoViewHelper dtoManifestacao) {
 		this.dtoManifestacao = dtoManifestacao;
 	}
 

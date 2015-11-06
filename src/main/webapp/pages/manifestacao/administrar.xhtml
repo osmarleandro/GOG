@@ -1451,6 +1451,43 @@
 							</p:column>
 						</p:row>
 						<p:row>
+							<p:column colspan="2" style="color: DarkRed; ">
+                                <h:panelGrid columns="2" style="margin-bottom: 10px">
+                                	<p:outputPanel>
+										<h:outputText value="Monitorar: " />
+										<p:selectBooleanCheckbox value="#{mBManifestacao.monitorar}" style="position: relative; top: 5px; left: 7px;" >
+											<p:ajax update="prazoMonitoramento, confirmarEncerrarManifestacaoComMsg, quantidadeDias, textoDias, sliderDias" 
+												listener="#{mBManifestacao.controlaMonitoramento}" />
+										</p:selectBooleanCheckbox>
+		
+										<p:spacer width="20" />
+		
+		                                <p:calendar id="prazoMonitoramento" readonly="#{!mBManifestacao.monitorar}" required="#{mBManifestacao.monitorar}"
+		                                	disabled="#{!mBManifestacao.monitorar}" 
+		                                	requiredMessage="Informe uma data para o monitoramento da manifestação."
+		                                	value="#{mBManifestacao.dataMonitoramento}" pattern="dd/MM/yyyy" />
+		                                	
+										<p:spacer width="20" />
+									</p:outputPanel>
+								
+                                
+	                                <h:panelGrid columns="1" style="margin-bottom: 10px; position: relative;top: 8px;border: none;" >
+	                                	<p:outputPanel>
+			                                <p:inputText id="quantidadeDias" value="#{mBManifestacao.quantidadeDias}" size="4" style="text-align: center"/>
+											<h:outputText value=" dias" id="textoDias" style="#{mBManifestacao.monitorar  ? 'color: DarkRed;' : 'color: grey'}"/>
+										</p:outputPanel>
+										
+								        <p:slider for="quantidadeDias" id="sliderDias" style="width: 120px"
+								        	readonly="#{!mBManifestacao.monitorar}" disabled="#{!mBManifestacao.monitorar}" >
+								            <p:ajax event="slideEnd" listener="#{mBManifestacao.defineQuantidadeDias}" 
+								            	update="prazoMonitoramento, confirmarEncerrarManifestacaoComMsg, quantidadeDias, textoDias, sliderDias" />
+								        </p:slider>
+	                                </h:panelGrid>	
+								
+								</h:panelGrid>
+							</p:column>
+						</p:row>
+						<p:row>
 							<p:column styleClass="centro" colspan="2">
 								<p:panelGrid style="width: 100%">
 									<p:row>
@@ -1469,23 +1506,11 @@
 														:frmTramiteManifestacao,
 														frmEncerraManifestacaoComMensagem"
 												process="@this, textoMensagemFinalAoManifestanteComMsg"
-												value="Enviar" id="confirmarEncerrarManifestacaoComMsg"
+												value="#{mBManifestacao.monitorar  ? 'Monitorar' : 'Enviar'}" id="confirmarEncerrarManifestacaoComMsg"
+												style="#{mBManifestacao.monitorar  ? 'color: DarkRed;' : ''}"
 												onclick="statusDialog.show()"
 												oncomplete="if (!args.validationFailed){dlgEncerraComMensagemFinal.hide()};"
 												action="#{mBManifestacao.gravaSolucionarManifestacao()}">
-												<p:resetInput target="frmEncerraManifestacaoComMensagem" />
-											</p:commandButton>
-											<p:spacer width="20" />
-											<p:commandButton
-												update=":frmAdministrarManifestacao,
-														:frmEncaminharManifestacao,
-														:frmTramiteManifestacao,
-														frmEncerraManifestacaoComMensagem"
-												process="@this, textoMensagemFinalAoManifestanteComMsg"
-												value="Monitorar" id="confirmarMonitorarManifestacaoComMsg"
-												onclick="statusDialog.show()"
-												oncomplete="if (!args.validationFailed){dlgEncerraComMensagemFinal.hide()};"
-												action="#{mBManifestacao.gravaMonitorarManifestacao()}">
 												<p:resetInput target="frmEncerraManifestacaoComMensagem" />
 											</p:commandButton>
 											<p:spacer width="20" />
@@ -1527,20 +1552,8 @@
 									value="Enviar" id="confirmarEncerrarManifestacaoComMsg2"
 									onclick="statusDialog.show()"
 									oncomplete="if (!args.validationFailed){dlgEncerraComMensagemFinal.hide(); dlgVisualizarMensagem.hide()};"
-									action="#{mBManifestacao.gravaSolucionarManifestacao()}">
-									<p:resetInput target="frmVisualizarMensagem, :frmEncerraManifestacaoComMensagem" />
-								</p:commandButton>
-								<p:spacer width="20" />
-								<p:commandButton
-									update=":frmAdministrarManifestacao,
-											:frmEncaminharManifestacao,
-											:frmTramiteManifestacao,
-											:frmEncerraManifestacaoComMensagem,
-											frmVisualizarMensagem"
-									value="Monitorar" id="confirmarMonitorarManifestacaoComMsg2"
-									onclick="statusDialog.show()"
-									oncomplete="if (!args.validationFailed){dlgEncerraComMensagemFinal.hide(); dlgVisualizarMensagem.hide()};"
-									action="#{mBManifestacao.gravaMonitorarManifestacao()}">
+									action="#{mBManifestacao.gravaSolucionarManifestacao()}"
+									rendered="false">
 									<p:resetInput target="frmVisualizarMensagem, :frmEncerraManifestacaoComMensagem" />
 								</p:commandButton>
 								<p:spacer width="20" />
@@ -1846,32 +1859,13 @@
 	                                 onclick="dlgRespostaSemAlteracao.hide();" />
 		                <p:commandButton value="Sim" 
 	                                 ajax="true" icon="ui-icon-check"
-	                                 actionListener="#{mBManifestacao.gravaManifestacaoREAL(mBEnum.statusManifestacaoSOLUCIONADA)}"
+	                                 actionListener="#{mBManifestacao.gravaManifestacao()}"
 	                                 oncomplete="dlgRespostaSemAlteracao.hide();" />
 					</h:panelGrid>
             	</h:panelGrid>
             </h:form>
 		</p:dialog>
 		
-		<p:dialog id="dialogRespostaSemAlteracaoMonitoramento" appendToBody="true" closable="false" widgetVar="dlgRespostaSemAlteracaoMonitoramento" header="Resposta Sem Alteração">
-            <h:form>
-            	<h:panelGrid columns="1" style="width: 300px; height: 70px; text-align: center">
-            		<h:outputText value="Você está enviando uma resposta sem alteração, deseja enviar assim mesmo?" />
-            		
-	            	<h:panelGrid columns="2" style="width: 300px; text-align: center">
-		                <p:commandButton value="Não" 
-	                                 ajax="true" icon="ui-icon-close"
-	                                 type="button"
-	                                 onclick="dlgRespostaSemAlteracaoMonitoramento.hide();" />
-		                <p:commandButton value="Sim" 
-	                                 ajax="true" icon="ui-icon-check"
-	                                 actionListener="#{mBManifestacao.gravaManifestacaoREAL(mBEnum.statusManifestacaoEM_MONITORAMENTO)}"
-	                                 oncomplete="dlgRespostaSemAlteracaoMonitoramento.hide();" />
-					</h:panelGrid>
-            	</h:panelGrid>
-            </h:form>
-		</p:dialog>
-
 		<p:dialog id="dialogNewPassword" appendToBody="true" modal="true" closable="false" widgetVar="dlgNewPassword" header="Gerar Nova Senha?">
             <h:form>
             	<h:panelGrid columns="1" style="width: 400px; height: 70px; text-align: center">

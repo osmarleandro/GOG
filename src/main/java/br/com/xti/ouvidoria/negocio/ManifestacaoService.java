@@ -13,11 +13,13 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 
+import br.com.xti.ouvidoria.controller.PesquisaManifestacaoViewHelper;
 import br.com.xti.ouvidoria.dao.ComunicacaoExternaDAO;
 import br.com.xti.ouvidoria.dao.EncaminhamentoDAO;
 import br.com.xti.ouvidoria.dao.ManifestacaoDAO;
@@ -25,7 +27,6 @@ import br.com.xti.ouvidoria.dao.ManifestacaoDTODAO;
 import br.com.xti.ouvidoria.dao.UsuarioDAO;
 import br.com.xti.ouvidoria.dao.VwUltimoTramiteDAO;
 import br.com.xti.ouvidoria.dto.manifestacao.DTOManifestacao;
-import br.com.xti.ouvidoria.dto.manifestacao.DTOPesquisaManifestacao;
 import br.com.xti.ouvidoria.filtropersonalizado.FiltroPersonalizado;
 import br.com.xti.ouvidoria.helper.DataHelper;
 import br.com.xti.ouvidoria.helper.FiltroHelper;
@@ -81,7 +82,7 @@ public class ManifestacaoService {
      * 
      * @param manifestacaoSelecionada
      */
-	public void ocultar(DTOManifestacao manifestacaoSelecionada) {
+	public void ocultar(DTOManifestacao manifestacaoSelecionada) throws Exception{
 		manifestacaoDTODAO.ocultar(manifestacaoSelecionada);
 		
 	}    
@@ -93,7 +94,7 @@ public class ManifestacaoService {
      * 
      * @param manifestacaoSelecionada
      */
-	public void desocultar(DTOManifestacao manifestacaoSelecionada) {
+	public void desocultar(DTOManifestacao manifestacaoSelecionada) throws Exception{
 		manifestacaoDTODAO.desocultar(manifestacaoSelecionada);
 		
 	}    
@@ -106,15 +107,15 @@ public class ManifestacaoService {
      * @param list
      */
     private void transformarListaDTOManifestacao(
-    		DTOPesquisaManifestacao filtroManifestacao,
+    		PesquisaManifestacaoViewHelper filtroManifestacao,
     		List<TbManifestacao> list) {
     	List<DTOManifestacao> retorno = new ArrayList<DTOManifestacao>();
     	for (TbManifestacao manifestacao : list) {
     		DTOManifestacao dto = new DTOManifestacao();
-    		dto.setNrManifestacao(manifestacao.getNrManifestacao());
+    		dto.setNumeroManifestacao(manifestacao.getNrManifestacao());
     		dto.setIdManifestacao(manifestacao.getIdManifestacao());
-    		dto.setDtCadastro(manifestacao.getDtCadastro());
-    		dto.setDtUltimaAtualizacao(manifestacao.getDtUltimaAtualizacao());
+    		dto.setDataCadastro(manifestacao.getDtCadastro());
+    		dto.setDataUltimaAtualizacao(manifestacao.getDtUltimaAtualizacao());
     		dto.setNomeManifestante(manifestacao.getNmPessoa());
     		dto.setNomePessoa(manifestacao.getNmPessoa());
     		
@@ -126,12 +127,14 @@ public class ManifestacaoService {
     		dto.setSigilo(Boolean.valueOf(manifestacao.getSiSigilo()));
     		dto.setOculta(Boolean.valueOf( manifestacao.getStStatusOcultacao() ) );
     		//TODO Recuperar o texto adequadamente
-    		dto.setDsTextoManifestacao( manifestacao.getDsTextoManifestacao() );
+    		dto.setTextoManifestacao( manifestacao.getDsTextoManifestacao() );
     		dto.setMotivoOcultacao(manifestacao.getDsMotivoOcultacao());
     		
     		dto.setPrazoEncaminhamento(manifestacao.getIdTipoManifestacao().getPrazoEntrada());
     		dto.setPrazoRespostaAOuvidoria(manifestacao.getIdTipoManifestacao().getPrazoAreaSolucionadora());
     		dto.setPrazoRespostaAoManifestante(manifestacao.getIdTipoManifestacao().getPrazoRespostaCidadao());
+    		
+    		dto.setDataMonitoramento(manifestacao.getDataMonitoramento());
     		
     		retorno.add(dto);
     	}
@@ -141,7 +144,7 @@ public class ManifestacaoService {
     }
     
 
-	private void pesquisaManifestacoesFiltroPersonalizado(DTOPesquisaManifestacao filtroManifestacao) {
+	private void pesquisaManifestacoesFiltroPersonalizado(PesquisaManifestacaoViewHelper filtroManifestacao) {
 		boolean filtraOcultas = filtroManifestacao.getFiltroPesquisa().isOculta();
 
         FiltroPersonalizado filtroPadrao = new FiltroPersonalizado();
@@ -165,7 +168,7 @@ public class ManifestacaoService {
 
     
     @SuppressWarnings("unchecked")
-    public void pesquisaManifestacoes(DTOPesquisaManifestacao filtroManifestacao){
+    public void pesquisaManifestacoes(PesquisaManifestacaoViewHelper filtroManifestacao){
     	TbUsuario usuario = usuarioDAO.find(securityService.getUser().getIdUsuario());
     	
     	if (verificaCenarioPesquisaComDTO(filtroManifestacao)){
@@ -191,6 +194,7 @@ public class ManifestacaoService {
     }
     
 
+       
     /**
      * Verifica se o cenário de pesquisa está desenvolvido para pesquisar com utilização do DTO
      * 
@@ -198,7 +202,7 @@ public class ManifestacaoService {
      * @return
      */
     private boolean verificaCenarioPesquisaComDTO(
-			DTOPesquisaManifestacao filtroManifestacao) {
+			PesquisaManifestacaoViewHelper filtroManifestacao) {
     	// Utilizar os cenários de pesquisa que foram tratados no ManifestacaoDTODAO
 		return 	filtroManifestacao.isCenarioPesquisaTodos() ||
 				filtroManifestacao.isCenarioPesquisaCaixaEntrada() ||
@@ -208,7 +212,7 @@ public class ManifestacaoService {
 	}
 
 
-	private void pesquisarComOuvidoria(DTOPesquisaManifestacao filtroManifestacao)  {
+	private void pesquisarComOuvidoria(PesquisaManifestacaoViewHelper filtroManifestacao)  {
 		boolean filtraOcultas = filtroManifestacao.getFiltroPesquisa().isOculta();
 		
 		//TODO Verificar se há a necessidade de alterar a utilização do manifestacaoDAO com a estrutura de filtros
@@ -225,7 +229,7 @@ public class ManifestacaoService {
     }
 
 
-    private void pesquisarSolucionadas(DTOPesquisaManifestacao filtroManifestacao)  {
+    private void pesquisarSolucionadas(PesquisaManifestacaoViewHelper filtroManifestacao)  {
 		boolean filtraOcultas = filtroManifestacao.getFiltroPesquisa().isOculta();
 
 		//TODO Verificar se há a necessidade de alterar a utilização do manifestacaoDAO com a estrutura de filtros
@@ -248,7 +252,7 @@ public class ManifestacaoService {
     }
  
     
-    private void pesquisarRetornadas(DTOPesquisaManifestacao filtroManifestacao)  {
+    private void pesquisarRetornadas(PesquisaManifestacaoViewHelper filtroManifestacao)  {
 		boolean filtraOcultas = filtroManifestacao.getFiltroPesquisa().isOculta();
 
 		//TODO Verificar se há a necessidade de alterar a utilização do manifestacaoDAO com a estrutura de filtros
@@ -320,8 +324,7 @@ public class ManifestacaoService {
     }
   
 
-
-    private void pesquisarEmAndamento(DTOPesquisaManifestacao filtroManifestacao) {
+    private void pesquisarEmAndamento(PesquisaManifestacaoViewHelper filtroManifestacao) {
 		boolean filtraOcultas = filtroManifestacao.getFiltroPesquisa().isOculta();
 
 		//TODO Verificar se há a necessidade de alterar a utilização do manifestacaoDAO com a estrutura de filtros
@@ -397,7 +400,7 @@ public class ManifestacaoService {
      * @param filtroManifestacao
      */
 	private void complementaDadosManifestacao(
-			DTOPesquisaManifestacao filtroManifestacao) {
+			PesquisaManifestacaoViewHelper filtroManifestacao) {
 		List<DTOManifestacao> resultado = filtroManifestacao.getResultado();
         for (DTOManifestacao dtoManifestacao : resultado) {
         	//Recupera a lista de encaminhamentos da manifestação
@@ -472,7 +475,7 @@ public class ManifestacaoService {
     			Integer prazoRespostaAoManifestante = dtoManifestacao.getPrazoRespostaAoManifestante();
     			int diasParaResponderManifestante = prazoEncaminhamento + prazoRespostaAoManifestante + prazoRespostaAOuvidoria;
     			
-    			Date dataManifestacao = dtoManifestacao.getDtCadastro();
+    			Date dataManifestacao = dtoManifestacao.getDataCadastro();
     			Date dataAtual = new Date();
     			int diasTranscorridos = DataHelper.getDiferencaEntreDatasEmDias(dataAtual, dataManifestacao);
     			
@@ -548,7 +551,7 @@ public class ManifestacaoService {
     private void recuperaTipoAtraso(DTOManifestacao dtoManifestacao) {
     	
         int diasTranscorridos = 0;
-        Date dataManifestacao = dtoManifestacao.getDtCadastro();
+        Date dataManifestacao = dtoManifestacao.getDataCadastro();
         Date dataAtual = new Date();
 
         if (securityService.isOuvidor() || securityService.isAdministrador()) {

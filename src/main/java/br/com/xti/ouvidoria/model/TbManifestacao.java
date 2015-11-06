@@ -174,6 +174,13 @@ public class TbManifestacao implements Serializable {
     @Size(max = 1)
     @Column(name = "tipoPessoa")
     private String tipoPessoa;
+
+    /** Atributo incluído para definir a data para o monitoramento de uma manifestação     */
+    @Column(name = "dtMonitoramento")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dataMonitoramento;
+
+    
     @OneToMany(mappedBy = "idManifestacao", cascade=CascadeType.MERGE)
     private Collection<TbManifestacaoxAnexo> tbManifestacaoxAnexoCollection = new ArrayList<>();
     @OneToMany(mappedBy = "idManifestacao")
@@ -797,6 +804,20 @@ public class TbManifestacao implements Serializable {
 
 	public void setTipoPessoa(String tipoPessoa) {
 		this.tipoPessoa = tipoPessoa;
+	}
+
+	/**
+	 * @return the dataMonitoramento
+	 */
+	public Date getDataMonitoramento() {
+		return dataMonitoramento;
+	}
+
+	/**
+	 * @param dataMonitoramento the dataMonitoramento to set
+	 */
+	public void setDataMonitoramento(Date dataMonitoramento) {
+		this.dataMonitoramento = dataMonitoramento;
 	}
 	
 }
