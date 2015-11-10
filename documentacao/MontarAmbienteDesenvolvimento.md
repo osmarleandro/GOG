@@ -233,6 +233,9 @@ DROP TABLE vwultimotramite;
 
 
 ### Ajustar a tabela de parâmetros da aplicação
+
+#### Tabela 'TbPreferenciaSistema' 
+
 A tabela 'TbPreferenciaSistema' deve ser ajustada para configuração de alguns parâmetros da aplicação. 
 ```sql
 INSERT INTO TbPreferenciaSistema
@@ -246,6 +249,22 @@ VALUES
 ```
 
 A tabela 'TbPreferenciaSistema' também pode ser editada internamente no sistema, utilizando-se de um usuário cadastrado como "Administrador" e acessando o menu "Sistema" - "Preferências do Sistema".
+
+#### Tabela 'tbParametro'
+
+A tabela 'TbParametro' é utilizada para configuração mais alguns parâmetros da aplicação. 
+
+```sql
+INSERT INTO tbparametro (nmparametro, vlrparametro) VALUES ( 'Sequencial da Manifestação', '1');
+INSERT INTO tbparametro (nmparametro, vlrparametro) VALUES ( 'Ano atual', '2015');
+INSERT INTO tbparametro (nmparametro, vlrparametro) VALUES ( 'Diretório para onde serão enviados os arquivos anexados', '/var/arquivos/');
+INSERT INTO tbparametro (nmparametro, vlrparametro) VALUES ( 'URL base do Sistema', 'http://ouvidoria.ouvidoria.gov.br');
+```
+
+> A aplicação vai utilizar estes valores para garantir a realização de algumas funcionalidades, como:
+> - geração do numero da manifestação
+> - gerenciamento de arquivos anexados
+> - montagem da URL e links para manifestações nas mensagens de e-mail
 
 ### Realizar a configuração/criação de usuários do sistema
 A tabela 'tbUsuario' deve ser carregada com um usuário com função de Administrador. 
