@@ -259,6 +259,7 @@ INSERT INTO tbparametro (nmparametro, vlrparametro) VALUES ( 'Sequencial da Mani
 INSERT INTO tbparametro (nmparametro, vlrparametro) VALUES ( 'Ano atual', '2015');
 INSERT INTO tbparametro (nmparametro, vlrparametro) VALUES ( 'Diretório para onde serão enviados os arquivos anexados', '/var/arquivos/');
 INSERT INTO tbparametro (nmparametro, vlrparametro) VALUES ( 'URL base do Sistema', 'http://ouvidoria.ouvidoria.gov.br');
+INSERT INTO tbparametro (nmparametro, vlrparametro) VALUES ( 'Email do Monitoramento', 'ouvidoria@cultura.gov.br');
 ```
 
 > A aplicação vai utilizar estes valores para garantir a realização de algumas funcionalidades, como:
