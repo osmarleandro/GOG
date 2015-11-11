@@ -67,8 +67,8 @@ public class MBListarManifestacoesGOG implements Serializable{
     private String textoBuscaManifestacao;
     private String textoBuscaEncaminhamento;
 */
-	private TbFiltroPersonalizado 		filtroEscolhido;
-    private PesquisaManifestacaoViewHelper 	dtoManifestacao;
+	private TbFiltroPersonalizado 			filtroEscolhido;
+    private PesquisaManifestacaoViewHelper 	pesquisaManifestacaoHelper;
     
     private DTOManifestacao				manifestacaoSelecionada;
     
@@ -97,8 +97,8 @@ public class MBListarManifestacoesGOG implements Serializable{
     
 
     private void carregaListaManifestacao(){
-    	if (dtoManifestacao == null){
-    		dtoManifestacao = new PesquisaManifestacaoViewHelper(manifestacaoService);
+    	if (pesquisaManifestacaoHelper == null){
+    		pesquisaManifestacaoHelper = new PesquisaManifestacaoViewHelper(manifestacaoService);
     	}
     	
 //    	manifestacaoDAO.pesquisaManifestacoes(dtoManifestacao);
@@ -120,7 +120,7 @@ public class MBListarManifestacoesGOG implements Serializable{
     	
     	dtoManifestacao.setCenarioPesquisa(DTOPesquisaManifestacao.CENARIO_PESQUISA_TODOS);
     	*/
-    	dtoManifestacao.setReiniciarPaginacao(true);
+    	pesquisaManifestacaoHelper.getFiltroPesquisa().setReiniciarPaginacao(true);
     	
     }
 
@@ -161,18 +161,18 @@ public class MBListarManifestacoesGOG implements Serializable{
 
     public void getSolicitadaInformacao(ActionEvent actionEvent) {
     	// Limpar os filtros de pesquisa
-    	dtoManifestacao = new PesquisaManifestacaoViewHelper(manifestacaoService);
-    	dtoManifestacao.setCenarioPesquisa(PesquisaManifestacaoViewHelper.CENARIO_PESQUISA_SOLICITADA_INFORMACAO);
-    	dtoManifestacao.setReiniciarPaginacao(true);
+    	pesquisaManifestacaoHelper = new PesquisaManifestacaoViewHelper(manifestacaoService);
+    	pesquisaManifestacaoHelper.configuraCenarioPesquisaSolicitadaInformacao();
+    	pesquisaManifestacaoHelper.getFiltroPesquisa().setReiniciarPaginacao(true);
     	
 //    	manifestacaoService.pesquisaManifestacoes(dtoManifestacao);
     }
     
     public void getCaixaEntrada(ActionEvent actionEvent) {
     	// Limpar os filtros de pesquisa
-    	dtoManifestacao = new PesquisaManifestacaoViewHelper(manifestacaoService);
-    	dtoManifestacao.setCenarioPesquisa(PesquisaManifestacaoViewHelper.CENARIO_PESQUISA_CAIXA_ENTRADA);
-    	dtoManifestacao.setReiniciarPaginacao(true);
+    	pesquisaManifestacaoHelper = new PesquisaManifestacaoViewHelper(manifestacaoService);
+    	pesquisaManifestacaoHelper.configuraCenarioPesquisaCaixaEntrada();
+    	pesquisaManifestacaoHelper.getFiltroPesquisa().setReiniciarPaginacao(true);
     	
 //    	manifestacaoService.pesquisaManifestacoes(dtoManifestacao);
     }
@@ -180,27 +180,27 @@ public class MBListarManifestacoesGOG implements Serializable{
 
     public void getEmAndamento(ActionEvent actionEvent) {
     	// Limpar os filtros de pesquisa
-    	dtoManifestacao = new PesquisaManifestacaoViewHelper(manifestacaoService);
-    	dtoManifestacao.setCenarioPesquisa(PesquisaManifestacaoViewHelper.CENARIO_PESQUISA_EM_ANDAMENTO);
-    	dtoManifestacao.setReiniciarPaginacao(true);
+    	pesquisaManifestacaoHelper = new PesquisaManifestacaoViewHelper(manifestacaoService);
+    	pesquisaManifestacaoHelper.configuraCenarioPesquisaEmAndamento();
+    	pesquisaManifestacaoHelper.getFiltroPesquisa().setReiniciarPaginacao(true);
     	
 //    	manifestacaoService.pesquisaManifestacoes(dtoManifestacao);
     }
 
     public void getEmMonitoramento(ActionEvent actionEvent) {
     	// Limpar os filtros de pesquisa
-    	dtoManifestacao = new PesquisaManifestacaoViewHelper(manifestacaoService);
-    	dtoManifestacao.setCenarioPesquisa(PesquisaManifestacaoViewHelper.CENARIO_PESQUISA_EM_MONITORAMENTO);
-    	dtoManifestacao.setReiniciarPaginacao(true);
+    	pesquisaManifestacaoHelper = new PesquisaManifestacaoViewHelper(manifestacaoService);
+    	pesquisaManifestacaoHelper.configuraCenarioPesquisaEmMonitoramento();
+    	pesquisaManifestacaoHelper.getFiltroPesquisa().setReiniciarPaginacao(true);
     	
 //    	manifestacaoService.pesquisaManifestacoes(dtoManifestacao);
     }
     
     public void getRetornadas(ActionEvent actionEvent) {
     	// Limpar os filtros de pesquisa
-    	dtoManifestacao = new PesquisaManifestacaoViewHelper(manifestacaoService);
-    	dtoManifestacao.setCenarioPesquisa(PesquisaManifestacaoViewHelper.CENARIO_PESQUISA_RETORNADAS);
-    	dtoManifestacao.setReiniciarPaginacao(true);
+    	pesquisaManifestacaoHelper = new PesquisaManifestacaoViewHelper(manifestacaoService);
+    	pesquisaManifestacaoHelper.configuraCenarioPesquisaRetornadas();
+    	pesquisaManifestacaoHelper.getFiltroPesquisa().setReiniciarPaginacao(true);
     	
 //    	manifestacaoService.pesquisaManifestacoes(dtoManifestacao);
     }
@@ -208,18 +208,18 @@ public class MBListarManifestacoesGOG implements Serializable{
     
     public void getSolucionadas(ActionEvent actionEvent) {
     	// Limpar os filtros de pesquisa
-    	dtoManifestacao = new PesquisaManifestacaoViewHelper(manifestacaoService);
-    	dtoManifestacao.setCenarioPesquisa(PesquisaManifestacaoViewHelper.CENARIO_PESQUISA_SOLUCIONADAS);
-    	dtoManifestacao.setReiniciarPaginacao(true);
+    	pesquisaManifestacaoHelper = new PesquisaManifestacaoViewHelper(manifestacaoService);
+    	pesquisaManifestacaoHelper.configuraCenarioPesquisaSolucionadas();
+    	pesquisaManifestacaoHelper.getFiltroPesquisa().setReiniciarPaginacao(true);
 
 //    	manifestacaoService.pesquisaManifestacoes(dtoManifestacao);
     }
     
     public void getDevolvidas(ActionEvent actionEvent) {
     	// Limpar os filtros de pesquisa
-    	dtoManifestacao = new PesquisaManifestacaoViewHelper(manifestacaoService);
-    	dtoManifestacao.setCenarioPesquisa(PesquisaManifestacaoViewHelper.CENARIO_PESQUISA_DEVOLVIDAS);
-    	dtoManifestacao.setReiniciarPaginacao(true);
+    	pesquisaManifestacaoHelper = new PesquisaManifestacaoViewHelper(manifestacaoService);
+    	pesquisaManifestacaoHelper.configuraCenarioPesquisaDevolvidas();
+    	pesquisaManifestacaoHelper.getFiltroPesquisa().setReiniciarPaginacao(true);
 
 //    	manifestacaoService.pesquisaManifestacoes(dtoManifestacao);
     }
@@ -228,47 +228,47 @@ public class MBListarManifestacoesGOG implements Serializable{
     
     public void getComAOuvidoria(ActionEvent actionEvent) {
     	// Limpar os filtros de pesquisa
-    	dtoManifestacao = new PesquisaManifestacaoViewHelper(manifestacaoService);
-    	dtoManifestacao.setCenarioPesquisa(PesquisaManifestacaoViewHelper.CENARIO_PESQUISA_COM_OUVIDORIA);
-    	dtoManifestacao.setReiniciarPaginacao(true);
+    	pesquisaManifestacaoHelper = new PesquisaManifestacaoViewHelper(manifestacaoService);
+    	pesquisaManifestacaoHelper.configuraCenarioPesquisaComOuvidoria();
+    	pesquisaManifestacaoHelper.getFiltroPesquisa().setReiniciarPaginacao(true);
 
 //    	manifestacaoService.pesquisaManifestacoes(dtoManifestacao);
     }
     
     public void getCaixaTodos(ActionEvent actionEvent) {
     	// Limpar os filtros de pesquisa
-    	dtoManifestacao = new PesquisaManifestacaoViewHelper(manifestacaoService);
-    	dtoManifestacao.setCenarioPesquisa(PesquisaManifestacaoViewHelper.CENARIO_PESQUISA_TODOS);
-    	dtoManifestacao.setReiniciarPaginacao(true);
+    	pesquisaManifestacaoHelper = new PesquisaManifestacaoViewHelper(manifestacaoService);
+    	pesquisaManifestacaoHelper.configuraCenarioPesquisaTodos();
+    	pesquisaManifestacaoHelper.getFiltroPesquisa().setReiniciarPaginacao(true);
 
 //    	manifestacaoService.pesquisaManifestacoes(dtoManifestacao);
     }
 
     public void getFiltroPersonalizado(AjaxBehaviorEvent ajaxBehaviorEvent) {
     	// Limpar os filtros de pesquisa
-    	dtoManifestacao = new PesquisaManifestacaoViewHelper(manifestacaoService);
-    	dtoManifestacao.setCenarioPesquisa(PesquisaManifestacaoViewHelper.CENARIO_PESQUISA_FILTRO_PERSONALIZADO);
-    	dtoManifestacao.setReiniciarPaginacao(true);
+    	pesquisaManifestacaoHelper = new PesquisaManifestacaoViewHelper(manifestacaoService);
+    	pesquisaManifestacaoHelper.configuraCenarioPesquisaFiltroPersonalizado();
+    	pesquisaManifestacaoHelper.getFiltroPesquisa().setReiniciarPaginacao(true);
 
     	filtroEscolhido = filtroPersonalizadoDAO.find(filtroEscolhido.getIdFiltroPersonalizado());
-    	dtoManifestacao.setNomeFiltroPersonalizado(filtroEscolhido.getNmFiltroPersonalizado());
-    	dtoManifestacao.setFiltroEscolhido(filtroEscolhido);
+    	pesquisaManifestacaoHelper.setNomeFiltroPersonalizado(filtroEscolhido.getNmFiltroPersonalizado());
+    	pesquisaManifestacaoHelper.setFiltroEscolhido(filtroEscolhido);
 
     }
 
     public void filtraOcultas() {
-    	if (dtoManifestacao == null)
-    		dtoManifestacao = new PesquisaManifestacaoViewHelper(manifestacaoService);
-    	dtoManifestacao.setReiniciarPaginacao(true);
+    	if (pesquisaManifestacaoHelper == null)
+    		pesquisaManifestacaoHelper = new PesquisaManifestacaoViewHelper(manifestacaoService);
+    	pesquisaManifestacaoHelper.getFiltroPesquisa().setReiniciarPaginacao(true);
 
-    	if (dtoManifestacao.isCenarioPesquisaFiltroPersonalizado()){
+    	if (pesquisaManifestacaoHelper.getFiltroPesquisa().isCenarioPesquisaFiltroPersonalizado()){
         	filtroEscolhido = filtroPersonalizadoDAO.find(filtroEscolhido.getIdFiltroPersonalizado());
-        	dtoManifestacao.setNomeFiltroPersonalizado(filtroEscolhido.getNmFiltroPersonalizado());
-        	dtoManifestacao.setFiltroEscolhido(filtroEscolhido);
+        	pesquisaManifestacaoHelper.setNomeFiltroPersonalizado(filtroEscolhido.getNmFiltroPersonalizado());
+        	pesquisaManifestacaoHelper.setFiltroEscolhido(filtroEscolhido);
     	}
 
     	//Configura a pesquisa de manifestações ocultas
-    	dtoManifestacao.getFiltroPesquisa().setOculta(true);
+    	pesquisaManifestacaoHelper.getFiltroPesquisa().setOculta(true);
 
     }
 
@@ -357,21 +357,6 @@ public class MBListarManifestacoesGOG implements Serializable{
 		this.manifestacaoSelecionada = manifestacaoSelecionada;
 	}
 
-	/**
-	 * @return the dtoManifestacao
-	 */
-	public PesquisaManifestacaoViewHelper getDtoManifestacao() {
-		return dtoManifestacao;
-	}
-
-	/**
-	 * @param dtoManifestacao the dtoManifestacao to set
-	 */
-	public void setDtoManifestacao(PesquisaManifestacaoViewHelper dtoManifestacao) {
-		this.dtoManifestacao = dtoManifestacao;
-	}
-
-
 
 	/**
 	 * @return the filtroEscolhido
@@ -424,6 +409,25 @@ public class MBListarManifestacoesGOG implements Serializable{
 	public void setListaTipoManifestacao(
 			List<TbTipoManifestacao> listaTipoManifestacao) {
 		this.listaTipoManifestacao = listaTipoManifestacao;
+	}
+
+
+
+	/**
+	 * @return the pesquisaManifestacaoHelper
+	 */
+	public PesquisaManifestacaoViewHelper getPesquisaManifestacaoHelper() {
+		return pesquisaManifestacaoHelper;
+	}
+
+
+
+	/**
+	 * @param pesquisaManifestacaoHelper the pesquisaManifestacaoHelper to set
+	 */
+	public void setPesquisaManifestacaoHelper(
+			PesquisaManifestacaoViewHelper pesquisaManifestacaoHelper) {
+		this.pesquisaManifestacaoHelper = pesquisaManifestacaoHelper;
 	}
 
 	

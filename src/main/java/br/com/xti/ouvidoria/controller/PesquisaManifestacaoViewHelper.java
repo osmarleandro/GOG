@@ -1,11 +1,11 @@
 package br.com.xti.ouvidoria.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.faces.context.FacesContext;
 
-import org.apache.commons.lang.StringUtils;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.model.SortOrder;
 
@@ -17,26 +17,14 @@ import br.com.xti.ouvidoria.negocio.ManifestacaoService;
 public class PesquisaManifestacaoViewHelper extends PesquisaEntidadeViewHelper<DTOManifestacao> {
 	private ManifestacaoService manifestacaoService;
 	
-	private String cenarioPesquisa;
 	private String nomeFiltroPersonalizado;
 	private TbFiltroPersonalizado filtroEscolhido;
 
-	
-	public static final String CENARIO_PESQUISA_TODOS 					= "Todos";
-	public static final String CENARIO_PESQUISA_CAIXA_ENTRADA 			= "Caixa de Entrada";
-	public static final String CENARIO_PESQUISA_EM_ANDAMENTO			= "Em Andamento";
-	public static final String CENARIO_PESQUISA_RETORNADAS			 	= "Retornadas";
-	public static final String CENARIO_PESQUISA_SOLUCIONADAS	 		= "Solucionadas";
-	public static final String CENARIO_PESQUISA_EM_MONITORAMENTO		= "Em Monitoramento";
-	public static final String CENARIO_PESQUISA_DEVOLVIDAS		 		= "Devolvidas";
-	public static final String CENARIO_PESQUISA_SOLICITADA_INFORMACAO	= "Solicitada Informação";
-	public static final String CENARIO_PESQUISA_COM_OUVIDORIA	 		= "Com a Ouvidoria";
-	public static final String CENARIO_PESQUISA_FILTRO_PERSONALIZADO	= "Filtro Personalizado";
-	
 	public PesquisaManifestacaoViewHelper(ManifestacaoService manifestacaoService){
-		cenarioPesquisa = CENARIO_PESQUISA_CAIXA_ENTRADA;
 		this.manifestacaoService = manifestacaoService;
 		super.setFiltroPesquisa(new DTOManifestacao());
+		//Configura a Caixa de Entrada como cenário de pesquisa padrão
+		super.getFiltroPesquisa().setCenarioPesquisa(DTOManifestacao.CENARIO_PESQUISA_CAIXA_ENTRADA);
 	}
 	
 	private void DTOPesquisaManifestacao() {
@@ -45,41 +33,6 @@ public class PesquisaManifestacaoViewHelper extends PesquisaEntidadeViewHelper<D
 	}
 	
 	
-	private boolean verificaCenarioPesquisa(String cenario){
-		return cenarioPesquisa != null ? 
-				cenarioPesquisa.equals(cenario) : false;
-	}
-	
-	public boolean isCenarioPesquisaTodos(){
-		return verificaCenarioPesquisa(CENARIO_PESQUISA_TODOS);
-	}
-	public boolean isCenarioPesquisaCaixaEntrada(){
-		return verificaCenarioPesquisa(CENARIO_PESQUISA_CAIXA_ENTRADA);
-	}
-	public boolean isCenarioPesquisaEmAndamento(){
-		return verificaCenarioPesquisa(CENARIO_PESQUISA_EM_ANDAMENTO);
-	}
-	public boolean isCenarioPesquisaRetornadas(){
-		return verificaCenarioPesquisa(CENARIO_PESQUISA_RETORNADAS);
-	}
-	public boolean isCenarioPesquisaSolucionadas(){
-		return verificaCenarioPesquisa(CENARIO_PESQUISA_SOLUCIONADAS);
-	}
-	public boolean isCenarioPesquisaEmMonitoramento(){
-		return verificaCenarioPesquisa(CENARIO_PESQUISA_EM_MONITORAMENTO);
-	}
-	public boolean isCenarioPesquisaDevolvidas(){
-		return verificaCenarioPesquisa(CENARIO_PESQUISA_DEVOLVIDAS);
-	}
-	public boolean isCenarioPesquisaSolicitadaInformacao(){
-		return verificaCenarioPesquisa(CENARIO_PESQUISA_SOLICITADA_INFORMACAO);
-	}
-	public boolean isCenarioPesquisaComOuvidoria(){
-		return verificaCenarioPesquisa(CENARIO_PESQUISA_COM_OUVIDORIA);
-	}
-	public boolean isCenarioPesquisaFiltroPersonalizado(){
-		return verificaCenarioPesquisa(CENARIO_PESQUISA_FILTRO_PERSONALIZADO);
-	}
 
 
 	@Override
@@ -91,35 +44,47 @@ public class PesquisaManifestacaoViewHelper extends PesquisaEntidadeViewHelper<D
 	
 	@Override
 	public List<DTOManifestacao> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+		
 		// Configura a paginação da tabela de resultados
-		if (isReiniciarPaginacao()){
-			this.setPrimeiroRegistro(0);
+		if (getFiltroPesquisa().isReiniciarPaginacao()){
+			getFiltroPesquisa().setPrimeiroRegistro(0);
 			DataTable dataTable = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formListarManifestacoes:tabelaManifestacoes");
 			if (dataTable != null)
 				dataTable.setFirst(0);
-			setReiniciarPaginacao(false);
+			getFiltroPesquisa().setReiniciarPaginacao(false);
 		}
 		else{
-			this.setPrimeiroRegistro(first);
+			getFiltroPesquisa().setPrimeiroRegistro(first);
 		}
-		this.setQuantidadeRegistros(pageSize);
+		getFiltroPesquisa().setQuantidadeRegistros(pageSize);
 		
 		// Configura dados da ordenação das colunas na tabela de resultados 
-		this.setOrdenacaoCampo(sortField);
+		getFiltroPesquisa().setOrdenacaoCampo(sortField);
 		if (sortOrder != null){
 			if (sortOrder.equals(SortOrder.ASCENDING))
-				this.setOrdenacaoForma("ASC");
+				getFiltroPesquisa().setOrdenacaoForma("ASC");
 			else if (sortOrder.equals(SortOrder.DESCENDING))
-				this.setOrdenacaoForma("DESC");
+				getFiltroPesquisa().setOrdenacaoForma("DESC");
 			else  
-				this.setOrdenacaoForma(" ");
+				getFiltroPesquisa().setOrdenacaoForma(" ");
 		}
 		
 		// Realiza a pesquisa de Manifestações
-		manifestacaoService.pesquisaManifestacoes(this);
+		try {
+			List<DTOManifestacao> retorno = manifestacaoService.pesquisaManifestacoes(this);
+			this.setResultado(retorno);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			this.setResultado(new ArrayList<DTOManifestacao>());
+
+		}
+		//Configura a quantidade de registros pesquisados na paginação
+		this.setRowCount(getFiltroPesquisa().getQuantidaLinhasPesquisadas());
     	
     	return this.getResultado();
 	}
+	
  
 	@Override
     public Object getRowKey(DTOManifestacao dtoManifestacao) {
@@ -139,32 +104,100 @@ public class PesquisaManifestacaoViewHelper extends PesquisaEntidadeViewHelper<D
         return null;
     }
 
-	/**
-	 * @return the cenarioPesquisa
-	 */
-	public String getCenarioPesquisa() {
-		return cenarioPesquisa;
-	}
+    
 
+    public void configuraCenarioPesquisaCaixaEntrada(){
+    	getFiltroPesquisa().setCenarioPesquisa(DTOManifestacao.CENARIO_PESQUISA_CAIXA_ENTRADA);
+    }
+
+    public void configuraCenarioPesquisaSolicitadaInformacao(){
+    	getFiltroPesquisa().setCenarioPesquisa(DTOManifestacao.CENARIO_PESQUISA_SOLICITADA_INFORMACAO);
+    }
+
+    public void configuraCenarioPesquisaEmAndamento(){
+    	getFiltroPesquisa().setCenarioPesquisa(DTOManifestacao.CENARIO_PESQUISA_EM_ANDAMENTO);
+    }
+
+    public void configuraCenarioPesquisaEmMonitoramento(){
+    	getFiltroPesquisa().setCenarioPesquisa(DTOManifestacao.CENARIO_PESQUISA_EM_MONITORAMENTO);
+    }
+
+    public void configuraCenarioPesquisaRetornadas(){
+    	getFiltroPesquisa().setCenarioPesquisa(DTOManifestacao.CENARIO_PESQUISA_RETORNADAS);
+    }
+
+    public void configuraCenarioPesquisaSolucionadas(){
+    	getFiltroPesquisa().setCenarioPesquisa(DTOManifestacao.CENARIO_PESQUISA_SOLUCIONADAS);
+    }
+
+    public void configuraCenarioPesquisaDevolvidas(){
+    	getFiltroPesquisa().setCenarioPesquisa(DTOManifestacao.CENARIO_PESQUISA_DEVOLVIDAS);
+    }
+
+    public void configuraCenarioPesquisaComOuvidoria(){
+    	getFiltroPesquisa().setCenarioPesquisa(DTOManifestacao.CENARIO_PESQUISA_COM_OUVIDORIA);
+    }
+
+    public void configuraCenarioPesquisaTodos(){
+    	getFiltroPesquisa().setCenarioPesquisa(DTOManifestacao.CENARIO_PESQUISA_TODOS);
+    }
+
+    public void configuraCenarioPesquisaFiltroPersonalizado(){
+    	getFiltroPesquisa().setCenarioPesquisa(DTOManifestacao.CENARIO_PESQUISA_FILTRO_PERSONALIZADO);
+    }
+
+    public boolean isCenarioPesquisaCaixaEntrada(){
+    	return getFiltroPesquisa().isCenarioPesquisaCaixaEntrada();
+    }
+
+    public boolean isCenarioPesquisaSolicitadaInformacao(){
+    	return getFiltroPesquisa().isCenarioPesquisaSolicitadaInformacao();
+    }
+
+    public boolean isCenarioPesquisaEmAndamento(){
+    	return getFiltroPesquisa().isCenarioPesquisaEmAndamento();
+    }
+
+    public boolean isCenarioPesquisaEmMonitoramento(){
+    	return getFiltroPesquisa().isCenarioPesquisaEmMonitoramento();
+    }
+
+    public boolean isCenarioPesquisaRetornadas(){
+    	return getFiltroPesquisa().isCenarioPesquisaRetornadas();
+    }
+
+    public boolean isCenarioPesquisaSolucionadas(){
+    	return getFiltroPesquisa().isCenarioPesquisaSolucionadas();
+    }
+
+    public boolean isCenarioPesquisaDevolvidas(){
+    	return getFiltroPesquisa().isCenarioPesquisaDevolvidas();
+    }
+
+    public boolean isCenarioPesquisaComOuvidoria(){
+    	return getFiltroPesquisa().isCenarioPesquisaComOuvidoria();
+    }
+
+    public boolean isCenarioPesquisaTodos(){
+    	return getFiltroPesquisa().isCenarioPesquisaTodos();
+    }
+
+    public boolean isCenarioPesquisaFiltroPersonalizado(){
+    	return getFiltroPesquisa().isCenarioPesquisaFiltroPersonalizado();
+    }
+    
 	/**
 	 * @return O nome do Cenário de Pesquisa
 	 */
 	public String getNomeCenarioPesquisa() {
-		if (cenarioPesquisa != null ){
-			if (isCenarioPesquisaFiltroPersonalizado())
-				return cenarioPesquisa + " - " + nomeFiltroPersonalizado;
+		if (super.getFiltroPesquisa().getCenarioPesquisa() != null ){
+			if (super.getFiltroPesquisa().isCenarioPesquisaFiltroPersonalizado())
+				return super.getFiltroPesquisa().getCenarioPesquisa() + " - " + nomeFiltroPersonalizado;
 			else
-				return cenarioPesquisa;
+				return super.getFiltroPesquisa().getCenarioPesquisa();
 		}
 			
 		return null;
-	}
-
-	/**
-	 * @param cenarioPesquisa the cenarioPesquisa to set
-	 */
-	public void setCenarioPesquisa(String cenarioPesquisa) {
-		this.cenarioPesquisa = cenarioPesquisa;
 	}
 
 	/**

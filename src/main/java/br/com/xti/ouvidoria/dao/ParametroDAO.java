@@ -94,4 +94,16 @@ public class ParametroDAO extends AbstractDAO<TbParametro> {
         }
         return urlBase.getVlrParametro();
     }
+    
+    public String getEmailMonitoramento() throws InfrastructureException {
+        TbParametro emailMonitoramento = find(ParametroEnum.EMAIL_MONITORAMENTO.getId());
+        if(emailMonitoramento == null){
+        	emailMonitoramento = new TbParametro();
+        	emailMonitoramento.setIdParametro(ParametroEnum.EMAIL_MONITORAMENTO.getId());
+        	emailMonitoramento.setNmParametro(ParametroEnum.EMAIL_MONITORAMENTO.getDescricao());
+        	emailMonitoramento.setVlrParametro("ouvidoria@cultura.gov.br");
+            create(emailMonitoramento);
+        }
+        return emailMonitoramento.getVlrParametro();
+    }
 }

@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.jsoup.Jsoup;
 
+import br.com.xti.ouvidoria.dto.DTOPesquisaPaginacao;
 import br.com.xti.ouvidoria.model.TbComunicacaoExterna;
 import br.com.xti.ouvidoria.model.TbEncaminhamento;
 import br.com.xti.ouvidoria.model.enums.AtrasoManifestacaoEnum;
@@ -12,7 +13,7 @@ import br.com.xti.ouvidoria.model.enums.StatusManifestacaoEnum;
 
 
 
-public class DTOManifestacao {
+public class DTOManifestacao extends DTOPesquisaPaginacao {
 	private Integer 				numeroManifestacao;
 	private Integer 				idManifestacao;
 
@@ -60,6 +61,60 @@ public class DTOManifestacao {
 	// O encaminhamento do usuário logado
 	private TbEncaminhamento 					encaminhamentoUsuario;
 	
+	
+	private String cenarioPesquisa;
+	
+	
+	public static final String CENARIO_PESQUISA_TODOS 					= "Todos";
+	public static final String CENARIO_PESQUISA_CAIXA_ENTRADA 			= "Caixa de Entrada";
+	public static final String CENARIO_PESQUISA_EM_ANDAMENTO			= "Em Andamento";
+	public static final String CENARIO_PESQUISA_RETORNADAS			 	= "Retornadas";
+	public static final String CENARIO_PESQUISA_SOLUCIONADAS	 		= "Solucionadas";
+	public static final String CENARIO_PESQUISA_EM_MONITORAMENTO		= "Em Monitoramento";
+	public static final String CENARIO_PESQUISA_DEVOLVIDAS		 		= "Devolvidas";
+	public static final String CENARIO_PESQUISA_SOLICITADA_INFORMACAO	= "Solicitada Informação";
+	public static final String CENARIO_PESQUISA_COM_OUVIDORIA	 		= "Com a Ouvidoria";
+	public static final String CENARIO_PESQUISA_FILTRO_PERSONALIZADO	= "Filtro Personalizado";
+	
+
+
+	private boolean verificaCenarioPesquisa(String cenario){
+		return cenarioPesquisa != null ? 
+				cenarioPesquisa.equals(cenario) : false;
+	}
+	
+	public boolean isCenarioPesquisaTodos(){
+		return verificaCenarioPesquisa(CENARIO_PESQUISA_TODOS);
+	}
+	public boolean isCenarioPesquisaCaixaEntrada(){
+		return verificaCenarioPesquisa(CENARIO_PESQUISA_CAIXA_ENTRADA);
+	}
+	public boolean isCenarioPesquisaEmAndamento(){
+		return verificaCenarioPesquisa(CENARIO_PESQUISA_EM_ANDAMENTO);
+	}
+	public boolean isCenarioPesquisaRetornadas(){
+		return verificaCenarioPesquisa(CENARIO_PESQUISA_RETORNADAS);
+	}
+	public boolean isCenarioPesquisaSolucionadas(){
+		return verificaCenarioPesquisa(CENARIO_PESQUISA_SOLUCIONADAS);
+	}
+	public boolean isCenarioPesquisaEmMonitoramento(){
+		return verificaCenarioPesquisa(CENARIO_PESQUISA_EM_MONITORAMENTO);
+	}
+	public boolean isCenarioPesquisaDevolvidas(){
+		return verificaCenarioPesquisa(CENARIO_PESQUISA_DEVOLVIDAS);
+	}
+	public boolean isCenarioPesquisaSolicitadaInformacao(){
+		return verificaCenarioPesquisa(CENARIO_PESQUISA_SOLICITADA_INFORMACAO);
+	}
+	public boolean isCenarioPesquisaComOuvidoria(){
+		return verificaCenarioPesquisa(CENARIO_PESQUISA_COM_OUVIDORIA);
+	}
+	public boolean isCenarioPesquisaFiltroPersonalizado(){
+		return verificaCenarioPesquisa(CENARIO_PESQUISA_FILTRO_PERSONALIZADO);
+	}
+	
+
 	
     public String getDsTextoManifestacaoFormatado() {
     	// Remove os caracteres problemáticos (travam a tela do sistema)
@@ -484,6 +539,20 @@ public class DTOManifestacao {
 	 */
 	public void setDataMonitoramento(Date dataMonitoramento) {
 		this.dataMonitoramento = dataMonitoramento;
+	}
+
+	/**
+	 * @return the cenarioPesquisa
+	 */
+	public String getCenarioPesquisa() {
+		return cenarioPesquisa;
+	}
+
+	/**
+	 * @param cenarioPesquisa the cenarioPesquisa to set
+	 */
+	public void setCenarioPesquisa(String cenarioPesquisa) {
+		this.cenarioPesquisa = cenarioPesquisa;
 	}
 	
 	

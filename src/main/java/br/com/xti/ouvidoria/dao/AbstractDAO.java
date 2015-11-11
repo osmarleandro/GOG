@@ -4,6 +4,8 @@
  */
 package br.com.xti.ouvidoria.dao;
 
+import java.io.Reader;
+import java.sql.Clob;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -46,6 +48,29 @@ public abstract class AbstractDAO<T> {
         return em;
     }
 
+    
+    /**
+     * Converte um objeto do tipo java.sql.Clob em String
+     * 
+     * @param obj
+     * @return
+     * @throws Exception
+     */
+	protected String converterTextoClob(Clob clob) throws Exception{
+		
+		Reader reader = clob.getCharacterStream();
+		int c = -1;
+		StringBuilder sb = new StringBuilder();
+		while((c = reader.read()) != -1) {
+			sb.append(((char)c));
+		}
+		
+		String texto =  sb.toString();
+		return texto;
+	}
+
+
+	
     public void refresh(T entity) {
         try {
             getEntityManager().flush();

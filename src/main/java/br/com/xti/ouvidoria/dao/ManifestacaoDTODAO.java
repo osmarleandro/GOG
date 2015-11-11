@@ -1,5 +1,6 @@
 package br.com.xti.ouvidoria.dao;
 
+import java.io.Reader;
 import java.sql.Clob;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -8,9 +9,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Set;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.Lob;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -49,8 +52,11 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
     private ManifestacaoDAO manifestacaoDAO;
     
     
-    private Map<String, StringBuffer> 	mapaEntidades = new HashMap<String, StringBuffer>();
-    private Map<String, Boolean> 		mapaUsoEntidades = new HashMap<String, Boolean>();
+    private Map<String, StringBuffer> 	mapaEntidades 		= new HashMap<String, StringBuffer>();
+    private Map<String, Boolean> 		mapaUsoEntidades 	= new HashMap<String, Boolean>();
+    private Map<String, Object> 		mapaQueryParameter 	= new HashMap<String, Object>();
+
+    
     private static final String ASSOCIACAO_ENCAMINHAMENTOS				=	"encaminhamentos"; 
     private static final String ASSOCIACAO_UNIDADE_RECEBEU				=	"unidadeRecebeu"; 
     private static final String ASSOCIACAO_UNIDADE_ENVIOU				=	"unidadeEnviou"; 
@@ -159,6 +165,32 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
         return "Manifestação";
     }
     
+    /**
+     * Recupera as manifestações marcadas para Monitoramento e que tenham a 
+     * data de monitoramento menor ou igual à data informada
+     * 
+     * @param dataMonitoramento
+     * @return
+     */
+    public List<TbManifestacao> recuperaManifestacoesEmMonitoramento(Date dataMonitoramento) throws Exception{
+        String select = "SELECT t FROM TbManifestacao t WHERE "
+        		+ " t.stStatusManifestacao = :status"
+        		// Recupera os monitoramentos com a data de monitoramento menor ou igual à data informada
+        		+ " AND t.dataMonitoramento <= :data ";
+        
+        HashMap<String, Object> params = new HashMap<String, Object>();
+        params.put("status", StatusManifestacaoEnum.EM_MONITORAMENTO.getId());
+        params.put("data", dataMonitoramento);
+
+        Query selectQuery = getEntityManager().createQuery(select);
+        selectQuery.setParameter("status", StatusManifestacaoEnum.EM_MONITORAMENTO.getId());
+        selectQuery.setParameter("data", dataMonitoramento);
+        
+		List<TbManifestacao> results = selectQuery.getResultList();
+        
+        return results;
+
+    }
     
     /**
      * Configura a tabela de manifestações: 
@@ -166,15 +198,14 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
      * Altera a tabela 'tbManifestacao', incluindo a coluna 'dtMonitoramento', caso não exista
      * 
      */
-    public void configuraTabelaManifestacao(){
+    @SuppressWarnings("unchecked")
+    public void configuraTabelaManifestacao() throws Exception{
     	try {
-    		System.out.println("Vai verificar existência da coluna dtMonitoramento na tabela tbManifestacao");
     		// Verifica a existência da coluna 'dtMonitoramento' na tabela 'tbManifestacao'
     		String queryVerificaColuna = " SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS where table_name = 'tbManifestacao' and column_name = 'dtMonitoramento'; ";
     		Query selectQuery = getEntityManager().createNativeQuery(queryVerificaColuna);
     		List results = selectQuery.getResultList();
     		if (results == null || results.isEmpty()){
-    			System.out.println("Vai altera a tabela tbManifestacao, incluindo a coluna dtMonitoramento");
     			// Altera a tabela 'tbManifestacao', incluindo a coluna 'dtMonitoramento', caso não exista
     			String queryIncluiColuna = "alter table tbManifestacao add dtMonitoramento timestamp;";
     			Query alterQuery = getEntityManager().createNativeQuery(queryIncluiColuna);
@@ -197,7 +228,7 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
 	 * @param filtrosPersonalizados
 	 * @return
 	 */
-    public List<TbManifestacao> getManifestacoes(PesquisaManifestacaoViewHelper filtroManifestacao, boolean filtraOcultas, FiltroPersonalizado... filtrosPersonalizados) {
+    public List<TbManifestacao> getManifestacoes(DTOManifestacao filtroManifestacao, boolean filtraOcultas, FiltroPersonalizado... filtrosPersonalizados) {
         try {
             // Criando Query para filtro
             CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
@@ -209,7 +240,7 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
 
             List<Predicate> restricoesLista = new ArrayList<>();
             for (FiltroPersonalizado filtro : filtrosPersonalizados) {
-            	// TODO Delegar para a implementação de ManifestacaoDAO a recuperação de filtros com JPAModel
+            	// Delegar para a implementação de ManifestacaoDAO a recuperação de filtros com JPAModel
                 Predicate[] predicates = manifestacaoDAO.getFiltros(cb, m, filtro);
                 if (predicates.length > 0) {
                     if ("or".equals(filtro.getMetodoBusca())) {
@@ -238,7 +269,7 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
             queryCount.select(expression);
             List<Predicate> restricoesListaCount = new ArrayList<>();
             for (FiltroPersonalizado filtro : filtrosPersonalizados) {
-            	// TODO Delegar para a implementação de ManifestacaoDAO a recuperação de filtros com JPAModel
+            	// Delegar para a implementação de ManifestacaoDAO a recuperação de filtros com JPAModel
                 Predicate[] predicates = manifestacaoDAO.getFiltros(cb, root, filtro);
                 if (predicates.length > 0) {
                     if ("or".equals(filtro.getMetodoBusca())) {
@@ -256,7 +287,7 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
             	restricoesListaCount.add(cb.equal(root.get(TbManifestacao_.stStatusOcultacao), BooleanEnum.SIM.getId()));
             }
             queryCount.where(restricoesListaCount.toArray(new Predicate[restricoesListaCount.size()]));
-        	filtroManifestacao.setRowCount(getEntityManager().createQuery(queryCount).getSingleResult().intValue());
+        	filtroManifestacao.setQuantidaLinhasPesquisadas(getEntityManager().createQuery(queryCount).getSingleResult().intValue());
 
         	
         	// Configura parâmetros da ordenação
@@ -300,7 +331,7 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
     
     
     @SuppressWarnings("unchecked")
-    public void pesquisaManifestacoes(PesquisaManifestacaoViewHelper filtroManifestacao, TbUsuario usuario){
+    public List<DTOManifestacao> pesquisaManifestacoes(DTOManifestacao filtroManifestacao, TbUsuario usuario) throws Exception{
 
     	StringBuffer camposQuery = new StringBuffer(
 	    	" SELECT  " + 
@@ -377,8 +408,14 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
     	queryCount.append(fonteDadosQuery);
     	//Acrescenta clásula WHERE quando tem filtros informados
     	queryCount.append(filtroQuery);
+    	
+    	Set<String> chavesMapaQuery = mapaQueryParameter.keySet();
     	Query selectQueryCount = getEntityManager().createNativeQuery(queryCount.toString());
-    	filtroManifestacao.setRowCount(Integer.parseInt("" + selectQueryCount.getSingleResult()));
+    	// Carrega os valores das cláusulas WHERE
+    	for (String chave : chavesMapaQuery) {
+    		selectQueryCount.setParameter(chave, mapaQueryParameter.get(chave));
+    	}
+    	filtroManifestacao.setQuantidaLinhasPesquisadas(Integer.parseInt("" + selectQueryCount.getSingleResult()));
 
     	// Realiza a pesquisa 
     	StringBuffer query = new StringBuffer(camposQuery);
@@ -387,6 +424,10 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
     	query.append(filtroQuery);
     	query.append(ordenacaoQuery);
     	Query selectQuery = getEntityManager().createNativeQuery(query.toString());
+    	// Carrega os valores das cláusulas WHERE
+    	for (String chave : chavesMapaQuery) {
+    		selectQuery.setParameter(chave, mapaQueryParameter.get(chave));
+    	}
     	
     	// Define posições na paginação da pesquisa
         selectQuery.setFirstResult(filtroManifestacao.getPrimeiroRegistro());
@@ -411,11 +452,19 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
         	dto.setNomeTipoManifestacao((String) obj[6]);
         	dto.setNomePrioridade((String) obj[7]);
         	dto.setIdStatusManifestacao( ((Character) obj[8]).toString());
-        	//TODO  Verificar se os valores booleanos estão recuperados corretamente
         	dto.setSigilo(Boolean.valueOf( ((Character) obj[9]).toString()) );
         	dto.setOculta( ((Character) obj[10]).toString().equals("1") ) ;
+
         	//TODO Recuperar o texto adequadamente
-        	dto.setTextoManifestacao( ( (Clob) obj[11]).toString());
+        	try {
+        		String textoManifestacao = converterTextoClob( (Clob) obj[11]);
+        		dto.setTextoManifestacao( textoManifestacao );
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+
         	dto.setMotivoOcultacao((String) obj[12]);
         	
         	dto.setDataMonitoramento(obj[13] != null ?
@@ -430,11 +479,12 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
 		}
         
         // Carrega o resultado da pesquisa no DTO informado 
-        filtroManifestacao.setResultado(retorno);
+        return retorno;
         
 
     }
 
+    
     /**
      * Gera texto para a cláusula WHERE da pesquisa de manifestações, utilizando dados do filtro informado 
      * 
@@ -443,9 +493,10 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
      * @return
      */
 	private StringBuffer geraClausulasWherePesquisaManifestacoes(
-			PesquisaManifestacaoViewHelper filtroManifestacao, TbUsuario usuario) {
+			DTOManifestacao filtroManifestacao, TbUsuario usuario) {
+		mapaQueryParameter 	= new HashMap<String, Object>();
 		StringBuffer filtroQuery = new StringBuffer("");
-		boolean filtraOcultas = filtroManifestacao.getFiltroPesquisa().isOculta();
+		boolean filtraOcultas = filtroManifestacao.isOculta();
     	FuncaoUsuarioEnum funcao = EnumHelper.getFuncaoUsuarioEnum(usuario.getTpFuncao());
     	if (funcao == FuncaoUsuarioEnum.ADMINISTRADOR && filtraOcultas){//Filtra ocultas apenas para o Administrador
     		filtroQuery.append(" WHERE m.stStatusOcultacao = " + BooleanEnum.SIM.getId());
@@ -469,33 +520,43 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
 			configuraFiltroDevolvidas(filtroQuery, usuario);
 
 		// Configura a pesquisa de manifestações
-		Integer filtroNumeroManifestacao = filtroManifestacao.getFiltroPesquisa().getNumeroManifestacao();
+		Integer filtroNumeroManifestacao = filtroManifestacao.getNumeroManifestacao();
 		if (filtroNumeroManifestacao != null && filtroNumeroManifestacao != 0){
-			adicionaClausulaWHERE(filtroQuery, " m.nrManifestacao = " + 
-					filtroNumeroManifestacao);
+			adicionaClausulaWHERE(filtroQuery, " m.nrManifestacao = :numeroManifestacao ");
+			mapaQueryParameter.put("numeroManifestacao", filtroNumeroManifestacao);
 		}
-		String nomeManifestante = filtroManifestacao.getFiltroPesquisa().getNomeManifestante();
+		String nomeManifestante = filtroManifestacao.getNomeManifestante();
 		if (nomeManifestante != null && !StringUtils.isEmpty(nomeManifestante)){
-			adicionaClausulaWHERE(filtroQuery, " upper(m.nmPessoa) like '%" + 
-					nomeManifestante.toUpperCase() + "%' ");
+			adicionaClausulaWHERE(filtroQuery, " upper(m.nmPessoa) like :nomePessoa ");
+			mapaQueryParameter.put("nomePessoa", "%" + nomeManifestante.toUpperCase() + "%");
 		}
-		// TODO Desenvolver a pesquisa de manifestações pelo filtro avançado
-		// deve desconsiderar o valor '0', referente à opção 'TODOS' na tela  
-		if (filtroManifestacao.getFiltroPesquisa().getIdTipoManifestacao() != null && 
-				filtroManifestacao.getFiltroPesquisa().getIdTipoManifestacao() != 0){
-			adicionaClausulaWHERE(filtroQuery, " tp.idTipoManifestacao = " + 
-					filtroManifestacao.getFiltroPesquisa().getIdTipoManifestacao());
+
+		if (filtroManifestacao.getIdTipoManifestacao() != null && 
+				filtroManifestacao.getIdTipoManifestacao() != 0){
+			adicionaClausulaWHERE(filtroQuery, " tp.idTipoManifestacao = :idTipoManifestacao ");
+			mapaQueryParameter.put("idTipoManifestacao", filtroManifestacao.getIdTipoManifestacao());
 		}
-		if (filtroManifestacao.getFiltroPesquisa().getIdPrioridade() != null && 
-				filtroManifestacao.getFiltroPesquisa().getIdPrioridade() != 0){
-			adicionaClausulaWHERE(filtroQuery, " pr.idPrioridade = " + 
-					filtroManifestacao.getFiltroPesquisa().getIdPrioridade());
+		if (filtroManifestacao.getIdPrioridade() != null && 
+				filtroManifestacao.getIdPrioridade() != 0){
+			adicionaClausulaWHERE(filtroQuery, " pr.idPrioridade = :idPrioridade ");
+			mapaQueryParameter.put("idPrioridade", filtroManifestacao.getIdPrioridade());
 		}
-		if (filtroManifestacao.getFiltroPesquisa().getIdStatusManifestacao() != null  && 
-				!filtroManifestacao.getFiltroPesquisa().getIdStatusManifestacao().trim().equals("0")){
-			adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao = " + 
-					filtroManifestacao.getFiltroPesquisa().getIdStatusManifestacao());
+		if (filtroManifestacao.getIdStatusManifestacao() != null  && 
+				!filtroManifestacao.getIdStatusManifestacao().trim().equals("0")){
+			adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao = :idStatusManifestacao ");
+			mapaQueryParameter.put("idStatusManifestacao", filtroManifestacao.getIdStatusManifestacao());
 		}
+		if (filtroManifestacao.getDataCadastro() != null){
+			adicionaClausulaWHERE(filtroQuery, " m.dtCadastro = :dataCadastro ");
+			mapaQueryParameter.put("dataCadastro", filtroManifestacao.getDataCadastro());
+			System.out.println("DATA INFORMADA: " + filtroManifestacao.getDataCadastro());
+		}
+		if (filtroManifestacao.getDataUltimaAtualizacao() != null){
+			adicionaClausulaWHERE(filtroQuery, " m.dtUltimaAtualizacao = :dataUltimaAtualizacao ");
+			mapaQueryParameter.put("dataUltimaAtualizacao", filtroManifestacao.getDataUltimaAtualizacao());
+			System.out.println("DATA INFORMADA: " + filtroManifestacao.getDataUltimaAtualizacao());
+		}
+		
 		return filtroQuery;
 	}
     
@@ -508,7 +569,6 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
 
 	private void configuraFiltroDevolvidas(StringBuffer filtroQuery,
 			TbUsuario usuario) {
-		// TODO Auto-generated method stub
 		adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao = " + 
 				StatusManifestacaoEnum.EM_ANDAMENTO.getId());
 		adicionaClausulaWHERE(filtroQuery, " en.stEncaminhamento 				= " + StatusEncaminhamentoEnum.ENCAMINHADA.getId());
@@ -541,7 +601,6 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
      * @param usuario
      */
 	private void configuraFiltroCaixaEntrada(StringBuffer filtroQuery, TbUsuario usuario) {
-		// TODO Auto-generated method stub
         if(usuario != null) {
         	// Recupera a Função do usuário
         	FuncaoUsuarioEnum funcao = EnumHelper.getFuncaoUsuarioEnum(usuario.getTpFuncao());

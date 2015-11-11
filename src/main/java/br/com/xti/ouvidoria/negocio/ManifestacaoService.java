@@ -103,11 +103,9 @@ public class ManifestacaoService {
     /**
      * Transforma uma lista de TbManifestacao em uma lista de DTOPesquisaManifestacao
      * 
-     * @param filtroManifestacao
      * @param list
      */
-    private void transformarListaDTOManifestacao(
-    		PesquisaManifestacaoViewHelper filtroManifestacao,
+    private List<DTOManifestacao> transformarListaDTOManifestacao(
     		List<TbManifestacao> list) {
     	List<DTOManifestacao> retorno = new ArrayList<DTOManifestacao>();
     	for (TbManifestacao manifestacao : list) {
@@ -123,10 +121,8 @@ public class ManifestacaoService {
     		dto.setNomeTipoManifestacao(manifestacao.getIdTipoManifestacao().getNmTipoManifestacao());
     		dto.setNomePrioridade(manifestacao.getIdPrioridade().getNmPrioridade());
     		dto.setIdStatusManifestacao( manifestacao.getStStatusManifestacao());
-    		//TODO  Verificar se os valores booleanos estão recuperados corretamente
     		dto.setSigilo(Boolean.valueOf(manifestacao.getSiSigilo()));
     		dto.setOculta(Boolean.valueOf( manifestacao.getStStatusOcultacao() ) );
-    		//TODO Recuperar o texto adequadamente
     		dto.setTextoManifestacao( manifestacao.getDsTextoManifestacao() );
     		dto.setMotivoOcultacao(manifestacao.getDsMotivoOcultacao());
     		
@@ -140,11 +136,11 @@ public class ManifestacaoService {
     	}
     	
     	// Carrega o resultado da pesquisa no DTO informado 
-    	filtroManifestacao.setResultado(retorno);
+    	return retorno;
     }
     
 
-	private void pesquisaManifestacoesFiltroPersonalizado(PesquisaManifestacaoViewHelper filtroManifestacao) {
+	private List<DTOManifestacao> pesquisaManifestacoesFiltroPersonalizado(PesquisaManifestacaoViewHelper filtroManifestacao) {
 		boolean filtraOcultas = filtroManifestacao.getFiltroPesquisa().isOculta();
 
         FiltroPersonalizado filtroPadrao = new FiltroPersonalizado();
@@ -159,37 +155,40 @@ public class ManifestacaoService {
         XStream xs = new XStream();
         FiltroPersonalizado filtroAtual = (FiltroPersonalizado) xs.fromXML(filtroManifestacao.getFiltroEscolhido().getDsParticao());
 
-    	List<TbManifestacao> list = manifestacaoDTODAO.getManifestacoes(filtroManifestacao, filtraOcultas, filtroPadrao, filtroAtual);
+    	List<TbManifestacao> list = manifestacaoDTODAO.getManifestacoes(filtroManifestacao.getFiltroPesquisa(), filtraOcultas, filtroPadrao, filtroAtual);
 
-        transformarListaDTOManifestacao(filtroManifestacao, list);
-        complementaDadosManifestacao(filtroManifestacao);
-
+        List<DTOManifestacao> retorno = transformarListaDTOManifestacao(list);
+        complementaDadosManifestacao(retorno);
+        
+        return retorno;
     }
 
     
     @SuppressWarnings("unchecked")
-    public void pesquisaManifestacoes(PesquisaManifestacaoViewHelper filtroManifestacao){
+    public List<DTOManifestacao> pesquisaManifestacoes(PesquisaManifestacaoViewHelper filtroManifestacao) throws Exception{
+    	
+    	List<DTOManifestacao> retorno = new ArrayList<DTOManifestacao>();
+    	
     	TbUsuario usuario = usuarioDAO.find(securityService.getUser().getIdUsuario());
     	
     	if (verificaCenarioPesquisaComDTO(filtroManifestacao)){
-    		//TODO Considerar o cenário para a pesquisa
-    		manifestacaoDTODAO.pesquisaManifestacoes(filtroManifestacao, usuario);
-    		complementaDadosManifestacao(filtroManifestacao);
+    		retorno = manifestacaoDTODAO.pesquisaManifestacoes(filtroManifestacao.getFiltroPesquisa(), usuario);
+    		complementaDadosManifestacao(retorno);
     	}else if(filtroManifestacao.isCenarioPesquisaEmAndamento()){
-    		pesquisarEmAndamento(filtroManifestacao);
+    		retorno = pesquisarEmAndamento(filtroManifestacao);
     	}else if(filtroManifestacao.isCenarioPesquisaRetornadas()){
-    		pesquisarRetornadas(filtroManifestacao);
+    		retorno = pesquisarRetornadas(filtroManifestacao);
     	}else if(filtroManifestacao.isCenarioPesquisaSolucionadas()){
-    		pesquisarSolucionadas(filtroManifestacao);
+    		retorno = pesquisarSolucionadas(filtroManifestacao);
     	}else if(filtroManifestacao.isCenarioPesquisaComOuvidoria()){
-    		pesquisarComOuvidoria(filtroManifestacao);
+    		retorno = pesquisarComOuvidoria(filtroManifestacao);
     	}else if(filtroManifestacao.isCenarioPesquisaFiltroPersonalizado()){
-    		pesquisaManifestacoesFiltroPersonalizado(filtroManifestacao);
+    		retorno = pesquisaManifestacoesFiltroPersonalizado(filtroManifestacao);
     	}else{
     		
     	}
     	
-    	
+    	return retorno;
 
     }
     
@@ -212,27 +211,27 @@ public class ManifestacaoService {
 	}
 
 
-	private void pesquisarComOuvidoria(PesquisaManifestacaoViewHelper filtroManifestacao)  {
+	private List<DTOManifestacao> pesquisarComOuvidoria(PesquisaManifestacaoViewHelper filtroManifestacao)  {
 		boolean filtraOcultas = filtroManifestacao.getFiltroPesquisa().isOculta();
 		
-		//TODO Verificar se há a necessidade de alterar a utilização do manifestacaoDAO com a estrutura de filtros
     	FiltroPersonalizado filtro = new FiltroPersonalizado();
     	filtro.setMetodoBusca("and");
     	filtro.addManIdStatus(StatusManifestacaoEnum.EM_ANDAMENTO.getId());
         filtro.setEncStatus(StatusEncaminhamentoEnum.RETORNADA.getId());
         filtro.addEncIdUnidadeRecebeu(securityService.getUser().getIdUnidade().getIdUnidade());
     	
-    	List<TbManifestacao> list = manifestacaoDTODAO.getManifestacoes(filtroManifestacao, filtraOcultas, filtro);
+    	List<TbManifestacao> list = manifestacaoDTODAO.getManifestacoes(filtroManifestacao.getFiltroPesquisa(), filtraOcultas, filtro);
         
-        transformarListaDTOManifestacao(filtroManifestacao, list);
-        complementaDadosManifestacao(filtroManifestacao);
+        List<DTOManifestacao> retorno = transformarListaDTOManifestacao(list);
+        complementaDadosManifestacao(retorno);
+        
+        return retorno;
     }
 
 
-    private void pesquisarSolucionadas(PesquisaManifestacaoViewHelper filtroManifestacao)  {
+    private List<DTOManifestacao> pesquisarSolucionadas(PesquisaManifestacaoViewHelper filtroManifestacao)  {
 		boolean filtraOcultas = filtroManifestacao.getFiltroPesquisa().isOculta();
 
-		//TODO Verificar se há a necessidade de alterar a utilização do manifestacaoDAO com a estrutura de filtros
         FiltroPersonalizado filtro = new FiltroPersonalizado();
         switch (securityService.getUserProfile()) {
         	case OPERADOR:
@@ -246,16 +245,19 @@ public class ManifestacaoService {
 			default: break;
 		}
 
-        List<TbManifestacao> list = manifestacaoDTODAO.getManifestacoes(filtroManifestacao, filtraOcultas, filtro);
-        transformarListaDTOManifestacao(filtroManifestacao, list);
-        complementaDadosManifestacao(filtroManifestacao);
+        List<TbManifestacao> list = manifestacaoDTODAO.getManifestacoes(filtroManifestacao.getFiltroPesquisa(), filtraOcultas, filtro);
+        
+        List<DTOManifestacao> retorno = transformarListaDTOManifestacao(list);
+        complementaDadosManifestacao(retorno);
+        
+        return retorno;
+
     }
  
     
-    private void pesquisarRetornadas(PesquisaManifestacaoViewHelper filtroManifestacao)  {
+    private List<DTOManifestacao> pesquisarRetornadas(PesquisaManifestacaoViewHelper filtroManifestacao)  {
 		boolean filtraOcultas = filtroManifestacao.getFiltroPesquisa().isOculta();
 
-		//TODO Verificar se há a necessidade de alterar a utilização do manifestacaoDAO com a estrutura de filtros
         FiltroPersonalizado filtro = new FiltroPersonalizado();
         filtro.setMetodoBusca("and");
         
@@ -266,11 +268,14 @@ public class ManifestacaoService {
         	filtro = FiltroHelper.getFiltrosPadrao(securityService.getUser());
         }
         
-        List<TbManifestacao> list = manifestacaoDTODAO.getManifestacoes(filtroManifestacao, filtraOcultas, filtro);
+        List<TbManifestacao> list = manifestacaoDTODAO.getManifestacoes(filtroManifestacao.getFiltroPesquisa(), filtraOcultas, filtro);
         
         ajustarRetornadas(list);
-        transformarListaDTOManifestacao(filtroManifestacao, list);
-        complementaDadosManifestacao(filtroManifestacao);
+        List<DTOManifestacao> retorno = transformarListaDTOManifestacao(list);
+        complementaDadosManifestacao(retorno);
+        
+        return retorno;
+
     }
     
     private void ajustarRetornadas(List<TbManifestacao> list) {
@@ -305,7 +310,6 @@ public class ManifestacaoService {
 								}
 								
 								if(BooleanEnum.NAO.getId().equals(t.getStRetornada()) && t.getDtTramite().compareTo(dtUltimoTramiteDaOuvidoria) >= 0) {
-//								if(BooleanEnum.NAO.getId().equals(t.getStRetornada())) { //TODO
 									listIterator.remove();
 									break enc;
 								} else {
@@ -324,10 +328,9 @@ public class ManifestacaoService {
     }
   
 
-    private void pesquisarEmAndamento(PesquisaManifestacaoViewHelper filtroManifestacao) {
+    private List<DTOManifestacao> pesquisarEmAndamento(PesquisaManifestacaoViewHelper filtroManifestacao) {
 		boolean filtraOcultas = filtroManifestacao.getFiltroPesquisa().isOculta();
 
-		//TODO Verificar se há a necessidade de alterar a utilização do manifestacaoDAO com a estrutura de filtros
         FiltroPersonalizado filtro = new FiltroPersonalizado();
         filtro.setMetodoBusca("and");
         // -- ADMIN ou OUVIDOR
@@ -339,18 +342,20 @@ public class ManifestacaoService {
         	filtro = FiltroHelper.getFiltrosPadrao(securityService.getUser());
         }
 
-        List<TbManifestacao> list = manifestacaoDTODAO.getManifestacoes(filtroManifestacao, filtraOcultas, filtro);
+        List<TbManifestacao> list = manifestacaoDTODAO.getManifestacoes(filtroManifestacao.getFiltroPesquisa(), filtraOcultas, filtro);
         if(securityService.isInterlocutor()) {
         	FiltroPersonalizado filtro2 = new FiltroPersonalizado();
         	filtro2.addManIdStatus(StatusManifestacaoEnum.EM_ANDAMENTO.getId());
         	filtro2.setEncStatus(StatusEncaminhamentoEnum.ENCAMINHADA.getId());
         	filtro2.addEncIdUnidadeEnviou(securityService.getUser().getIdUnidade().getIdUnidade());
-        	list.addAll(manifestacaoDTODAO.getManifestacoes(filtroManifestacao, filtraOcultas, filtro2));
+        	list.addAll(manifestacaoDTODAO.getManifestacoes(filtroManifestacao.getFiltroPesquisa(), filtraOcultas, filtro2));
         }
         
         ajustarEmAndamento(list);
-        transformarListaDTOManifestacao(filtroManifestacao, list);
-        complementaDadosManifestacao(filtroManifestacao);
+        List<DTOManifestacao> retorno = transformarListaDTOManifestacao(list);
+        complementaDadosManifestacao(retorno);
+        
+        return retorno;
     }
     
     private void ajustarEmAndamento(List<TbManifestacao> list) {
@@ -397,11 +402,9 @@ public class ManifestacaoService {
 	/**
      * Complementa os dados da manifestação com atributos resultadas dos relacionamentos com demais entidades.
      * 
-     * @param filtroManifestacao
+     * @param resultado
      */
-	private void complementaDadosManifestacao(
-			PesquisaManifestacaoViewHelper filtroManifestacao) {
-		List<DTOManifestacao> resultado = filtroManifestacao.getResultado();
+	private void complementaDadosManifestacao(List<DTOManifestacao> resultado){
         for (DTOManifestacao dtoManifestacao : resultado) {
         	//Recupera a lista de encaminhamentos da manifestação
         	Collection<TbEncaminhamento> listaEncaminhamentos = encaminhamentoDAO.getPorIdManifestacao(dtoManifestacao.getIdManifestacao());
@@ -412,20 +415,15 @@ public class ManifestacaoService {
         	Collection<TbComunicacaoExterna> listaComunicacao = comunicacaoExternaDAO.getPorIdManifestacao(dtoManifestacao.getIdManifestacao());
         	dtoManifestacao.setComunicacaoExterna(listaComunicacao);
 
-        	//TODO Recuperar o prazo para atendimento da manifestação: ver mBListarManifestacoes.getPrazoAtendimento(manifestacao)
-        	//TODO Recuperar a data limite para atendimento do usuário logado: ver ManifestacaoUtils.getDataLimiteAtendimentoUnidadeUsuarioLogado
+        	// Recuperar o prazo para atendimento da manifestação e a data limite para atendimento do usuário logado
         	recuperaPrazoAtendimento(dtoManifestacao);
-
-        	//TODO Definir o tipo de atraso em cada manifestação recuperada: ver MBListarManifestacoes.verificaAtraso
+        	// Definir o tipo de atraso em cada manifestação recuperada
         	recuperaTipoAtraso(dtoManifestacao);
-        	
-        	//TODO Recuperar a lista com o nome dos operadores que atuaram na manifestação: ver MBListarManifestacoes.getNomeOperadoresComManifestacao
+        	// Recuperar a lista com o nome dos operadores que atuaram na manifestação
         	recuperaNomeOperadoresComManifestacao(dtoManifestacao);
-        	
-        	//TODO Recuperar a quantidade de dias em atraso da manifestação: ver MBListarManifestacoes.diasAtrasoAoManifestante
+        	// Recuperar a quantidade de dias em atraso da manifestação
         	recuperaDiasAtrasoAoManifestante(dtoManifestacao);
-        	
-        	//TODO Recuperar o nome das unidades encaminhadas: ver MBListarManifestacoes.getUnidadesEncaminhadas
+        	// Recuperar o nome das unidades encaminhadas
         	recuperaUnidadesEncaminhadas(dtoManifestacao);
 
 		}

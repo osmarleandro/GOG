@@ -1085,7 +1085,13 @@ public class MBManifestacao extends AbstractManifestationController implements S
             		return;
             	}
                 manifestacao.setStStatusManifestacao(StatusManifestacaoEnum.EM_MONITORAMENTO.getId());
-                manifestacao.setDataMonitoramento(dataMonitoramento);
+
+                // Configura a hora da data de monitoramento para o início do dia
+                Calendar novaDataMonitoramento = Calendar.getInstance();
+                novaDataMonitoramento.setTime(dataMonitoramento);
+                novaDataMonitoramento.set(Calendar.HOUR_OF_DAY, 0);
+                novaDataMonitoramento.set(Calendar.MINUTE, 0);
+                manifestacao.setDataMonitoramento(novaDataMonitoramento.getTime());
             }else{
                 manifestacao.setStStatusManifestacao(StatusManifestacaoEnum.SOLUCIONADA.getId());
                 manifestacao.setDataMonitoramento(null);

@@ -12,7 +12,8 @@ public enum ParametroEnum {
     NUMERO_SEQUENCIAL_MANIFESTACAO(1,"Sequencial da Manifestação"),
     ANO_SEQUENCIAL_MANIFESTACAO(2,"Ano atual"),
     DIRETORIO_ANEXOS(3,"Diretório para onde serão enviados os arquivos anexados"),
-    URL_SISTEMA(4,"URL base do Sistema");
+    URL_SISTEMA(4,"URL base do Sistema"),
+    EMAIL_MONITORAMENTO(5,"Email do Monitoramento");
     
     private Integer id;
     private String descricao;
