@@ -46,7 +46,7 @@
 <!--  Caixa com opções (na barra à direita) -->
 									<p:commandButton id="btnCaixaEntrada" value="Caixa de Entrada"
 										style="width: 100%; margin-bottom: 10px;" 
-										styleClass="#{mBListarManifestacoesGOG.dtoManifestacao.cenarioPesquisaCaixaEntrada ? 'botaoCaixaSelecionado' : ''}"
+										styleClass="#{mBListarManifestacoesGOG.pesquisaManifestacaoHelper.cenarioPesquisaCaixaEntrada ? 'botaoCaixaSelecionado' : ''}"
 										actionListener="#{mBListarManifestacoesGOG.getCaixaEntrada}"
 										title="Caixa de Entrada"
 										update="tabelaManifestacoes,btnCaixaEntrada,
@@ -56,7 +56,7 @@
 									
 									<p:commandButton id="btnSolicitadaInformacao" value="Solicitada Informação"
 										style="width: 100%; margin-bottom: 10px;"
-										styleClass="#{mBListarManifestacoesGOG.dtoManifestacao.cenarioPesquisaSolicitadaInformacao ? 'botaoCaixaSelecionado' : ''}"
+										styleClass="#{mBListarManifestacoesGOG.pesquisaManifestacaoHelper.cenarioPesquisaSolicitadaInformacao ? 'botaoCaixaSelecionado' : ''}"
 										actionListener="#{mBListarManifestacoesGOG.getSolicitadaInformacao}"
 										title="Solicitada Informação"
 										rendered="#{security.administrador || security.ouvidor}"
@@ -67,7 +67,7 @@
 										
 									<p:commandButton id="btnEmAndamento" value="Em Andamento"
 										style="width: 100%; margin-bottom: 10px;"
-										styleClass="#{mBListarManifestacoesGOG.dtoManifestacao.cenarioPesquisaEmAndamento ? 'botaoCaixaSelecionado' : ''}"
+										styleClass="#{mBListarManifestacoesGOG.pesquisaManifestacaoHelper.cenarioPesquisaEmAndamento ? 'botaoCaixaSelecionado' : ''}"
 										actionListener="#{mBListarManifestacoesGOG.getEmAndamento}"
 										update="tabelaManifestacoes,btnCaixaEntrada,
 												btnSolicitadaInformacao,btnDevolvidas,
@@ -78,7 +78,7 @@
 	
 									<p:commandButton id="btnEmMonitoramento" value="Em Monitoramento"
 										style="width: 100%; margin-bottom: 10px;"
-										styleClass="#{mBListarManifestacoesGOG.dtoManifestacao.cenarioPesquisaEmMonitoramento ? 'botaoCaixaSelecionado' : ''}"
+										styleClass="#{mBListarManifestacoesGOG.pesquisaManifestacaoHelper.cenarioPesquisaEmMonitoramento ? 'botaoCaixaSelecionado' : ''}"
 										actionListener="#{mBListarManifestacoesGOG.getEmMonitoramento}"
 										update="tabelaManifestacoes,btnCaixaEntrada,
 												btnSolicitadaInformacao,btnDevolvidas,
@@ -89,7 +89,7 @@
 
 									<p:commandButton id="btnRetornadas" value="Retornadas"
 										style="width: 100%; margin-bottom: 10px;"
-										styleClass="#{mBListarManifestacoesGOG.dtoManifestacao.cenarioPesquisaRetornadas ? 'botaoCaixaSelecionado' : '' }"
+										styleClass="#{mBListarManifestacoesGOG.pesquisaManifestacaoHelper.cenarioPesquisaRetornadas ? 'botaoCaixaSelecionado' : '' }"
 										actionListener="#{mBListarManifestacoesGOG.getRetornadas}"
 										update="tabelaManifestacoes,btnCaixaEntrada,
 												btnSolicitadaInformacao,btnDevolvidas,
@@ -100,7 +100,7 @@
 	
 									<p:commandButton id="btnDevolvidas" value="Devolvidas"
 										style="width: 100%; margin-bottom: 10px;"
-										styleClass="#{mBListarManifestacoesGOG.dtoManifestacao.cenarioPesquisaDevolvidas ? 'botaoCaixaSelecionado' : '' }"
+										styleClass="#{mBListarManifestacoesGOG.pesquisaManifestacaoHelper.cenarioPesquisaDevolvidas ? 'botaoCaixaSelecionado' : '' }"
 										actionListener="#{mBListarManifestacoesGOG.getDevolvidas}"
 										update="tabelaManifestacoes,btnCaixaEntrada,
 												btnSolicitadaInformacao,btnDevolvidas,
@@ -111,7 +111,7 @@
 										
 									<p:commandButton id="btnComAOuvidoria" value="Com a Ouvidoria"
 										style="width: 100%; margin-bottom: 10px;"
-										styleClass="#{mBListarManifestacoesGOG.dtoManifestacao.cenarioPesquisaComOuvidoria ? 'botaoCaixaSelecionado' : '' }"
+										styleClass="#{mBListarManifestacoesGOG.pesquisaManifestacaoHelper.cenarioPesquisaComOuvidoria ? 'botaoCaixaSelecionado' : '' }"
 										actionListener="#{mBListarManifestacoesGOG.getComAOuvidoria}"
 										update="tabelaManifestacoes,btnCaixaEntrada,
 												btnSolicitadaInformacao,btnDevolvidas,
@@ -122,7 +122,7 @@
 										
 									<p:commandButton id="btnFechadas" value="Solucionadas"
 										style="width: 100%; margin-bottom: 10px;"
-										styleClass="#{mBListarManifestacoesGOG.dtoManifestacao.cenarioPesquisaSolucionadas ? 'botaoCaixaSelecionado' : '' }"
+										styleClass="#{mBListarManifestacoesGOG.pesquisaManifestacaoHelper.cenarioPesquisaSolucionadas ? 'botaoCaixaSelecionado' : '' }"
 										actionListener="#{mBListarManifestacoesGOG.getSolucionadas}"
 										update="tabelaManifestacoes,btnCaixaEntrada,
 												btnSolicitadaInformacao,btnDevolvidas,
@@ -132,7 +132,7 @@
 
 									<p:commandButton id="btnCaixaTodos" value="TODOS"
 										style="width: 100%; margin-bottom: 10px;" 
-										styleClass="#{mBListarManifestacoesGOG.dtoManifestacao.cenarioPesquisaTodos ? 'botaoCaixaSelecionado' : ''}"
+										styleClass="#{mBListarManifestacoesGOG.pesquisaManifestacaoHelper.cenarioPesquisaTodos ? 'botaoCaixaSelecionado' : ''}"
 										actionListener="#{mBListarManifestacoesGOG.getCaixaTodos}"
 										title="TODOS"
 										update="tabelaManifestacoes,btnCaixaEntrada,
@@ -181,13 +181,13 @@
 
 	                                <h:outputLabel value="Número da Manifestação: " styleClass="bold" />
 									<p:spacer width="10px" height="10px" />
-	                                <p:inputText value="#{mBListarManifestacoesGOG.dtoManifestacao.filtroPesquisa.numeroManifestacao}" size="15"	                                	converterMessage="Número da manifestação deve conter um ou mais dígitos numéricos." />
+	                                <p:inputText value="#{mBListarManifestacoesGOG.pesquisaManifestacaoHelper.filtroPesquisa.numeroManifestacao}" size="15"	                                	converterMessage="Número da manifestação deve conter um ou mais dígitos numéricos." />
 
 									<p:spacer width="25px" height="10px"/>
 
 	                                <h:outputLabel value="Nome do Manifestante: "  styleClass="bold"/>
 									<p:spacer width="10px" height="10px"/>
-	                                <p:inputText value="#{mBListarManifestacoesGOG.dtoManifestacao.filtroPesquisa.nomeManifestante}" size="50"/>
+	                                <p:inputText value="#{mBListarManifestacoesGOG.pesquisaManifestacaoHelper.filtroPesquisa.nomeManifestante}" size="50"/>
 
 									<div style="min-height: 10px" />
 									
@@ -200,14 +200,14 @@
 						                            </p:column>
 						                            <p:column style="width: 15%">
 						                                <p:calendar id="dtRegistro" 
-						                                	value="#{mBListarManifestacoesGOG.dtoManifestacao.filtroPesquisa.dataCadastro}" pattern="dd/MM/yyyy" />
+						                                	value="#{mBListarManifestacoesGOG.pesquisaManifestacaoHelper.filtroPesquisa.dataCadastro}" pattern="dd/MM/yyyy" />
 						                            </p:column>
 						                            <p:column style="width: 15%">
 						                                <h:outputLabel value="Data de Atualização: "  styleClass="bold"/>
 						                            </p:column>
 						                            <p:column colspan="3">
 						                                <p:calendar id="dtAtualizacao" 
-						                                	value="#{mBListarManifestacoesGOG.dtoManifestacao.filtroPesquisa.dataUltimaAtualizacao}" pattern="dd/MM/yyyy" />
+						                                	value="#{mBListarManifestacoesGOG.pesquisaManifestacaoHelper.filtroPesquisa.dataUltimaAtualizacao}" pattern="dd/MM/yyyy" />
 						                            </p:column>
 						                        </p:row>
 						                        <p:row>
@@ -215,7 +215,7 @@
 						                                <h:outputLabel value="Tipo da Manifestação: "  styleClass="bold"/>
 						                            </p:column>
 						                            <p:column>
-						                                <p:selectOneMenu value="#{mBListarManifestacoesGOG.dtoManifestacao.filtroPesquisa.idTipoManifestacao}">
+						                                <p:selectOneMenu value="#{mBListarManifestacoesGOG.pesquisaManifestacaoHelper.filtroPesquisa.idTipoManifestacao}">
 						                                    <f:selectItem itemLabel=" - Todos -" itemValue="0" />
 						                                    <f:selectItems value="#{mBListarManifestacoesGOG.listaTipoManifestacao}" 
 						                                    	var="tipoManifestacao" itemLabel="#{tipoManifestacao.nmTipoManifestacao}" itemValue="#{tipoManifestacao.idTipoManifestacao}" />
@@ -226,7 +226,7 @@
 						                                <h:outputLabel value="Prioridade: "  styleClass="bold"/>
 						                            </p:column>
 						                            <p:column>
-						                                <p:selectOneMenu value="#{mBListarManifestacoesGOG.dtoManifestacao.filtroPesquisa.idPrioridade}">
+						                                <p:selectOneMenu value="#{mBListarManifestacoesGOG.pesquisaManifestacaoHelper.filtroPesquisa.idPrioridade}">
 						                                    <f:selectItem itemLabel=" - Todos -" itemValue="0" />
 						                                    <f:selectItems value="#{mBListarManifestacoesGOG.listaPrioridade}" 
 						                                    	var="prioridade" itemLabel="#{prioridade.nmPrioridade}" itemValue="#{prioridade.idPrioridade}" />
@@ -237,7 +237,7 @@
 						                                <h:outputLabel value="Status: "  styleClass="bold"/>
 						                            </p:column>
 						                            <p:column>
-						                                <p:selectOneMenu value="#{mBListarManifestacoesGOG.dtoManifestacao.filtroPesquisa.idStatusManifestacao}">
+						                                <p:selectOneMenu value="#{mBListarManifestacoesGOG.pesquisaManifestacaoHelper.filtroPesquisa.idStatusManifestacao}">
 						                                    <f:selectItem itemLabel=" - Todos -" itemValue="0" />
 						                                    <f:selectItems value="#{mBEnum.statusManifestacaoEnums}" var="status" itemLabel="#{status.descricao}" itemValue="#{status.id}" />
 						                                </p:selectOneMenu>
@@ -290,19 +290,19 @@
 
         					
 						<p:dataTable id="tabelaManifestacoes"
-							value="#{mBListarManifestacoesGOG.dtoManifestacao}" 
+							value="#{mBListarManifestacoesGOG.pesquisaManifestacaoHelper}" 
 							paginator="true" rows="10" paginatorPosition="bottom"
 							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 							rowsPerPageTemplate="5,10,15" 
 							emptyMessage="Nenhuma manifestação foi encontrada"
 							var="manifestacao"
-							rowIndexVar="rowIx"  lazy="true" first="#{mBListarManifestacoesGOG.dtoManifestacao.primeiroRegistro}"
+							rowIndexVar="rowIx"  lazy="true" first="#{mBListarManifestacoesGOG.pesquisaManifestacaoHelper.filtroPesquisa.primeiroRegistro}"
   							rowStyleClass="#{manifestacao.verificaAtrasoStyleClass()}" >
 			                <p:ajax event="page" />  
 
 							<f:facet name="header">
 								<h:outputText
-									value="#{mBListarManifestacoesGOG.dtoManifestacao.nomeCenarioPesquisa} (#{mBListarManifestacoesGOG.dtoManifestacao.rowCount})" />
+									value="#{mBListarManifestacoesGOG.pesquisaManifestacaoHelper.nomeCenarioPesquisa} (#{mBListarManifestacoesGOG.pesquisaManifestacaoHelper.rowCount})" />
 							</f:facet>
 							<!-- VERDE - style="color: #CFDBB9;" -->
 							<!-- VERMELHO - style="color: #fe0000;" -->
