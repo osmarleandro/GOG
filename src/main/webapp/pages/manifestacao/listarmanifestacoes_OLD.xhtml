@@ -1,0 +1,466 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+	<ui:define name="bread">
+		<h:form>
+			<p:breadCrumb>
+				<p:menuitem value="Home" />
+				<p:menuitem value="Listar Manifestações" />
+			</p:breadCrumb>
+		</h:form>
+	</ui:define>
+	
+	<ui:define name="content">
+		<f:event type="preRenderComponent" listener="#{mBListarManifestacoes.recarregarManifestacoes()}" />
+		
+		<script type="text/javascript">
+			jQuery(document).ready(function () {
+				// Se for usuário Interlocutor ou Operador deve 'piscar' a cor da linha de atraso
+				setInterval(function() {
+					$('.atrasoEncaminhamento2').toggleClass("atrasoEncaminhamento");
+					$('.atrasoRespostaOuvidoria2').toggleClass("atrasoRespostaOuvidoria");
+					$('.atrasoRespostaManifestante2').toggleClass("atrasoRespostaManifestante");
+				}, 500);
+			});
+		</script>
+	
+		<h:form id="formListarManifestacoes">
+			<p:panelGrid id="panelResultado" style="width: 1216px; margin: 0 auto">
+				<p:row>
+					<p:column colspan="2" style="text-align: center;width: 100%;" styleClass="ui-widget-header">
+                        Gerenciamento de Manifestações
+                    </p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="2" style="text-align: left" styleClass="ui-widget-header" rendered="#{not security.manifestante}">
+						<p:inputText value="#{mBListarManifestacoes.textoBuscaManifestacao}" id="buscaManifestacao" size="50" style="margin-right: 10px;" />
+						<p:watermark value="Pesquisar nas Manifestações" for="buscaManifestacao" />
+						<p:commandButton id="btnBuscarManifestacao" value="Buscar"
+							actionListener="#{mBListarManifestacoes.buscarManifestacao}"
+							update="tabelaManifestacoes"
+							style="width: 100px; margin-right: 20px;" 
+							title="Pesquisar nas Manifestações" />
+						
+						<p:outputPanel rendered="#{not security.manifestante}">
+							<p:inputText value="#{mBListarManifestacoes.textoBuscaEncaminhamento}" id="buscaEncaminhamento" size="50" style="margin-right: 10px;" />
+							<p:watermark value="Pesquisar nos Encaminhamentos" for="buscaEncaminhamento" />
+							<p:commandButton id="btnBuscarEncaminhamento" value="Buscar"
+								actionListener="#{mBListarManifestacoes.buscarEncaminhamento}"
+								style="width: 100px;" 
+								update="tabelaManifestacoes"
+								title="Pesquisar nos Encaminhamentos" />
+						</p:outputPanel>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column styleClass="ui-widget-header" style="text-align: left; width: 250px;" rendered="#{not security.manifestante}">
+						<p:row>
+							<p:column colspan="2" style="text-align: left; width: 250px"
+								styleClass="ui-widget-header">
+								<p:outputPanel autoUpdate="true">
+									<p:commandButton id="btnCaixaEntrada" value="Caixa de Entrada"
+										style="width: 100%; margin-bottom: 10px;"
+										styleClass="#{mBListarManifestacoes.getBotaoCaixaCssClass('Caixa de Entrada')}"
+										actionListener="#{mBListarManifestacoes.getCaixaEntrada}"
+										title="Caixa de Entrada"
+										update="tabelaManifestacoes,btnCaixaEntrada,
+												btnSolicitadaInformacao,btnDevolvidas,
+												btnComAOuvidoria,btnEmAndamento,
+												btnRetornadas,btnFechadas" /> 
+									
+									<p:commandButton id="btnSolicitadaInformacao" value="Solicitada Informação"
+										style="width: 100%; margin-bottom: 10px;"
+										styleClass="#{mBListarManifestacoes.getBotaoCaixaCssClass('Solicitada Informação')}"
+										actionListener="#{mBListarManifestacoes.getSolicitadaInformacao}"
+										title="Solicitada Informação"
+										rendered="#{security.administrador || security.ouvidor}"
+										update="tabelaManifestacoes,btnCaixaEntrada,
+												btnSolicitadaInformacao,btnDevolvidas,
+												btnComAOuvidoria,btnEmAndamento,
+												btnRetornadas,btnFechadas" /> 
+										
+									<p:commandButton id="btnEmAndamento" value="Em Andamento"
+										style="width: 100%; margin-bottom: 10px;"
+										styleClass="#{mBListarManifestacoes.getBotaoCaixaCssClass('Em Andamento')}"
+										actionListener="#{mBListarManifestacoes.getEmAndamento}"
+										update="tabelaManifestacoes,btnCaixaEntrada,
+												btnSolicitadaInformacao,btnDevolvidas,
+												btnComAOuvidoria,btnEmAndamento,
+												btnRetornadas,btnFechadas" 
+										title="Em Andamento"
+										rendered="#{!security.operador}" />
+	
+									<p:commandButton id="btnRetornadas" value="Retornadas"
+										style="width: 100%; margin-bottom: 10px;"
+										styleClass="#{mBListarManifestacoes.getBotaoCaixaCssClass('Retornadas')}"
+										actionListener="#{mBListarManifestacoes.getRetornadas}"
+										update="tabelaManifestacoes,btnCaixaEntrada,
+												btnSolicitadaInformacao,btnDevolvidas,
+												btnComAOuvidoria,btnEmAndamento,
+												btnRetornadas,btnFechadas" 
+										title="Retornadas"
+										rendered="#{!security.operador}" />
+	
+									<p:commandButton id="btnDevolvidas" value="Devolvidas"
+										style="width: 100%; margin-bottom: 10px;"
+										styleClass="#{mBListarManifestacoes.getBotaoCaixaCssClass('Devolvidas')}"
+										actionListener="#{mBListarManifestacoes.getDevolvidas}"
+										update="tabelaManifestacoes,btnCaixaEntrada,
+												btnSolicitadaInformacao,btnDevolvidas,
+												btnComAOuvidoria,btnEmAndamento,
+												btnRetornadas,btnFechadas" 
+										title="Devolvidas"
+										rendered="#{security.operador}" />
+										
+									<p:commandButton id="btnComAOuvidoria" value="Com a Ouvidoria"
+										style="width: 100%; margin-bottom: 10px;"
+										styleClass="#{mBListarManifestacoes.getBotaoCaixaCssClass('Com a Ouvidoria')}"
+										actionListener="#{mBListarManifestacoes.getComAOuvidoria}"
+										update="tabelaManifestacoes,btnCaixaEntrada,
+												btnSolicitadaInformacao,btnDevolvidas,
+												btnComAOuvidoria,btnEmAndamento,
+												btnRetornadas,btnFechadas" 
+										title="Com a Ouvidoria"
+										rendered="#{security.interlocutor || security.operador}" />
+										
+									<p:commandButton id="btnFechadas" value="Solucionadas"
+										style="width: 100%; margin-bottom: 10px;"
+										styleClass="#{mBListarManifestacoes.getBotaoCaixaCssClass('Solucionadas')}"
+										actionListener="#{mBListarManifestacoes.getSolucionadas}"
+										update="tabelaManifestacoes,btnCaixaEntrada,
+												btnSolicitadaInformacao,btnDevolvidas,
+												btnComAOuvidoria,btnEmAndamento,
+												btnRetornadas,btnFechadas" 
+										title="Solucionadas" />
+
+									<p:commandButton id="btnDownload" value="Extrair Relatório"
+										style="width: 100%; margin-bottom: 10px; background: #8EB659; border: 1px solid #8EB659 !important; color: #FFF"
+										actionListener="#{mBListarManifestacoes.downloadReport()}"
+										title="Extrair Relatório" ajax="false" />
+								</p:outputPanel>
+							</p:column>
+							<p:panelGrid style="width: 100%;">
+								<p:row>
+									<p:column style="text-align: center; width: 100%"
+										styleClass="ui-widget-header">
+                                        Filtros Personalizados
+                                    </p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputPanel autoUpdate="true">
+											<p:selectOneListbox
+												value="#{mBListarManifestacoes.filtroEscolhido}"
+												style="height:100px; width: 98%;"
+												converter="#{conversorFiltroPersonalizado}">
+												<f:selectItems value="#{mBFiltroPersonalizado.todos}"
+													var="filtro" itemLabel="#{filtro.nmFiltroPersonalizado}"
+													itemValue="#{filtro}" />
+												<p:ajax
+													listener="#{mBListarManifestacoes.getFiltroPersonalizado}"
+													update="tabelaManifestacoes" />
+											</p:selectOneListbox>
+										</p:outputPanel>
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+							<p:panelGrid style="width: 100%;">
+								<p:row>
+									<p:column style="text-align: center; width: 100%"
+										styleClass="ui-widget-header">
+                                        Legenda
+                                    </p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<table width="100%" style="font-size: 10px;" class="corLinkLegenda">
+											<tr>
+												<td style="background-color: #CFDBB9;">
+													<p:commandLink
+														value="Atraso para Encaminhamento"
+														update="tabelaManifestacoes"
+														actionListener="#{mBListarManifestacoes.filtraAtrasoEncaminhamento()}" />
+												</td>
+											</tr>
+											<tr>
+												<td style="background-color: #ffc1c1;">
+													<p:commandLink
+														value="Atraso de Resposta à Ouvidoria"
+														update="tabelaManifestacoes"
+														actionListener="#{mBListarManifestacoes.filtraAtrasoRespostaOuvidoria()}" />
+												</td>
+											</tr>
+											<tr>
+												<td style="background-color: #FAC798;">
+													<p:commandLink
+														value="Atraso para Resposta ao Cidadão"
+														update="tabelaManifestacoes"
+														actionListener="#{mBListarManifestacoes.filtraAtrasoRespostaManifestante()}" />
+												</td>
+											</tr>
+											<tr>
+												<td style="background-color: #C0C0C0;">
+													<p:commandLink
+														value="Sem Atraso" update="tabelaManifestacoes"
+														actionListener="#{mBListarManifestacoes.filtraSemAtraso()}" />
+												</td>
+											</tr>
+											<p:outputPanel rendered="#{security.administrador}">
+												<tr>
+													<td style="background-color: #D9D9D9;">
+														<p:commandLink
+															value="Ocultas" update="tabelaManifestacoes"
+															actionListener="#{mBListarManifestacoes.filtraOcultas()}" />
+													</td>
+												</tr>
+											</p:outputPanel>
+										</table>
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+						</p:row>
+					</p:column>
+					<p:column style="vertical-align: top; ">
+						<p:dataTable id="tabelaManifestacoes"
+							value="#{mBListarManifestacoes.listaManifestacoes}"
+							paginator="true" rows="10" paginatorPosition="bottom"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							emptyMessage="Nenhuma manifestação foi encontrada"
+							var="manifestacao"
+							rowStyleClass="#{mBListarManifestacoes.verificaAtrasoStyleClass(manifestacao)}"
+							rowIndexVar="rowIx">
+
+							<f:facet name="header">
+								<h:outputText
+									value="#{mBListarManifestacoes.nomeFiltro} (#{mBListarManifestacoes.listaManifestacoes.size()})" />
+							</f:facet>
+							<!-- VERDE - style="color: #CFDBB9;" -->
+							<!-- VERMELHO - style="color: #fe0000;" -->
+							<!-- LARANJA - style="color: #ff8b00;" -->
+
+							<p:column rendered="#{not security.manifestante}">
+								<p:rowToggler />
+							</p:column>
+
+							<p:column style="width: 5%;" headerText="Nº"
+								filterBy="#{manifestacao.nrManifestacao}"
+								filterMatchMode="contains"
+								sortBy="#{manifestacao.nrManifestacao}">
+								<h:outputText value="#{manifestacao.nrManifestacao}" />
+							</p:column>
+
+							<p:column style="width: 5%;" sortBy="#{manifestacao.dtUltimaAtualizacao}">
+								<f:facet name="header">
+									<h:outputText value="Dt. Registro (R)" />
+									<br />
+									<h:outputText value="Dt. Atualização (A)" style="white-space: nowrap" />
+								</f:facet>
+								<h:outputText value="R: " />
+								<h:outputText value="#{manifestacao.dtCadastro}">
+									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+								</h:outputText>
+								<br />
+								<h:outputText value="A: " />
+								<h:outputText value="#{manifestacao.dtUltimaAtualizacao}">
+									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Manifestante" style="width: 20%;"
+								filterBy="#{manifestacao.nmPessoa}" filterMatchMode="contains"
+								sortBy="#{manifestacao.nmPessoa}">
+								<h:outputText 
+									value="#{manifestacao.nmPessoa}" 
+									rendered="#{mBListarManifestacoes.showSecretData(manifestacao)}" />
+							</p:column>
+
+							<p:column headerText="Tipo" style="width: 10%;"
+								filterBy="#{manifestacao.idTipoManifestacao.nmTipoManifestacao}"
+								filterMatchMode="contains"
+								sortBy="#{manifestacao.idTipoManifestacao.nmTipoManifestacao}">
+								<h:outputText
+									value="#{manifestacao.idTipoManifestacao.nmTipoManifestacao}" />
+							</p:column>
+
+							<p:column headerText="Prioridade" style="width: 10%;"
+								filterBy="#{manifestacao.idPrioridade.nmPrioridade}"
+								filterMatchMode="contains"
+								sortBy="#{manifestacao.idPrioridade.nmPrioridade}"
+								rendered="#{!security.interlocutor}">
+								<h:outputText value="#{manifestacao.idPrioridade.nmPrioridade}" />
+							</p:column>
+							
+							<p:column headerText="Operador" style="width: 10%;" 
+								filterBy="#{mBListarManifestacoes.getNomeOperadoresComManifestacao(manifestacao)}"
+								filterMatchMode="contains"
+								sortBy="#{mBListarManifestacoes.getNomeOperadoresComManifestacao(manifestacao)}"
+								rendered="#{security.interlocutor}">
+								<h:outputText value="#{mBListarManifestacoes.getNomeOperadoresComManifestacao(manifestacao)}" />
+							</p:column>
+
+							<p:column headerText="Status" style="width: 10%;"
+								filterBy="#{mBEnum.getStatusManifestacaoEnum(manifestacao.stStatusManifestacao).descricao}"
+								filterMatchMode="contains"
+								sortBy="#{mBEnum.getStatusManifestacaoEnum(manifestacao.stStatusManifestacao).descricao}">
+								<h:outputText
+									value="#{mBEnum.getStatusManifestacaoEnum(manifestacao.stStatusManifestacao).descricao}" />
+							</p:column>
+
+							<p:column headerText="Unidade(s)" style="width:20%;"
+								filterBy="#{mBListarManifestacoes.getUnidadesEncaminhadas(manifestacao)}"
+								filterMatchMode="contains"
+								sortBy="#{mBListarManifestacoes.getUnidadesEncaminhadas(manifestacao)}"
+								rendered="#{security.administrador || security.ouvidor || security.manifestante}">
+								<h:outputText
+									value="#{mBListarManifestacoes.getUnidadesEncaminhadas(manifestacao)}" />
+							</p:column>
+
+							<p:column headerText="Prazo de Atendimento" style="width:20%;"
+								sortBy="#{mBListarManifestacoes.getPrazoAtendimento(manifestacao)}"
+								rendered="#{security.interlocutor || security.operador}">
+								<h:outputText value="#{mBListarManifestacoes.getPrazoAtendimento(manifestacao)}">
+									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+								</h:outputText>
+							</p:column>
+							
+							<p:column headerText="Dias em Atraso" style="width:5%;"
+								sortBy="#{mBListarManifestacoes.diasAtrasoAoManifestante(manifestacao)}"
+								rendered="#{not security.manifestante}">
+								<h:outputText value="#{mBListarManifestacoes.diasAtrasoAoManifestante(manifestacao)}" />
+							</p:column>
+
+							<p:column headerText="Ver">
+								<div style="width: 50px; display: inline-block;">
+									<div style="float: left">
+										<p:commandButton id="cbViewManifestacao"
+											icon="ui-icon-search"
+											title="Visualizar"
+											action="#{mBListarManifestacoes.getManifestationUrl(manifestacao)}"
+											ajax="false" style="float: left">
+										</p:commandButton>
+									</div>
+									<p:outputPanel rendered="#{security.administrador}">
+										<div style="float: left">
+											<p:commandButton id="cbViewExcluir"
+												onclick="dlgOcultarManifestacao.show();"
+												icon="ui-icon-minus" title="Ocultar" update=":frmOcultar"
+												rendered="#{manifestacao.stStatusOcultacao != '1' }"
+												style="float: left">
+												<f:setPropertyActionListener 
+													value="#{manifestacao}"
+													target="#{mBListarManifestacoes.selectedManifestation}" />
+											</p:commandButton>
+										</div>
+										<div style="float: left">
+											<p:commandButton id="cbViewLiberar"
+												onclick="dlgDesocultarManifestacao.show();"
+												icon="ui-icon-plus" title="Mostrar" update=":frmMostrar"
+												rendered="#{manifestacao.stStatusOcultacao == '1' }"
+												style="float: left">
+												<f:setPropertyActionListener 
+													value="#{manifestacao}"
+													target="#{mBListarManifestacoes.selectedManifestation}" />
+											</p:commandButton>
+										</div>
+									</p:outputPanel>
+								</div>
+							</p:column>
+
+							<p:rowExpansion rendered="#{not security.manifestante}">
+								<div class="dstextomanifestacao" style="padding: 10px;">
+									<h:panelGrid id="display" columns="1" cellpadding="4"
+										style="width:100%; border: none!important"
+										styleClass=" ui-widget-content grid">
+										<h:outputText value="Descrição da Manifestação"
+											style="font-weight:bold; font-size:12px" />
+										<h:outputText value="#{manifestacao.getDsTextoManifestacaoFormatado()}" escape="false" />
+									</h:panelGrid>
+								</div>
+							</p:rowExpansion>
+						</p:dataTable>
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</h:form>
+		
+		
+		<!-- Caixa de diálogo de ocultação de manifestação -->
+		<p:confirmDialog id="dialogoExcluir" header="Ocultar Manifestação?" width="600"
+			message="Caso deseje ocultar essa manifestação, favor informar no campo abaixo o motivo da ocultação e clicar sobre o botão ocultar"
+			widgetVar="dlgOcultarManifestacao" appendToBody="true" closable="false">
+			<h:form id="frmOcultar">
+				<p:panelGrid style="width: 100%">
+					<p:row>
+						<p:column>
+							<h:outputText value="Número da Manifestação: " />
+						</p:column>
+						<p:column>
+							<h:outputText value="#{mBListarManifestacoes.selectedManifestation.nrManifestacao}" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="motivo" value="Motivo: " />
+						</p:column>
+						<p:column>
+							<h:inputTextarea id="motivo" cols="68" rows="10"
+								value="#{mBListarManifestacoes.selectedManifestation.dsMotivoOcultacao}" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2" style="text-align: center; width: 100%" styleClass="ui-widget-header">
+							<p:commandButton id="cbExcluirContinuar" value="Ocultar"
+								update=":formListarManifestacoes" ajax="false"
+								actionListener="#{mBListarManifestacoes.hideManifestation()}" />
+							<p:spacer width="10px" />
+							<p:commandButton id="cbExcluirCancelar" value="Fechar"
+								onclick="dlgOcultarManifestacao.hide();" type="button" />
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+			</h:form>
+		</p:confirmDialog>
+
+		<!-- Caixa de diálogo de desocultação de manifestação -->
+		<p:confirmDialog id="dialogoMostrar" header="Desocultar Manifestação?" width="600"
+			message="A manifestação está oculta pelo motivo descrito abaixo. Caso deseje confirmar a desocultação clique sobre o botão desocultar"
+			widgetVar="dlgDesocultarManifestacao" appendToBody="true" closable="false">
+			<h:form id="frmMostrar">
+				<p:panelGrid style="width: 100%">
+					<p:row>
+						<p:column>
+							<h:outputText value="Número da Manifestação: " />
+						</p:column>
+						<p:column>
+							<h:outputText value="#{mBListarManifestacoes.selectedManifestation.nrManifestacao}" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<h:outputText value="Motivo: " />
+						</p:column>
+						<p:column>
+							<h:outputText value="#{mBListarManifestacoes.selectedManifestation.dsMotivoOcultacao}" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2" style="text-align: center; width: 100%" styleClass="ui-widget-header">
+							<p:commandButton id="cbExcluirContinuar" value="Desocultar"
+								update=":formListarManifestacoes" ajax="false"
+								actionListener="#{mBListarManifestacoes.showManifestation()}" />
+								<p:spacer width="10px" />
+							<p:commandButton id="cbExcluirCancelar" value="Fechar"
+								onclick="dlgDesocultarManifestacao.hide();" type="button" />
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+			</h:form>
+		</p:confirmDialog>
+	</ui:define>
+</ui:composition>
