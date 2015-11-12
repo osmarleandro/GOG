@@ -543,42 +543,45 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
 		if (filtroManifestacao.getDataCadastro() != null){
 			adicionaClausulaWHERE(filtroQuery, " m.dtCadastro BETWEEN :dataCadastroInicial AND  :dataCadastroFinal ");
 
-			// Define valores inicial e final da data de cadastro
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(filtroManifestacao.getDataCadastro());
-			calendar.set(Calendar.HOUR_OF_DAY, 0);
-			calendar.set(Calendar.MINUTE, 0);
-			calendar.set(Calendar.SECOND, 0);
-			Date dataCadastroInicial = calendar.getTime();
-			calendar.set(Calendar.HOUR_OF_DAY, 24);
-			calendar.set(Calendar.MINUTE, 59);
-			calendar.set(Calendar.SECOND, 59);
-			Date dataCadastroFinal = calendar.getTime();
-
-			mapaQueryParameter.put("dataCadastroInicial", dataCadastroInicial);
-			mapaQueryParameter.put("dataCadastroFinal", dataCadastroFinal);
+			registraDataQueryParameter(filtroManifestacao.getDataCadastro(), 
+					"dataCadastroInicial", "dataCadastroFinal");
 		}
 		if (filtroManifestacao.getDataUltimaAtualizacao() != null){
 			adicionaClausulaWHERE(filtroQuery, " m.dtUltimaAtualizacao BETWEEN :dataUltimaAtualizacaoInicial AND  :dataUltimaAtualizacaoFinal ");
 
-			// Define valores inicial e final da data da última atualização
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(filtroManifestacao.getDataUltimaAtualizacao());
-			calendar.set(Calendar.HOUR_OF_DAY, 0);
-			calendar.set(Calendar.MINUTE, 0);
-			calendar.set(Calendar.SECOND, 0);
-			Date dataUltimaAtualizacaoInicial = calendar.getTime();
-			calendar.set(Calendar.HOUR_OF_DAY, 24);
-			calendar.set(Calendar.MINUTE, 59);
-			calendar.set(Calendar.SECOND, 59);
-			Date dataUltimaAtualizacaoFinal = calendar.getTime();
-
-			mapaQueryParameter.put("dataUltimaAtualizacaoInicial", dataUltimaAtualizacaoInicial);
-			mapaQueryParameter.put("dataUltimaAtualizacaoFinal", dataUltimaAtualizacaoFinal);
-
+			registraDataQueryParameter(filtroManifestacao.getDataUltimaAtualizacao(), 
+					"dataUltimaAtualizacaoInicial", "dataUltimaAtualizacaoFinal");
 		}
 		
 		return filtroQuery;
+	}
+	
+	
+	/**
+	 * Registra no mapa de parâmetros da query os valores dos filtros de data inicial e final a serem utilizados
+	 *  
+	 * @param dataFiltro A data a ser processada
+	 * @param nomeParametroInicial o nome do parâmetro para o filtro inicial
+	 * @param nomeParametroFinal o nome do parâmetro para o filtro final
+	 */
+	private void registraDataQueryParameter(Date dataFiltro, String nomeParametroInicial, String nomeParametroFinal){
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(dataFiltro);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		// Define o valor para a data inicial do filtro a ser utilizado
+		Date dataFiltroInicial = calendar.getTime();
+
+		calendar.set(Calendar.HOUR_OF_DAY, 24);
+		calendar.set(Calendar.MINUTE, 59);
+		calendar.set(Calendar.SECOND, 59);
+		// Define o valor para a data final do filtro a ser utilizado
+		Date dataFiltroFinal = calendar.getTime();
+
+		mapaQueryParameter.put(nomeParametroInicial, dataFiltroInicial);
+		mapaQueryParameter.put(nomeParametroFinal, dataFiltroFinal);
+		
 	}
     
     
