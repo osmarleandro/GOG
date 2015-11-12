@@ -1,6 +1,5 @@
 package br.com.xti.ouvidoria.dao;
 
-import java.io.Reader;
 import java.sql.Clob;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -8,13 +7,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.Lob;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -25,15 +22,11 @@ import javax.persistence.criteria.Root;
 
 import org.apache.commons.lang.StringUtils;
 
-import br.com.xti.ouvidoria.controller.PesquisaManifestacaoViewHelper;
 import br.com.xti.ouvidoria.dto.manifestacao.DTOManifestacao;
 import br.com.xti.ouvidoria.filtropersonalizado.FiltroPersonalizado;
 import br.com.xti.ouvidoria.helper.EnumHelper;
-import br.com.xti.ouvidoria.model.TbEncaminhamento;
 import br.com.xti.ouvidoria.model.TbManifestacao;
 import br.com.xti.ouvidoria.model.TbManifestacao_;
-import br.com.xti.ouvidoria.model.TbTramite;
-import br.com.xti.ouvidoria.model.TbUnidade;
 import br.com.xti.ouvidoria.model.TbUsuario;
 import br.com.xti.ouvidoria.model.enums.BooleanEnum;
 import br.com.xti.ouvidoria.model.enums.FuncaoUsuarioEnum;
