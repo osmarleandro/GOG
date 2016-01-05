@@ -33,7 +33,7 @@ As versões dos pacotes de instalação foram expressamente declaradas neste doc
      * Instalação do Git
      * Instalação do Java JDK 8
      * Instalação do JBoss AS 7.1.1.Final
-   * Configurar o Eclipse
+   * Instalação do Eclipse
      * Configurar projeto no Eclipse
 2. Configurar o Banco de Dados
 3. Configurar o Jboss
@@ -70,28 +70,33 @@ $ git clone https://github.com/culturagovbr/GOG.git
 
 #### Instalação do Java JDK 8
 
+Siga as instruções de instalação do [Java JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 ```
 http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 ```
 
 #### Instalação do JBoss AS 7.1.1.Final
+
 * O Jboss pode ser instalado a partir do download do arquivo disponibilizado na página:
 ```
 http://jbossas.jboss.org/downloads
 ```
+> Utilizamos a versão **JBoss AS 7.1.1.Final**. Basta realizar o download do arquivo e descompactá-lo em um diretório de sua preferência.
 
-
-### Configurar o Eclipse
+### Instalação do Eclipse
 
 Instalar a versão do eclipse. Sugerimos dar preferência à versão **Eclipse Luna Package - Eclipse IDE for Java Developers** disponível para desenvolvedores Java JEE
 ```
 http://www.eclipse.org/downloads/packages/eclipse-ide-java-developers/lunasr2
 ```
+> Basta realizar o download do arquivo e descompactá-lo em um diretório de sua preferência.
 
-Instalar o plugin JbossTools (*JBoss Tools 4.2.3.Final*), para utilizar o servidor de aplicação na IDE, dentre outras facilidades
+
+Instalar o plugin JbossTools (*JBoss Tools 4.2.3.Final*), para utilizar o servidor de aplicação na IDE, dentre outras facilidades. 
 ```
 http://tools.jboss.org/downloads/jbosstools/luna/4.2.3.Final.html
 ```
+> Siga as instruções da página para instalar o plugin JbossTools
 
 #### Configuração do projeto no Eclipse
 O projeto foi desenvolvido em Java, com uso do Maven. O arquivo "pom.xml" pode ser adequamente utilizado para importar o projeto em um IDE.
