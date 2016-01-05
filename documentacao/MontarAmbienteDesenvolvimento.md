@@ -34,6 +34,7 @@ As versões dos pacotes de instalação foram expressamente declaradas neste doc
      * Instalação do Java JDK 8
      * Instalação do JBoss AS 7.1.1.Final
    * Instalação do Eclipse
+     * Instalar o plugin Jbosstools
      * Configurar projeto no Eclipse
 2. Configurar o Banco de Dados
 3. Configurar o Jboss
@@ -85,18 +86,14 @@ http://jbossas.jboss.org/downloads
 
 ### Instalação do Eclipse
 
-Instalar a versão do eclipse. Sugerimos dar preferência à versão **Eclipse Luna Package - Eclipse IDE for Java Developers** disponível para desenvolvedores Java JEE
-```
-http://www.eclipse.org/downloads/packages/eclipse-ide-java-developers/lunasr2
-```
+Instalar a versão desejada do eclipse. 
+Sugerimos dar preferência à versão [**Eclipse Luna Package - Eclipse IDE for Java Developers**](http://www.eclipse.org/downloads/packages/eclipse-ide-java-developers/lunasr2) disponível para desenvolvedores Java JEE
 > Basta realizar o download do arquivo e descompactá-lo em um diretório de sua preferência.
 
+#### Instalar o plugin JbossTools
 
 Instalar o plugin JbossTools (*JBoss Tools 4.2.3.Final*), para utilizar o servidor de aplicação na IDE, dentre outras facilidades. 
-```
-http://tools.jboss.org/downloads/jbosstools/luna/4.2.3.Final.html
-```
-> Siga as instruções da página para instalar o plugin JbossTools
+> Siga as instruções da [página de instalação do plugin](http://tools.jboss.org/downloads/jbosstools/luna/4.2.3.Final.html) para instalar o plugin JbossTools
 
 #### Configuração do projeto no Eclipse
 O projeto foi desenvolvido em Java, com uso do Maven. O arquivo "pom.xml" pode ser adequamente utilizado para importar o projeto em um IDE.
