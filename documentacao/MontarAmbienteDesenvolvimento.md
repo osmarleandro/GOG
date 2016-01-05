@@ -32,7 +32,7 @@ As versões dos pacotes de instalação foram expressamente declaradas neste doc
    * Configuração do sistema operacional
      * Instalação do Git
      * Instalação do Java JDK 8
-     * Instalação do JBoss AS 7.1.1.Final
+   * Instalação do JBoss AS 7.1.1.Final
    * Instalação do Eclipse
      * Instalar o plugin Jbosstools
      * Configurar projeto no Eclipse
@@ -76,13 +76,12 @@ Siga as instruções de instalação do [Java JDK](http://www.oracle.com/technet
 http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 ```
 
-#### Instalação do JBoss AS 7.1.1.Final
+### Instalação do JBoss AS 7.1.1.Final
 
-* O Jboss pode ser instalado a partir do download do arquivo disponibilizado na página:
-```
-http://jbossas.jboss.org/downloads
-```
-> Utilizamos a versão **JBoss AS 7.1.1.Final**. Basta realizar o download do arquivo e descompactá-lo em um diretório de sua preferência.
+O Jboss pode ser instalado a partir do download do arquivo disponibilizado no [site do Jboss](http://jbossas.jboss.org/downloads)
+
+> Utilizamos a versão **JBoss AS 7.1.1.Final**. 
+> Basta realizar o download do arquivo e descompactá-lo em um diretório de sua preferência.
 
 ### Instalação do Eclipse
 
