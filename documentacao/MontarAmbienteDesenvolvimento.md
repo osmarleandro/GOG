@@ -21,7 +21,9 @@
 # Ambiente de Desenvolvimento
 Neste documento apresentamos informações necessárias para realizar a montagem, configuração e utilização do ambiente de desenvolvimento do sistema GOG. 
 
-As versões dos pacotes de instalação foram expressamente declaradas neste documentos com o simples objetivo de refletir a realidade vivenciada pela equipe de desenvolvimento do MinC. A intenção é garantir que este guia possa conduzir seu leitor a uma instalação de sucesso; entretanto, nada impede que o leitor tente utilizar novas versões das aplicações ou pacotes aqui citados.
+> **Nota**
+>> As versões dos pacotes de instalação foram expressamente declaradas neste documentos com o simples objetivo de refletir a realidade vivenciada pela equipe de desenvolvimento do MinC. 
+>> A intenção é garantir que este guia possa conduzir seu leitor a uma instalação de sucesso; entretanto, nada impede que o leitor tente utilizar novas versões das aplicações ou pacotes aqui citados.
 
 
 ## Montagem do ambiente de desenvolvimento
@@ -41,6 +43,12 @@ As versões dos pacotes de instalação foram expressamente declaradas neste doc
    * Configuração dos drivers de conexão
    * Configuração complementar - domínio de segurança e autenticação
 3. [Configurar o Banco de Dados](documentacao/MontarAmbienteDesenvolvimento_ConfiguracaoSGDB.md)
+   * Configuração do dataSource no projeto (arquivo "persistence.xml")
 4. [Executar carga inicial dos dados](documentacao/MontarAmbienteDesenvolvimento_CargaInicialDados.md)
    * Ajustar as configurações
+   * Ajustar a tabela de parâmetros da aplicação
+   * Realizar a configuração/criação de usuários do sistema
+5. [Montagem do pacote para disponibilização (deploy)](documentacao/MontarAmbienteDesenvolvimento_MontarDeploy.md)
+   * Montagem do arquivo de deploy na IDE Eclipse
+   * Montagem do arquivo de deploy com comando linux
 
