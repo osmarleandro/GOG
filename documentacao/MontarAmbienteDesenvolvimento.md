@@ -30,7 +30,7 @@ Neste documento apresentamos informações necessárias para realizar a montagem
 
 <div id='diagram' />
 
-1. [Preparação do Ambiente](documentacao/MontarAmbienteDesenvolvimento_PreparacaoAmbiente.md)
+1. [Preparação do Ambiente](MontarAmbienteDesenvolvimento_PreparacaoAmbiente.md)
    * Configuração do sistema operacional
      * Instalação do Git
      * Instalação do Java JDK 8
@@ -38,17 +38,17 @@ Neste documento apresentamos informações necessárias para realizar a montagem
    * Instalação do Eclipse
      * Instalar o plugin Jbosstools
      * Configurar projeto no Eclipse
-2. [Configurar o Jboss](documentacao/MontarAmbienteDesenvolvimento_ConfiguracaoJboss.md)
+2. [Configurar o Jboss](MontarAmbienteDesenvolvimento_ConfiguracaoJboss.md)
    * Criar o datasource
    * Configuração dos drivers de conexão
    * Configuração complementar - domínio de segurança e autenticação
-3. [Configurar o Banco de Dados](documentacao/MontarAmbienteDesenvolvimento_ConfiguracaoSGDB.md)
+3. [Configurar o Banco de Dados](MontarAmbienteDesenvolvimento_ConfiguracaoSGDB.md)
    * Configuração do dataSource no projeto (arquivo "persistence.xml")
-4. [Executar carga inicial dos dados](documentacao/MontarAmbienteDesenvolvimento_CargaInicialDados.md)
+4. [Executar carga inicial dos dados](MontarAmbienteDesenvolvimento_CargaInicialDados.md)
    * Ajustar as configurações
    * Ajustar a tabela de parâmetros da aplicação
    * Realizar a configuração/criação de usuários do sistema
-5. [Montagem do pacote para disponibilização (deploy)](documentacao/MontarAmbienteDesenvolvimento_MontarDeploy.md)
+5. [Montagem do pacote para disponibilização (deploy)](MontarAmbienteDesenvolvimento_MontarDeploy.md)
    * Montagem do arquivo de deploy na IDE Eclipse
    * Montagem do arquivo de deploy com comando linux
 
