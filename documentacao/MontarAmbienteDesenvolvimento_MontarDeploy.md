@@ -26,12 +26,12 @@ O deploy pode ser gerado com comandos do maven, que podem ser executados diretam
 >> 1. Instale o maven no seu Sistema Operacional
 
 ```console
-sudo apt-get install maven2
+$ > sudo apt-get install maven2
 ```
 
 >> 2. Execute o comando do Maven *(mvn package)* no diretório do projeto, para gerar o arquivo de deploy
 ```console
-cd <diretorio raiz do projeto>
-mvn package
+$ > cd <diretorio raiz do projeto>
+$ > mvn package
 ```
 >> 3. O arquivo 'GOG.war' será gerado no diretório *```"<raiz do projeto>/<target/>"```*
