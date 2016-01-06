@@ -51,4 +51,5 @@ Neste documento apresentamos informações necessárias para realizar a montagem
 5. [Montagem do pacote para disponibilização (deploy)](MontarAmbienteDesenvolvimento_MontarDeploy.md)
    * Montagem do arquivo de deploy na IDE Eclipse
    * Montagem do arquivo de deploy com comando linux
+   * Realizando o deploy e utilizando a aplicação
 
