@@ -27,8 +27,10 @@ import br.com.xti.ouvidoria.dao.ManifestacaoDTODAO;
 import br.com.xti.ouvidoria.dao.UsuarioDAO;
 import br.com.xti.ouvidoria.dao.VwUltimoTramiteDAO;
 import br.com.xti.ouvidoria.dto.manifestacao.DTOManifestacao;
+import br.com.xti.ouvidoria.exception.PermissionDeniedException;
 import br.com.xti.ouvidoria.filtropersonalizado.FiltroPersonalizado;
 import br.com.xti.ouvidoria.helper.DataHelper;
+import br.com.xti.ouvidoria.helper.EnumHelper;
 import br.com.xti.ouvidoria.helper.FiltroHelper;
 import br.com.xti.ouvidoria.helper.ValidacaoHelper;
 import br.com.xti.ouvidoria.model.TbComunicacaoExterna;
@@ -170,235 +172,100 @@ public class ManifestacaoService {
     	List<DTOManifestacao> retorno = new ArrayList<DTOManifestacao>();
     	
     	TbUsuario usuario = usuarioDAO.find(securityService.getUser().getIdUsuario());
+    	// Garantir a verificação de permissão de acesso na camada de serviços
+    	this.validaPermissaoAcessoPesquisa(filtroManifestacao, usuario);
     	
-    	if (verificaCenarioPesquisaComDTO(filtroManifestacao)){
-    		retorno = manifestacaoDTODAO.pesquisaManifestacoes(filtroManifestacao.getFiltroPesquisa(), usuario);
-    		complementaDadosManifestacao(retorno);
-    	}else if(filtroManifestacao.isCenarioPesquisaEmAndamento()){
-    		retorno = pesquisarEmAndamento(filtroManifestacao);
-    	}else if(filtroManifestacao.isCenarioPesquisaRetornadas()){
-    		retorno = pesquisarRetornadas(filtroManifestacao);
-    	}else if(filtroManifestacao.isCenarioPesquisaSolucionadas()){
-    		retorno = pesquisarSolucionadas(filtroManifestacao);
-    	}else if(filtroManifestacao.isCenarioPesquisaComOuvidoria()){
-    		retorno = pesquisarComOuvidoria(filtroManifestacao);
-    	}else if(filtroManifestacao.isCenarioPesquisaFiltroPersonalizado()){
+
+    	if(filtroManifestacao.isCenarioPesquisaFiltroPersonalizado()){
+    		//Realiza a pesquisa de manifestações utilizando o FILTRO PERSONALIZADO
     		retorno = pesquisaManifestacoesFiltroPersonalizado(filtroManifestacao);
     	}else{
-    		
+    		//Realiza a pesquisa de manifestações no banco de dados
+    		retorno = manifestacaoDTODAO.pesquisaManifestacoes(filtroManifestacao.getFiltroPesquisa(), usuario);
+    		complementaDadosManifestacao(retorno);
     	}
     	
     	return retorno;
 
     }
-    
 
-       
+
     /**
-     * Verifica se o cenário de pesquisa está desenvolvido para pesquisar com utilização do DTO
+     * Valida as permissões de acesso aos cenários de pesquisa de manifestações.
+     * Vale destacar que estas verificações estão replicadas na interface de usuário (tela/ xhtml), entretanto estão replicadas
+     * nesta classe de serviço, para garantir a alta coesão da classe de negócio
      * 
      * @param filtroManifestacao
-     * @return
+     * @param usuario
+     * @throws PermissionDeniedException
      */
-    private boolean verificaCenarioPesquisaComDTO(
-			PesquisaManifestacaoViewHelper filtroManifestacao) {
-    	// Utilizar os cenários de pesquisa que foram tratados no ManifestacaoDTODAO
-		return 	filtroManifestacao.isCenarioPesquisaTodos() ||
-				filtroManifestacao.isCenarioPesquisaCaixaEntrada() ||
-				filtroManifestacao.isCenarioPesquisaEmMonitoramento() ||
-				filtroManifestacao.isCenarioPesquisaDevolvidas() ||
-				filtroManifestacao.isCenarioPesquisaSolicitadaInformacao();
+	private void validaPermissaoAcessoPesquisa(
+			PesquisaManifestacaoViewHelper filtroManifestacao, TbUsuario usuario)
+			throws PermissionDeniedException {
+		FuncaoUsuarioEnum funcao = EnumHelper.getFuncaoUsuarioEnum(usuario.getTpFuncao());
+    
+    	// TODO: Verficiar o tipo de usuário e validar se o cenário de pesquisa é permitido
+    	if (filtroManifestacao.isCenarioPesquisaCaixaEntrada()){
+    		/* 
+    		 * Permitido o acesso de todos os perfis à Caixa de Entrada. 
+    		 * Configurar os registros da caixa de entrada conforme o perfil do usuário
+    		 */
+    		
+    	}
+    	if (filtroManifestacao.isCenarioPesquisaSolicitadaInformacao())
+    		// Permitido o acesso aos perfis ADMINISTRADOR e OUVIDOR
+    		validaPermissaoAcessoPesquisa(true, funcao, FuncaoUsuarioEnum.ADMINISTRADOR, FuncaoUsuarioEnum.OUVIDOR);
+    	else if (filtroManifestacao.isCenarioPesquisaEmAndamento())
+    		// Permitido o acesso aos perfis que NÃO são OPERADOR ou MANIFESTANTE
+    		validaPermissaoAcessoPesquisa(false, funcao, FuncaoUsuarioEnum.OPERADOR, FuncaoUsuarioEnum.MANIFESTANTE);
+    	else if (filtroManifestacao.isCenarioPesquisaEmMonitoramento())
+    		// Permitido o acesso aos perfis que NÃO são OPERADOR ou MANIFESTANTE
+    		validaPermissaoAcessoPesquisa(false, funcao, FuncaoUsuarioEnum.OPERADOR, FuncaoUsuarioEnum.MANIFESTANTE);
+    	else if (filtroManifestacao.isCenarioPesquisaRetornadas())
+    		// Permitido o acesso aos perfis que NÃO são OPERADOR ou MANIFESTANTE
+    		validaPermissaoAcessoPesquisa(false, funcao, FuncaoUsuarioEnum.OPERADOR, FuncaoUsuarioEnum.MANIFESTANTE);
+    	else if (filtroManifestacao.isCenarioPesquisaDevolvidas())
+    		// Permitido o acesso aos perfis que NÃO são OPERADOR ou MANIFESTANTE
+    		validaPermissaoAcessoPesquisa(false, funcao, FuncaoUsuarioEnum.OPERADOR, FuncaoUsuarioEnum.MANIFESTANTE);
+    	else if (filtroManifestacao.isCenarioPesquisaComOuvidoria())
+    		// Permitido o acesso aos perfis INTERLOCUTOR e OPERADOR
+    		validaPermissaoAcessoPesquisa(true, funcao, FuncaoUsuarioEnum.INTERLOCUTOR, FuncaoUsuarioEnum.OPERADOR);
+    	else if (filtroManifestacao.isCenarioPesquisaSolucionadas())
+    		// Permitido o acesso aos perfis que NÃO MANIFESTANTE
+    		validaPermissaoAcessoPesquisa(false, funcao, FuncaoUsuarioEnum.MANIFESTANTE);
+    	else if (filtroManifestacao.isCenarioPesquisaTodos())
+    		// Permitido o acesso aos perfis OUVIDOR e ADMINISTRADOR
+    		validaPermissaoAcessoPesquisa(true, funcao, FuncaoUsuarioEnum.OUVIDOR, FuncaoUsuarioEnum.ADMINISTRADOR);
 	}
+    
 
-
-	private List<DTOManifestacao> pesquisarComOuvidoria(PesquisaManifestacaoViewHelper filtroManifestacao)  {
-		boolean filtraOcultas = filtroManifestacao.getFiltroPesquisa().isOculta();
+	/**
+	 * Verifica se a função do usuário informada é igual a uma das funções permitidas.
+	 * 
+	 * @param acessoPermitido Flag para informar se o acesso deve ser permitido  
+	 * @param funcaoUsuario
+	 * @param funcoesVerificaveis
+	 * @throws PermissionDeniedException Exceção disparada caso a função do usuário não seja igual ao menos a uma das funções permitidas 
+	 */
+	private void validaPermissaoAcessoPesquisa(boolean acessoPermitido, FuncaoUsuarioEnum funcaoUsuario, FuncaoUsuarioEnum... funcoesVerificaveis) throws PermissionDeniedException{
+		for (FuncaoUsuarioEnum funcao : funcoesVerificaveis) {
+			if (acessoPermitido){
+				// Encerra a validação se o acesso for permitido para uma das funções informadas
+				if (funcao.equals(funcaoUsuario))
+					return;
+			}else{
+				// Dispara exceção caso a função verificável é a igual a função do usuário E (and) caso o acesso não seja permitido para as funções informadas 
+				if (funcao.equals(funcaoUsuario))
+					throw new PermissionDeniedException();
+			}
+		}
 		
-    	FiltroPersonalizado filtro = new FiltroPersonalizado();
-    	filtro.setMetodoBusca("and");
-    	filtro.addManIdStatus(StatusManifestacaoEnum.EM_ANDAMENTO.getId());
-        filtro.setEncStatus(StatusEncaminhamentoEnum.RETORNADA.getId());
-        filtro.addEncIdUnidadeRecebeu(securityService.getUser().getIdUnidade().getIdUnidade());
-    	
-    	List<TbManifestacao> list = manifestacaoDTODAO.getManifestacoes(filtroManifestacao.getFiltroPesquisa(), filtraOcultas, filtro);
-        
-        List<DTOManifestacao> retorno = transformarListaDTOManifestacao(list);
-        complementaDadosManifestacao(retorno);
-        
-        return retorno;
-    }
-
-
-    private List<DTOManifestacao> pesquisarSolucionadas(PesquisaManifestacaoViewHelper filtroManifestacao)  {
-		boolean filtraOcultas = filtroManifestacao.getFiltroPesquisa().isOculta();
-
-        FiltroPersonalizado filtro = new FiltroPersonalizado();
-        switch (securityService.getUserProfile()) {
-        	case OPERADOR:
-        		filtro.addEncIdOperador(securityService.getUser().getIdUsuario());
-	        case INTERLOCUTOR:
-	            filtro.addEncIdUnidadeRecebeu(securityService.getUser().getIdUnidade().getIdUnidade());
-			case ADMINISTRADOR:
-			case OUVIDOR:
-				filtro.addManIdStatus(StatusManifestacaoEnum.SOLUCIONADA.getId());
-				break;
-			default: break;
-		}
-
-        List<TbManifestacao> list = manifestacaoDTODAO.getManifestacoes(filtroManifestacao.getFiltroPesquisa(), filtraOcultas, filtro);
-        
-        List<DTOManifestacao> retorno = transformarListaDTOManifestacao(list);
-        complementaDadosManifestacao(retorno);
-        
-        return retorno;
-
-    }
+		if (acessoPermitido)
+			// Dispara exceção caso a função do usuário NÃO seja igual a qualquer uma das funções informadas
+			throw new PermissionDeniedException();
+	}
  
-    
-    private List<DTOManifestacao> pesquisarRetornadas(PesquisaManifestacaoViewHelper filtroManifestacao)  {
-		boolean filtraOcultas = filtroManifestacao.getFiltroPesquisa().isOculta();
-
-        FiltroPersonalizado filtro = new FiltroPersonalizado();
-        filtro.setMetodoBusca("and");
-        
-        if(securityService.isAdministrador() || securityService.isOuvidor()) {
-        	filtro.addManIdStatus(StatusManifestacaoEnum.EM_ANDAMENTO.getId());
-        	filtro.setEncStatus(StatusEncaminhamentoEnum.RETORNADA.getId());
-        } else if(securityService.isInterlocutor()) {
-        	filtro = FiltroHelper.getFiltrosPadrao(securityService.getUser());
-        }
-        
-        List<TbManifestacao> list = manifestacaoDTODAO.getManifestacoes(filtroManifestacao.getFiltroPesquisa(), filtraOcultas, filtro);
-        
-        ajustarRetornadas(list);
-        List<DTOManifestacao> retorno = transformarListaDTOManifestacao(list);
-        complementaDadosManifestacao(retorno);
-        
-        return retorno;
-
-    }
-    
-    private void ajustarRetornadas(List<TbManifestacao> list) {
-    	switch (securityService.getUserProfile()) {
-			case INTERLOCUTOR: // remover as manifestações que não foram retornadas pelo operador.
-	        	TbUnidade unidadeInterlocutor = securityService.getUser().getIdUnidade();
-	        	
-	        	ListIterator<TbManifestacao> listIterator = list.listIterator();
-	        	for( ; listIterator.hasNext() ; ) {
-	        		enc: for (TbEncaminhamento e : listIterator.next().getTbEncaminhamentoCollection()) {
-						if(e.getIdUnidadeRecebeu().equals(unidadeInterlocutor)) {
-							boolean deletar = Boolean.TRUE;
-							// Recupera o último trâmite da ouvidria para a área
-							Date dtUltimoTramiteDaOuvidoria = null;
-							ListIterator<TbTramite> listTramites = new ArrayList<TbTramite>(e.getTbTramiteCollection()).listIterator(e.getTbTramiteCollection().size());
-							// Percorre a lista em ordem inversa para pegar o último trâmite da Ouvidoria
-							for ( ; listTramites.hasPrevious() ; ) {
-								TbTramite t = listTramites.previous();
-								if(t.getIdUsuarioEmissor() != null && UnidadeEnum.OUVIDORIA.getId().equals(t.getIdUsuarioEmissor().getIdUnidade().getIdUnidade())) {
-									dtUltimoTramiteDaOuvidoria = t.getDtTramite();
-									break;
-								}
-							}
-							
-							if(dtUltimoTramiteDaOuvidoria == null) {
-								dtUltimoTramiteDaOuvidoria = e.getDtEnvioTramite();
-							}
-							
-							for (TbTramite t : e.getTbTramiteCollection()) {
-								if(!(t.getIdUsuarioReceptor() != null && FuncaoUsuarioEnum.OPERADOR.getId().equals(t.getIdUsuarioReceptor().getTpFuncao()))) {
-									continue;
-								}
-								
-								if(BooleanEnum.NAO.getId().equals(t.getStRetornada()) && t.getDtTramite().compareTo(dtUltimoTramiteDaOuvidoria) >= 0) {
-									listIterator.remove();
-									break enc;
-								} else {
-									deletar = Boolean.FALSE;
-								}
-							}
-							if(deletar)
-								listIterator.remove();
-						}
-					}
-	        	}
-		        break;
-			default:
-				break;
-		}
-    }
-  
-
-    private List<DTOManifestacao> pesquisarEmAndamento(PesquisaManifestacaoViewHelper filtroManifestacao) {
-		boolean filtraOcultas = filtroManifestacao.getFiltroPesquisa().isOculta();
-
-        FiltroPersonalizado filtro = new FiltroPersonalizado();
-        filtro.setMetodoBusca("and");
-        // -- ADMIN ou OUVIDOR
-        if(securityService.isAdministrador() || securityService.isOuvidor()) {
-	        filtro.setEncStatus(StatusEncaminhamentoEnum.ENCAMINHADA.getId());
-	        filtro.addManIdStatus(StatusManifestacaoEnum.EM_ANDAMENTO.getId());
-//	        filtro.addManIdStatus(StatusManifestacaoEnum.SOLICITADA_INFORMACAO.getId());
-        } else if(securityService.isInterlocutor()) {
-        	filtro = FiltroHelper.getFiltrosPadrao(securityService.getUser());
-        }
-
-        List<TbManifestacao> list = manifestacaoDTODAO.getManifestacoes(filtroManifestacao.getFiltroPesquisa(), filtraOcultas, filtro);
-        if(securityService.isInterlocutor()) {
-        	FiltroPersonalizado filtro2 = new FiltroPersonalizado();
-        	filtro2.addManIdStatus(StatusManifestacaoEnum.EM_ANDAMENTO.getId());
-        	filtro2.setEncStatus(StatusEncaminhamentoEnum.ENCAMINHADA.getId());
-        	filtro2.addEncIdUnidadeEnviou(securityService.getUser().getIdUnidade().getIdUnidade());
-        	list.addAll(manifestacaoDTODAO.getManifestacoes(filtroManifestacao.getFiltroPesquisa(), filtraOcultas, filtro2));
-        }
-        
-        ajustarEmAndamento(list);
-        List<DTOManifestacao> retorno = transformarListaDTOManifestacao(list);
-        complementaDadosManifestacao(retorno);
-        
-        return retorno;
-    }
-    
-    private void ajustarEmAndamento(List<TbManifestacao> list) {
-    	switch (securityService.getUserProfile()) {
-			case INTERLOCUTOR: // remover as manifestações que não foram encaminhadas para um operador.
-	        	TbUnidade unidadeInterlocutor = securityService.getUser().getIdUnidade();
-	        	
-	        	ListIterator<TbManifestacao> listIterator = list.listIterator();
-	        	for( ; listIterator.hasNext() ; ) {
-	        		boolean deletarEnviou = Boolean.FALSE;
-	        		boolean deletarRecebeu = Boolean.FALSE;
-	        		enc: for (TbEncaminhamento e : listIterator.next().getTbEncaminhamentoCollection()) {
-        				if(e.getIdUnidadeEnviou().equals(unidadeInterlocutor)) {
-        					if(StatusEncaminhamentoEnum.RETORNADA.getId().equals(e.getStEncaminhamento())) {
-        						deletarEnviou = Boolean.TRUE;
-        					} else {
-        						break enc;
-        					}
-        				} else if(e.getIdUnidadeRecebeu().equals(unidadeInterlocutor)) {
-        					for (TbTramite t : e.getTbTramiteCollection()) {
-        						if(t.getIdUsuarioReceptor() != null 
-        								&& FuncaoUsuarioEnum.OPERADOR.getId().equals(t.getIdUsuarioReceptor().getTpFuncao())
-        								&& BooleanEnum.NAO.getId().equals(t.getStRetornada())) {
-        							break enc;
-        						} else {
-        							deletarRecebeu = Boolean.TRUE;
-        						}
-        					}
-        				}
-        				
-        				if(deletarEnviou && deletarRecebeu) {
-        					listIterator.remove();
-        				}
-					}
-	        	}
-		        break;
-			default:
-				break;
-		}
-    }
-
-    
-   
+       
 	/**
      * Complementa os dados da manifestação com atributos resultadas dos relacionamentos com demais entidades.
      * 

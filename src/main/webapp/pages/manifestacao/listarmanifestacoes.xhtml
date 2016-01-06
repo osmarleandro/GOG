@@ -74,7 +74,7 @@
 												btnComAOuvidoria,btnEmAndamento,
 												btnRetornadas,btnFechadas,painelPesquisaManifestacoes" 
 										title="Em Andamento"
-										rendered="#{!security.operador}" />
+										rendered="#{!security.operador and !security.manifestante}" />
 	
 									<p:commandButton id="btnEmMonitoramento" value="Em Monitoramento"
 										style="width: 100%; margin-bottom: 10px;"
@@ -85,7 +85,7 @@
 												btnComAOuvidoria,btnEmAndamento,
 												btnRetornadas,btnFechadas,painelPesquisaManifestacoes" 
 										title="Em Monitoramento"
-										rendered="#{!security.operador}" />
+										rendered="#{!security.operador and !security.manifestante}" />
 
 									<p:commandButton id="btnRetornadas" value="Retornadas"
 										style="width: 100%; margin-bottom: 10px;"
@@ -96,7 +96,7 @@
 												btnComAOuvidoria,btnEmAndamento,
 												btnRetornadas,btnFechadas,painelPesquisaManifestacoes" 
 										title="Retornadas"
-										rendered="#{!security.operador}" />
+										rendered="#{!security.operador and !security.manifestante}" />
 	
 									<p:commandButton id="btnDevolvidas" value="Devolvidas"
 										style="width: 100%; margin-bottom: 10px;"
@@ -107,7 +107,7 @@
 												btnComAOuvidoria,btnEmAndamento,
 												btnRetornadas,btnFechadas,painelPesquisaManifestacoes" 
 										title="Devolvidas"
-										rendered="#{security.operador}" />
+										rendered="#{!security.operador and !security.manifestante}" />
 										
 									<p:commandButton id="btnComAOuvidoria" value="Com a Ouvidoria"
 										style="width: 100%; margin-bottom: 10px;"
@@ -128,7 +128,8 @@
 												btnSolicitadaInformacao,btnDevolvidas,
 												btnComAOuvidoria,btnEmAndamento,
 												btnRetornadas,btnFechadas,painelPesquisaManifestacoes" 
-										title="Solucionadas" />
+										title="Solucionadas"
+										rendered="#{!security.manifestante}" />
 
 									<p:commandButton id="btnCaixaTodos" value="TODOS"
 										style="width: 100%; margin-bottom: 10px;" 
@@ -138,7 +139,8 @@
 										update="tabelaManifestacoes,btnCaixaEntrada,
 												btnSolicitadaInformacao,btnDevolvidas,
 												btnComAOuvidoria,btnEmAndamento,
-												btnRetornadas,btnFechadas,painelPesquisaManifestacoes" /> 
+												btnRetornadas,btnFechadas,painelPesquisaManifestacoes" 
+										rendered="#{security.ouvidor || security.administrador}" /> 
 
 
 <!--  Caixa com opção para relatório (na barra à direita) ... value="Extrair Relatório"

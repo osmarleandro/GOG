@@ -45,36 +45,37 @@ public class PesquisaManifestacaoViewHelper extends PesquisaEntidadeViewHelper<D
 	@Override
 	public List<DTOManifestacao> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
 		
-		// Configura a paginação da tabela de resultados
-		if (getFiltroPesquisa().isReiniciarPaginacao()){
-			getFiltroPesquisa().setPrimeiroRegistro(0);
-			DataTable dataTable = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formListarManifestacoes:tabelaManifestacoes");
-			if (dataTable != null)
-				dataTable.setFirst(0);
-			getFiltroPesquisa().setReiniciarPaginacao(false);
-		}
-		else{
-			getFiltroPesquisa().setPrimeiroRegistro(first);
-		}
-		getFiltroPesquisa().setQuantidadeRegistros(pageSize);
-		
-		// Configura dados da ordenação das colunas na tabela de resultados 
-		getFiltroPesquisa().setOrdenacaoCampo(sortField);
-		if (sortOrder != null){
-			if (sortOrder.equals(SortOrder.ASCENDING))
-				getFiltroPesquisa().setOrdenacaoForma("ASC");
-			else if (sortOrder.equals(SortOrder.DESCENDING))
-				getFiltroPesquisa().setOrdenacaoForma("DESC");
-			else  
-				getFiltroPesquisa().setOrdenacaoForma(" ");
-		}
-		
 		// Realiza a pesquisa de Manifestações
 		try {
+			// Configura a paginação da tabela de resultados
+			if (getFiltroPesquisa().isReiniciarPaginacao()){
+				getFiltroPesquisa().setPrimeiroRegistro(0);
+				DataTable dataTable = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formListarManifestacoes:tabelaManifestacoes");
+				if (dataTable != null)
+					dataTable.setFirst(0);
+				getFiltroPesquisa().setReiniciarPaginacao(false);
+			}
+			else{
+				getFiltroPesquisa().setPrimeiroRegistro(first);
+			}
+			getFiltroPesquisa().setQuantidadeRegistros(pageSize);
+			
+			// Configura dados da ordenação das colunas na tabela de resultados 
+			getFiltroPesquisa().setOrdenacaoCampo(sortField);
+			if (sortOrder != null){
+				if (sortOrder.equals(SortOrder.ASCENDING))
+					getFiltroPesquisa().setOrdenacaoForma("ASC");
+				else if (sortOrder.equals(SortOrder.DESCENDING))
+					getFiltroPesquisa().setOrdenacaoForma("DESC");
+				else  
+					getFiltroPesquisa().setOrdenacaoForma(" ");
+			}
+		
 			List<DTOManifestacao> retorno = manifestacaoService.pesquisaManifestacoes(this);
 			this.setResultado(retorno);
+			
 		} catch (Exception e) {
-
+			MensagemFaceUtil.erro("Problemas na execução da pesquisa", e.getMessage());
 			e.printStackTrace();
 			this.setResultado(new ArrayList<DTOManifestacao>());
 

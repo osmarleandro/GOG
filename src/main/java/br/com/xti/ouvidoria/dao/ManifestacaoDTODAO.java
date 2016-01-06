@@ -32,7 +32,6 @@ import br.com.xti.ouvidoria.model.enums.BooleanEnum;
 import br.com.xti.ouvidoria.model.enums.FuncaoUsuarioEnum;
 import br.com.xti.ouvidoria.model.enums.StatusEncaminhamentoEnum;
 import br.com.xti.ouvidoria.model.enums.StatusManifestacaoEnum;
-import br.com.xti.ouvidoria.model.enums.UnidadeEnum;
 
 /**
  * @author Clelson
@@ -51,13 +50,10 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
     private Map<String, Object> 		mapaQueryParameter 	= new HashMap<String, Object>();
 
     
-    private static final String ASSOCIACAO_ENCAMINHAMENTOS				=	"encaminhamentos"; 
-    private static final String ASSOCIACAO_UNIDADE_RECEBEU				=	"unidadeRecebeu"; 
-    private static final String ASSOCIACAO_UNIDADE_ENVIOU				=	"unidadeEnviou"; 
-    private static final String ASSOCIACAO_TRAMITE						=	"tramite"; 
-    private static final String ASSOCIACAO_USUARIO_RECEPTOR				=	"usuarioReceptor"; 
-    private static final String ASSOCIACAO_USUARIO_EMISSOR				=	"usuarioEmissor"; 
-    private static final String ASSOCIACAO_ULTIMO_TRAMITE				=	"ultimoTramite"; 
+    private static final String ASSOCIACAO_ENCAMINHAMENTOS					=	"encaminhamentos"; 
+    private static final String ASSOCIACAO_TRAMITE							=	"tramite"; 
+    private static final String ASSOCIACAO_USUARIO_RECEPTOR					=	"usuarioReceptor"; 
+    private static final String ASSOCIACAO_USUARIO_EMISSOR					=	"usuarioEmissor"; 
 
     public ManifestacaoDTODAO() {
         super(TbManifestacao.class);
@@ -67,14 +63,7 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
         		new StringBuffer ("	LEFT JOIN TbEncaminhamento en				ON en.idManifestacao					= m.idManifestacao "));
         mapaUsoEntidades.put(ASSOCIACAO_ENCAMINHAMENTOS, false);
         
-        mapaEntidades.put(ASSOCIACAO_UNIDADE_RECEBEU, 
-        		new StringBuffer ("	LEFT JOIN TbUnidade unidadeRecebeu			ON unidadeRecebeu.idUnidade				= en.idUnidadeRecebeu "));
-        mapaUsoEntidades.put(ASSOCIACAO_UNIDADE_RECEBEU,  false);
-        
-        mapaEntidades.put(ASSOCIACAO_UNIDADE_ENVIOU, 
-        		new StringBuffer ("	LEFT JOIN TbUnidade unidadeEnviou			ON unidadeEnviou.idUnidade				= en.idUnidadeEnviou ")); 
-        mapaUsoEntidades.put(ASSOCIACAO_UNIDADE_ENVIOU,  false);
-        
+
         mapaEntidades.put(ASSOCIACAO_TRAMITE, 
         		new StringBuffer ("	LEFT JOIN TbTramite tra						ON tra.idEncaminhamento					= en.idEncaminhamento " ));
         mapaUsoEntidades.put(ASSOCIACAO_TRAMITE,  false);
@@ -89,17 +78,6 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
         						  "	LEFT JOIN TbUnidade unidadeUsuarioEmissor	ON unidadeUsuarioEmissor.idUnidade 		= usuarioEmissor.idUnidade " ));
         mapaUsoEntidades.put(ASSOCIACAO_USUARIO_EMISSOR,  false);
     	
-        mapaEntidades.put(ASSOCIACAO_ULTIMO_TRAMITE, 
-        		new StringBuffer ("	LEFT JOIN  ( "
-							    	+ "		SELECT ulTrm.* "
-							    	+ "		FROM TbTramite ulTrm "
-							    	+ "			INNER JOIN TbEncaminhamento 	ulTrm_Enc 	ON ulTrm_Enc.idEncaminhamento 		= ulTrm.idEncaminhamento "
-							    	+ "			INNER JOIN tbManifestacao 		ulTrm_Man 	ON ulTrm_Man.idManifestacao		 	= ulTrm_Enc.idManifestacao "
-							    	+ "		WHERE "
-							    	+ " 	ORDER BY ulTrm.idTramite DESC LIMIT 1) ultimoTramite "
-							    	+ "	ON 	ultimoTramite.idEncaminhamento	= en.idEncaminhamento " ));
-        mapaUsoEntidades.put(ASSOCIACAO_ULTIMO_TRAMITE,  false);
-			
 
     }
 
@@ -110,14 +88,11 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
     private String recuperaComplementoAssociacaoEntidades(){
     	String sqlAssociacao = "";
 
-    	sqlAssociacao += mapaUsoEntidades.get(ASSOCIACAO_ENCAMINHAMENTOS) ? mapaEntidades.get(ASSOCIACAO_ENCAMINHAMENTOS) : "";
-    	sqlAssociacao += mapaUsoEntidades.get(ASSOCIACAO_UNIDADE_RECEBEU) ? mapaEntidades.get(ASSOCIACAO_UNIDADE_RECEBEU) : "";
-    	sqlAssociacao += mapaUsoEntidades.get(ASSOCIACAO_UNIDADE_ENVIOU) ? mapaEntidades.get(ASSOCIACAO_UNIDADE_ENVIOU) : "";
-    	sqlAssociacao += mapaUsoEntidades.get(ASSOCIACAO_TRAMITE) ? mapaEntidades.get(ASSOCIACAO_TRAMITE) : "";
-    	sqlAssociacao += mapaUsoEntidades.get(ASSOCIACAO_USUARIO_RECEPTOR) ? mapaEntidades.get(ASSOCIACAO_USUARIO_RECEPTOR) : "";
-    	sqlAssociacao += mapaUsoEntidades.get(ASSOCIACAO_USUARIO_EMISSOR) ? mapaEntidades.get(ASSOCIACAO_USUARIO_EMISSOR) : "";
-    	sqlAssociacao += mapaUsoEntidades.get(ASSOCIACAO_ULTIMO_TRAMITE) ? mapaEntidades.get(ASSOCIACAO_ULTIMO_TRAMITE) : "";
-    	
+    	sqlAssociacao += mapaUsoEntidades.get(ASSOCIACAO_ENCAMINHAMENTOS) 					? mapaEntidades.get(ASSOCIACAO_ENCAMINHAMENTOS) : "";
+    	sqlAssociacao += mapaUsoEntidades.get(ASSOCIACAO_TRAMITE) 							? mapaEntidades.get(ASSOCIACAO_TRAMITE) : "";
+    	sqlAssociacao += mapaUsoEntidades.get(ASSOCIACAO_USUARIO_RECEPTOR) 					? mapaEntidades.get(ASSOCIACAO_USUARIO_RECEPTOR) : "";
+    	sqlAssociacao += mapaUsoEntidades.get(ASSOCIACAO_USUARIO_EMISSOR) 					? mapaEntidades.get(ASSOCIACAO_USUARIO_EMISSOR) : "";
+
     	return sqlAssociacao;
     }
     
@@ -129,13 +104,7 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
     	if (associacaoEntidade.equals(ASSOCIACAO_ENCAMINHAMENTOS))
     		mapaUsoEntidades.put(ASSOCIACAO_ENCAMINHAMENTOS, true);
     	
-    	else if (associacaoEntidade.equals(ASSOCIACAO_UNIDADE_RECEBEU)){
-       		mapaUsoEntidades.put(ASSOCIACAO_UNIDADE_RECEBEU, true);
-       		mapaUsoEntidades.put(ASSOCIACAO_ENCAMINHAMENTOS, true);
-    	}else if (associacaoEntidade.equals(ASSOCIACAO_UNIDADE_ENVIOU)){
-    		mapaUsoEntidades.put(ASSOCIACAO_UNIDADE_ENVIOU, true);
-    		mapaUsoEntidades.put(ASSOCIACAO_ENCAMINHAMENTOS, true);
-    	}else if (associacaoEntidade.equals(ASSOCIACAO_TRAMITE)){
+    	else if (associacaoEntidade.equals(ASSOCIACAO_TRAMITE)){
     		mapaUsoEntidades.put(ASSOCIACAO_TRAMITE, true);
     		mapaUsoEntidades.put(ASSOCIACAO_ENCAMINHAMENTOS, true);
 
@@ -146,10 +115,6 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
     	}else if (associacaoEntidade.equals(ASSOCIACAO_USUARIO_EMISSOR)){
     		mapaUsoEntidades.put(ASSOCIACAO_USUARIO_EMISSOR, true);
     		mapaUsoEntidades.put(ASSOCIACAO_TRAMITE, true);
-    		mapaUsoEntidades.put(ASSOCIACAO_ENCAMINHAMENTOS, true);
-    	}
-    	else if (associacaoEntidade.equals(ASSOCIACAO_ULTIMO_TRAMITE)){
-    		mapaUsoEntidades.put(ASSOCIACAO_ULTIMO_TRAMITE, true);
     		mapaUsoEntidades.put(ASSOCIACAO_ENCAMINHAMENTOS, true);
     	}
     }
@@ -328,7 +293,7 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
     public List<DTOManifestacao> pesquisaManifestacoes(DTOManifestacao filtroManifestacao, TbUsuario usuario) throws Exception{
 
     	StringBuffer camposQuery = new StringBuffer(
-	    	" SELECT  " + 
+	    	" SELECT distinct " + 
 	    	"  m.nrManifestacao" + 
 	    	", m.idManifestacao" + 
 	    	", m.dtCadastro" +  
@@ -347,12 +312,12 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
 	    	
 	    	", tp.prazoEntrada" +  
 	    	", tp.prazoAreaSolucionadora" +  
-	    	", tp.prazoRespostaCidadao" );  
+	    	", tp.prazoRespostaCidadao " );  
     	
 
     	StringBuffer fonteDadosQuery = new StringBuffer(
     		" FROM tbManifestacao m " + 
-	    	"	INNER JOIN tbTipoManifestacao tp			ON tp.idTipoManifestacao 		= m.idTipoManifestacao " + 
+	    	"	INNER JOIN tbTipoManifestacao tp		ON tp.idTipoManifestacao 		= m.idTipoManifestacao " + 
 	    	"	INNER JOIN TbPrioridade pr				ON pr.idPrioridade 				= m.idPrioridade " );
     	
 
@@ -398,7 +363,7 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
     	}
 
     	// Carrega a quantidade de registros da pesquisa no DTO informado
-    	StringBuffer queryCount = new StringBuffer("SELECT count(m.nrManifestacao) ");
+    	StringBuffer queryCount = new StringBuffer("SELECT count(distinct m.nrManifestacao) ");
     	queryCount.append(fonteDadosQuery);
     	//Acrescenta clásula WHERE quando tem filtros informados
     	queryCount.append(filtroQuery);
@@ -494,12 +459,6 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
     	FuncaoUsuarioEnum funcao = EnumHelper.getFuncaoUsuarioEnum(usuario.getTpFuncao());
     	if (funcao == FuncaoUsuarioEnum.ADMINISTRADOR && filtraOcultas){//Filtra ocultas apenas para o Administrador
     		filtroQuery.append(" WHERE m.stStatusOcultacao = " + BooleanEnum.SIM.getId());
-    	}else {
-    		/*
-    		filtroQuery.append("( m.stStatusOcultacao = " + BooleanEnum.NAO.getId());
-    		filtroQuery.append(" or m.stStatusOcultacao = " + BooleanEnum.SIM.getId());
-    		filtroQuery.append(" or m.stStatusOcultacao IS NULL ) " );
-    		*/
     	}
 
     	// Configura os filtros de pesquisa conforme o cenário de pesquisa
@@ -512,6 +471,14 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
 			configuraFiltroEmMonitoramento(filtroQuery);
 		else if (filtroManifestacao.isCenarioPesquisaDevolvidas())
 			configuraFiltroDevolvidas(filtroQuery, usuario);
+		else if (filtroManifestacao.isCenarioPesquisaEmAndamento())
+			configuraFiltroEmAndamento(filtroQuery, usuario);
+		else if (filtroManifestacao.isCenarioPesquisaRetornadas())
+			configuraFiltroRetornadas(filtroQuery, usuario);
+		else if (filtroManifestacao.isCenarioPesquisaSolucionadas())
+			configuraFiltroSolucionadas(filtroQuery, usuario);
+		else if (filtroManifestacao.isCenarioPesquisaComOuvidoria())
+			configuraFiltroComOuvidoria(filtroQuery, usuario);
 
 		// Configura a pesquisa de manifestações
 		Integer filtroNumeroManifestacao = filtroManifestacao.getNumeroManifestacao();
@@ -591,27 +558,150 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
     	
     }
 
+    
+	/**
+	 * Configura o filtro de pesquisa para recuperar as manifestação que estão com o status igual a SOLUCIONADA
+	 * Apenas manifestações que estão SOLUCIONADAS, considerando a unidade do usuário (caso seja um OPERADOR ou um INTERLOCUTOR)
+	 * 
+	 * @param filtroQuery o texto gerado para o filtro de pesquisa 
+	 * @param usuario o usuário que está solicitando a pesquisa
+	 */
+	private void configuraFiltroSolucionadas(StringBuffer filtroQuery,
+			TbUsuario usuario) {
+    	// Recupera a Função do usuário
+    	FuncaoUsuarioEnum funcao = EnumHelper.getFuncaoUsuarioEnum(usuario.getTpFuncao());
+
+		
+		adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao				= " + StatusManifestacaoEnum.SOLUCIONADA.getId());
+
+    	switch (funcao) {
+	    	case OPERADOR:
+	    		adicionaClausulaWHERE(filtroQuery, " tra.idUsuarioReceptor		= " + usuario.getIdUsuario());
+	    		configuraComplementoAssociacaoEntidade(ASSOCIACAO_ENCAMINHAMENTOS);
+	    		configuraComplementoAssociacaoEntidade(ASSOCIACAO_TRAMITE);
+	
+	    	case INTERLOCUTOR:
+	    		adicionaClausulaWHERE(filtroQuery, " en.idUnidadeRecebeu	 	= " + usuario.getIdUnidade().getIdUnidade());
+	    		configuraComplementoAssociacaoEntidade(ASSOCIACAO_ENCAMINHAMENTOS);
+
+	    	break;
+    	}
+
+	}
+
+
+	/**
+	 * Configura o filtro de pesquisa para recuperar as manifestação que estão com a Ouvidoria
+	 * Apenas manifestações que estão RETORNADAS para a Ouvidoria e que foram encaminhadas para a Unidade do usuário
+	 * 
+	 * @param filtroQuery o texto gerado para o filtro de pesquisa 
+	 * @param usuario o usuário que está solicitando a pesquisa
+	 */
+	private void configuraFiltroComOuvidoria(StringBuffer filtroQuery,
+			TbUsuario usuario) {
+        
+        adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao				= " + StatusManifestacaoEnum.EM_ANDAMENTO.getId());
+    	adicionaClausulaWHERE(filtroQuery, " en.stEncaminhamento 				= " + StatusEncaminhamentoEnum.RETORNADA.getId());
+    	adicionaClausulaWHERE(filtroQuery, " en.idUnidadeRecebeu	 			= " + usuario.getIdUnidade().getIdUnidade());
+
+    	configuraComplementoAssociacaoEntidade(ASSOCIACAO_ENCAMINHAMENTOS);
+	}
+
+
+    
+	/**
+	 * Configura o filtro de pesquisa para recuperar as manifestação que estão com o status igual a RETORNADA
+	 * Apenas manifestações que estão RETORNADA, considerando a unidade do usuário (caso seja um INTERLOCUTOR)
+	 * 
+	 * @param filtroQuery o texto gerado para o filtro de pesquisa 
+	 * @param usuario o usuário que está solicitando a pesquisa
+	 */
+	private void configuraFiltroRetornadas(StringBuffer filtroQuery,
+			TbUsuario usuario) {
+    	// Recupera a Função do usuário
+    	FuncaoUsuarioEnum funcao = EnumHelper.getFuncaoUsuarioEnum(usuario.getTpFuncao());
+		
+    	adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao				= " + StatusManifestacaoEnum.EM_ANDAMENTO.getId());
+    	adicionaClausulaWHERE(filtroQuery, " en.stEncaminhamento 				= " + StatusEncaminhamentoEnum.RETORNADA.getId());
+
+    	switch (funcao) {
+	    	case INTERLOCUTOR:
+	    		adicionaClausulaWHERE(filtroQuery, " en.idUnidadeRecebeu	 	= " + usuario.getIdUnidade().getIdUnidade());
+
+	    	break;
+    	}
+
+    	configuraComplementoAssociacaoEntidade(ASSOCIACAO_ENCAMINHAMENTOS);
+	}
+
+	
+	
+	/**
+	 * Configura o filtro de pesquisa para recuperar as manifestação que estão com o status igual a EM_ANDAMENTO
+	 * Apenas manifestações que estão EM_ANDAMENTO, considerando a unidade do usuário (caso seja um INTERLOCUTOR)
+	 * 
+	 * @param filtroQuery o texto gerado para o filtro de pesquisa 
+	 * @param usuario o usuário que está solicitando a pesquisa
+	 */
+	private void configuraFiltroEmAndamento(StringBuffer filtroQuery,
+			TbUsuario usuario) {
+    	// Recupera a Função do usuário
+    	FuncaoUsuarioEnum funcao = EnumHelper.getFuncaoUsuarioEnum(usuario.getTpFuncao());
+    	
+    	adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao				= " + StatusManifestacaoEnum.EM_ANDAMENTO.getId());
+    	adicionaClausulaWHERE(filtroQuery, " en.stEncaminhamento 				= " + StatusEncaminhamentoEnum.ENCAMINHADA.getId());
+
+    	switch (funcao) {
+	    	case INTERLOCUTOR:
+	    		adicionaClausulaWHERE(filtroQuery, 
+	    			"( 	en.idUnidadeRecebeu	 				=  " + usuario.getIdUnidade().getIdUnidade()
+	    			+ " OR 	en.idUnidadeEnviou		 		=  " + usuario.getIdUnidade().getIdUnidade()
+	    			+ ")" );
+    		break;
+    	}
+
+    	configuraComplementoAssociacaoEntidade(ASSOCIACAO_ENCAMINHAMENTOS);
+	}
+
+	
+	/**
+	 * 
+	 * @param filtroQuery o texto gerado para o filtro de pesquisa 
+	 * @param usuario o usuário que está solicitando a pesquisa
+	 */
 	private void configuraFiltroDevolvidas(StringBuffer filtroQuery,
 			TbUsuario usuario) {
-		adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao = " + 
-				StatusManifestacaoEnum.EM_ANDAMENTO.getId());
+		adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao 			= " + StatusManifestacaoEnum.EM_ANDAMENTO.getId());
 		adicionaClausulaWHERE(filtroQuery, " en.stEncaminhamento 				= " + StatusEncaminhamentoEnum.ENCAMINHADA.getId());
-		adicionaClausulaWHERE(filtroQuery, " unidadeRecebeu.idUnidade 			= " + usuario.getIdUnidade().getIdUnidade());
-		adicionaClausulaWHERE(filtroQuery, " tra.idUsuarioReceptor				= " + usuario.getIdUnidade().getIdUnidade());
+		adicionaClausulaWHERE(filtroQuery, " en.idUnidadeRecebeu	 			= " + usuario.getIdUnidade().getIdUnidade());
+		adicionaClausulaWHERE(filtroQuery, " tra.idUsuarioReceptor				= " + usuario.getIdUsuario());
 		adicionaClausulaWHERE(filtroQuery, " tra.stRetornada	 				= " + BooleanEnum.NAO.getId());
 
 		configuraComplementoAssociacaoEntidade(ASSOCIACAO_ENCAMINHAMENTOS);
-		configuraComplementoAssociacaoEntidade(ASSOCIACAO_UNIDADE_RECEBEU);
 		configuraComplementoAssociacaoEntidade(ASSOCIACAO_TRAMITE);
 		
 	}
 
+	/**
+	 * Configura o filtro de pesquisa para recuperar as manifestação que estão com o status igual a EM_MONITORAMENTO
+	 * Apenas manifestações que estão EM_MONITORAMENTO
+	 * 
+	 * @param filtroQuery o texto gerado para o filtro de pesquisa 
+	 * @param usuario o usuário que está solicitando a pesquisa
+	 */
 	private void configuraFiltroEmMonitoramento(StringBuffer filtroQuery) {
 		adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao = " + 
 				StatusManifestacaoEnum.EM_MONITORAMENTO.getId());
 		
 	}
 
+	/**
+	 * Configura o filtro de pesquisa para recuperar as manifestação que estão com o status igual a SOLICITADA_INFORMACAO
+	 * Apenas manifestações que estão SOLICITADA_INFORMACAO
+	 * 
+	 * @param filtroQuery o texto gerado para o filtro de pesquisa 
+	 * @param usuario o usuário que está solicitando a pesquisa
+	 */
 	private void configuraFiltroSolicitadaInformacao(StringBuffer filtroQuery) {
 		adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao = " + 
 				StatusManifestacaoEnum.SOLICITADA_INFORMACAO.getId());
@@ -631,39 +721,48 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
         	
         	switch (funcao) {
         	case OPERADOR:
-        		adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao					= " + StatusManifestacaoEnum.EM_ANDAMENTO.getId());
-        		adicionaClausulaWHERE(filtroQuery, " and en.stEncaminhamento 				= " + StatusEncaminhamentoEnum.ENCAMINHADA.getId());
-        		adicionaClausulaWHERE(filtroQuery, " and unidadeRecebeu.idUnidade 			= " + usuario.getIdUnidade().getIdUnidade());
-        		adicionaClausulaWHERE(filtroQuery, " and tra.idUsuarioReceptor				= " + usuario.getIdUnidade().getIdUnidade());
-        		adicionaClausulaWHERE(filtroQuery, " and tra.stRetornada	 				= " + BooleanEnum.NAO.getId());
+        		adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao				= " + StatusManifestacaoEnum.EM_ANDAMENTO.getId());
+        		adicionaClausulaWHERE(filtroQuery, " en.stEncaminhamento 				= " + StatusEncaminhamentoEnum.ENCAMINHADA.getId());
+        		adicionaClausulaWHERE(filtroQuery, " en.idUnidadeRecebeu	 			= " + usuario.getIdUnidade().getIdUnidade());
+        		adicionaClausulaWHERE(filtroQuery, " tra.idUsuarioReceptor				= " + usuario.getIdUsuario());
+        		adicionaClausulaWHERE(filtroQuery, " tra.stRetornada	 				= " + BooleanEnum.NAO.getId());
         		
         		configuraComplementoAssociacaoEntidade(ASSOCIACAO_ENCAMINHAMENTOS);
-        		configuraComplementoAssociacaoEntidade(ASSOCIACAO_UNIDADE_RECEBEU);
         		configuraComplementoAssociacaoEntidade(ASSOCIACAO_TRAMITE);
         		break;
         		
         	case INTERLOCUTOR:
-        		adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao 				= " + StatusManifestacaoEnum.EM_ANDAMENTO.getId());
-        		adicionaClausulaWHERE(filtroQuery, " and en.stEncaminhamento 				= " + StatusEncaminhamentoEnum.ENCAMINHADA.getId());
-
-        		adicionaClausulaWHERE(filtroQuery, " and unidadeEnviou.idUnidade 			<> " + usuario.getIdUnidade().getIdUnidade());
-
-        		adicionaClausulaWHERE(filtroQuery, " and unidadeRecebeu.idUnidade 			<> " + usuario.getIdUnidade().getIdUnidade());
-        		
-        		adicionaClausulaWHERE(filtroQuery, " and unidadeUsuarioEmissor.idUnidade 	<> " + UnidadeEnum.OUVIDORIA.getId());
-        		adicionaClausulaWHERE(filtroQuery, " and ultimoTramite.idUnidadeEnvio 		<> " + usuario.getIdUnidade().getIdUnidade());
-        		
-        		adicionaClausulaWHERE(filtroQuery, " and usuarioReceptor. tpFuncao 			<> " +FuncaoUsuarioEnum.OPERADOR.getId());
-        		adicionaClausulaWHERE(filtroQuery, " and tra.stRetornada	 				<> " + BooleanEnum.NAO.getId());
+        		adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao 			= " + StatusManifestacaoEnum.EM_ANDAMENTO.getId());
+        		adicionaClausulaWHERE(filtroQuery, " en.stEncaminhamento 				= " + StatusEncaminhamentoEnum.ENCAMINHADA.getId());
+        		adicionaClausulaWHERE(filtroQuery, " en.idUnidadeEnviou		 			<> " + usuario.getIdUnidade().getIdUnidade());
+        		adicionaClausulaWHERE(filtroQuery, " en.idUnidadeRecebeu	 			=  " + usuario.getIdUnidade().getIdUnidade());
         		
         		configuraComplementoAssociacaoEntidade(ASSOCIACAO_ENCAMINHAMENTOS);
-        		configuraComplementoAssociacaoEntidade(ASSOCIACAO_UNIDADE_ENVIOU);
-        		configuraComplementoAssociacaoEntidade(ASSOCIACAO_UNIDADE_RECEBEU);
-        		configuraComplementoAssociacaoEntidade(ASSOCIACAO_USUARIO_EMISSOR);
-        		configuraComplementoAssociacaoEntidade(ASSOCIACAO_TRAMITE);
-        		configuraComplementoAssociacaoEntidade(ASSOCIACAO_USUARIO_RECEPTOR);
-        		configuraComplementoAssociacaoEntidade(ASSOCIACAO_ULTIMO_TRAMITE);
+        		/*
+        		 * Complementa a query EXCLUINDO todos os encaminhamento para os quais o ÚLTIMO TRÂMITE tenha sido designado para
+        		 * um OPERADOR e que não tenha sido retornado.
+        		 */
+        		StringBuffer complementoSQLUltimoTramite = new StringBuffer();
+        		complementoSQLUltimoTramite.append( 
+        				"( SELECT distinct enc.idEncaminhamento "
+        				+ " FROM TbEncaminhamento enc "
+        				+ " INNER JOIN TbTramite tram on tram.idEncaminhamento = enc.idEncaminhamento "
+        				+ " WHERE tram.idTramite in( "
+        				// Seleciona o último Trâmite
+        				// TODO: deve tratar adequadamente para projetos com Postgresql
+        				+ "    SELECT TOP 1 ultimoTramite.idTramite "
+        				+ "    FROM TbTramite ultimoTramite "
+        				+ "    INNER JOIN TbUsuario usuarioReceptorUltimoTramite  ON usuarioReceptorUltimoTramite.idUsuario   = ultimoTramite.idUsuarioReceptor "
+        				+ "    WHERE ultimoTramite.idEncaminhamento = enc.idEncaminhamento "
+        				// ... trâmite designado para um OPERADOR
+        				+ "        and usuarioReceptorUltimoTramite.tpFuncao   = " + FuncaoUsuarioEnum.OPERADOR.getId()
+        				// ... trâmite que não retornou
+        				+ "        and ultimoTramite.stRetornada	=   " + BooleanEnum.NAO.getId()
+        				+ "    ORDER BY ultimoTramite.idTramite DESC )"
+        				+ " ) " );  
 
+        		adicionaClausulaWHERE(filtroQuery, " en.idEncaminhamento not in " + complementoSQLUltimoTramite);
+        		
         		break;
         		
         	case MANIFESTANTE:

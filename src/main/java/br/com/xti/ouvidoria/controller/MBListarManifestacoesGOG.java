@@ -101,7 +101,6 @@ public class MBListarManifestacoesGOG implements Serializable{
     		pesquisaManifestacaoHelper = new PesquisaManifestacaoViewHelper(manifestacaoService);
     	}
     	
-//    	manifestacaoDAO.pesquisaManifestacoes(dtoManifestacao);
 		
     }
 
@@ -164,8 +163,6 @@ public class MBListarManifestacoesGOG implements Serializable{
     	pesquisaManifestacaoHelper = new PesquisaManifestacaoViewHelper(manifestacaoService);
     	pesquisaManifestacaoHelper.configuraCenarioPesquisaSolicitadaInformacao();
     	pesquisaManifestacaoHelper.getFiltroPesquisa().setReiniciarPaginacao(true);
-    	
-//    	manifestacaoService.pesquisaManifestacoes(dtoManifestacao);
     }
     
     public void getCaixaEntrada(ActionEvent actionEvent) {
@@ -173,8 +170,6 @@ public class MBListarManifestacoesGOG implements Serializable{
     	pesquisaManifestacaoHelper = new PesquisaManifestacaoViewHelper(manifestacaoService);
     	pesquisaManifestacaoHelper.configuraCenarioPesquisaCaixaEntrada();
     	pesquisaManifestacaoHelper.getFiltroPesquisa().setReiniciarPaginacao(true);
-    	
-//    	manifestacaoService.pesquisaManifestacoes(dtoManifestacao);
     }
 
 
@@ -183,8 +178,6 @@ public class MBListarManifestacoesGOG implements Serializable{
     	pesquisaManifestacaoHelper = new PesquisaManifestacaoViewHelper(manifestacaoService);
     	pesquisaManifestacaoHelper.configuraCenarioPesquisaEmAndamento();
     	pesquisaManifestacaoHelper.getFiltroPesquisa().setReiniciarPaginacao(true);
-    	
-//    	manifestacaoService.pesquisaManifestacoes(dtoManifestacao);
     }
 
     public void getEmMonitoramento(ActionEvent actionEvent) {
@@ -192,8 +185,6 @@ public class MBListarManifestacoesGOG implements Serializable{
     	pesquisaManifestacaoHelper = new PesquisaManifestacaoViewHelper(manifestacaoService);
     	pesquisaManifestacaoHelper.configuraCenarioPesquisaEmMonitoramento();
     	pesquisaManifestacaoHelper.getFiltroPesquisa().setReiniciarPaginacao(true);
-    	
-//    	manifestacaoService.pesquisaManifestacoes(dtoManifestacao);
     }
     
     public void getRetornadas(ActionEvent actionEvent) {
@@ -201,8 +192,6 @@ public class MBListarManifestacoesGOG implements Serializable{
     	pesquisaManifestacaoHelper = new PesquisaManifestacaoViewHelper(manifestacaoService);
     	pesquisaManifestacaoHelper.configuraCenarioPesquisaRetornadas();
     	pesquisaManifestacaoHelper.getFiltroPesquisa().setReiniciarPaginacao(true);
-    	
-//    	manifestacaoService.pesquisaManifestacoes(dtoManifestacao);
     }
 
     
@@ -211,8 +200,6 @@ public class MBListarManifestacoesGOG implements Serializable{
     	pesquisaManifestacaoHelper = new PesquisaManifestacaoViewHelper(manifestacaoService);
     	pesquisaManifestacaoHelper.configuraCenarioPesquisaSolucionadas();
     	pesquisaManifestacaoHelper.getFiltroPesquisa().setReiniciarPaginacao(true);
-
-//    	manifestacaoService.pesquisaManifestacoes(dtoManifestacao);
     }
     
     public void getDevolvidas(ActionEvent actionEvent) {
@@ -220,8 +207,6 @@ public class MBListarManifestacoesGOG implements Serializable{
     	pesquisaManifestacaoHelper = new PesquisaManifestacaoViewHelper(manifestacaoService);
     	pesquisaManifestacaoHelper.configuraCenarioPesquisaDevolvidas();
     	pesquisaManifestacaoHelper.getFiltroPesquisa().setReiniciarPaginacao(true);
-
-//    	manifestacaoService.pesquisaManifestacoes(dtoManifestacao);
     }
  
     
@@ -231,8 +216,6 @@ public class MBListarManifestacoesGOG implements Serializable{
     	pesquisaManifestacaoHelper = new PesquisaManifestacaoViewHelper(manifestacaoService);
     	pesquisaManifestacaoHelper.configuraCenarioPesquisaComOuvidoria();
     	pesquisaManifestacaoHelper.getFiltroPesquisa().setReiniciarPaginacao(true);
-
-//    	manifestacaoService.pesquisaManifestacoes(dtoManifestacao);
     }
     
     public void getCaixaTodos(ActionEvent actionEvent) {
@@ -240,8 +223,6 @@ public class MBListarManifestacoesGOG implements Serializable{
     	pesquisaManifestacaoHelper = new PesquisaManifestacaoViewHelper(manifestacaoService);
     	pesquisaManifestacaoHelper.configuraCenarioPesquisaTodos();
     	pesquisaManifestacaoHelper.getFiltroPesquisa().setReiniciarPaginacao(true);
-
-//    	manifestacaoService.pesquisaManifestacoes(dtoManifestacao);
     }
 
     public void getFiltroPersonalizado(AjaxBehaviorEvent ajaxBehaviorEvent) {
