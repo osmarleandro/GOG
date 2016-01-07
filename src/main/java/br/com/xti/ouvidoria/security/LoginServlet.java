@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,7 +23,21 @@ public class LoginServlet extends HttpServlet {
 	private static final String MANIFESTATION_DETAIL_PAGE = "/pages/manifestacao/administrar.xhtml?num=%s&id=%s";
 	
 	@Override
+	public void init(ServletConfig config) throws ServletException {
+		// TODO Auto-generated method stub
+	    String versao = config.getServletContext().getInitParameter("versao");
+
+	    config.getServletContext().setAttribute("versao", versao);
+	    
+		super.init(config);
+	}
+	
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		ServletContext context = getServletContext();
+	    String versao = context.getInitParameter("versao");
+	    
+		request.setAttribute("versao", versao);
 		sendRedirect(request, response);
 	}
 	

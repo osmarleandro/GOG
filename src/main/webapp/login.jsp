@@ -175,7 +175,7 @@
 		<div class="endereco">
 			Copyright © 2013-2015 CGTI - Coordenação Geral de Tecnologia da Informação
 			- Ministério da Cultura. Todos os Direitos Reservados.
-			<a href="http://www.cultura.gov.br/" target="_blank">MinC</a>
+			<a href="http://www.cultura.gov.br/" target="_blank">MinC</a> - ${versao}
 		</div>
 	</div>
 	
