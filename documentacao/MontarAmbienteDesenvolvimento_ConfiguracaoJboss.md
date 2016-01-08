@@ -64,6 +64,12 @@ O módulo é uma referência ao pacote contendo os componentes de software para 
 
 O "module" será representado por um 'jar', contendo as classes para acesso ao banco.
 
+>Note
+>> O arquivo .jar do Postgresql pode ser obtido em https://jdbc.postgresql.org/download.html, acessando a versão que optar. 
+>> A versão citada aqui pode ser obtida em https://jdbc.postgresql.org/download/postgresql-9.3-1102.jdbc3.jar
+
+
+
 
 **Criação do módulo para conexão com Banco de Dados Postgres**
 
