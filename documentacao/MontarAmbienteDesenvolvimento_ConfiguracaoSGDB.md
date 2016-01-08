@@ -30,7 +30,7 @@ Path: /GOG/src/main/resources/META-INF/persistence.xml
 
 > **Nota:** 
 
-> - A criação da DLL do banco de dados pode ser comentada no arquivo de persistence, após a primeira disponibilização do projeto. Este procedimento garante a instalação do banco de dados durante a primeira execução do sistema.
+> - A criação da DDL do banco de dados (contendo a definição da estrutura do banco) pode ser comentada no arquivo de persistence, após a primeira disponibilização do projeto. Este procedimento garante a instalação do banco de dados durante a primeira execução do sistema.
 ```
 <!-- 			<property name="hibernate.hbm2ddl.auto" value="create-drop" /> -->
 ```
