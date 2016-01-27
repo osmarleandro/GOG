@@ -33,7 +33,7 @@ Neste documento apresentamos informações necessárias para realizar a montagem
 1. [Preparação do Ambiente](MontarAmbienteDesenvolvimento_PreparacaoAmbiente.md)
    * Configuração do sistema operacional
      * Instalação do Git
-     * Instalação do Java JDK 8
+     * Instalação do Java JDK 7
    * Instalação do JBoss AS 7.1.1.Final
    * Instalação do Eclipse
      * Instalar o plugin Jbosstools
