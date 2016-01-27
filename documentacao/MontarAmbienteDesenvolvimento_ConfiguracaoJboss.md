@@ -45,6 +45,7 @@ A configuração do *datasource* deve ser realizada com a inclusão do texto seg
 
 > Notas:
 >> O data source precisa definir o jndi-name="java:/datasources/GOGDSPostreSQL" e as configurações de conexão com o banco de dados.
+
 >> O jndi-name deve ser o mesmo definido na tag *`<jta-data-source>`* do arquivo *persistence.xml*
 
 ### Configuração dos drivers de conexão 
@@ -64,6 +65,13 @@ O módulo é uma referência ao pacote contendo os componentes de software para 
 
 O "module" será representado por um 'jar', contendo as classes para acesso ao banco.
 
+>Note
+>> O arquivo .jar do Postgresql pode ser obtido em https://jdbc.postgresql.org/download.html, acessando a versão que optar. 
+
+>> A versão citada aqui pode ser obtida em https://jdbc.postgresql.org/download/postgresql-9.3-1102.jdbc3.jar
+
+
+
 
 **Criação do módulo para conexão com Banco de Dados Postgres**
 
@@ -74,7 +82,7 @@ O "module" será representado por um 'jar', contendo as classes para acesso ao b
 
 - Crie uma estrutura de diretórios correspondente ao jar do driver do Postgres, a partir do diretório "modules" do Jboss. 
  - Exemplo: jboss-7.1.1/modules/org/postgresql/main
-- Inclua o arquivo do driver do Postgres no diretório criado
+- Inclua o arquivo do driver do Postgres no diretório criado (o arquivo .jar do driver)
 - Crie um arquivo "module.xml" com o seguinte conteúdo:
 
 ```xml
