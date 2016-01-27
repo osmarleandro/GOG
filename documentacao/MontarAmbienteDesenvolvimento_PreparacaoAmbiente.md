@@ -38,12 +38,19 @@ $ cd /opt/desenv/GOG
 $ git clone https://github.com/culturagovbr/GOG.git
 ```
 
-#### Instalação do Java JDK 8
+#### Instalação do Java JDK 7
 
-Siga as instruções de instalação do [Java JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+- Incluir repositório, atualizar o apt-get e instalar o Java7
+
 ```
-http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+$ sudo add-apt-repository ppa:webupd8team/java -y
+$ sudo apt-get update
+$ sudo apt-get install oracle-java7-installer
 ```
+
+> *Note*
+>> Ainda estamos utilizando o JDK 7 porque, apesar do Java já estar na versão 8, o Jboss 7.1 ainda não está funcionando adequadamente nesta nova versão do Java
+
 
 ### Instalação do JBoss AS 7.1.1.Final
 
