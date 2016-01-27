@@ -42,17 +42,24 @@ A tabela 'TbPreferenciaSistema' também pode ser editada internamente no sistema
 A tabela 'TbParametro' é utilizada para configuração mais alguns parâmetros da aplicação. 
 
 ```sql
-INSERT INTO tbparametro (nmparametro, vlrparametro) VALUES ( 'Sequencial da Manifestação', '1');
-INSERT INTO tbparametro (nmparametro, vlrparametro) VALUES ( 'Ano atual', '2015');
-INSERT INTO tbparametro (nmparametro, vlrparametro) VALUES ( 'Diretório para onde serão enviados os arquivos anexados', '/var/arquivos/');
-INSERT INTO tbparametro (nmparametro, vlrparametro) VALUES ( 'URL base do Sistema', 'http://ouvidoria.ouvidoria.gov.br');
-INSERT INTO tbparametro (nmparametro, vlrparametro) VALUES ( 'Email do Monitoramento', 'ouvidoria@cultura.gov.br');
+INSERT INTO tbparametro (idParametro, nmparametro, vlrparametro) VALUES (1, 'Sequencial da Manifestação', '1');
+INSERT INTO tbparametro (idParametro, nmparametro, vlrparametro) VALUES (2, 'Ano atual', '2015');
+INSERT INTO tbparametro (idParametro, nmparametro, vlrparametro) VALUES (3, 'Diretório para onde serão enviados os arquivos anexados', '/var/arquivos/');
+INSERT INTO tbparametro (idParametro, nmparametro, vlrparametro) VALUES (4, 'URL base do Sistema', 'http://localhost:8080/GOG');
+INSERT INTO tbparametro (idParametro, nmparametro, vlrparametro) VALUES (5, 'Email do Monitoramento', 'email@email.com');
+INSERT INTO tbparametro (idParametro, nmparametro, vlrparametro) VALUES (6, 'Caminho do arquivo de propriedades de publicação dos arquivos de relatórios', '/var/arquivos/arquivos-ouvidoria/publicacaoArquivo.xml');
 ```
 
-> A aplicação vai utilizar estes valores para garantir a realização de algumas funcionalidades, como:
-> - geração do numero da manifestação
-> - gerenciamento de arquivos anexados
-> - montagem da URL e links para manifestações nas mensagens de e-mail
+> **Nota:** 
+>> Certifique-se que o valor do campo *idParametro* está devidamente ajustado, conforme o exemplo anterior. A tabela *TbParametro* deve ser entendida e utilizada como uma tabela de domínio.
+>>
+>> A aplicação vai utilizar estes valores para garantir a realização de algumas funcionalidades, como:
+>> - geração do numero da manifestação
+>> - gerenciamento de arquivos anexados
+>> - montagem da URL e links para manifestações nas mensagens de e-mail
+>> - configuração do e-mail que receberá as mensagens de monitoramento 
+>>
+>> Você deve oferecer valores adequados a estas strings, conforme a sua realidade 
 
 #### Realizar a configuração/criação de usuários do sistema
 A tabela 'tbUsuario' deve ser carregada com um usuário com função de Administrador. 
@@ -75,5 +82,5 @@ VALUES
 
 > **Nota:** 
 
-> - Um usuário com função de Administrador tem permissão de editar o cadastro de usuários do sistema e de acessar as funcionalidades disponíveis.
+>> - Um usuário com função de Administrador tem permissão de editar o cadastro de usuários do sistema e de acessar as funcionalidades disponíveis.
 
