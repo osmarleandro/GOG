@@ -2,7 +2,7 @@
 1. Preparação do ambiente
    * Configuração do sistema operacional
      * Instalação do Git
-     * Instalação do Java JDK 8
+     * Instalação do Java JDK 7
    * Instalação do JBoss AS 7.1.1.Final
    * Instalação do Eclipse
      * Instalar o plugin Jbosstools
