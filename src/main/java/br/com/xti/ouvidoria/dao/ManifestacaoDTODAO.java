@@ -572,7 +572,7 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
     	FuncaoUsuarioEnum funcao = EnumHelper.getFuncaoUsuarioEnum(usuario.getTpFuncao());
 
 		
-		adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao				= " + StatusManifestacaoEnum.SOLUCIONADA.getId());
+		adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao				= '" + StatusManifestacaoEnum.SOLUCIONADA.getId() + "' ");
 
     	switch (funcao) {
 	    	case OPERADOR:
@@ -600,8 +600,8 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
 	private void configuraFiltroComOuvidoria(StringBuffer filtroQuery,
 			TbUsuario usuario) {
         
-        adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao				= " + StatusManifestacaoEnum.EM_ANDAMENTO.getId());
-    	adicionaClausulaWHERE(filtroQuery, " en.stEncaminhamento 				= " + StatusEncaminhamentoEnum.RETORNADA.getId());
+        adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao				= '" + StatusManifestacaoEnum.EM_ANDAMENTO.getId() + "' ");
+    	adicionaClausulaWHERE(filtroQuery, " en.stEncaminhamento 				= '" + StatusEncaminhamentoEnum.RETORNADA.getId() + "' ");
     	adicionaClausulaWHERE(filtroQuery, " en.idUnidadeRecebeu	 			= " + usuario.getIdUnidade().getIdUnidade());
 
     	configuraComplementoAssociacaoEntidade(ASSOCIACAO_ENCAMINHAMENTOS);
@@ -621,8 +621,8 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
     	// Recupera a Função do usuário
     	FuncaoUsuarioEnum funcao = EnumHelper.getFuncaoUsuarioEnum(usuario.getTpFuncao());
 		
-    	adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao				= " + StatusManifestacaoEnum.EM_ANDAMENTO.getId());
-    	adicionaClausulaWHERE(filtroQuery, " en.stEncaminhamento 				= " + StatusEncaminhamentoEnum.RETORNADA.getId());
+    	adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao				= '" + StatusManifestacaoEnum.EM_ANDAMENTO.getId() + "' ");
+    	adicionaClausulaWHERE(filtroQuery, " en.stEncaminhamento 				= '" + StatusEncaminhamentoEnum.RETORNADA.getId() + "' ");
 
     	switch (funcao) {
 	    	case INTERLOCUTOR:
@@ -648,8 +648,8 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
     	// Recupera a Função do usuário
     	FuncaoUsuarioEnum funcao = EnumHelper.getFuncaoUsuarioEnum(usuario.getTpFuncao());
     	
-    	adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao				= " + StatusManifestacaoEnum.EM_ANDAMENTO.getId());
-    	adicionaClausulaWHERE(filtroQuery, " en.stEncaminhamento 				= " + StatusEncaminhamentoEnum.ENCAMINHADA.getId());
+    	adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao				= '" + StatusManifestacaoEnum.EM_ANDAMENTO.getId() + "' ");
+    	adicionaClausulaWHERE(filtroQuery, " en.stEncaminhamento 				= '" + StatusEncaminhamentoEnum.ENCAMINHADA.getId() + "' ");
 
     	switch (funcao) {
 	    	case INTERLOCUTOR:
@@ -671,11 +671,11 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
 	 */
 	private void configuraFiltroDevolvidas(StringBuffer filtroQuery,
 			TbUsuario usuario) {
-		adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao 			= " + StatusManifestacaoEnum.EM_ANDAMENTO.getId());
-		adicionaClausulaWHERE(filtroQuery, " en.stEncaminhamento 				= " + StatusEncaminhamentoEnum.ENCAMINHADA.getId());
+		adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao 			= '" + StatusManifestacaoEnum.EM_ANDAMENTO.getId() + "' ");
+		adicionaClausulaWHERE(filtroQuery, " en.stEncaminhamento 				= '" + StatusEncaminhamentoEnum.ENCAMINHADA.getId() + "' ");
 		adicionaClausulaWHERE(filtroQuery, " en.idUnidadeRecebeu	 			= " + usuario.getIdUnidade().getIdUnidade());
 		adicionaClausulaWHERE(filtroQuery, " tra.idUsuarioReceptor				= " + usuario.getIdUsuario());
-		adicionaClausulaWHERE(filtroQuery, " tra.stRetornada	 				= " + BooleanEnum.NAO.getId());
+		adicionaClausulaWHERE(filtroQuery, " tra.stRetornada	 				= '" + BooleanEnum.NAO.getId() + "' ");
 
 		configuraComplementoAssociacaoEntidade(ASSOCIACAO_ENCAMINHAMENTOS);
 		configuraComplementoAssociacaoEntidade(ASSOCIACAO_TRAMITE);
@@ -690,8 +690,8 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
 	 * @param usuario o usuário que está solicitando a pesquisa
 	 */
 	private void configuraFiltroEmMonitoramento(StringBuffer filtroQuery) {
-		adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao = " + 
-				StatusManifestacaoEnum.EM_MONITORAMENTO.getId());
+		adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao = '" + 
+				StatusManifestacaoEnum.EM_MONITORAMENTO.getId() + "' ");
 		
 	}
 
@@ -703,8 +703,8 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
 	 * @param usuario o usuário que está solicitando a pesquisa
 	 */
 	private void configuraFiltroSolicitadaInformacao(StringBuffer filtroQuery) {
-		adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao = " + 
-				StatusManifestacaoEnum.SOLICITADA_INFORMACAO.getId());
+		adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao = '" + 
+				StatusManifestacaoEnum.SOLICITADA_INFORMACAO.getId() + "' ");
 		
 	}
 
@@ -721,19 +721,19 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
         	
         	switch (funcao) {
         	case OPERADOR:
-        		adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao				= " + StatusManifestacaoEnum.EM_ANDAMENTO.getId());
-        		adicionaClausulaWHERE(filtroQuery, " en.stEncaminhamento 				= " + StatusEncaminhamentoEnum.ENCAMINHADA.getId());
+        		adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao				= '" + StatusManifestacaoEnum.EM_ANDAMENTO.getId() + "' ");
+        		adicionaClausulaWHERE(filtroQuery, " en.stEncaminhamento 				= '" + StatusEncaminhamentoEnum.ENCAMINHADA.getId() + "' ");
         		adicionaClausulaWHERE(filtroQuery, " en.idUnidadeRecebeu	 			= " + usuario.getIdUnidade().getIdUnidade());
         		adicionaClausulaWHERE(filtroQuery, " tra.idUsuarioReceptor				= " + usuario.getIdUsuario());
-        		adicionaClausulaWHERE(filtroQuery, " tra.stRetornada	 				= " + BooleanEnum.NAO.getId());
+        		adicionaClausulaWHERE(filtroQuery, " tra.stRetornada	 				= '" + BooleanEnum.NAO.getId() + "' ");
         		
         		configuraComplementoAssociacaoEntidade(ASSOCIACAO_ENCAMINHAMENTOS);
         		configuraComplementoAssociacaoEntidade(ASSOCIACAO_TRAMITE);
         		break;
         		
         	case INTERLOCUTOR:
-        		adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao 			= " + StatusManifestacaoEnum.EM_ANDAMENTO.getId());
-        		adicionaClausulaWHERE(filtroQuery, " en.stEncaminhamento 				= " + StatusEncaminhamentoEnum.ENCAMINHADA.getId());
+        		adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao 			= '" + StatusManifestacaoEnum.EM_ANDAMENTO.getId() + "' ");
+        		adicionaClausulaWHERE(filtroQuery, " en.stEncaminhamento 				= '" + StatusEncaminhamentoEnum.ENCAMINHADA.getId() + "' ");
         		adicionaClausulaWHERE(filtroQuery, " en.idUnidadeEnviou		 			<> " + usuario.getIdUnidade().getIdUnidade());
         		adicionaClausulaWHERE(filtroQuery, " en.idUnidadeRecebeu	 			=  " + usuario.getIdUnidade().getIdUnidade());
         		
@@ -755,9 +755,9 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
         				+ "    INNER JOIN TbUsuario usuarioReceptorUltimoTramite  ON usuarioReceptorUltimoTramite.idUsuario   = ultimoTramite.idUsuarioReceptor "
         				+ "    WHERE ultimoTramite.idEncaminhamento = enc.idEncaminhamento "
         				// ... trâmite designado para um OPERADOR
-        				+ "        and usuarioReceptorUltimoTramite.tpFuncao   = " + FuncaoUsuarioEnum.OPERADOR.getId()
+        				+ "        and usuarioReceptorUltimoTramite.tpFuncao   = '" + FuncaoUsuarioEnum.OPERADOR.getId() + "' "
         				// ... trâmite que não retornou
-        				+ "        and ultimoTramite.stRetornada	=   " + BooleanEnum.NAO.getId()
+        				+ "        and ultimoTramite.stRetornada	=   '" + BooleanEnum.NAO.getId() + "' "
         				+ "    ORDER BY ultimoTramite.idTramite DESC )"
         				+ " ) " );  
 
@@ -771,10 +771,10 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
         		
         	case ADMINISTRADOR:
         	case OUVIDOR:
-        		adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao 		in (" + 
-        				StatusManifestacaoEnum.NOVA.getId() + ", " +
-        				StatusManifestacaoEnum.EM_ANALISE.getId() + ", " +
-        				StatusManifestacaoEnum.SOLICITACAO_RESPONDIDA.getId() + ") ");
+        		adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao 		in ('" + 
+        				StatusManifestacaoEnum.NOVA.getId() + "', '" +
+        				StatusManifestacaoEnum.EM_ANALISE.getId() + "', '" +
+        				StatusManifestacaoEnum.SOLICITACAO_RESPONDIDA.getId() + "') ");
         		break;
         	}
         	
