@@ -83,6 +83,27 @@ public class ParametroDAO extends AbstractDAO<TbParametro> {
         return diretorioAnexo.getVlrParametro();
     }
     
+    /**
+     * Recupera o caminho do arquivo de propriedades de publicação dos arquivos de relatórios
+     *  
+     * @return
+     * @throws InfrastructureException
+     */
+    public String getCaminhoPublicacaoArquivos() throws InfrastructureException {
+        TbParametro diretorioAnexo = find(ParametroEnum.CAMINHO_PUBLICACAO_ARQUIVOS.getId());
+        if(diretorioAnexo == null){
+            diretorioAnexo = new TbParametro();
+            diretorioAnexo.setIdParametro(ParametroEnum.CAMINHO_PUBLICACAO_ARQUIVOS.getId());
+            diretorioAnexo.setNmParametro(ParametroEnum.CAMINHO_PUBLICACAO_ARQUIVOS.getDescricao());
+            //Define o caminho a partir da url base informada
+            String valorParametro = getDiretorioAnexo() + "publicacaoArquivo.xml";
+            diretorioAnexo.setVlrParametro(valorParametro);
+            
+            create(diretorioAnexo);
+        }
+        return diretorioAnexo.getVlrParametro();
+    }
+
     public String getUrlBase() throws InfrastructureException {
         TbParametro urlBase = find(ParametroEnum.URL_SISTEMA.getId());
         if(urlBase == null){

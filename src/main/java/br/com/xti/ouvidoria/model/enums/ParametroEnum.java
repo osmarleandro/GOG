@@ -13,7 +13,8 @@ public enum ParametroEnum {
     ANO_SEQUENCIAL_MANIFESTACAO(2,"Ano atual"),
     DIRETORIO_ANEXOS(3,"Diretório para onde serão enviados os arquivos anexados"),
     URL_SISTEMA(4,"URL base do Sistema"),
-    EMAIL_MONITORAMENTO(5,"Email do Monitoramento");
+    EMAIL_MONITORAMENTO(5,"Email do Monitoramento"),
+    CAMINHO_PUBLICACAO_ARQUIVOS(6,"Caminho do arquivo de propriedades de publicação dos arquivos de relatórios");
     
     private Integer id;
     private String descricao;
