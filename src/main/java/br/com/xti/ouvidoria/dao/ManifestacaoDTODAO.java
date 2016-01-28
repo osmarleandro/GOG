@@ -410,20 +410,29 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
         	dto.setIdTipoManifestacao((Integer) obj[5]);
         	dto.setNomeTipoManifestacao((String) obj[6]);
         	dto.setNomePrioridade((String) obj[7]);
-        	dto.setIdStatusManifestacao( ((Character) obj[8]).toString());
-        	dto.setSigilo(Boolean.valueOf( ((Character) obj[9]).toString()) );
-        	dto.setOculta( ((Character) obj[10]).toString().equals("1") ) ;
 
-        	//TODO Recuperar o texto adequadamente
-        	try {
-        		String textoManifestacao = converterTextoClob( (Clob) obj[11]);
-        		dto.setTextoManifestacao( textoManifestacao );
-				
-			} catch (Exception e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
-
+        	// Verifica o tipo de dado retornado pelo data-source hibernate.dialect 
+        	if ( (obj[8]) instanceof Character ){
+        		// Trata os tipos de dados conforme o dialeto configurado para o SQLServer
+        		dto.setIdStatusManifestacao( ((Character) obj[8]).toString());
+        		dto.setSigilo(Boolean.valueOf( ((Character) obj[9]).toString()) );
+        		dto.setOculta( ((Character) obj[10]).toString().equals("1") ) ;
+            	try {
+            		String textoManifestacao = converterTextoClob( (Clob) obj[11]);
+            		dto.setTextoManifestacao( textoManifestacao );
+    				
+    			} catch (Exception e) {
+    				// TODO: handle exception
+    				e.printStackTrace();
+    			}
+        	}else{
+        		// Trata os tipos de dados conforme o dialeto configurado para o PostgreSQL
+        		dto.setIdStatusManifestacao( ((String) obj[8]));
+        		dto.setSigilo(Boolean.valueOf( ((String) obj[9])) );
+        		dto.setOculta( ((String) obj[10]).equals("1") ) ;
+        		dto.setTextoManifestacao( (String) obj[11] );
+        	}
+        	
         	dto.setMotivoOcultacao((String) obj[12]);
         	
         	dto.setDataMonitoramento(obj[13] != null ?
@@ -739,34 +748,24 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
         		
         		configuraComplementoAssociacaoEntidade(ASSOCIACAO_ENCAMINHAMENTOS);
         		/*
-        		 * Complementa a query EXCLUINDO todos os encaminhamento para os quais o ÚLTIMO TRÂMITE tenha sido designado para
-        		 * um OPERADOR e que não tenha sido retornado.
+        		 * Complementa a query INCLUIDO todos os encaminhamento para os quais o ÚLTIMO TRÂMITE não tenha sido retornado.
         		 */
-        		StringBuffer complementoSQLUltimoTramite = new StringBuffer();
-        		complementoSQLUltimoTramite.append( 
-        				"( SELECT distinct enc.idEncaminhamento "
-        				+ " FROM TbEncaminhamento enc "
-        				+ " INNER JOIN TbTramite tram on tram.idEncaminhamento = enc.idEncaminhamento "
+        		StringBuffer complementoSQLUltimoTramiteAberto = new StringBuffer();
+        		complementoSQLUltimoTramiteAberto.append( 
+        				"( SELECT distinct tram.idEncaminhamento "
+        				+ " FROM TbTramite tram "
         				+ " WHERE tram.idTramite in( "
         				// Seleciona o último Trâmite
-        				// TODO: deve tratar adequadamente para projetos com Postgresql
-        				+ "    SELECT TOP 1 ultimoTramite.idTramite "
-        				+ "    FROM TbTramite ultimoTramite "
-        				+ "    INNER JOIN TbUsuario usuarioReceptorUltimoTramite  ON usuarioReceptorUltimoTramite.idUsuario   = ultimoTramite.idUsuarioReceptor "
-        				+ "    WHERE ultimoTramite.idEncaminhamento = enc.idEncaminhamento "
-        				// ... trâmite designado para um OPERADOR
-        				+ "        and usuarioReceptorUltimoTramite.tpFuncao   = '" + FuncaoUsuarioEnum.OPERADOR.getId() + "' "
-        				// ... trâmite que não retornou
-        				+ "        and ultimoTramite.stRetornada	=   '" + BooleanEnum.NAO.getId() + "' "
-        				+ "    ORDER BY ultimoTramite.idTramite DESC )"
-        				+ " ) " );  
+        				+ " 	SELECT ultimoTramite.idTramite "
+        				+ "    		FROM \"vwUltimoTramite\" ultimoTramite  ) "   
+        				+ " and tram.stRetornada	=   '" + BooleanEnum.NAO.getId() + "' )");
 
-        		adicionaClausulaWHERE(filtroQuery, " en.idEncaminhamento not in " + complementoSQLUltimoTramite);
+        		adicionaClausulaWHERE(filtroQuery, " en.idEncaminhamento 				= " + complementoSQLUltimoTramiteAberto);
         		
         		break;
         		
         	case MANIFESTANTE:
-        		adicionaClausulaWHERE(filtroQuery, " m.idUsuarioManifestante 	= " + usuario.getIdUsuario());
+        		adicionaClausulaWHERE(filtroQuery, " m.idUsuarioManifestante 			= " + usuario.getIdUsuario());
         		break;
         		
         	case ADMINISTRADOR:
