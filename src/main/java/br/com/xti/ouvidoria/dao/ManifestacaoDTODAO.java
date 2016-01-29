@@ -663,13 +663,15 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
     	switch (funcao) {
 	    	case INTERLOCUTOR:
 	    		adicionaClausulaWHERE(filtroQuery, 
-	    			"( 	en.idUnidadeRecebeu	 				=  " + usuario.getIdUnidade().getIdUnidade()
-	    			+ " OR 	en.idUnidadeEnviou		 		=  " + usuario.getIdUnidade().getIdUnidade()
+	    			"( 	en.idUnidadeRecebeu	 									=  " + usuario.getIdUnidade().getIdUnidade()
+	    			+ " OR 	en.idUnidadeEnviou		 							=  " + usuario.getIdUnidade().getIdUnidade()
 	    			+ ")" );
+	    		adicionaClausulaWHERE(filtroQuery, " tra.idUsuarioReceptor	is not null ");
     		break;
     	}
 
     	configuraComplementoAssociacaoEntidade(ASSOCIACAO_ENCAMINHAMENTOS);
+		configuraComplementoAssociacaoEntidade(ASSOCIACAO_TRAMITE);
 	}
 
 	

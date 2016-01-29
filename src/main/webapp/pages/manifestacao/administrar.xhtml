@@ -565,6 +565,14 @@
 											<f:actionListener binding="#{mBManifestacao.gravaStatusManifestacao()}" />
 										</p:commandButton>
 										
+										<!-- Monitorar Manifestação (Ouvidor) -->
+										<p:commandButton id="idMonitorarManifestacao" value="Monitorar Manifestação"
+											rendered="#{mBManifestacao.mostrarBotaoReativarManifestacao()}"
+											action="#{mBManifestacao.iniciarModalMonitoramento}"
+											update=":frmMonitorarManifestacao"
+											oncomplete="dlgMonitorar.show(); return false;">
+										</p:commandButton>
+
 										<!-- Responder a Ouvidoria (Interlocutor) -->
 										<p:commandButton id="responderOuvidoria" value="Responder a Ouvidoria"
 											rendered="#{mBManifestacao.mostrarBotaoResponderAOuvidoria()}"
@@ -1528,6 +1536,94 @@
 				</h:form>
 			</p:dialog>
 			
+			
+			<!-- DIALOG MONITORAR MANIFESTAÇÃO -->
+			<p:dialog id="dialogoMonitorar"
+				widgetVar="dlgMonitorar"
+				message="Informe os dados para monitorar esta manifestação"
+				header="Monitorar Manifestação" severity="alert" styleClass="bold"
+				appendToBody="true" closable="false" maximizable="true" width="1120" minimizable="true">
+				<h:form id="frmMonitorarManifestacao">
+					<p:messages id="msgMonitorarManifestacao" redisplay="false" />
+					<p:panelGrid id="pnlDialogMonitorar"
+						style="width: 100%; height: 350px; margin: 0 auto">
+						<p:row>
+							<p:column colspan="2" styleClass="bold">Informe os dados para realizar o monitoramento desta manifestação nos campos abaixo:</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2" style="color: DarkRed; ">
+                                <h:panelGrid columns="2" style="margin-bottom: 10px">
+                                	<p:outputPanel>
+										<h:outputText value="Monitorar: " />
+										<p:selectBooleanCheckbox value="#{mBManifestacao.monitorar}" style="position: relative; top: 5px; left: 7px;" >
+											<p:ajax update="prazoMonitoramentoDialogMonitoramento, quantidadeDiasDialogMonitoramento, 
+												textoDiasDialogMonitoramento, sliderDiasDialogMonitoramento" 
+												listener="#{mBManifestacao.controlaMonitoramento}" />
+										</p:selectBooleanCheckbox>
+		
+										<p:spacer width="20" />
+		
+		                                <p:calendar id="prazoMonitoramentoDialogMonitoramento" 
+		                                	readonly="#{!mBManifestacao.monitorar}" 
+		                                	required="#{mBManifestacao.monitorar}"
+		                                	disabled="#{!mBManifestacao.monitorar}" 
+		                                	requiredMessage="Informe uma data para o monitoramento da manifestação."
+		                                	value="#{mBManifestacao.dataMonitoramento}" pattern="dd/MM/yyyy" />
+		                                	
+										<p:spacer width="20" />
+									</p:outputPanel>
+								
+                                
+	                                <h:panelGrid columns="1" style="margin-bottom: 10px; position: relative;top: 8px;border: none;" >
+	                                	<p:outputPanel>
+			                                <p:inputText id="quantidadeDiasDialogMonitoramento" 
+			                                	value="#{mBManifestacao.quantidadeDias}" size="4" style="text-align: center"/>
+											<h:outputText value=" dias" id="textoDiasDialogMonitoramento" 
+												style="#{mBManifestacao.monitorar  ? 'color: DarkRed;' : 'color: grey'}"/>
+										</p:outputPanel>
+										
+								        <p:slider for="quantidadeDiasDialogMonitoramento" id="sliderDiasDialogMonitoramento" style="width: 120px"
+								        	readonly="#{!mBManifestacao.monitorar}" disabled="#{!mBManifestacao.monitorar}" >
+								            <p:ajax event="slideEnd" listener="#{mBManifestacao.defineQuantidadeDias}" 
+								            	update="prazoMonitoramentoDialogMonitoramento, quantidadeDiasDialogMonitoramento, 
+								            		textoDiasDialogMonitoramento, sliderDiasDialogMonitoramento" />
+								        </p:slider>
+	                                </h:panelGrid>	
+								
+								</h:panelGrid>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="centro" colspan="2">
+								<p:panelGrid style="width: 100%">
+									<p:row>
+										<p:column style="text-align: center; width: 100%" styleClass="ui-widget-header">
+											<p:commandButton
+												update=":frmAdministrarManifestacao,
+														:frmEncaminharManifestacao,
+														:frmTramiteManifestacao,
+														frmMonitorarManifestacao"
+												value="Monitorar Manifestação" id="confirmarMonitoramento"
+												style="#{mBManifestacao.monitorar  ? 'color: DarkRed;' : ''}"
+												onclick="statusDialog.show()"
+												oncomplete="dlgMonitorar.hide()"
+												action="#{mBManifestacao.gravaMonitorarManifestacao()}">
+												<p:resetInput target="frmMonitorarManifestacao" />
+											</p:commandButton>
+											<p:spacer width="20" />
+											<p:commandButton id="fecharMonitorarManifestacao"
+												update="frmEncerraManifestacaoComMensagem" value="Fechar"
+												onclick="dlgMonitorar.hide()" type="button">
+											</p:commandButton>
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</h:form>
+			</p:dialog>
+			
 			<!-- ======================================== -->
 			<!-- DIALOGs Visualziar Textos				  -->
 			<!-- ======================================== -->
@@ -1669,6 +1765,8 @@
 					</p:panelGrid>
 				</h:form>
 			</p:dialog>
+			
+		
 
 			<!-- ======================================== -->
 			<!-- DIALOG Responder Questionario			  -->
