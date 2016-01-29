@@ -1054,12 +1054,68 @@ public class MBManifestacao extends AbstractManifestationController implements S
     	}
     }
 
+    public void iniciarModalMonitoramento() {
+   		quantidadeDias = 5;
+   		setDataMonitoramento(Calendar.getInstance().getTime());
+   		setMonitorar(true);
+    }
+
     public void defineQuantidadeDias(SlideEndEvent event) {
     	setQuantidadeDias(event.getValue());
     	Calendar dataInformada = Calendar.getInstance();
     	dataInformada.add(Calendar.DAY_OF_MONTH, quantidadeDias);
     	setDataMonitoramento(dataInformada.getTime());
     }
+    
+    
+    public void gravaMonitorarManifestacao() {
+        try {
+            //Configura o status da manifestação 
+            if (monitorar){ // Configura os dados de monitoramento da manifestação
+            	if (dataMonitoramento == null){
+            		MensagemFaceUtil.erro("Para monitorar uma manifestação deve ser informada uma data para o monitoramento", "Monitoramento");
+            		return;
+            	}
+
+            	//atualiza data de modificação e status da manifestação
+            	manifestacao.setDtUltimaAtualizacao(new Date());
+            	manifestacao.setDtFechamento(new Date());
+                manifestacao.setStStatusManifestacao(StatusManifestacaoEnum.EM_MONITORAMENTO.getId());
+
+                // Configura a hora da data de monitoramento para o início do dia
+                Calendar novaDataMonitoramento = Calendar.getInstance();
+                novaDataMonitoramento.setTime(dataMonitoramento);
+                novaDataMonitoramento.set(Calendar.HOUR_OF_DAY, 0);
+                novaDataMonitoramento.set(Calendar.MINUTE, 0);
+                manifestacao.setDataMonitoramento(novaDataMonitoramento.getTime());
+                manifestacao.setIdUsuarioAnalisador(securityService.getUser());
+                
+                // Seta todos os tramites como retornados
+                for (TbEncaminhamento enc : manifestacao.getTbEncaminhamentoCollection()) {
+                	for (TbTramite t : enc.getTbTramiteCollection()) {
+                		t.setStRetornada(BooleanEnum.SIM.getId());
+                		tramiteDAO.edit(t);
+                	}
+                }
+                dao.edit(manifestacao);
+                
+                
+                // zerando variaveis
+                mensagemManifestante = null;
+                dsMensagemAoManifestante = null;
+                
+                showRedirectPageModal();
+            }
+        } catch (InfrastructureException ex) {
+            ex.printStackTrace();
+            MensagemFaceUtil.erro("Alteração de Status", "Ocorreu um erro ao gravar o status da manifestação: " + ex.getMessage());
+        } catch (Exception e) {
+        	e.printStackTrace();
+        	MensagemFaceUtil.erro("Ocorreu um erro ao tentar redirecionar o usuário", "Ocorreu um erro ao tentar redirecionar o usuário");
+		}
+        
+    }
+    
     
     public void gravaManifestacao() {
     	if(ValidacaoHelper.isNotEmpty(idUnidadeAreaSolucionadora)) {

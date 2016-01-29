@@ -85,7 +85,7 @@
 												btnComAOuvidoria,btnEmAndamento,
 												btnRetornadas,btnFechadas,painelPesquisaManifestacoes" 
 										title="Em Monitoramento"
-										rendered="#{!security.operador and !security.manifestante}" />
+										rendered="#{security.administrador || security.ouvidor}" />
 
 									<p:commandButton id="btnRetornadas" value="Retornadas"
 										style="width: 100%; margin-bottom: 10px;"
@@ -139,7 +139,7 @@
 												btnSolicitadaInformacao,btnDevolvidas,
 												btnComAOuvidoria,btnEmAndamento,
 												btnRetornadas,btnFechadas,painelPesquisaManifestacoes" 
-										rendered="#{security.ouvidor || security.administrador}" /> 
+										rendered="#{security.administrador || security.ouvidor}" /> 
 
 
 <!--  Caixa com opção para relatório (na barra à direita) ... value="Extrair Relatório"

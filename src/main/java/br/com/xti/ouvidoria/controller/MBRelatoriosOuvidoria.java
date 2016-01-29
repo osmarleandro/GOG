@@ -140,7 +140,7 @@ public class MBRelatoriosOuvidoria implements Serializable {
 			String localizacaoArquivo = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("urlArquivo");
 			
 			String[] arrayNomeArquivo = localizacaoArquivo.split("/");
-			String nomeArquivo = arrayNomeArquivo[arrayNomeArquivo.length - 1] + ".pdf";
+			String nomeArquivo = arrayNomeArquivo[arrayNomeArquivo.length - 1];
 
 			FileHelper.download(localizacaoArquivo, nomeArquivo);
 			
