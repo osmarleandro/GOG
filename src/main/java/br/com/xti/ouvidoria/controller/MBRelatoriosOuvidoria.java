@@ -143,7 +143,6 @@ public class MBRelatoriosOuvidoria implements Serializable {
 			String nomeArquivo = arrayNomeArquivo[arrayNomeArquivo.length - 1];
 
 			FileHelper.download(localizacaoArquivo, nomeArquivo);
-			
 		} catch (ParsePropertyException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
