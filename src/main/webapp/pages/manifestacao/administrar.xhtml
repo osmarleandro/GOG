@@ -20,6 +20,16 @@
 		    <f:viewParam name="id" value="#{mBManifestacao.manifestationId}" />
 	        <f:event type="preRenderView" listener="#{mBManifestacao.loadManifestation}" />
 		</f:metadata>
+										
+		<style type="text/css">
+	   		#checkboxMonitorar_Solucionar img{
+				border: solid 2px #363636!important;			
+			}
+	   		#checkboxMonitorar img{
+				border: solid 2px #363636!important;			
+			}
+		</style>
+										
 		
 		<p:panel id="pnlAdministrarManifestacao" rendered="#{not empty mBManifestacao.manifestacao}">
 			<h:form id="frmAdministrarManifestacao" style="max-width: 1216px; margin:0 auto;">
@@ -1463,7 +1473,8 @@
                                 <h:panelGrid columns="2" style="margin-bottom: 10px">
                                 	<p:outputPanel>
 										<h:outputText value="Monitorar: " />
-										<p:selectBooleanCheckbox value="#{mBManifestacao.monitorar}" style="position: relative; top: 5px; left: 7px;" >
+										<p:selectBooleanCheckbox value="#{mBManifestacao.monitorar}" id="checkboxMonitorar_Solucionar" 
+											style="position: relative; top: 5px; left: 7px;" >
 											<p:ajax update="prazoMonitoramento, confirmarEncerrarManifestacaoComMsg, quantidadeDias, textoDias, sliderDias" 
 												listener="#{mBManifestacao.controlaMonitoramento}" />
 										</p:selectBooleanCheckbox>
@@ -1555,7 +1566,8 @@
                                 <h:panelGrid columns="2" style="margin-bottom: 10px">
                                 	<p:outputPanel>
 										<h:outputText value="Monitorar: " />
-										<p:selectBooleanCheckbox value="#{mBManifestacao.monitorar}" style="position: relative; top: 5px; left: 7px;" >
+										<p:selectBooleanCheckbox value="#{mBManifestacao.monitorar}" id="checkboxMonitorar" 
+											style="position: relative; top: 5px; left: 7px;" >
 											<p:ajax update="prazoMonitoramentoDialogMonitoramento, quantidadeDiasDialogMonitoramento, 
 												textoDiasDialogMonitoramento, sliderDiasDialogMonitoramento" 
 												listener="#{mBManifestacao.controlaMonitoramento}" />
@@ -1645,11 +1657,11 @@
 											:frmTramiteManifestacao,
 											:frmEncerraManifestacaoComMensagem,
 											frmVisualizarMensagem"
-									value="Enviar" id="confirmarEncerrarManifestacaoComMsg2"
+									value="#{mBManifestacao.monitorar  ? 'Monitorar' : 'Enviar'}"
+									id="confirmarEncerrarManifestacaoComMsg2"
 									onclick="statusDialog.show()"
 									oncomplete="if (!args.validationFailed){dlgEncerraComMensagemFinal.hide(); dlgVisualizarMensagem.hide()};"
-									action="#{mBManifestacao.gravaSolucionarManifestacao()}"
-									rendered="false">
+									action="#{mBManifestacao.gravaSolucionarManifestacao()}" >
 									<p:resetInput target="frmVisualizarMensagem, :frmEncerraManifestacaoComMensagem" />
 								</p:commandButton>
 								<p:spacer width="20" />

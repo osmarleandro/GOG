@@ -762,7 +762,7 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
         				+ "    		FROM \"vwUltimoTramite\" ultimoTramite  ) "   
         				+ " and tram.stRetornada	=   '" + BooleanEnum.NAO.getId() + "' )");
 
-        		adicionaClausulaWHERE(filtroQuery, " en.idEncaminhamento 				= " + complementoSQLUltimoTramiteAberto);
+        		adicionaClausulaWHERE(filtroQuery, " en.idEncaminhamento 				in " + complementoSQLUltimoTramiteAberto);
         		
         		break;
         		
