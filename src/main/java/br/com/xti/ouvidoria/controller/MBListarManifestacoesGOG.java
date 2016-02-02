@@ -110,15 +110,10 @@ public class MBListarManifestacoesGOG implements Serializable{
      * @param actionEvent
      */
     public void pesquisarManifestacoes(ActionEvent actionEvent){
-    	
-    	// Limpar os filtros de pesquisa
-    	/*
-    	DTOManifestacao filtroPesquisa = dtoManifestacao.getFiltroPesquisa();
-    	dtoManifestacao = new DTOPesquisaManifestacao(manifestacaoService);
-    	dtoManifestacao.setFiltroPesquisa(filtroPesquisa);
-    	
-    	dtoManifestacao.setCenarioPesquisa(DTOPesquisaManifestacao.CENARIO_PESQUISA_TODOS);
-    	*/
+        // Configura o cenário de pesquisa para pesquisar em TODAS as manifestações, caso o usuário logado seja OUVIDOR ou ADMINISTRADOR
+    	if (securityService.isOuvidor() || securityService.isAdministrador())
+        	pesquisaManifestacaoHelper.configuraCenarioPesquisaTodos();
+        
     	pesquisaManifestacaoHelper.getFiltroPesquisa().setReiniciarPaginacao(true);
     	
     }

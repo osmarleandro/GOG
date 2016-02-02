@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.lang.StringUtils;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.model.SortOrder;
 
@@ -60,15 +61,23 @@ public class PesquisaManifestacaoViewHelper extends PesquisaEntidadeViewHelper<D
 			}
 			getFiltroPesquisa().setQuantidadeRegistros(pageSize);
 			
-			// Configura dados da ordenação das colunas na tabela de resultados 
-			getFiltroPesquisa().setOrdenacaoCampo(sortField);
-			if (sortOrder != null){
-				if (sortOrder.equals(SortOrder.ASCENDING))
-					getFiltroPesquisa().setOrdenacaoForma("ASC");
-				else if (sortOrder.equals(SortOrder.DESCENDING))
-					getFiltroPesquisa().setOrdenacaoForma("DESC");
-				else  
-					getFiltroPesquisa().setOrdenacaoForma(" ");
+			// Configura dados da ordenação das colunas na tabela de resultados
+			if (StringUtils.isEmpty(sortField)){
+				// Configura a ordenação padrão
+				getFiltroPesquisa().setOrdenacaoCampo("numeroManifestacao");
+				getFiltroPesquisa().setOrdenacaoForma("DESC");
+				
+			}else{
+				// Configura a ordenação solicitada
+				getFiltroPesquisa().setOrdenacaoCampo(sortField);
+				if (sortOrder != null){
+					if (sortOrder.equals(SortOrder.ASCENDING))
+						getFiltroPesquisa().setOrdenacaoForma("ASC");
+					else if (sortOrder.equals(SortOrder.DESCENDING))
+						getFiltroPesquisa().setOrdenacaoForma("DESC");
+					else  
+						getFiltroPesquisa().setOrdenacaoForma("DESC");
+				}
 			}
 		
 			List<DTOManifestacao> retorno = manifestacaoService.pesquisaManifestacoes(this);
