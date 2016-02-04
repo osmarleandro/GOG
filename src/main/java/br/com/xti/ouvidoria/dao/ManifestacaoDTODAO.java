@@ -32,6 +32,7 @@ import br.com.xti.ouvidoria.model.enums.BooleanEnum;
 import br.com.xti.ouvidoria.model.enums.FuncaoUsuarioEnum;
 import br.com.xti.ouvidoria.model.enums.StatusEncaminhamentoEnum;
 import br.com.xti.ouvidoria.model.enums.StatusManifestacaoEnum;
+import br.com.xti.ouvidoria.model.enums.UnidadeEnum;
 
 /**
  * @author Clelson
@@ -54,6 +55,7 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
     private static final String ASSOCIACAO_TRAMITE							=	"tramite"; 
     private static final String ASSOCIACAO_USUARIO_RECEPTOR					=	"usuarioReceptor"; 
     private static final String ASSOCIACAO_USUARIO_EMISSOR					=	"usuarioEmissor"; 
+    private static final String ASSOCIACAO_ULTIMO_TRAMITE					=	"ultimoTramite"; 
 
     public ManifestacaoDTODAO() {
         super(TbManifestacao.class);
@@ -78,6 +80,10 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
         						  "	LEFT JOIN TbUnidade unidadeUsuarioEmissor	ON unidadeUsuarioEmissor.idUnidade 		= usuarioEmissor.idUnidade " ));
         mapaUsoEntidades.put(ASSOCIACAO_USUARIO_EMISSOR,  false);
     	
+        mapaEntidades.put(ASSOCIACAO_ULTIMO_TRAMITE, 
+        		new StringBuffer ("	LEFT JOIN \"vwUltimoTramite\" vwUltTram		ON m.idManifestacao						= vwUltTram.idManifestacao " +
+        						  "	LEFT JOIN TbTramite ultimoTramite			ON vwUltTram.idTramite			 		= ultimoTramite.idTramite " ));
+        mapaUsoEntidades.put(ASSOCIACAO_ULTIMO_TRAMITE,  false);
 
     }
 
@@ -92,6 +98,7 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
     	sqlAssociacao += mapaUsoEntidades.get(ASSOCIACAO_TRAMITE) 							? mapaEntidades.get(ASSOCIACAO_TRAMITE) : "";
     	sqlAssociacao += mapaUsoEntidades.get(ASSOCIACAO_USUARIO_RECEPTOR) 					? mapaEntidades.get(ASSOCIACAO_USUARIO_RECEPTOR) : "";
     	sqlAssociacao += mapaUsoEntidades.get(ASSOCIACAO_USUARIO_EMISSOR) 					? mapaEntidades.get(ASSOCIACAO_USUARIO_EMISSOR) : "";
+    	sqlAssociacao += mapaUsoEntidades.get(ASSOCIACAO_ULTIMO_TRAMITE) 					? mapaEntidades.get(ASSOCIACAO_ULTIMO_TRAMITE) : "";
 
     	return sqlAssociacao;
     }
@@ -116,6 +123,8 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
     		mapaUsoEntidades.put(ASSOCIACAO_USUARIO_EMISSOR, true);
     		mapaUsoEntidades.put(ASSOCIACAO_TRAMITE, true);
     		mapaUsoEntidades.put(ASSOCIACAO_ENCAMINHAMENTOS, true);
+    	}else if (associacaoEntidade.equals(ASSOCIACAO_ULTIMO_TRAMITE)){
+    		mapaUsoEntidades.put(ASSOCIACAO_ULTIMO_TRAMITE, true);
     	}
     }
     
@@ -608,10 +617,20 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
 	 */
 	private void configuraFiltroComOuvidoria(StringBuffer filtroQuery,
 			TbUsuario usuario) {
+    	// Recupera a Função do usuário
+    	FuncaoUsuarioEnum funcao = EnumHelper.getFuncaoUsuarioEnum(usuario.getTpFuncao());
         
         adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao				= '" + StatusManifestacaoEnum.EM_ANDAMENTO.getId() + "' ");
     	adicionaClausulaWHERE(filtroQuery, " en.stEncaminhamento 				= '" + StatusEncaminhamentoEnum.RETORNADA.getId() + "' ");
     	adicionaClausulaWHERE(filtroQuery, " en.idUnidadeRecebeu	 			= " + usuario.getIdUnidade().getIdUnidade());
+
+    	switch (funcao) {
+	    	case OPERADOR:
+	    		adicionaClausulaWHERE(filtroQuery, " tra.idUsuarioReceptor		= " + usuario.getIdUsuario());
+	    		configuraComplementoAssociacaoEntidade(ASSOCIACAO_TRAMITE);
+	
+	    	break;
+		}
 
     	configuraComplementoAssociacaoEntidade(ASSOCIACAO_ENCAMINHAMENTOS);
 	}
@@ -662,16 +681,22 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
 
     	switch (funcao) {
 	    	case INTERLOCUTOR:
+	    		// Encaminhamento para a unidade do INTERLOCUTOR
 	    		adicionaClausulaWHERE(filtroQuery, 
 	    			"( 	en.idUnidadeRecebeu	 									=  " + usuario.getIdUnidade().getIdUnidade()
 	    			+ " OR 	en.idUnidadeEnviou		 							=  " + usuario.getIdUnidade().getIdUnidade()
 	    			+ ")" );
+	    		// TRÂMITE já tenha sido enviado para um usuário receptor 
 	    		adicionaClausulaWHERE(filtroQuery, " tra.idUsuarioReceptor	is not null ");
+	    		// TRÂMITE não tenha sido retornado 
+	    		adicionaClausulaWHERE(filtroQuery, " tra.stRetornada			=   '" + BooleanEnum.NAO.getId() + "' ");
+        		
     		break;
     	}
 
     	configuraComplementoAssociacaoEntidade(ASSOCIACAO_ENCAMINHAMENTOS);
 		configuraComplementoAssociacaoEntidade(ASSOCIACAO_TRAMITE);
+		configuraComplementoAssociacaoEntidade(ASSOCIACAO_USUARIO_RECEPTOR);
 	}
 
 	
@@ -682,14 +707,35 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
 	 */
 	private void configuraFiltroDevolvidas(StringBuffer filtroQuery,
 			TbUsuario usuario) {
-		adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao 			= '" + StatusManifestacaoEnum.EM_ANDAMENTO.getId() + "' ");
-		adicionaClausulaWHERE(filtroQuery, " en.stEncaminhamento 				= '" + StatusEncaminhamentoEnum.ENCAMINHADA.getId() + "' ");
-		adicionaClausulaWHERE(filtroQuery, " en.idUnidadeRecebeu	 			= " + usuario.getIdUnidade().getIdUnidade());
-		adicionaClausulaWHERE(filtroQuery, " tra.idUsuarioReceptor				= " + usuario.getIdUsuario());
-		adicionaClausulaWHERE(filtroQuery, " tra.stRetornada	 				= '" + BooleanEnum.NAO.getId() + "' ");
+    	// Recupera a Função do usuário
+    	FuncaoUsuarioEnum funcao = EnumHelper.getFuncaoUsuarioEnum(usuario.getTpFuncao());
 
-		configuraComplementoAssociacaoEntidade(ASSOCIACAO_ENCAMINHAMENTOS);
-		configuraComplementoAssociacaoEntidade(ASSOCIACAO_TRAMITE);
+    	switch (funcao) {
+	    	// A caixa DEVOLVIDAS deve ser exibida apenas para o OPERADOR
+    		case OPERADOR:
+    			// Manifestações ainda em andamento
+	    		adicionaClausulaWHERE(filtroQuery, " m.stStatusManifestacao 			= '" + StatusManifestacaoEnum.EM_ANDAMENTO.getId() + "' ");
+	    		adicionaClausulaWHERE(filtroQuery, " en.stEncaminhamento 				= '" + StatusEncaminhamentoEnum.RETORNADA.getId() + "' ");
+	    		adicionaClausulaWHERE(filtroQuery, " en.idUnidadeRecebeu	 			= " + usuario.getIdUnidade().getIdUnidade());
+
+	    		// Que tenha um trâmite em que o usuário logado tenha recebido e esteja retornado 
+	    		adicionaClausulaWHERE(filtroQuery, 
+	    				"( tra.idUsuarioReceptor				= " + usuario.getIdUsuario()
+	    				+ " AND tra.stRetornada					= '" + BooleanEnum.SIM.getId() + "' "
+	    				+ " ) " );
+
+	    		// Que tenha o último trâmite em que o usuário logado tenha enviado para a OUVIDORIA e que ainda esteja sem retorno 
+	    		adicionaClausulaWHERE(filtroQuery, 
+			    		"( ultimoTramite.idUnidadeEnvio 					= " + UnidadeEnum.OUVIDORIA.getId()   
+			    		+ "	AND ultimoTramite.idUsuarioEmissor 				= " + usuario.getIdUsuario()
+			    		+ " AND ultimoTramite.stRetornada					=   '" + BooleanEnum.NAO.getId() + "' )" );
+
+	    		configuraComplementoAssociacaoEntidade(ASSOCIACAO_ENCAMINHAMENTOS);
+	    		configuraComplementoAssociacaoEntidade(ASSOCIACAO_TRAMITE);
+	    		configuraComplementoAssociacaoEntidade(ASSOCIACAO_ULTIMO_TRAMITE);
+	    		
+			break;
+    	}
 		
 	}
 
@@ -750,7 +796,9 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
         		
         		configuraComplementoAssociacaoEntidade(ASSOCIACAO_ENCAMINHAMENTOS);
         		/*
-        		 * Complementa a query INCLUIDO todos os encaminhamento para os quais o ÚLTIMO TRÂMITE não tenha sido retornado.
+        		 * Complementa a query INCLUIDO todos os encaminhamento para os quais 
+        		 * - o ÚLTIMO TRÂMITE não tenha sido retornado e que
+        		 * - o ÚLTIMO TRÂMITE ainda não tenha sido enviado para um usuário receptor (UM OPERADOR DA UNIDADE) 
         		 */
         		StringBuffer complementoSQLUltimoTramiteAberto = new StringBuffer();
         		complementoSQLUltimoTramiteAberto.append( 
@@ -759,7 +807,9 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
         				+ " WHERE tram.idTramite in( "
         				// Seleciona o último Trâmite
         				+ " 	SELECT ultimoTramite.idTramite "
-        				+ "    		FROM \"vwUltimoTramite\" ultimoTramite  ) "   
+        				+ "    		FROM \"vwUltimoTramite\" ultimoTramite  "
+        				+ "			WHERE ultimoTramite.idUsuarioReceptor is null "
+        				+ "	) "   
         				+ " and tram.stRetornada	=   '" + BooleanEnum.NAO.getId() + "' )");
 
         		adicionaClausulaWHERE(filtroQuery, " en.idEncaminhamento 				in " + complementoSQLUltimoTramiteAberto);

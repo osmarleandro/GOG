@@ -219,14 +219,14 @@ public class ManifestacaoService {
     		// Permitido o acesso aos perfis que NÃO são OPERADOR ou MANIFESTANTE
     		validaPermissaoAcessoPesquisa(false, funcao, FuncaoUsuarioEnum.OPERADOR, FuncaoUsuarioEnum.MANIFESTANTE);
     	else if (filtroManifestacao.isCenarioPesquisaEmMonitoramento())
-    		// Permitido o acesso aos perfis que NÃO são OPERADOR ou MANIFESTANTE
-    		validaPermissaoAcessoPesquisa(false, funcao, FuncaoUsuarioEnum.OPERADOR, FuncaoUsuarioEnum.MANIFESTANTE);
+    		// Permitido o acesso aos perfis ADMINISTRADOR e OUVIDOR
+    		validaPermissaoAcessoPesquisa(true, funcao, FuncaoUsuarioEnum.ADMINISTRADOR, FuncaoUsuarioEnum.OUVIDOR);
     	else if (filtroManifestacao.isCenarioPesquisaRetornadas())
     		// Permitido o acesso aos perfis que NÃO são OPERADOR ou MANIFESTANTE
     		validaPermissaoAcessoPesquisa(false, funcao, FuncaoUsuarioEnum.OPERADOR, FuncaoUsuarioEnum.MANIFESTANTE);
     	else if (filtroManifestacao.isCenarioPesquisaDevolvidas())
-    		// Permitido o acesso aos perfis que NÃO são OPERADOR ou MANIFESTANTE
-    		validaPermissaoAcessoPesquisa(false, funcao, FuncaoUsuarioEnum.OPERADOR, FuncaoUsuarioEnum.MANIFESTANTE);
+    		// Permitido o acesso ao perfil OPERADOR 
+    		validaPermissaoAcessoPesquisa(true, funcao, FuncaoUsuarioEnum.OPERADOR, FuncaoUsuarioEnum.MANIFESTANTE);
     	else if (filtroManifestacao.isCenarioPesquisaComOuvidoria())
     		// Permitido o acesso aos perfis INTERLOCUTOR e OPERADOR
     		validaPermissaoAcessoPesquisa(true, funcao, FuncaoUsuarioEnum.INTERLOCUTOR, FuncaoUsuarioEnum.OPERADOR);
@@ -234,8 +234,8 @@ public class ManifestacaoService {
     		// Permitido o acesso aos perfis que NÃO MANIFESTANTE
     		validaPermissaoAcessoPesquisa(false, funcao, FuncaoUsuarioEnum.MANIFESTANTE);
     	else if (filtroManifestacao.isCenarioPesquisaTodos())
-    		// Permitido o acesso aos perfis OUVIDOR e ADMINISTRADOR
-    		validaPermissaoAcessoPesquisa(true, funcao, FuncaoUsuarioEnum.OUVIDOR, FuncaoUsuarioEnum.ADMINISTRADOR);
+    		// Permitido o acesso aos perfis ADMINISTRADOR e OUVIDOR
+    		validaPermissaoAcessoPesquisa(true, funcao, FuncaoUsuarioEnum.ADMINISTRADOR, FuncaoUsuarioEnum.OUVIDOR);
 	}
     
 
