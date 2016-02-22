@@ -6518,8 +6518,6 @@ CREATE TABLE tbclassificacao_tbsubclassificacao
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE tbclassificacao_tbsubclassificacao
-  OWNER TO java;
 
 
 
@@ -7045,8 +7043,6 @@ CREATE TABLE tbclassificacao_tbunidade
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE tbclassificacao_tbunidade
-  OWNER TO java;
 
 INSERT INTO TBCLASSIFICACAO_TBUNIDADE (TbClassificacao_idClassificacao, tbUnidadeCollection_idUnidade) VALUES (2041, 1);
 INSERT INTO TBCLASSIFICACAO_TBUNIDADE (TbClassificacao_idClassificacao, tbUnidadeCollection_idUnidade) VALUES (2041, 1010);
