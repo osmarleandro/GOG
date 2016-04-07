@@ -6518,8 +6518,6 @@ CREATE TABLE tbclassificacao_tbsubclassificacao
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE tbclassificacao_tbsubclassificacao
-  OWNER TO java;
 
 
 
@@ -7045,8 +7043,6 @@ CREATE TABLE tbclassificacao_tbunidade
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE tbclassificacao_tbunidade
-  OWNER TO java;
 
 INSERT INTO TBCLASSIFICACAO_TBUNIDADE (TbClassificacao_idClassificacao, tbUnidadeCollection_idUnidade) VALUES (2041, 1);
 INSERT INTO TBCLASSIFICACAO_TBUNIDADE (TbClassificacao_idClassificacao, tbUnidadeCollection_idUnidade) VALUES (2041, 1010);
@@ -7465,4 +7461,452 @@ INSERT INTO TBCLASSIFICACAO_TBUNIDADE (TbClassificacao_idClassificacao, tbUnidad
 INSERT INTO TBCLASSIFICACAO_TBUNIDADE (TbClassificacao_idClassificacao, tbUnidadeCollection_idUnidade) VALUES (5322, 2020);
 INSERT INTO TBCLASSIFICACAO_TBUNIDADE (TbClassificacao_idClassificacao, tbUnidadeCollection_idUnidade) VALUES (5323, 2033);
 INSERT INTO TBCLASSIFICACAO_TBUNIDADE (TbClassificacao_idClassificacao, tbUnidadeCollection_idUnidade) VALUES (5324, 2027);
+
+
+-- Script para criação de textos na tabela de emails automatizados
+-- Para garantir o funcionamento vamos apagar e criar a tabela novamente
+DROP TABLE tbemailautomatizado;
+
+CREATE TABLE tbemailautomatizado
+(
+  idemailautomatizado serial NOT NULL,
+  dsemail text NOT NULL,
+  nmtituloemail character varying(200) NOT NULL,
+  tpemail character varying(255) NOT NULL,
+  CONSTRAINT tbemailautomatizado_pkey PRIMARY KEY (idemailautomatizado)
+);
+-- Agora vamos inserir os templates de emails automatizados
+INSERT into  tbEmailAutomatizado (idEmailAutomatizado, tpEmail, nmTituloEmail, dsEmail) VALUES (1, N'1 ', N'[MinC Ouvidoria] Confirmação de Recebimento de Manifestação: %NUMERO_MANIFESTACAO%', N'<div style="text-align: center;" align="left"><div style="font-family: Arial, Verdana; font-size: 10pt; font-style: normal; font-variant: normal; font-weight: normal; line-height: normal; text-align: justify;" align="center"><font color="#006600" face="Arial, Verdana"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ouvidoria Ministério da Cultura</strong></font></div><p class="MsoNormal" style="font-family: Arial, Verdana; font-size: 10pt; font-style: normal; font-variant: normal; font-weight: normal; line-height: normal; text-align: justify; margin-bottom: 12pt;" align="justify"><font size="3"><br/></font></p><p class="MsoNormal" style="font-family: Arial, Verdana; font-size: 10pt; font-style: normal; font-variant: normal; font-weight: normal; line-height: normal; text-align: justify; margin-bottom: 12pt;" align="justify"><font size="3">Prezado (a) Senhor&nbsp;<span style="background-color: white; background-position: initial initial; background-repeat: initial initial;"><strong>%NOME%,</strong> </span><strong><span style="background-color: white; background-position: initial initial; background-repeat: initial initial;"><br/></span></strong></font></p><p class="MsoNormal" style="font-family: Arial, Verdana; font-size: 10pt; font-style: normal; font-variant: normal; font-weight: normal; line-height: normal; text-align: justify;" align="justify"><font size="3">Sua manifestação foi recebida com sucesso em&nbsp;<span style="background-color: white; background-position: initial initial; background-repeat: initial initial;">%HOJE%.&nbsp;</span></font></p><p class="MsoNormal" style="font-family: Arial, Verdana; font-size: 10pt; font-style: normal; font-variant: normal; font-weight: normal; line-height: normal; text-align: justify;" align="justify"><font size="3">A seguir, os dados que o sr.(a) deverá utilizar para acompanhá-la.</font></p><div class="MsoNormal" style="font-family: Arial, Verdana; font-size: 10pt; font-style: normal; font-variant: normal; font-weight: normal; line-height: normal;" align="justify"><hr size="3" width="100%"/></div><div align="left"><font size="3">Número da Manifestação/Protocolo: <strong>%NUMERO_MANIFESTACAO%</strong><br/><br/>Senha de acesso: <strong>%SENHA_MANIFESTACAO%</strong><br/><br/>Para acessar sua manifestação, clique no link %URL_ACESSO_MANIFESTACAO%</font></div><div class="MsoNormal" style="font-family: Arial, Verdana; font-size: 10pt; font-style: normal; font-variant: normal; font-weight: normal; line-height: normal;" align="justify"><hr size="3" width="100%"/></div><p class="MsoNormal" style="text-align: justify; font-family: Arial, Verdana; font-size: 10pt; font-style: normal; font-variant: normal; font-weight: normal; line-height: normal;" align="justify"><font size="3"><strong><span style="font-weight: normal;">Atenciosamente,</span></strong></font></p><p class="MsoNormal" style="text-align: justify; font-family: Arial, Verdana; font-size: 10pt; font-style: normal; font-variant: normal; font-weight: normal; line-height: normal;" align="justify"><font size="3"><strong><span style="font-weight: normal;">Ouvidoria</span></strong></font></p><p class="MsoNormal" style="text-align: justify; font-family: Arial, Verdana; font-size: 10pt; font-style: normal; font-variant: normal; font-weight: normal; line-height: normal;" align="justify"><font size="3"><strong><span style="font-weight: normal;">Ministério da Cultura.</span></strong></font></p><p class="MsoNormal" style="font-family: Arial, Verdana; font-size: 10pt; font-style: normal; font-variant: normal; font-weight: normal; line-height: normal;"><font size="3"><span style="font-size: 10pt;"><strong><br/></strong></span></font></p><p class="MsoNormal" style="font-family: Arial, Verdana; font-size: 10pt; font-style: normal; font-variant: normal; font-weight: normal; line-height: normal;"><strong>Mensagem enviada pelo sistema de Ouvidoria do Ministério da Cultura. Favor não responder diretamente a este e-mail. &nbsp;</strong></p><p class="MsoNormal" style="font-family: Arial, Verdana; font-size: 10pt; font-style: normal; font-variant: normal; font-weight: normal; line-height: normal;"><strong><span style="font-size: 7.5pt; font-family: Arial;"><br/></span></strong></p></div><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:View>Normal</w:View>
+  <w:Zoom>0</w:Zoom>
+  <w:HyphenationZone>21</w:HyphenationZone>
+  <w:PunctuationKerning></w:PunctuationKerning>
+  <w:ValidateAgainstSchemas></w:ValidateAgainstSchemas>
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+  <w:Compatibility>
+   <w:BreakWrappedTables></w:BreakWrappedTables>
+   <w:SnapToGridInCell></w:SnapToGridInCell>
+   <w:WrapTextWithPunct></w:WrapTextWithPunct>
+   <w:UseAsianBreakRules></w:UseAsianBreakRules>
+   <w:DontGrowAutofit></w:DontGrowAutofit>
+  </w:Compatibility>
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+ </w:WordDocument>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:LatentStyles DefLockedState="false" LatentStyleCount="156">
+ </w:LatentStyles>
+</xml><![endif]--><!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:"Tabela normal";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-parent:"";
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+	mso-para-margin:0cm;
+	mso-para-margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-ansi-language:#0400;
+	mso-fareast-language:#0400;
+	mso-bidi-language:#0400;}
+</style>
+<![endif]-->');
+INSERT into  tbEmailAutomatizado (idEmailAutomatizado, tpEmail, nmTituloEmail, dsEmail) VALUES (2, N'2 ', N'[MinC Ouvidoria] Encaminhamento de Manifestação para análise: %NUMERO_MANIFESTACAO%', N'<div style="font-size: 10pt; text-align: center;"><font color="#006600" face="Arial, Verdana"><strong>Ouvidoria Ministério da Cultura</strong></font></div><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:View>Normal</w:View>
+  <w:Zoom>0</w:Zoom>
+  <w:HyphenationZone>21</w:HyphenationZone>
+  <w:PunctuationKerning></w:PunctuationKerning>
+  <w:ValidateAgainstSchemas></w:ValidateAgainstSchemas>
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+  <w:Compatibility>
+   <w:BreakWrappedTables></w:BreakWrappedTables>
+   <w:SnapToGridInCell></w:SnapToGridInCell>
+   <w:WrapTextWithPunct></w:WrapTextWithPunct>
+   <w:UseAsianBreakRules></w:UseAsianBreakRules>
+   <w:DontGrowAutofit></w:DontGrowAutofit>
+  </w:Compatibility>
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+ </w:WordDocument>
+</xml><![endif]-->
+
+<p class="MsoNormal"><font size="3"><br/></font></p><p class="MsoNormal"><font size="3">Prezado (a) senhor (a) <strong><span style="background-color: white;">%NOME%,</span></strong></font></p><font size="3">
+
+</font><p class="MsoNormal"><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:View>Normal</w:View>
+  <w:Zoom>0</w:Zoom>
+  <w:HyphenationZone>21</w:HyphenationZone>
+  <w:PunctuationKerning></w:PunctuationKerning>
+  <w:ValidateAgainstSchemas></w:ValidateAgainstSchemas>
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+  <w:Compatibility>
+   <w:BreakWrappedTables></w:BreakWrappedTables>
+   <w:SnapToGridInCell></w:SnapToGridInCell>
+   <w:WrapTextWithPunct></w:WrapTextWithPunct>
+   <w:UseAsianBreakRules></w:UseAsianBreakRules>
+   <w:DontGrowAutofit></w:DontGrowAutofit>
+  </w:Compatibility>
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+ </w:WordDocument>
+</xml><![endif]--></p><p class="MsoNormal"><!--[if gte mso 9]><xml>
+ <w:LatentStyles DefLockedState="false" LatentStyleCount="156">
+ </w:LatentStyles>
+</xml><![endif]--><!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:"Tabela normal";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-parent:"";
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+	mso-para-margin:0cm;
+	mso-para-margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-ansi-language:#0400;
+	mso-fareast-language:#0400;
+	mso-bidi-language:#0400;}
+</style>
+<![endif]-->
+
+</p><p class="MsoNormal"><font size="3">Informamos que sua manifestação foi encaminhada à unidade competente, em <span style="background:white">%HOJE%</span>, para
+conhecimento e manifestação.</font></p><font size="3">
+
+
+
+</font><p class="MsoNormal"><font size="3">Por favor, aguarde nosso retorno.</font></p><font size="3">
+
+</font><p class="MsoNormal"><font size="3">Atenciosamente,</font></p><font size="3">
+
+</font><p class="MsoNormal"><font size="3">Ouvidoria</font></p><font size="3">
+
+</font><p class="MsoNormal"><font size="3">Ministério da Cultura</font></p><p class="MsoNormal"><font size="2"><br/></font></p>
+
+<p class="MsoNormal" style="font-size: 10pt; text-align: center;" align="center"><strong>Mensagem enviada pelo sistema de Ouvidoria do Ministério da Cultura. Favor não responder diretamente a este e-mail. &nbsp;</strong></p><p class="MsoNormal" style="font-size: 10pt; text-align: center;" align="center"><strong><span style="font-size:7.5pt;font-family:Arial"><br/></span></strong><span style="font-size:7.5pt"></span></p>
+
+<!--[if gte mso 9]><xml>
+ <w:LatentStyles DefLockedState="false" LatentStyleCount="156">
+ </w:LatentStyles>
+</xml><![endif]--><!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:"Tabela normal";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-parent:"";
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+	mso-para-margin:0cm;
+	mso-para-margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-ansi-language:#0400;
+	mso-fareast-language:#0400;
+	mso-bidi-language:#0400;}
+</style>
+<![endif]--><div style="font-size: 10pt; text-align: center;"><br/></div>');
+INSERT into  tbEmailAutomatizado (idEmailAutomatizado, tpEmail, nmTituloEmail, dsEmail) VALUES (3, N'3 ', N'[MinC Ouvidoria] Resposta Final à Manifestação: %NUMERO_MANIFESTACAO%', N'<div style="font-size: 10pt; font-style: normal; font-weight: normal; font-family: ''Times New Roman''; text-align: center;"><font color="#006600" face="Arial, Verdana" size="2"><strong>Ouvidoria Ministério da Cultura</strong></font></div><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:View>Normal</w:View>
+  <w:Zoom>0</w:Zoom>
+  <w:HyphenationZone>21</w:HyphenationZone>
+  <w:PunctuationKerning></w:PunctuationKerning>
+  <w:ValidateAgainstSchemas></w:ValidateAgainstSchemas>
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+  <w:Compatibility>
+   <w:BreakWrappedTables></w:BreakWrappedTables>
+   <w:SnapToGridInCell></w:SnapToGridInCell>
+   <w:WrapTextWithPunct></w:WrapTextWithPunct>
+   <w:UseAsianBreakRules></w:UseAsianBreakRules>
+   <w:DontGrowAutofit></w:DontGrowAutofit>
+  </w:Compatibility>
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+ </w:WordDocument>
+</xml><![endif]--><br/><br/><p class="MsoNormal" style="font-size: 10pt; font-style: normal;"><font size="3">Prezado (a) senhor (a)<strong> </strong><span style="background:white"><strong>%NOME%</strong>,</span></font></p><font size="3" style="font-size: 10pt;">
+
+%RESPOSTA_OUVIDOR%</font><div><br/><span style="font-size: medium;">Para acessar sua manifestação, ou replicar a presente resposta, clique no link %URL_ACESSO_MANIFESTACAO%</span><div style="font-size: 10pt;"><font size="3"><br/>Atenciosamente,<br/><br/>Ouvidoria<br/><br/>Ministério da Cultura<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </font><p class="MsoNormal" style="font-style: normal;" align="center"><span style="font-size: 10pt;"><strong>Mensagem enviada pelo sistema de Ouvidoria do Ministério da Cultura. Favor não responder diretamente a este e-mail. &nbsp;</strong><br/></span></p><br/>
+
+
+
+<!--[if gte mso 9]><xml>
+ <w:LatentStyles DefLockedState="false" LatentStyleCount="156">
+ </w:LatentStyles>
+</xml><![endif]--><!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:"Tabela normal";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-parent:"";
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+	mso-para-margin:0cm;
+	mso-para-margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-ansi-language:#0400;
+	mso-fareast-language:#0400;
+	mso-bidi-language:#0400;}
+</style>
+<![endif]--></div></div>');
+INSERT into  tbEmailAutomatizado (idEmailAutomatizado, tpEmail, nmTituloEmail, dsEmail) VALUES (4, N'4 ', N'[MinC Ouvidoria] Recuperação de Senha: %USUARIO_SENHA%', N'<div style="font-family: ''Times New Roman''; text-align: center;"><font color="#006600" face="Arial, Verdana" size="2"><strong>Ouvidoria Ministério da Cultura</strong></font></div><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:View>Normal</w:View>
+  <w:Zoom>0</w:Zoom>
+  <w:HyphenationZone>21</w:HyphenationZone>
+  <w:PunctuationKerning></w:PunctuationKerning>
+  <w:ValidateAgainstSchemas></w:ValidateAgainstSchemas>
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+  <w:Compatibility>
+   <w:BreakWrappedTables></w:BreakWrappedTables>
+   <w:SnapToGridInCell></w:SnapToGridInCell>
+   <w:WrapTextWithPunct></w:WrapTextWithPunct>
+   <w:UseAsianBreakRules></w:UseAsianBreakRules>
+   <w:DontGrowAutofit></w:DontGrowAutofit>
+  </w:Compatibility>
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+ </w:WordDocument>
+</xml><![endif]--><br/><br/><font size="3">Prezado (a) senhor (a) <strong>%NOME_USUARIO%,</strong><br/><br/>Uma nova senha foi gerada para seu usuário: <strong>%LOGIN_USUARIO%</strong><br/><br/>A nova senha de acesso é: <strong>%SENHA_USUARIO%</strong><br/><br/>Para sua segurança, solicitamos que troque a senha gerada pelo sistema, a partir do menu Usuários &gt; Minhas Informações.<br/><br/>Atenciosamente,<br/><br/>Ouvidoria<br/><br/>Ministério da Cultura</font><p class="MsoNormal" style="text-align:center" align="center">&nbsp;</p><div align="center"><strong>Mensagem enviada pelo sistema de Ouvidoria do Ministério da Cultura. Favor não responder diretamente a este e-mail. &nbsp;</strong></div>
+
+<!--[if gte mso 9]><xml>
+ <w:LatentStyles DefLockedState="false" LatentStyleCount="156">
+ </w:LatentStyles>
+</xml><![endif]--><!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:"Tabela normal";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-parent:"";
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+	mso-para-margin:0cm;
+	mso-para-margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-ansi-language:#0400;
+	mso-fareast-language:#0400;
+	mso-bidi-language:#0400;}
+</style>
+<![endif]-->');
+INSERT into  tbEmailAutomatizado (idEmailAutomatizado, tpEmail, nmTituloEmail, dsEmail) VALUES (5, N'5 ', N'[MinC Ouvidoria] Responder Questionário: ', N'<div style="font-family: ''Times New Roman''; font-style: normal; font-variant: normal; font-weight: normal; line-height: normal; text-align: center;"><font color="#006600" face="Arial, Verdana"><strong>Ouvidoria Ministério da Cultura</strong></font></div><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:View>Normal</w:View>
+  <w:Zoom>0</w:Zoom>
+  <w:TrackMoves></w:TrackMoves>
+  <w:TrackFormatting></w:TrackFormatting>
+  <w:HyphenationZone>21</w:HyphenationZone>
+  <w:PunctuationKerning></w:PunctuationKerning>
+  <w:ValidateAgainstSchemas></w:ValidateAgainstSchemas>
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+  <w:DoNotPromoteQF></w:DoNotPromoteQF>
+  <w:LidThemeOther>PT-BR</w:LidThemeOther>
+  <w:LidThemeAsian>X-NONE</w:LidThemeAsian>
+  <w:LidThemeComplexScript>X-NONE</w:LidThemeComplexScript>
+  <w:Compatibility>
+   <w:BreakWrappedTables></w:BreakWrappedTables>
+   <w:SnapToGridInCell></w:SnapToGridInCell>
+   <w:WrapTextWithPunct></w:WrapTextWithPunct>
+   <w:UseAsianBreakRules></w:UseAsianBreakRules>
+   <w:DontGrowAutofit></w:DontGrowAutofit>
+   <w:SplitPgBreakAndParaMark></w:SplitPgBreakAndParaMark>
+   <w:DontVertAlignCellWithSp></w:DontVertAlignCellWithSp>
+   <w:DontBreakConstrainedForcedTables></w:DontBreakConstrainedForcedTables>
+   <w:DontVertAlignInTxbx></w:DontVertAlignInTxbx>
+   <w:Word11KerningPairs></w:Word11KerningPairs>
+   <w:CachedColBalance></w:CachedColBalance>
+  </w:Compatibility>
+  <w:DoNotOptimizeForBrowser></w:DoNotOptimizeForBrowser>
+  <m:mathPr>
+   <m:mathFont m:val="Cambria Math"></m:mathFont>
+   <m:brkBin m:val="before"></m:brkBin>
+   <m:brkBinSub m:val="--"></m:brkBinSub>
+   <m:smallFrac m:val="off"></m:smallFrac>
+   <m:dispDef></m:dispDef>
+   <m:lMargin m:val="0"></m:lMargin>
+   <m:rMargin m:val="0"></m:rMargin>
+   <m:defJc m:val="centerGroup"></m:defJc>
+   <m:wrapIndent m:val="1440"></m:wrapIndent>
+   <m:intLim m:val="subSup"></m:intLim>
+   <m:naryLim m:val="undOvr"></m:naryLim>
+  </m:mathPr></w:WordDocument>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:View>Normal</w:View>
+  <w:Zoom>0</w:Zoom>
+  <w:HyphenationZone>21</w:HyphenationZone>
+  <w:PunctuationKerning></w:PunctuationKerning>
+  <w:ValidateAgainstSchemas></w:ValidateAgainstSchemas>
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+  <w:Compatibility>
+   <w:BreakWrappedTables></w:BreakWrappedTables>
+   <w:SnapToGridInCell></w:SnapToGridInCell>
+   <w:WrapTextWithPunct></w:WrapTextWithPunct>
+   <w:UseAsianBreakRules></w:UseAsianBreakRules>
+   <w:DontGrowAutofit></w:DontGrowAutofit>
+  </w:Compatibility>
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+ </w:WordDocument>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:View>Normal</w:View>
+  <w:Zoom>0</w:Zoom>
+  <w:HyphenationZone>21</w:HyphenationZone>
+  <w:PunctuationKerning></w:PunctuationKerning>
+  <w:ValidateAgainstSchemas></w:ValidateAgainstSchemas>
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+  <w:Compatibility>
+   <w:BreakWrappedTables></w:BreakWrappedTables>
+   <w:SnapToGridInCell></w:SnapToGridInCell>
+   <w:WrapTextWithPunct></w:WrapTextWithPunct>
+   <w:UseAsianBreakRules></w:UseAsianBreakRules>
+   <w:DontGrowAutofit></w:DontGrowAutofit>
+  </w:Compatibility>
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+ </w:WordDocument>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:LatentStyles DefLockedState="false" LatentStyleCount="156">
+ </w:LatentStyles>
+</xml><![endif]--><!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:"Tabela normal";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-parent:"";
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+	mso-para-margin:0cm;
+	mso-para-margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-ansi-language:#0400;
+	mso-fareast-language:#0400;
+	mso-bidi-language:#0400;}
+</style>
+<![endif]--><p class="MsoNormal" style="font-family: Arial, Verdana; font-style: normal; font-variant: normal; font-weight: normal; line-height: normal;"><br/><span style="font-family: Arial;"></span></p><p class="MsoNormal"><font size="3"><font face="Arial, Verdana">Prezado (a) senhor (a) </font><strong><span style="font-family: Arial, Verdana; font-style: normal; font-variant: normal; line-height: normal;">%NOME%</span><font face="Arial, Verdana">,</font></strong><br/><br/><font face="Arial, Verdana">Convidamos você a participar de nossa pesquisa de satisfação e avaliar a resposta dada a manifestação de número </font><strong style="font-family: Arial, Verdana; font-style: normal; font-variant: normal; line-height: normal;">%NUMERO_MANIFESTACAO%</strong><font face="Arial, Verdana">.</font><br/><br/><font face="Arial, Verdana">O link para acessar sua manifestação e&nbsp;</font><font face="Arial, Verdana">responder</font><font face="Arial, Verdana">&nbsp;ao Questionário é %URL_ACESSO_MANIFESTACAO%.</font><br/><br/><font face="Arial, Verdana">Basta selecionar o botão "Responder Questionário", no canto superior esquerdo da tela.</font><br/><br/><font face="Arial, Verdana">Participe! A qualidade de nossos serviços depende de sua participação!</font><br/><br/><font face="Arial, Verdana">Atenciosamente,</font><br/><br/><font face="Arial, Verdana">Ouvidoria</font><br/><br/><font face="Arial, Verdana">Ministério da Cultura</font></font></p><p class="MsoNormal" style="font-family: Arial, Verdana; font-style: normal; font-variant: normal; font-weight: normal; line-height: normal;"><strong><br/></strong></p><p class="MsoNormal" align="center" style="font-family: Arial, Verdana; font-style: normal; font-variant: normal; font-weight: normal; line-height: normal;"><strong>Mensagem enviada pelo sistema de Ouvidoria do Ministério da Cultura. Favor não responder diretamente a este e-mail. &nbsp;</strong></p>
+
+<!--[if gte mso 9]><xml>
+ <w:LatentStyles DefLockedState="false" LatentStyleCount="156">
+ </w:LatentStyles>
+</xml><![endif]--><!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:"Tabela normal";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-parent:"";
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+	mso-para-margin:0cm;
+	mso-para-margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-ansi-language:#0400;
+	mso-fareast-language:#0400;
+	mso-bidi-language:#0400;}
+</style>
+<![endif]-->');
+INSERT into  tbEmailAutomatizado (idEmailAutomatizado, tpEmail, nmTituloEmail, dsEmail) VALUES (15, N'6 ', N'[MinC Ouvidoria] - Nova mensagem - %NUMERO_MANIFESTACAO% ', N'<!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:View>Normal</w:View>
+  <w:Zoom>0</w:Zoom>
+  <w:HyphenationZone>21</w:HyphenationZone>
+  <w:PunctuationKerning></w:PunctuationKerning>
+  <w:ValidateAgainstSchemas></w:ValidateAgainstSchemas>
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+  <w:Compatibility>
+   <w:BreakWrappedTables></w:BreakWrappedTables>
+   <w:SnapToGridInCell></w:SnapToGridInCell>
+   <w:WrapTextWithPunct></w:WrapTextWithPunct>
+   <w:UseAsianBreakRules></w:UseAsianBreakRules>
+   <w:DontGrowAutofit></w:DontGrowAutofit>
+  </w:Compatibility>
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+ </w:WordDocument>
+</xml><![endif]-->
+
+<p class="MsoNormal" style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto" align="center"><font color="#006600" face="Arial, Verdana"><strong>Ouvidoria Ministério da Cultura</strong></font></p><p class="MsoNormal" style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto" align="justify"><font size="3"><span style="font-family:Arial"><br/></span></font></p><p class="MsoNormal" style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto" align="justify"><font size="3"><span style="font-family:Arial">Prezado (a) colaborador (a), </span></font></p><div align="justify">
+
+</div><p class="MsoNormal" style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto" align="justify"><font size="3"><span style="font-family:Arial">Existe uma nova mensagem direcionada à sua Unidade, no
+sistema da Ouvidoria, de n° <strong>%NUMERO_MANIFESTACAO%</strong>.  </span><span style="font-weight: bold; font-size: 10px"></span></font></p><div align="justify">
+
+</div><p class="MsoNormal" style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto" align="justify"><font size="3"><span style="font-family:Arial">Para entrar no sistema, acesse
+http://ouvidoria.cultura.gov.br/ouvidoria/&nbsp; </span></font></p><div align="justify">
+
+</div><p class="MsoNormal" style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto" align="justify"><font size="3"><span style="font-family:Arial"><br/>
+Atenciosamente,</span></font></p><div align="justify">
+
+</div><p class="MsoNormal" style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto" align="justify"><font size="3"><span style="font-family:Arial">Ouvidoria</span></font></p><div align="justify">
+
+</div><p class="MsoNormal" style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto" align="justify"><font size="3"><span style="font-family:Arial">Ministério da Cultura</span></font></p><p class="MsoNormal" style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto" align="justify"><font size="3"><span style="font-family:Arial"><br/></span></font></p><p class="MsoNormal" align="justify" style="text-align: justify;"><strong style="text-align: -webkit-center;">Mensagem enviada pelo sistema de Ouvidoria do Ministério da Cultura. Favor não responder diretamente a este e-mail. &nbsp;</strong></p>
+
+<!--[if gte mso 9]><xml>
+ <w:LatentStyles DefLockedState="false" LatentStyleCount="156">
+ </w:LatentStyles>
+</xml><![endif]--><!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:"Tabela normal";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-parent:"";
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+	mso-para-margin:0cm;
+	mso-para-margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-ansi-language:#0400;
+	mso-fareast-language:#0400;
+	mso-bidi-language:#0400;}
+</style>
+<![endif]-->');
+INSERT into  tbEmailAutomatizado (idEmailAutomatizado, tpEmail, nmTituloEmail, dsEmail) VALUES (16, N'7 ', N'[MinC Ouvidoria] - Nova mensagem - %NUMERO_MANIFESTACAO% ', N'<p class="MsoNormal" style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto" align="justify"><font color="#006600" face="Arial, Verdana"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ouvidoria Ministério da Cultura</strong></font></p><p class="MsoNormal" style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto" align="justify"><font color="#006600" face="Arial, Verdana"><strong><br/></strong></font></p><font size="3">Prezado (a) colaborador (a),<br/><br/>Existe uma nova manifestação, direcionada à você, na Caixa de Entrada do sistema da Ouvidoria, de n° <strong>%NUMERO_MANIFESTACAO%</strong>.<br/><br/>Para entrar no sistema, acesse http://ouvidoria.cultura.gov.br/ouvidoria/ <br/><br/><br/>Atenciosamente,<br/><br/>Ouvidoria<br/><br/>Ministério da Cultura</font><div><font size="3"><br/></font></div><div><font size="3"><br/></font></div><div><strong style="text-align: -webkit-center;">Mensagem enviada pelo sistema de Ouvidoria do Ministério da Cultura. Favor não responder diretamente a este e-mail. &nbsp;</strong></div>');
+INSERT into  tbEmailAutomatizado (idEmailAutomatizado, tpEmail, nmTituloEmail, dsEmail) VALUES (17, N'8 ', N'[MinC Ouvidoria] - Nova manifestação - %NUMERO_MANIFESTACAO% ', N'<p class="MsoNormal" style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto" align="justify"><font color="#006600" face="Arial, Verdana"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ouvidoria Ministério da Cultura</strong></font></p><font size="3"><br/>Prezado (a) Ouvidor (a),<br/><br/></font><div align="left"><font size="3">Existe uma nova manifestação na mensagem <strong>%NUMERO_MANIFESTACAO%</strong>, feita pelo usuário, direcionada à Ouvidoria.</font><br/></div><font size="3"><br/></font><div><span style="font-size: medium;">Para entrar no sistema, acesse http://ouvidoria.cultura.gov.br/ouvidoria/&nbsp;</span></div><div><font size="3"><br/>Atenciosamente,<br/><br/>Ouvidoria<br/><br/>Ministério da Cultura</font><br/></div><div><font size="3"><br/></font></div><div><font size="3"><br/></font></div><div><strong style="text-align: -webkit-center;">Mensagem enviada pelo sistema de Ouvidoria do Ministério da Cultura. Favor não responder diretamente a este e-mail. &nbsp;</strong></div>');
+INSERT into  tbEmailAutomatizado (idEmailAutomatizado, tpEmail, nmTituloEmail, dsEmail) VALUES (18, N'9 ', N'[MinC Ouvidoria] - Resposta da Área Técnica - %NUMERO_MANIFESTACAO% ', N'<p class="MsoNormal" style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto" align="justify"><font color="#006600" face="Arial, Verdana"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ouvidoria Ministério da Cultura</strong></font></p><font size="3"><br/>Prezado (a) Ouvidor (a),<br/><br/>A manifestação <strong>%NUMERO_MANIFESTACAO%</strong> foi respondida pela área técnica à esta Ouvidoria.<br/><br/>Para entrar no sistema, acesse http://ouvidoria.cultura.gov.br/ouvidoria/ <br/><br/><br/>Atenciosamente,<br/><br/>Ouvidoria<br/><br/>Ministério da Cultura</font><div><font size="3"><br/></font></div><div><strong style="text-align: -webkit-center;">Mensagem enviada pelo sistema de Ouvidoria do Ministério da Cultura. Favor não responder diretamente a este e-mail. &nbsp;</strong></div>');
+INSERT into  tbEmailAutomatizado (idEmailAutomatizado, tpEmail, nmTituloEmail, dsEmail) VALUES (1006, N'10', N'[MinC Ouvidoria] - Nova mensagem - %NUMERO_MANIFESTACAO% ', N'<p class="MsoNormal" style="font-size: 10pt;" align="justify"><font color="#006600" face="Arial, Verdana"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ouvidoria Ministério da Cultura</strong></font></p><font size="3"><br/>Prezado (a) colaborador (a),<br/><br/></font><div align="left"><font size="3">Existe uma nova mensagem na manifestação <strong>%NUMERO_MANIFESTACAO%</strong>, direcionada à você, encaminhada pelo operador. </font><br/></div><font size="3"><br/>Para entrar no sistema, acesse http://ouvidoria.cultura.gov.br/ouvidoria/ <br/><br/><br/>Atenciosamente,<br/><br/>Ouvidoria<br/><br/>Ministério da Cultura</font><div><font size="3"><br/></font></div><div><font size="3"><br/></font></div><div><strong style="text-align: -webkit-center;">Mensagem enviada pelo sistema de Ouvidoria do Ministério da Cultura. Favor não responder diretamente a este e-mail. &nbsp;</strong></div>');
+INSERT into  tbEmailAutomatizado (idEmailAutomatizado, tpEmail, nmTituloEmail, dsEmail) VALUES (1007, N'11', N'[MinC Ouvidoria] - Mensagem em atraso - %NUMERO_MANIFESTACAO% ', N'<div style="text-align: center;"><strong style="color: rgb(0, 102, 0); text-align: justify;">&nbsp;Ouvidoria Ministério da Cultura</strong></div><div><font face="Arial, Verdana"><span style="font-size: 13px;"><br/></span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;">Prezado (a) colaborador (a),&nbsp;</span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;"><br/></span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;">Verificamos que a presente mensagem permanece inconclusa.</span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;"><br/></span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;">Solicitamos que seja dada resposta, com brevidade, à mensagem em tela, tendo em vista que o prazo regimental de resposta a esta Ouvidoria já está expirado.</span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;"><br/></span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;">Reiteramos que enviem a resposta com a maior brevidade possível, visto que o prazo estabelecido pela Ouvidoria para atendimento ao interessado já se esgotou (vide art. 57, § 1º, I, II e III, da Portaria n. 40 - Regimento Interno do MinC)&nbsp;</span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;"><br/></span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;">Solicitamos que a resposta seja encaminhada à Ouvidoria, diretamente por meio de seu sistema informatizado (http://ouvidoria.cultura.gov.br/), para que possamos retransmiti-la ao interessado.</span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;"><br/></span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;">Em caso de dúvidas, a Ouvidoria está à disposição, pelos ramais 2498 ou 2439.</span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;"><br/></span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;">Atenciosamente,&nbsp;</span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;">Ouvidoria</span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;">Ministério da Cultura</span></font></div><div><font face="Arial, Verdana"><span style="font-size: 13px;"><br/></span></font></div><div style="text-align: center;"><font face="Arial, Verdana"><span style="font-size: 13px;"><br/></span></font></div><div><span style="font-weight: bold; text-align: -webkit-center;">Mensagem enviada pelo sistema de Ouvidoria do Ministério da Cultura. Favor não responder diretamente a este e-mail. &nbsp;</span></div>');
+INSERT into  tbEmailAutomatizado (idEmailAutomatizado, tpEmail, nmTituloEmail, dsEmail) VALUES (1008, N'12', N'[MinC Ouvidoria] - Mensagem em atraso - %NUMERO_MANIFESTACAO% ', N'<div style="text-align: center;"><strong style="color: rgb(0, 102, 0); text-align: justify;">&nbsp;Ouvidoria Ministério da Cultura</strong></div><div><font face="Arial, Verdana"><span style="font-size: 13px;"><br/></span></font></div><div><font face="Arial, Verdana"><span style="font-size: 13px;"><br/></span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;">Prezado (a) colaborador (a),&nbsp;</span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;"><br/></span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;">Verificamos que a presente mensagem permanece inconclusa.</span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;"><br/></span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;">Solicitamos que seja dada resposta, com brevidade, à mensagem em tela, tendo em vista que o prazo regimental de resposta a esta Ouvidoria já está expirado.</span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;"><br/></span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;">Reiteramos que enviem a resposta com a maior brevidade possível, visto que o prazo estabelecido pela Ouvidoria para atendimento ao interessado já se esgotou (vide art. 57, § 1º, I, II e III, da Portaria n. 40 - Regimento Interno do MinC)&nbsp;</span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;"><br/></span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;">Solicitamos que a resposta seja encaminhada à Ouvidoria, diretamente por meio de seu sistema informatizado (http://ouvidoria.cultura.gov.br/), para que possamos retransmiti-la ao interessado.</span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;"><br/></span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;">Em caso de dúvidas, a Ouvidoria está à disposição, pelos ramais 2498 ou 2439.</span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;"><br/></span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;">Atenciosamente,&nbsp;</span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;">Ouvidoria</span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;">Ministério da Cultura</span></font></div><div style="text-align: justify;"><font face="Arial, Verdana"><span style="font-size: 13px;"><br/></span></font></div><div><font face="Arial, Verdana"><span style="font-size: 13px;"><br/></span></font></div><div><span style="font-weight: bold; text-align: -webkit-center;">Mensagem enviada pelo sistema de Ouvidoria do Ministério da Cultura. Favor não responder diretamente a este e-mail. &nbsp;</span></div>');
+INSERT into  tbEmailAutomatizado (idEmailAutomatizado, tpEmail, nmTituloEmail, dsEmail) VALUES (1009, N'13', N'[MinC Ouvidoria] - Noa Senha - %NUMERO_MANIFESTACAO% ', N'<div style="font-size: 10pt; font-family: Arial, Verdana; text-align: center;"><font color="#006600" face="Arial, Verdana"><strong>Ouvidoria Ministério da Cultura</strong></font></div><p class="MsoNormal"><font face="Arial"><span style="text-align: justify;"><br/></span></font></p><p class="MsoNormal"><font face="Arial"><span style="text-align: justify;">Prezado (a) senhor (a)</span><span style="text-align: justify;">&nbsp;</span><strong style="text-align: justify;"><span style="background-color: white;">%NOME%,</span></strong></font></p><font size="3" face="Arial"></font><p class="MsoNormal"></p><p class="MsoNormal"></p><p class="MsoNormal" style="text-align: justify;"><font face="Arial">Conforme solicitado, segue a nova senha da
+manifestação&nbsp;<span style="color: rgb(34, 34, 34); font-weight: bold; background-color: rgb(255, 255, 255);">%NUMERO_MANIFESTACAO% .</span></font></p><p class="MsoNormal" style="text-align: justify;"><font face="Arial"><span style="color: rgb(34, 34, 34); background-color: white;">Login:&nbsp;</span><span style="color: rgb(34, 34, 34); font-weight: bold; background-color: rgb(255, 255, 255);">%NUMERO_MANIFESTACAO%</span></font></p><p class="MsoNormal" style="text-align: justify;"><font face="Arial"><span style="color: rgb(34, 34, 34); background-color: white;">Senha</span><strong style="color: rgb(34, 34, 34);">:&nbsp;</strong><span style="color: rgb(34, 34, 34); font-weight: bold; background-color: rgb(255, 255, 255);">%SENHA_MANIFESTACAO%</span></font></p><font size="3" face="Arial"></font><p class="MsoNormal"><font size="3" face="Arial">Atenciosamente,</font></p><font size="3" face="Arial"></font><p class="MsoNormal"><font size="3" face="Arial">Ouvidoria</font></p><font size="3" face="Arial"></font><p class="MsoNormal"><font size="3" face="Arial">Ministério da Cultura</font></p><p class="MsoNormal" style="font-size: 10pt; font-family: Arial, Verdana;"><font size="2"><br/></font></p><p class="MsoNormal" align="center" style="font-size: 10pt; font-family: Arial, Verdana; text-align: center;"><strong>Mensagem enviada pelo sistema de Ouvidoria do Ministério da Cultura. Favor não responder diretamente a este e-mail. &nbsp;</strong></p>');
 
