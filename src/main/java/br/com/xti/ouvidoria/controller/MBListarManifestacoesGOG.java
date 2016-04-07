@@ -80,23 +80,10 @@ public class MBListarManifestacoesGOG implements Serializable{
 
     @PostConstruct
     public void init() {
-    	if(securityService.getUser() != null) {
-			carregaListaManifestacao();
-    	} else {
-    		Object manifestation = JSFUtils.getSessionAttribute("manifestacao");
-    		if(ValidacaoHelper.isNotEmpty(manifestation) && manifestation instanceof TbManifestacao) {
-    			carregaListaManifestacao();
-    		}
-    	}
     	
     	listaPrioridade = prioridadeDAO.findAll();
     	listaTipoManifestacao = tipoManifestacaoDAO.findAll();
     	
-    }
-    
-    
-
-    private void carregaListaManifestacao(){
     	if (pesquisaManifestacaoHelper == null){
     		pesquisaManifestacaoHelper = new PesquisaManifestacaoViewHelper(manifestacaoService);
     	}

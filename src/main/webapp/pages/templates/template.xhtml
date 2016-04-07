@@ -60,7 +60,7 @@
 									action="/pages/manifestacao/cadastrar.xhtml?faces-redirect=true" />
 								<p:menuitem value="Gerenciar Manifestação" ajax="false"
 									action="/pages/manifestacao/listarmanifestacoes.xhtml?faces-redirect=true"
-									rendered="#{security.hasRole('GERENCIAR_MANIFESTACAO')}" />
+									rendered="#{security.user != null}" />
 								<p:menuitem value="Filtro Personalizado" ajax="false"
 									action="/pages/manterfiltropersonalizado/principal.xhtml?faces-redirect=true"
 									rendered="#{security.hasRole('MANTER_FILTROS_PERSONALIZADOS')}" />
