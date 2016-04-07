@@ -84,6 +84,12 @@ INSERT INTO tbMeioEntrada (idMeioEntrada, nmMeioEntrada) VALUES (1059, 'E-mail')
 INSERT INTO tbMeioEntrada (idMeioEntrada, nmMeioEntrada) VALUES (1061, 'Telefone ');
 ALTER SEQUENCE tbmeioentrada_idmeioentrada_seq RESTART WITH 1062;
 
+--tbMeioResposta
+INSERT INTO tbMeioResposta (idMeioResposta, nmMeioResposta) VALUES (1, 'E-mail (Correio Eletrônicos)');
+INSERT INTO tbMeioResposta (idMeioResposta, nmMeioResposta) VALUES (2, 'Correspondência em meio físico');
+INSERT INTO tbMeioResposta (idMeioResposta, nmMeioResposta) VALUES (3, 'FAX');
+INSERT INTO tbMeioResposta (idMeioResposta, nmMeioResposta) VALUES (4, 'Telefone Comercial');
+ALTER SEQUENCE tbmeioresposta_idmeioresposta_seq RESTART WITH 5;
 
 --tbPais
 INSERT INTO tbPais (idPais, nmPais) VALUES (1, 'Afeganistão');
