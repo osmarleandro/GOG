@@ -420,27 +420,15 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
         	dto.setNomeTipoManifestacao((String) obj[6]);
         	dto.setNomePrioridade((String) obj[7]);
 
-        	// Verifica o tipo de dado retornado pelo data-source hibernate.dialect 
-        	if ( (obj[8]) instanceof Character ){
-        		// Trata os tipos de dados conforme o dialeto configurado para o SQLServer
-        		dto.setIdStatusManifestacao( ((Character) obj[8]).toString());
-        		dto.setSigilo(Boolean.valueOf( ((Character) obj[9]).toString()) );
-        		dto.setOculta( ((Character) obj[10]).toString().equals("1") ) ;
-            	try {
-            		String textoManifestacao = converterTextoClob( (Clob) obj[11]);
-            		dto.setTextoManifestacao( textoManifestacao );
-    				
-    			} catch (Exception e) {
-    				// TODO: handle exception
-    				e.printStackTrace();
-    			}
-        	}else{
-        		// Trata os tipos de dados conforme o dialeto configurado para o PostgreSQL
-        		dto.setIdStatusManifestacao( ((String) obj[8]));
-        		dto.setSigilo(Boolean.valueOf( ((String) obj[9])) );
-        		dto.setOculta( ((String) obj[10]).equals("1") ) ;
-        		dto.setTextoManifestacao( (String) obj[11] );
-        	}
+        	//Configura os dados de campos Character, conforme o modelo no Banco
+    		dto.setIdStatusManifestacao((obj[8]) instanceof Character ? 
+    			((Character) obj[8]).toString():((String) obj[8]));
+    		dto.setSigilo((obj[9]) instanceof Character ? 
+    			Boolean.valueOf( ((Character) obj[9]).toString()):Boolean.valueOf( ((String) obj[9]))  );
+    		dto.setOculta((obj[10]) instanceof Character ?  
+    			((Character) obj[10]).toString().equals("1"):((String) obj[10]).equals("1") ) ;
+
+    		dto.setTextoManifestacao( (String) obj[11] );
         	
         	dto.setMotivoOcultacao((String) obj[12]);
         	
