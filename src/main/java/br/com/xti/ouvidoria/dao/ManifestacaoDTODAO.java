@@ -81,7 +81,7 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
         mapaUsoEntidades.put(ASSOCIACAO_USUARIO_EMISSOR,  false);
     	
         mapaEntidades.put(ASSOCIACAO_ULTIMO_TRAMITE, 
-        		new StringBuffer ("	LEFT JOIN \"vwUltimoTramite\" vwUltTram		ON m.idManifestacao						= vwUltTram.idManifestacao " +
+        		new StringBuffer ("	LEFT JOIN vwUltimoTramite vwUltTram		ON m.idManifestacao						= vwUltTram.idManifestacao " +
         						  "	LEFT JOIN TbTramite ultimoTramite			ON vwUltTram.idTramite			 		= ultimoTramite.idTramite " ));
         mapaUsoEntidades.put(ASSOCIACAO_ULTIMO_TRAMITE,  false);
 
@@ -795,7 +795,7 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
         				+ " WHERE tram.idTramite in( "
         				// Seleciona o último Trâmite
         				+ " 	SELECT ultimoTramite.idTramite "
-        				+ "    		FROM \"vwUltimoTramite\" ultimoTramite  "
+        				+ "    		FROM vwUltimoTramite ultimoTramite  "
         				+ "			WHERE ultimoTramite.idUsuarioReceptor is null "
         				+ "	) "   
         				+ " and tram.stRetornada	=   '" + BooleanEnum.NAO.getId() + "' )");
