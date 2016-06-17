@@ -21,8 +21,13 @@
 # Ambiente de Desenvolvimento
 Neste documento apresentamos informações necessárias para realizar a montagem, configuração e utilização do ambiente de desenvolvimento do sistema GOG. 
 
-> **Nota**
+> **Notas**
+>> Você pode experimentar o sistema GOG em seu ambiente a partir do nosso script Docker. O projeto Docker do GOG te entrega uma imagem funcional do sistema, que será montada a partir do gerenciador de container Docker.
+
+>>> [Acesse aqui o nosso projeto Docker para o GOG](https://github.com/culturagovbr/docker-GOG)
+
 >> As versões dos pacotes de instalação foram expressamente declaradas neste documentos com o simples objetivo de refletir a realidade vivenciada pela equipe de desenvolvimento do MinC. 
+
 >> A intenção é garantir que este guia possa conduzir seu leitor a uma instalação de sucesso; entretanto, nada impede que o leitor tente utilizar novas versões das aplicações ou pacotes aqui citados.
 
 
