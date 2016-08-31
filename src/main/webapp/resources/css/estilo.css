@@ -636,8 +636,11 @@ html,body {
 	color: #FFFFFF;
 	height: 176px;
 	margin: 0 auto;
-	padding: 20px 70px 32px 56px;
-	width: 235px;
+	padding: 20px 5px 32px 1px;
+	width: 355px;
+}
+.panelLoginConteudo {
+	padding: 16px 48px 0px 67px;
 }
 
 .cadastroUsuariosOuvidoria {
@@ -828,8 +831,8 @@ html,body {
 }
 
 .alingBox {
-	height: 65px;
-	margin-top: 40px;
+	/*height: 65px;
+	margin-top: 40px;*/
 	text-align: right;
 }
 
@@ -839,13 +842,34 @@ html,body {
 }
 
 .loginBox {
-	height: auto;
-	margin-bottom: 10px;
+    text-align: left;
+    height: auto;
+    margin-bottom: 10px;
+    width: 237px;
+}
+.loginBox input, .loginBoxPw input {
+    /*-webkit-appearance: textfield;*/
+    background-color: white;
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-width: initial;
+    border-image-outset: initial;
+    border-image-repeat: initial;
+    -webkit-rtl-ordering: logical;
+    -webkit-user-select: text;
+    cursor: auto;
+    padding: 1px;
+    border-width: 2px;
+    border-style: inset;
+    border-color: initial;
+	width: 235px;
 }
 
 .loginBoxPw {
-	height: auto;
-	margin-bottom: 15px;
+    text-align: left;
+    height: auto;
+    margin-bottom: 15px;
+    width: 236px;
 }
 
 .topoLoginBox {
@@ -969,4 +993,9 @@ ui-corner-all {
 @keyframes invalid {
   from { background-color: red; }
   to { background-color: inherit; }
+}
+#footer-brasil {
+   background: none repeat scroll 0% 0% #2C66CE;
+   padding: 1em 0px;
+   max-width: 100%;
 }

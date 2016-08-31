@@ -62,31 +62,35 @@
 								</ul>
 							</div>
 							<div class="panelLogin">
-								<div class="alingBox">
-									<div class="loginBox">
-										<label for="username" style="font-family: 'Open Sans'; font-size: 14px">Login:</label>&nbsp;&nbsp;
-										<input type="text" name="username" style="font-family: sans-serif; font-size: 12px" size="24" />
+								<div class="panelLoginConteudo">
+									<div class="alingBox">
+										<div class="loginBox">
+											<label for="username" style="font-family: 'Open Sans'; font-size: 14px">Login:</label>&nbsp;&nbsp;
+											<br />
+											<input type="text" name="username" style="font-family: sans-serif; font-size: 12px" size="24" />
+										</div>
+										<div class="loginBoxPw">
+											<label for="password" style="font-family: 'Open Sans'; font-size: 14px">Senha:</label>&nbsp;&nbsp;
+											<br />
+											<input type="password" name="password" style="font-family: sans-serif; font-size: 12px" size="24" />
+										</div>
 									</div>
-									<div class="loginBoxPw">
-										<label for="password" style="font-family: 'Open Sans'; font-size: 14px">Senha:</label>&nbsp;&nbsp;
-										<input type="password" name="password" style="font-family: sans-serif; font-size: 12px" size="24" />
+	
+									<div class="alingButton">
+										<div class="rSenha">
+											<a href="${context}/recuperarsenha.xhtml">Recuperar Senha</a>
+										</div>
+										<div class="dadosCadastro1">
+											<button type="submit" style="border: none;"
+													class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left">
+												<span class="ui-button-text">ACESSAR</span>
+											</button>
+										</div>
 									</div>
-								</div>
-
-								<div class="alingButton">
-									<div class="rSenha">
-										<a href="${context}/recuperarsenha.xhtml">Recuperar Senha</a>
+									<div class="cadastroUsuariosOuvidoria">
+										Não é cadastrado?
+										<a href="${context}/pages/externo/cadastrarManifestante.xhtml">Cadastre-se</a>
 									</div>
-									<div class="dadosCadastro1">
-										<button type="submit" style="border: none;"
-												class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left">
-											<span class="ui-button-text">ACESSAR</span>
-										</button>
-									</div>
-								</div>
-								<div class="cadastroUsuariosOuvidoria">
-									Não é cadastrado?
-									<a href="${context}/pages/externo/cadastrarManifestante.xhtml">Cadastre-se</a>
 								</div>
 							</div>
 						</div>
@@ -172,11 +176,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="endereco">
-			Copyright © 2013-2015 CGTI - Coordenação Geral de Tecnologia da Informação
-			- Ministério da Cultura. Todos os Direitos Reservados.
-			<a href="http://www.cultura.gov.br/" target="_blank">MinC</a> - ${versao}
-		</div>
+		<div id="footer-brasil"><div id="wrapper-footer-brasil"><a href="http://www.acessoainformacao.gov.br/"><span class="logo-acesso-footer"></span></a><a href="http://www.brasil.gov.br/"><span class="logo-brasil-footer"></span></a></div></div>
 	</div>
 	
 	<div class="modal" id="avisoModal">
