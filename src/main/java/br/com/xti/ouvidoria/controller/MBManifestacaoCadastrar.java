@@ -39,6 +39,7 @@ import br.com.xti.ouvidoria.model.TbEmailAutomatizado;
 import br.com.xti.ouvidoria.model.TbManifestacao;
 import br.com.xti.ouvidoria.model.TbManifestacaoxAnexo;
 import br.com.xti.ouvidoria.model.TbMeioEntrada;
+import br.com.xti.ouvidoria.model.TbMeioResposta;
 import br.com.xti.ouvidoria.model.TbMunicipio;
 import br.com.xti.ouvidoria.model.TbPais;
 import br.com.xti.ouvidoria.model.TbPrioridade;
@@ -115,12 +116,14 @@ public class MBManifestacaoCadastrar implements Serializable {
     
     @PostConstruct
     public void init() {
+
         cadastroSucesso = Boolean.FALSE;
         campoObrigatorio = !(securityService.isOuvidor() || securityService.isAdministrador());
         anonimo = Boolean.FALSE;
         tipoPessoaFisica = Boolean.TRUE;
         manifestacao = new TbManifestacao();
-        manifestacao.setIdMeioResposta(meioRespostaDAO.find(MeioRespostaEnum.EMAIL_ELETRONICO.getId()));
+        TbMeioResposta objResposta = meioRespostaDAO.find(MeioRespostaEnum.EMAIL_ELETRONICO.getId());
+        manifestacao.setIdMeioResposta(objResposta);
         manifestacao.setTpManifestante(TipoManifestanteEnum.CIDADAO.getId());
         preencherDadosUsuarioLogado();
     }
