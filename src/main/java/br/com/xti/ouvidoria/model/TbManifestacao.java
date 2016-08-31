@@ -114,7 +114,7 @@ public class TbManifestacao implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1)
-    @Column(name = "dsTextoManifestacao")
+    @Column(name = "dsTextoManifestacao", columnDefinition="TEXT")
     private String dsTextoManifestacao;
     @Basic(optional = false)
     @NotNull
