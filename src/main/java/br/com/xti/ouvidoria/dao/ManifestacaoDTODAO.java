@@ -428,7 +428,7 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
     		dto.setOculta((obj[10]) instanceof Character ?  
     			((Character) obj[10]).toString().equals("1"):((String) obj[10]).equals("1") ) ;
 
-    		dto.setTextoManifestacao( (String) obj[11] );
+    		dto.setTextoManifestacao( String.valueOf(obj[11]) );
         	
         	dto.setMotivoOcultacao((String) obj[12]);
         	
