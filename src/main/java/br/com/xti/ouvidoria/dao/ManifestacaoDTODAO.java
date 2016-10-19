@@ -1,5 +1,8 @@
 package br.com.xti.ouvidoria.dao;
 
+import java.io.InputStream;
+import java.io.Reader;
+import java.io.StringWriter;
 import java.sql.Clob;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -20,6 +23,7 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
 import br.com.xti.ouvidoria.dto.manifestacao.DTOManifestacao;
@@ -427,8 +431,19 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
     			Boolean.valueOf( ((Character) obj[9]).toString()):Boolean.valueOf( ((String) obj[9]))  );
     		dto.setOculta((obj[10]) instanceof Character ?  
     			((Character) obj[10]).toString().equals("1"):((String) obj[10]).equals("1") ) ;
-
-    		dto.setTextoManifestacao( String.valueOf(obj[11]) );
+    		String textoManifestacao;
+    		
+    		if (obj[11] instanceof Clob) {    			
+    			Reader in = ((Clob) obj[11]).getCharacterStream();
+    			StringWriter w = new StringWriter();
+    			IOUtils.copy(in, w);
+    			
+    			textoManifestacao = w.toString();
+    		} else {
+    			textoManifestacao = (String) obj[11];
+    		}
+    		
+    		dto.setTextoManifestacao(textoManifestacao);
         	
         	dto.setMotivoOcultacao((String) obj[12]);
         	
