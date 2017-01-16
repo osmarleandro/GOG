@@ -22,7 +22,7 @@ import br.com.xti.ouvidoria.helper.ValidacaoHelper;
 @RequestScoped
 public class EmailValidator implements Validator{
  
-	private static final String EMAIL_PATTERN = "^([0-9a-zA-Z]([-.\\w]*[0-9a-zA-Z])*@(([0-9a-zA-Z])+([-\\w]*[0-9a-zA-Z])*\\.)+[a-zA-Z]{2,9})$";
+	private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
  
 	private Pattern pattern;
 	private Matcher matcher;
