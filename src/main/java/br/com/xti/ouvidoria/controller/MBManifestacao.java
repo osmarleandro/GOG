@@ -1533,8 +1533,8 @@ public class MBManifestacao extends AbstractManifestationController implements S
             //atualiza data de modificação da manifestação
             manifestacao.setDtUltimaAtualizacao(new Date());
             // Verifica se irá alterar o status da manifestação
-            if(securityService.isManifestante()) {
-            	//manifestacao.setStStatusManifestacao(StatusManifestacaoEnum.EM_ANDAMENTO.getId());
+            if(securityService.isManifestante() && StatusManifestacaoEnum.SOLICITADA_INFORMACAO.getId().equals(manifestacao.getStStatusManifestacao())) {
+            	manifestacao.setStStatusManifestacao(StatusManifestacaoEnum.SOLICITACAO_RESPONDIDA.getId());
             } else if(ValidacaoHelper.isEmpty(manifestacao.getTbEncaminhamentoCollection())
         		|| StatusManifestacaoEnum.SOLICITACAO_RESPONDIDA.getId().equals(manifestacao.getStStatusManifestacao())
         		|| StatusManifestacaoEnum.EM_ANDAMENTO.getId().equals(manifestacao.getStStatusManifestacao())) {
