@@ -41,12 +41,12 @@ public class TbAnexo implements Serializable {
     private Integer idAnexo;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 255)
     @Column(name = "dsCaminhoAnexo")
     private String dsCaminhoAnexo;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 255)
     @Column(name = "nmAnexo")
     private String nmAnexo;
     /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "idAnexo")*/
