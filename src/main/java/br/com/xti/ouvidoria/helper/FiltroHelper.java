@@ -42,7 +42,8 @@ public class FiltroHelper {
         		
         	case INTERLOCUTOR:
         		filtro.addManIdStatus(StatusManifestacaoEnum.EM_ANDAMENTO.getId());
-        		filtro.setEncStatus(StatusEncaminhamentoEnum.ENCAMINHADA.getId());
+        		// Comentamos essa linha para o Intelocutor consiga visualizar manifestações com situação "Retornada"
+        		//filtro.setEncStatus(StatusEncaminhamentoEnum.ENCAMINHADA.getId());
         		filtro.addEncIdUnidadeRecebeu(usuario.getIdUnidade().getIdUnidade());
         		break;
         		
