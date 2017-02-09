@@ -172,6 +172,11 @@
 							<img src="${context}/resources/img/setaHome.png" />
 							<a href="${context}/pages/externo/listarAnexos.xhtml">Relatórios da Ouvidoria</a>
 						</li>
+						<br />
+						<li>
+							<img src="${context}/resources/img/setaHome.png" />
+							<a href="${context}/resources/Manual-do-Ouvidor-Minc-FINAL-2017.pdf">Manual do Usuário</a>
+						</li>
 					</ul>
 				</div>
 			</div>
