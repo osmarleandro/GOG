@@ -59,6 +59,7 @@ import br.com.xti.ouvidoria.security.SecurityService;
 import br.com.xti.ouvidoria.util.EmailService;
 import br.com.xti.ouvidoria.util.JSFUtils;
 import br.com.xti.ouvidoria.util.PasswordUtils;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Samuel Correia Guimarães
@@ -95,6 +96,9 @@ public class MBManifestacaoCadastrar implements Serializable {
 	@EJB
 	private UfDAO ufDAO;
 	
+	@Inject
+	private HttpServletRequest request;
+	
 	@ManagedProperty("#{localidadeBean}")
 	private LocalidadeBean localidadeBean;
     
@@ -116,15 +120,21 @@ public class MBManifestacaoCadastrar implements Serializable {
     
     @PostConstruct
     public void init() {
-
+ 
         cadastroSucesso = Boolean.FALSE;
         campoObrigatorio = !(securityService.isOuvidor() || securityService.isAdministrador());
+        String isAnonimo = request.getParameter("anonimo");
         anonimo = Boolean.FALSE;
+		if(isAnonimo.equals("true")) {
+			anonimo = Boolean.TRUE;
+		}
+        
         tipoPessoaFisica = Boolean.TRUE;
         manifestacao = new TbManifestacao();
         TbMeioResposta objResposta = meioRespostaDAO.find(MeioRespostaEnum.EMAIL_ELETRONICO.getId());
         manifestacao.setIdMeioResposta(objResposta);
         manifestacao.setTpManifestante(TipoManifestanteEnum.CIDADAO.getId());
+        
         preencherDadosUsuarioLogado();
     }
     
@@ -151,10 +161,9 @@ public class MBManifestacaoCadastrar implements Serializable {
             }
             
             //----- Tipo Pessoa -------//
+            manifestacao.setTipoPessoa(TipoPessoaEnum.JURIDICA.getId());
             if(tipoPessoaFisica) {
             	manifestacao.setTipoPessoa(TipoPessoaEnum.FISICA.getId());
-            } else {
-            	manifestacao.setTipoPessoa(TipoPessoaEnum.JURIDICA.getId());
             }
             	
             
@@ -426,6 +435,7 @@ public class MBManifestacaoCadastrar implements Serializable {
 	 */
 	public void preencherDadosUsuarioLogado() {
 		TbUsuario user = securityService.getUser();
+		
 		if (user != null) {
 			manifestacao.setNmPessoa(user.getNmUsuario());
 			manifestacao.setEeEmailUsuario(user.getEeEmail());
