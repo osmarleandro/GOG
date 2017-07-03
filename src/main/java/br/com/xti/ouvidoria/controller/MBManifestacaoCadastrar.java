@@ -125,7 +125,7 @@ public class MBManifestacaoCadastrar implements Serializable {
         campoObrigatorio = !(securityService.isOuvidor() || securityService.isAdministrador());
         String isAnonimo = request.getParameter("anonimo");
         anonimo = Boolean.FALSE;
-		if(isAnonimo.equals("true")) {
+		if(isAnonimo != null && isAnonimo.equals("true")) {
 			anonimo = Boolean.TRUE;
 		}
         
@@ -161,9 +161,10 @@ public class MBManifestacaoCadastrar implements Serializable {
             }
             
             //----- Tipo Pessoa -------//
-            manifestacao.setTipoPessoa(TipoPessoaEnum.JURIDICA.getId());
             if(tipoPessoaFisica) {
             	manifestacao.setTipoPessoa(TipoPessoaEnum.FISICA.getId());
+            } else {
+            	manifestacao.setTipoPessoa(TipoPessoaEnum.JURIDICA.getId());
             }
             	
             
