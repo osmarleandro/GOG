@@ -120,7 +120,11 @@ public abstract class AbstractManifestationController {
 		}
 		
 		if(redirectToHomePage) {
-			redirectToHomePage();
+			try {
+				JSFUtils.redirect("/login");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -132,15 +136,7 @@ public abstract class AbstractManifestationController {
 		}
 		return oldManifestation;
 	}
-	
-	private void redirectToHomePage() {
-		try {
-			JSFUtils.redirect("/login");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
+
 	public void mountTabs() {
         int index = 0;
         setTabs(new ArrayList<ManifestacaoTabView>());

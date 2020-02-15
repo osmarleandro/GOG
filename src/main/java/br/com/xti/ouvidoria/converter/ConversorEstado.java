@@ -17,22 +17,6 @@ import br.com.xti.ouvidoria.model.TbUF;
 @ManagedBean
 @ViewScoped
 public class ConversorEstado extends ConversorBase {
-	
-	@EJB
-	private UfDAO dao;
-    
-    @Override
-    public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        TbUF estado = null;
-        if(value == null || value.isEmpty()) {
-            return estado;
-        }
-        
-        try {
-            estado = dao.find(Integer.parseInt(value));
-        } catch (NumberFormatException e) { }
-        return estado;
-    }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
