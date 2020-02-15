@@ -5,6 +5,7 @@
 package br.com.xti.ouvidoria.dao;
 
 import javax.ejb.Stateless;
+import javax.validation.ConstraintViolationException;
 
 import br.com.xti.ouvidoria.model.TbPerguntaQuestionario;
 
@@ -22,6 +23,17 @@ public class PerguntaQuestionarioDAO extends AbstractDAO<TbPerguntaQuestionario>
     @Override
     public String getNomeEntidade() {
         return "Pergunta Questionario";
+    }
+
+    public void refresh(TbPerguntaQuestionario entity) {
+        try {
+            getEntityManager().flush();
+            getEntityManager().refresh(entity);
+        } catch (ConstraintViolationException ex) {
+            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 

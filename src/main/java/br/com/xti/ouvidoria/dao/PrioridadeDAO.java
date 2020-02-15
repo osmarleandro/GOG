@@ -5,6 +5,7 @@
 package br.com.xti.ouvidoria.dao;
 
 import javax.ejb.Stateless;
+import javax.validation.ConstraintViolationException;
 
 import br.com.xti.ouvidoria.model.TbPrioridade;
 
@@ -22,5 +23,16 @@ public class PrioridadeDAO extends AbstractDAO<TbPrioridade> {
     @Override
     public String getNomeEntidade() {
         return "Prioridade";
+    }
+
+    public void refresh(TbPrioridade entity) {
+        try {
+            getEntityManager().flush();
+            getEntityManager().refresh(entity);
+        } catch (ConstraintViolationException ex) {
+            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

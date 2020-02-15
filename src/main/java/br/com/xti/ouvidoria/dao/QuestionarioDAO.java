@@ -10,6 +10,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.validation.ConstraintViolationException;
 
 import br.com.xti.ouvidoria.exception.InfrastructureException;
 import br.com.xti.ouvidoria.helper.ValidacaoHelper;
@@ -79,4 +80,15 @@ public class QuestionarioDAO extends AbstractDAO<TbQuestionario> {
     public String getNomeEntidade() {
         return "Questionario";
     }
+
+	public void refresh(TbQuestionario entity) {
+		try {
+			getEntityManager().flush();
+			getEntityManager().refresh(entity);
+		} catch (ConstraintViolationException ex) {
+			ex.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

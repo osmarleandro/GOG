@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.validation.ConstraintViolationException;
 
 import br.com.xti.ouvidoria.model.TbFiltroPersonalizado;
 import br.com.xti.ouvidoria.model.TbUsuario;
@@ -43,5 +44,16 @@ public class FiltroPersonalizadoDAO extends AbstractDAO<TbFiltroPersonalizado> {
             lista = new ArrayList<>();
         }
         return lista;
+    }
+
+    public void refresh(TbFiltroPersonalizado entity) {
+        try {
+            getEntityManager().flush();
+            getEntityManager().refresh(entity);
+        } catch (ConstraintViolationException ex) {
+            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

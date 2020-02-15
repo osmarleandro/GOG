@@ -18,6 +18,7 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.validation.ConstraintViolationException;
 
 import br.com.xti.ouvidoria.filtropersonalizado.FiltroPersonalizado;
 import br.com.xti.ouvidoria.helper.DataHelper;
@@ -469,5 +470,15 @@ public class ManifestacaoDAO extends AbstractDAO<TbManifestacao> {
         }
         return new ArrayList<>();
     }
-    
+
+    public void refresh(TbManifestacao entity) {
+        try {
+            getEntityManager().flush();
+            getEntityManager().refresh(entity);
+        } catch (ConstraintViolationException ex) {
+            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

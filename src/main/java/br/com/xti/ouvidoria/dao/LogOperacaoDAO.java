@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
 
 import br.com.xti.ouvidoria.model.TbLogOperacao;
 import br.com.xti.ouvidoria.model.enums.LogOperacaoEnum;
@@ -67,5 +68,16 @@ public class LogOperacaoDAO extends AbstractDAO<TbLogOperacao> {
         op.setIdUsuario(securityService.getUser());
 
         getEntityManager().persist(op);
+    }
+
+    public void refresh(TbLogOperacao entity) {
+        try {
+            getEntityManager().flush();
+            getEntityManager().refresh(entity);
+        } catch (ConstraintViolationException ex) {
+            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

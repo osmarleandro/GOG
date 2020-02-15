@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.validation.ConstraintViolationException;
 
 import br.com.xti.ouvidoria.model.TbPerfil;
 import br.com.xti.ouvidoria.model.TbUsuario;
@@ -64,6 +65,16 @@ public class PerfilDAO extends AbstractDAO<TbPerfil> {
         
         return selectList(select, params);
     }
-    
+
+    public void refresh(TbPerfil entity) {
+        try {
+            getEntityManager().flush();
+            getEntityManager().refresh(entity);
+        } catch (ConstraintViolationException ex) {
+            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
 

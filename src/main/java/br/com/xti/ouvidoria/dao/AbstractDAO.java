@@ -70,18 +70,6 @@ public abstract class AbstractDAO<T> {
 	}
 
 
-	
-    public void refresh(T entity) {
-        try {
-            getEntityManager().flush();
-            getEntityManager().refresh(entity);
-        } catch (ConstraintViolationException ex) {
-            ex.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public void create(T entity) throws InfrastructureException {
         try {
             getEntityManager().persist(entity);

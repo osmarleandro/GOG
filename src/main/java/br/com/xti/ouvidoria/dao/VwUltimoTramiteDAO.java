@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.validation.ConstraintViolationException;
 
 import br.com.xti.ouvidoria.model.VwUltimoTramite;
 
@@ -40,6 +41,17 @@ public class VwUltimoTramiteDAO extends AbstractDAO<VwUltimoTramite> {
             return selectList(query, param);
         } catch (Exception ex) {
             return new ArrayList<>();
+        }
+    }
+
+    public void refresh(VwUltimoTramite entity) {
+        try {
+            getEntityManager().flush();
+            getEntityManager().refresh(entity);
+        } catch (ConstraintViolationException ex) {
+            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

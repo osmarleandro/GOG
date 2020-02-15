@@ -7,6 +7,7 @@ package br.com.xti.ouvidoria.dao;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import javax.validation.ConstraintViolationException;
 
 import br.com.xti.ouvidoria.model.TbEmailAutomatizado;
 import br.com.xti.ouvidoria.model.enums.EmailAutomatizadoEnum;
@@ -36,5 +37,16 @@ public class EmailAutomatizadoDAO extends AbstractDAO<TbEmailAutomatizado> {
       @Override
     public String getNomeEntidade() {
         return "Email Notificação";
+    }
+
+    public void refresh(TbEmailAutomatizado entity) {
+        try {
+            getEntityManager().flush();
+            getEntityManager().refresh(entity);
+        } catch (ConstraintViolationException ex) {
+            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

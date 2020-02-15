@@ -5,6 +5,7 @@
 package br.com.xti.ouvidoria.dao;
 
 import javax.ejb.Stateless;
+import javax.validation.ConstraintViolationException;
 
 import br.com.xti.ouvidoria.model.TbUF;
 
@@ -21,5 +22,16 @@ public class UfDAO extends AbstractDAO<TbUF> {
     @Override
     public String getNomeEntidade() {
         return "UF";
+    }
+
+    public void refresh(TbUF entity) {
+        try {
+            getEntityManager().flush();
+            getEntityManager().refresh(entity);
+        } catch (ConstraintViolationException ex) {
+            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

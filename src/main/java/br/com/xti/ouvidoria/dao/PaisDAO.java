@@ -7,6 +7,7 @@ package br.com.xti.ouvidoria.dao;
 import java.util.HashMap;
 
 import javax.ejb.Stateless;
+import javax.validation.ConstraintViolationException;
 
 import br.com.xti.ouvidoria.model.TbPais;
 
@@ -33,5 +34,16 @@ public class PaisDAO extends AbstractDAO<TbPais> {
         TbPais tbPais = selectObject(select, map);
 
         return tbPais;
+    }
+
+    public void refresh(TbPais entity) {
+        try {
+            getEntityManager().flush();
+            getEntityManager().refresh(entity);
+        } catch (ConstraintViolationException ex) {
+            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

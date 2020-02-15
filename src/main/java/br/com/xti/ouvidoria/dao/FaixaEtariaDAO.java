@@ -5,6 +5,7 @@
 package br.com.xti.ouvidoria.dao;
 
 import javax.ejb.Stateless;
+import javax.validation.ConstraintViolationException;
 
 import br.com.xti.ouvidoria.model.TbFaixaEtaria;
 
@@ -21,5 +22,16 @@ public class FaixaEtariaDAO extends AbstractDAO<TbFaixaEtaria> {
       @Override
     public String getNomeEntidade() {
         return "Faixa Etária";
+    }
+
+    public void refresh(TbFaixaEtaria entity) {
+        try {
+            getEntityManager().flush();
+            getEntityManager().refresh(entity);
+        } catch (ConstraintViolationException ex) {
+            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

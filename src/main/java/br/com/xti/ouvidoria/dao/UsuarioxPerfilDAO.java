@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.validation.ConstraintViolationException;
 
 import br.com.xti.ouvidoria.model.TbPerfil;
 import br.com.xti.ouvidoria.model.TbUsuario;
@@ -77,5 +78,15 @@ public class UsuarioxPerfilDAO extends AbstractDAO<TbUsuarioxPerfil> {
         }
         return ids;
     }
-    
+
+    public void refresh(TbUsuarioxPerfil entity) {
+        try {
+            getEntityManager().flush();
+            getEntityManager().refresh(entity);
+        } catch (ConstraintViolationException ex) {
+            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -3,6 +3,7 @@ package br.com.xti.ouvidoria.dao;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.validation.ConstraintViolationException;
 
 import br.com.xti.ouvidoria.helper.ValidacaoHelper;
 import br.com.xti.ouvidoria.model.TbPreferenciaSistema;
@@ -31,4 +32,14 @@ public class PreferenciaSistemaDAO extends AbstractDAO<TbPreferenciaSistema> {
     	return null;
     }
 
+    public void refresh(TbPreferenciaSistema entity) {
+        try {
+            getEntityManager().flush();
+            getEntityManager().refresh(entity);
+        } catch (ConstraintViolationException ex) {
+            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

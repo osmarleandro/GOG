@@ -1,6 +1,5 @@
 package br.com.xti.ouvidoria.dao;
 
-import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.sql.Clob;
@@ -22,6 +21,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.validation.ConstraintViolationException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -871,6 +871,16 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
         // Atualizar a manifestação informada
         edit(manifestacao);
         
-	}    
+	}
 
+	public void refresh(TbManifestacao entity) {
+		try {
+			getEntityManager().flush();
+			getEntityManager().refresh(entity);
+		} catch (ConstraintViolationException ex) {
+			ex.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
