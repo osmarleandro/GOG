@@ -32,21 +32,25 @@ public class AvisoDAO extends AbstractDAO<TbAviso> {
 	public TbAviso getAvisoAtual() {
 		List<TbAviso> res = new ArrayList<TbAviso>();
 		TbAviso aviso = null;
-		
-		try {
-			String select = "SELECT a FROM TbAviso a WHERE a.dtInicioAviso <= :dtHoje and a.dtFimAviso >= :dtHoje order by a.idAvisos desc";
-			TypedQuery<TbAviso> query = getEntityManager().createQuery(select, TbAviso.class);
-			query.setParameter("dtHoje", new Date());
-			
-			res.addAll(query.getResultList());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
+
+		extracted(res);
+
 		if(ValidacaoHelper.isNotEmpty(res))
 			aviso = res.get(0);
 		
         return aviso;
     }
+
+	private void extracted(List<TbAviso> res) {
+		try {
+			String select = "SELECT a FROM TbAviso a WHERE a.dtInicioAviso <= :dtHoje and a.dtFimAviso >= :dtHoje order by a.idAvisos desc";
+			TypedQuery<TbAviso> query = getEntityManager().createQuery(select, TbAviso.class);
+			query.setParameter("dtHoje", new Date());
+
+			res.addAll(query.getResultList());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 }
