@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
+import br.com.xti.ouvidoria.util.JSFUtils;
 import org.apache.commons.lang.StringUtils;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.model.SortOrder;
@@ -27,8 +29,19 @@ public class PesquisaManifestacaoViewHelper extends PesquisaEntidadeViewHelper<D
 		//Configura a Caixa de Entrada como cenário de pesquisa padrão
 		super.getFiltroPesquisa().setCenarioPesquisa(DTOManifestacao.CENARIO_PESQUISA_CAIXA_ENTRADA);
 	}
-	
-	private void DTOPesquisaManifestacao() {
+
+    public static void fatal(String titulo, String mensagem) {
+        show(FacesMessage.SEVERITY_FATAL, titulo, mensagem, null);
+        JSFUtils.showGrowl();
+    }
+
+    static void show(FacesMessage.Severity severity, String titulo, String mensagem, String clientId) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().getFlash().setKeepMessages(true);
+        context.addMessage(clientId, new FacesMessage(severity, titulo, mensagem));
+    }
+
+    private void DTOPesquisaManifestacao() {
 		// TODO Auto-generated method stub
 
 	}
