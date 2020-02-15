@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang.StringUtils;
@@ -13,6 +15,7 @@ import org.primefaces.model.SortOrder;
 import br.com.xti.ouvidoria.dto.manifestacao.DTOManifestacao;
 import br.com.xti.ouvidoria.model.TbFiltroPersonalizado;
 import br.com.xti.ouvidoria.negocio.ManifestacaoService;
+import br.com.xti.ouvidoria.util.JSFUtils;
 
 
 public class PesquisaManifestacaoViewHelper extends PesquisaEntidadeViewHelper<DTOManifestacao> {
@@ -236,6 +239,17 @@ public class PesquisaManifestacaoViewHelper extends PesquisaEntidadeViewHelper<D
 	 */
 	public void setFiltroEscolhido(TbFiltroPersonalizado filtroEscolhido) {
 		this.filtroEscolhido = filtroEscolhido;
+	}
+
+	public static void fatal(String titulo, String mensagem) {
+	    show(FacesMessage.SEVERITY_FATAL, titulo, mensagem, null);
+	    JSFUtils.showGrowl();
+	}
+
+	static void show(Severity severity, String titulo, String mensagem, String clientId) {
+	    FacesContext context = FacesContext.getCurrentInstance();
+	    context.getExternalContext().getFlash().setKeepMessages(true);
+	    context.addMessage(clientId, new FacesMessage(severity, titulo, mensagem));
 	}
 
 
