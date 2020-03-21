@@ -5,7 +5,7 @@ import java.util.Arrays;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
-import br.com.xti.ouvidoria.comparator.RacaNomeComparator;
+import br.com.xti.ouvidoria.comparator.RacaNomeComparatorRenamed;
 import br.com.xti.ouvidoria.helper.EnumHelper;
 import br.com.xti.ouvidoria.model.enums.AtrasoManifestacaoEnum;
 import br.com.xti.ouvidoria.model.enums.BooleanEnum;
@@ -60,7 +60,7 @@ public class MBEnum {
 
     public RacaEnum[] getRacaEnums() {
     	RacaEnum[] racas = RacaEnum.values();
-    	Arrays.sort(racas, new RacaNomeComparator());
+    	Arrays.sort(racas, new RacaNomeComparatorRenamed());
         return racas;
     }
 
