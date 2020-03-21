@@ -62,6 +62,7 @@ public class DTOManifestacao extends DTOPesquisaPaginacao {
 	
 	
 	private String cenarioPesquisa;
+	protected Date dataCadastro;
 	
 	
 	public static final String CENARIO_PESQUISA_TODOS 					= "Todos";
