@@ -25,9 +25,7 @@ import br.com.xti.ouvidoria.model.enums.BooleanEnum;
 public class QuestionarioDAO extends AbstractDAO<TbQuestionario> {
 	
 	private static final String QUERY_SETAR_TODOS_QUESTIONARIOS_INATIVOS = "UPDATE TbQuestionario SET stQuestionario = :stQuestionario";
-	private static final String QUERY_QUESTIONARIO_ATIVO = "SELECT q FROM TbQuestionario q WHERE q.stQuestionario = :stQuestionario";
-	
-    public QuestionarioDAO() {
+	public QuestionarioDAO() {
         super(TbQuestionario.class);
     }
     

@@ -30,6 +30,7 @@ import org.primefaces.model.UploadedFile;
 
 import br.com.xti.ouvidoria.comparator.UnidadeSiglaComparator;
 import br.com.xti.ouvidoria.controller.generic.AbstractManifestationController;
+import br.com.xti.ouvidoria.dao.AbstractDAO;
 import br.com.xti.ouvidoria.dao.ClassificacaoDAO;
 import br.com.xti.ouvidoria.dao.EmailAutomatizadoDAO;
 import br.com.xti.ouvidoria.dao.EncaminhamentoPadronizadoDAO;
@@ -561,7 +562,7 @@ public class MBManifestacao extends AbstractManifestationController implements S
 		this.questionario = questionario;
 	}
 
-	public QuestionarioDAO getQuestionarioDAO() {
+	public AbstractDAO<TbQuestionario> getQuestionarioDAO() {
 		return questionarioDAO;
 	}
 

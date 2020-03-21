@@ -15,8 +15,8 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
 import br.com.xti.ouvidoria.comparator.PerguntaQuestionarioPosicaoComparator;
+import br.com.xti.ouvidoria.dao.AbstractDAO;
 import br.com.xti.ouvidoria.dao.PerguntaQuestionarioDAO;
-import br.com.xti.ouvidoria.dao.QuestionarioDAO;
 import br.com.xti.ouvidoria.model.TbPerguntaQuestionario;
 import br.com.xti.ouvidoria.model.TbQuestionario;
 
@@ -32,7 +32,7 @@ public class MBPergunta implements Serializable{
     
     
     @EJB private PerguntaQuestionarioDAO dao;
-    @EJB private QuestionarioDAO questionarioDao;
+    @EJB private AbstractDAO<TbQuestionario> questionarioDao;
     
     private TbPerguntaQuestionario pergunta = new TbPerguntaQuestionario();
     private TbPerguntaQuestionario perguntaNova = new TbPerguntaQuestionario();

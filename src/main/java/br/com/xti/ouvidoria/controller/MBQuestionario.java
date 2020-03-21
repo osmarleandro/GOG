@@ -12,7 +12,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
-import br.com.xti.ouvidoria.dao.QuestionarioDAO;
+import br.com.xti.ouvidoria.dao.AbstractDAO;
 import br.com.xti.ouvidoria.model.TbQuestionario;
 
 /**
@@ -25,7 +25,7 @@ import br.com.xti.ouvidoria.model.TbQuestionario;
 @ViewScoped
 public class MBQuestionario implements Serializable{
     
-    @EJB private QuestionarioDAO dao;
+    @EJB private AbstractDAO<TbQuestionario> dao;
     private TbQuestionario questionario = new TbQuestionario();
     private TbQuestionario questionarioNovo = new TbQuestionario();
     private List<TbQuestionario> questionariosFiltrados;

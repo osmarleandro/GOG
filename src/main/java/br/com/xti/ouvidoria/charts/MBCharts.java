@@ -28,9 +28,9 @@ import br.com.xti.ouvidoria.charts.pojo.MensagemSolucionada;
 import br.com.xti.ouvidoria.charts.pojo.MensagemSolucionadaUnidadeSolucionadora;
 import br.com.xti.ouvidoria.charts.pojo.RespostaQuestionario;
 import br.com.xti.ouvidoria.controller.MBListarManifestacoes;
+import br.com.xti.ouvidoria.dao.AbstractDAO;
 import br.com.xti.ouvidoria.dao.ClassificacaoDAO;
 import br.com.xti.ouvidoria.dao.ManifestacaoDAO;
-import br.com.xti.ouvidoria.dao.QuestionarioDAO;
 import br.com.xti.ouvidoria.filtropersonalizado.FiltroPersonalizado;
 import br.com.xti.ouvidoria.helper.DataHelper;
 import br.com.xti.ouvidoria.helper.ValidacaoHelper;
@@ -48,7 +48,7 @@ public class MBCharts implements Serializable {
 	private ChartDao dao;
 	
 	@EJB
-	private QuestionarioDAO questionarioDAO;
+	private AbstractDAO<TbQuestionario> questionarioDAO;
 	
 	@EJB
 	private ClassificacaoDAO classificacaoDAO;
