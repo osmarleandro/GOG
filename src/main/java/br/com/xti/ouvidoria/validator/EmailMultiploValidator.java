@@ -15,18 +15,21 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
+import br.com.xti.ouvidoria.helper.FiltroHelper;
+
 @ManagedBean(name = "emailMultiploValidator")
 @RequestScoped
 public class EmailMultiploValidator implements Validator {
 
-    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\."
-            + "[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*"
-            + "(\\.[A-Za-z]{2,})$";
+    /**
+	 * @deprecated Use {@link FiltroHelper#EMAIL_PATTERN} instead
+	 */
+	private static final String EMAIL_PATTERN = FiltroHelper.EMAIL_PATTERN;
     private Pattern pattern;
     private Matcher matcher;
 
     public EmailMultiploValidator() {
-        pattern = Pattern.compile(EMAIL_PATTERN);
+        pattern = Pattern.compile(FiltroHelper.EMAIL_PATTERN);
     }
 
     @Override
