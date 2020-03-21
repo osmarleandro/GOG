@@ -17,7 +17,6 @@ public class DTOManifestacao extends DTOPesquisaPaginacao {
 	private Integer 				numeroManifestacao;
 	private Integer 				idManifestacao;
 
-	private Date 					dataCadastro;
 	private Date 					dataUltimaAtualizacao;
 	
 	private String 					nomeManifestante;

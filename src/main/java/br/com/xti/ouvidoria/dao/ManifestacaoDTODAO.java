@@ -27,6 +27,7 @@ import javax.validation.ConstraintViolationException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
+import br.com.xti.ouvidoria.dto.DTOPesquisaPaginacao;
 import br.com.xti.ouvidoria.dto.manifestacao.DTOManifestacao;
 import br.com.xti.ouvidoria.filtropersonalizado.FiltroPersonalizado;
 import br.com.xti.ouvidoria.helper.EnumHelper;
@@ -201,7 +202,7 @@ public class ManifestacaoDTODAO extends AbstractDAO<TbManifestacao> {
 	 * @param filtrosPersonalizados
 	 * @return
 	 */
-    public List<TbManifestacao> getManifestacoes(DTOManifestacao filtroManifestacao, boolean filtraOcultas, FiltroPersonalizado... filtrosPersonalizados) {
+    public List<TbManifestacao> getManifestacoes(DTOPesquisaPaginacao filtroManifestacao, boolean filtraOcultas, FiltroPersonalizado... filtrosPersonalizados) {
         try {
             // Criando Query para filtro
             CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();

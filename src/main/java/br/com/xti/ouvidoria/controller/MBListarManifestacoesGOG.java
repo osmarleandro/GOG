@@ -14,6 +14,7 @@ import javax.inject.Named;
 import br.com.xti.ouvidoria.dao.FiltroPersonalizadoDAO;
 import br.com.xti.ouvidoria.dao.PrioridadeDAO;
 import br.com.xti.ouvidoria.dao.TipoManifestacaoDAO;
+import br.com.xti.ouvidoria.dto.DTOPesquisaPaginacao;
 import br.com.xti.ouvidoria.dto.manifestacao.DTOManifestacao;
 import br.com.xti.ouvidoria.helper.ValidacaoHelper;
 import br.com.xti.ouvidoria.model.TbFiltroPersonalizado;
@@ -307,7 +308,7 @@ public class MBListarManifestacoesGOG implements Serializable{
 	/**
 	 * @return the manifestacaoSelecionada
 	 */
-	public DTOManifestacao getManifestacaoSelecionada() {
+	public DTOPesquisaPaginacao getManifestacaoSelecionada() {
 		return manifestacaoSelecionada;
 	}
 

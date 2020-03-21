@@ -1,5 +1,7 @@
 package br.com.xti.ouvidoria.dto;
 
+import java.util.Date;
+
 /**
  * Classe que carrega atributos de controle da paginação de pesquisas 
  * 
@@ -15,6 +17,7 @@ public class DTOPesquisaPaginacao {
 	private boolean reiniciarPaginacao;
 	
 	private Integer quantidaLinhasPesquisadas = 0;
+	protected Date dataCadastro;
 	
 	
 	/**
