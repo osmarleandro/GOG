@@ -30,8 +30,9 @@ import br.com.xti.ouvidoria.security.SecurityService;
  */
 @SuppressWarnings({"rawtypes","unchecked"})
 public abstract class AbstractDAO<T> {
-	
-	@Inject
+
+    protected static final String QUERY_QUESTIONARIO_ATIVO = "SELECT q FROM TbQuestionario q WHERE q.stQuestionario = :stQuestionario";
+    @Inject
 	private SecurityService securityService;
 
     @PersistenceContext(unitName = "ouvidoriaPersistenceUnit")
