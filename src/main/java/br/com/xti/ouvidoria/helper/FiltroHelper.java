@@ -21,7 +21,7 @@ import br.com.xti.ouvidoria.model.enums.StatusManifestacaoEnum;
  *
  * @author samuel.guimaraes
  */
-public class FiltroHelper {
+public class FiltroHelper extends ExtractedSuperclass {
 
     public static final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\."
             + "[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*"
