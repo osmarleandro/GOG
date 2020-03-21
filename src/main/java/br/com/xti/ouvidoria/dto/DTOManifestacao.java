@@ -12,7 +12,7 @@ import br.com.xti.ouvidoria.model.enums.StatusManifestacaoEnum;
 
 
 
-public class DTOManifestacao extends DTOPesquisaPaginacao {
+public class DTOManifestacao extends DTOPesquisaPaginacao implements ExtractedInterface {
 	private Integer 				numeroManifestacao;
 	private Integer 				idManifestacao;
 
