@@ -4,7 +4,7 @@ import java.util.HashSet;
 
 import br.com.xti.ouvidoria.model.TbUnidade;
 
-public class MensagemSolucionadaUnidadeSolucionadora extends AbstractChartResults implements IResultadoGrafico {
+public class MensagemSolucionadaUnidadeSolucionadora extends AbstractChartResultsRenamed implements IResultadoGrafico {
 	
 	private TbUnidade unidade;
 	

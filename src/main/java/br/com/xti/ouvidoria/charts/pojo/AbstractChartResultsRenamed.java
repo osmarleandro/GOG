@@ -4,7 +4,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Set;
 
-public abstract class AbstractChartResults {
+public abstract class AbstractChartResultsRenamed {
 	
 	protected Set<Integer> idManifestacoes;
 	protected double porcentagem;

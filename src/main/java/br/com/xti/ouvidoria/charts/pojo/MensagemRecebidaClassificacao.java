@@ -4,7 +4,7 @@ import java.util.TreeSet;
 
 import br.com.xti.ouvidoria.model.TbClassificacao;
 
-public class MensagemRecebidaClassificacao extends AbstractChartResults implements IResultadoGrafico, Comparable<MensagemRecebidaClassificacao> {
+public class MensagemRecebidaClassificacao extends AbstractChartResultsRenamed implements IResultadoGrafico, Comparable<MensagemRecebidaClassificacao> {
 	
 	private TbClassificacao classificacao;
 	

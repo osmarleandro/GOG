@@ -4,7 +4,7 @@ import java.util.TreeSet;
 
 import br.com.xti.ouvidoria.model.TbTipoManifestacao;
 
-public class MensagemRecebidaTipo extends AbstractChartResults implements IResultadoGrafico {
+public class MensagemRecebidaTipo extends AbstractChartResultsRenamed implements IResultadoGrafico {
 	
 	private TbTipoManifestacao tipo;
 	

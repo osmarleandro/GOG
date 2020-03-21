@@ -4,7 +4,7 @@ import java.util.TreeSet;
 
 import br.com.xti.ouvidoria.model.TbUnidade;
 
-public class DiasRespostaAOuvidoria extends AbstractChartResults implements IResultadoGrafico, Comparable<DiasRespostaAOuvidoria> {
+public class DiasRespostaAOuvidoria extends AbstractChartResultsRenamed implements IResultadoGrafico, Comparable<DiasRespostaAOuvidoria> {
 
 	private TbUnidade unidade;
 	private int quantidadeDias;

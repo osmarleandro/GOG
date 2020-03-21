@@ -7,7 +7,7 @@ import java.util.TreeSet;
 import br.com.xti.ouvidoria.helper.ValidacaoHelper;
 import br.com.xti.ouvidoria.model.TbManifestacao;
 
-public class MensagemSolucionada extends AbstractChartResults implements IResultadoGrafico,Comparable<MensagemSolucionada> {
+public class MensagemSolucionada extends AbstractChartResultsRenamed implements IResultadoGrafico,Comparable<MensagemSolucionada> {
 	
 	private String periodo;
 	private Date data;
