@@ -119,7 +119,7 @@ public class ChartService implements Serializable {
 					
 					if(map.containsKey(unidade)) {
 						map.get(unidade).addQuantidade();
-						map.get(unidade).addIdManifestacao(m.getIdManifestacao());
+						map.get(unidade).addIdManifestacaoRenamed(m.getIdManifestacao());
 					} else {
 						map.put(unidade, new MensagemEnviadaUnidades(unidade, m.getIdManifestacao(), 1, 0));
 					}
@@ -185,7 +185,7 @@ public class ChartService implements Serializable {
 					
 					total++;
 					if(map.containsKey(tipo)) {
-						map.get(tipo).addIdManifestacao(m.getIdManifestacao());
+						map.get(tipo).addIdManifestacaoRenamed(m.getIdManifestacao());
 					} else {
 						map.put(tipo, new MensagemRecebidaTipo(tipo, m.getIdManifestacao(), 0));
 					}
@@ -220,14 +220,14 @@ public class ChartService implements Serializable {
 				TbUF uf = m.getIdUF();
 				
 				if(uf == null || uf.getIdUF() == 0)
-					map.get(RegiaoEnum.NAO_ESPECIFICADO).addIdManifestacao(m.getIdManifestacao());
+					map.get(RegiaoEnum.NAO_ESPECIFICADO).addIdManifestacaoRenamed(m.getIdManifestacao());
 				else {
 					switch (RegiaoHelper.getRegiaoPorIdUf(uf.getIdUF())) {
-						case NORTE: map.get(RegiaoEnum.NORTE).addIdManifestacao(m.getIdManifestacao()); break;
-						case NORDESTE: map.get(RegiaoEnum.NORDESTE).addIdManifestacao(m.getIdManifestacao()); break;
-						case CENTRO_OESTE: map.get(RegiaoEnum.CENTRO_OESTE).addIdManifestacao(m.getIdManifestacao()); break;
-						case SUDESTE: map.get(RegiaoEnum.SUDESTE).addIdManifestacao(m.getIdManifestacao()); break;
-						case SUL: map.get(RegiaoEnum.SUL).addIdManifestacao(m.getIdManifestacao()); break;
+						case NORTE: map.get(RegiaoEnum.NORTE).addIdManifestacaoRenamed(m.getIdManifestacao()); break;
+						case NORDESTE: map.get(RegiaoEnum.NORDESTE).addIdManifestacaoRenamed(m.getIdManifestacao()); break;
+						case CENTRO_OESTE: map.get(RegiaoEnum.CENTRO_OESTE).addIdManifestacaoRenamed(m.getIdManifestacao()); break;
+						case SUDESTE: map.get(RegiaoEnum.SUDESTE).addIdManifestacaoRenamed(m.getIdManifestacao()); break;
+						case SUL: map.get(RegiaoEnum.SUL).addIdManifestacaoRenamed(m.getIdManifestacao()); break;
 						default: break;
 					}
 				}
@@ -345,7 +345,7 @@ public class ChartService implements Serializable {
 			for (TbManifestacao m : manifestacoes) {
 				TbTipoManifestacao tipo = m.getIdTipoManifestacao();
 				if(map.containsKey(tipo)) {
-					map.get(tipo).addIdManifestacao(m.getIdManifestacao());
+					map.get(tipo).addIdManifestacaoRenamed(m.getIdManifestacao());
 				} else {
 					map.put(tipo, new MensagemRecebidaTipo(tipo, m.getIdManifestacao(), 0));
 				}
@@ -370,7 +370,7 @@ public class ChartService implements Serializable {
 			for (TbManifestacao m : manifestacoes) {
 				for (TbClassificacao classificacao : m.getTbClassificacaoCollection()) {
 					if(map.containsKey(classificacao)) {
-						map.get(classificacao).addIdManifestacao(m.getIdManifestacao());
+						map.get(classificacao).addIdManifestacaoRenamed(m.getIdManifestacao());
 					} else {
 						map.put(classificacao, new MensagemRecebidaClassificacao(classificacao, m.getIdManifestacao(), 0));
 					}
@@ -399,7 +399,7 @@ public class ChartService implements Serializable {
 			for (TbManifestacao m : manifestacoes) {
 				for (TbUnidade unidade : m.getTbUnidadeAreaSolucionadoraCollection()) {
 					if(map.containsKey(unidade)) {
-						map.get(unidade).addIdManifestacao(m.getIdManifestacao());
+						map.get(unidade).addIdManifestacaoRenamed(m.getIdManifestacao());
 					} else {
 						map.put(unidade, new MensagemSolucionadaUnidadeSolucionadora(unidade, m.getIdManifestacao(), 0));
 					}
@@ -433,7 +433,7 @@ public class ChartService implements Serializable {
 									encaminhamento.getDtRespostaTramite());
 							
 							if(map.containsKey(unidade)) {
-								map.get(unidade).addIdManifestacao(manifestacao.getIdManifestacao());
+								map.get(unidade).addIdManifestacaoRenamed(manifestacao.getIdManifestacao());
 								map.get(unidade).addDias(dias);
 							} else {
 								map.put(unidade, new DiasRespostaAOuvidoria(unidade, manifestacao.getIdManifestacao(), dias));

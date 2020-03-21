@@ -13,7 +13,7 @@ public abstract class AbstractChartResultsRenamed {
 		return joinManifestationIds(idManifestacoes);
 	}
 
-	public void addIdManifestacao(int idManifestacao) {
+	public void addIdManifestacaoRenamed(int idManifestacao) {
 		this.idManifestacoes.add(idManifestacao);
 	}
 	
