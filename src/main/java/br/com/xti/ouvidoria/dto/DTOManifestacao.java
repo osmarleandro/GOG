@@ -1,4 +1,4 @@
-package br.com.xti.ouvidoria.dto.manifestacao;
+package br.com.xti.ouvidoria.dto;
 
 import java.util.Collection;
 import java.util.Date;
