@@ -4,7 +4,7 @@ import java.util.TreeSet;
 
 import br.com.xti.ouvidoria.model.TbUnidade;
 
-public class MensagemEnviadaUnidades extends AbstractChartResults implements IResultadoGrafico {
+public class MensagemEnviadaUnidades extends AbstractChartResultsRenamed implements IResultadoGrafico {
 	
 	private TbUnidade unidade;
 	private int quantidade;

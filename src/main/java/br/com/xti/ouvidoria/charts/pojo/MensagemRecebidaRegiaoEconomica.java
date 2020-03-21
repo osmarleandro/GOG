@@ -5,7 +5,7 @@ import java.util.TreeSet;
 import br.com.xti.ouvidoria.model.enums.RegiaoEnum;
 
 
-public class MensagemRecebidaRegiaoEconomica extends AbstractChartResults implements IResultadoGrafico {
+public class MensagemRecebidaRegiaoEconomica extends AbstractChartResultsRenamed implements IResultadoGrafico {
 	
 	private RegiaoEnum regiao;
 	
