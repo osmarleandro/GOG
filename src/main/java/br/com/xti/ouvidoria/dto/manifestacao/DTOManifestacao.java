@@ -14,6 +14,7 @@ import br.com.xti.ouvidoria.model.enums.StatusManifestacaoEnum;
 
 
 public class DTOManifestacao extends DTOPesquisaPaginacao {
+	protected Date dataCadastro;
 	private Integer 				numeroManifestacao;
 	private Integer 				idManifestacao;
 

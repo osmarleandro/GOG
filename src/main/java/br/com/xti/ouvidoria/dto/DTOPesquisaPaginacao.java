@@ -10,8 +10,7 @@ import java.util.Date;
  */
 public class DTOPesquisaPaginacao {
 
-    protected Date dataCadastro;
-    private Integer primeiroRegistro = 0;
+	private Integer primeiroRegistro = 0;
 	private Integer quantidadeRegistros = 10;
 	private String ordenacaoCampo;
 	private String ordenacaoForma;
