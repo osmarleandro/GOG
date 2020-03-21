@@ -23,6 +23,10 @@ import br.com.xti.ouvidoria.model.enums.StatusManifestacaoEnum;
  */
 public class FiltroHelper {
 
+    public static final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\."
+            + "[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*"
+            + "(\\.[A-Za-z]{2,})$";
+
     public static FiltroPersonalizado getFiltrosPadrao(TbUsuario usuario) {
         FiltroPersonalizado filtro = new FiltroPersonalizado();
         filtro.setMetodoBusca("and");

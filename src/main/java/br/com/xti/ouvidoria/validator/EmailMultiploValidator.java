@@ -4,6 +4,8 @@
  */
 package br.com.xti.ouvidoria.validator;
 
+import br.com.xti.ouvidoria.helper.FiltroHelper;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,14 +21,11 @@ import javax.faces.validator.ValidatorException;
 @RequestScoped
 public class EmailMultiploValidator implements Validator {
 
-    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\."
-            + "[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*"
-            + "(\\.[A-Za-z]{2,})$";
     private Pattern pattern;
     private Matcher matcher;
 
     public EmailMultiploValidator() {
-        pattern = Pattern.compile(EMAIL_PATTERN);
+        pattern = Pattern.compile(FiltroHelper.EMAIL_PATTERN);
     }
 
     @Override
