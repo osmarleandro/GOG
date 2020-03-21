@@ -430,10 +430,6 @@ public class MBManifestacao extends AbstractManifestationController implements S
     	}
     }
     
-    public String voltar() {
-    	return "listarmanifestacoes.xhtml?faces-redirect=true";
-    }
-    
     public boolean isManifestacaoNova() {
     	StatusManifestacaoEnum status = EnumHelper.getStatusManifestacaoEnum(manifestacao.getStStatusManifestacao());
     	return status == StatusManifestacaoEnum.NOVA;

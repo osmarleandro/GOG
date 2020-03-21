@@ -472,5 +472,9 @@ public abstract class AbstractManifestationController {
 	public List<TbUnidade> getUnidades() {
 		return unidades;
 	}
+
+	public String voltar() {
+		return "listarmanifestacoes.xhtml?faces-redirect=true";
+	}
 	
 }
