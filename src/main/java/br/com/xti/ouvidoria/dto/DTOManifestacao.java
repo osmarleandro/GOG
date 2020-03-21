@@ -1,11 +1,10 @@
-package br.com.xti.ouvidoria.dto.manifestacao;
+package br.com.xti.ouvidoria.dto;
 
 import java.util.Collection;
 import java.util.Date;
 
 import org.jsoup.Jsoup;
 
-import br.com.xti.ouvidoria.dto.DTOPesquisaPaginacao;
 import br.com.xti.ouvidoria.model.TbComunicacaoExterna;
 import br.com.xti.ouvidoria.model.TbEncaminhamento;
 import br.com.xti.ouvidoria.model.enums.AtrasoManifestacaoEnum;

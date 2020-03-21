@@ -12,7 +12,7 @@ import org.apache.commons.lang.StringUtils;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.model.SortOrder;
 
-import br.com.xti.ouvidoria.dto.manifestacao.DTOManifestacao;
+import br.com.xti.ouvidoria.dto.DTOManifestacao;
 import br.com.xti.ouvidoria.model.TbFiltroPersonalizado;
 import br.com.xti.ouvidoria.negocio.ManifestacaoService;
 import br.com.xti.ouvidoria.util.JSFUtils;

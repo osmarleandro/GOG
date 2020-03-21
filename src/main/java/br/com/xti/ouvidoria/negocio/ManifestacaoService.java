@@ -26,7 +26,7 @@ import br.com.xti.ouvidoria.dao.ManifestacaoDAO;
 import br.com.xti.ouvidoria.dao.ManifestacaoDTODAO;
 import br.com.xti.ouvidoria.dao.UsuarioDAO;
 import br.com.xti.ouvidoria.dao.VwUltimoTramiteDAO;
-import br.com.xti.ouvidoria.dto.manifestacao.DTOManifestacao;
+import br.com.xti.ouvidoria.dto.DTOManifestacao;
 import br.com.xti.ouvidoria.exception.PermissionDeniedException;
 import br.com.xti.ouvidoria.filtropersonalizado.FiltroPersonalizado;
 import br.com.xti.ouvidoria.helper.DataHelper;

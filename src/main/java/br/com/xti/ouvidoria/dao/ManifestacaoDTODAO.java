@@ -27,8 +27,8 @@ import javax.validation.ConstraintViolationException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
+import br.com.xti.ouvidoria.dto.DTOManifestacao;
 import br.com.xti.ouvidoria.dto.DTOPesquisaPaginacao;
-import br.com.xti.ouvidoria.dto.manifestacao.DTOManifestacao;
 import br.com.xti.ouvidoria.filtropersonalizado.FiltroPersonalizado;
 import br.com.xti.ouvidoria.helper.EnumHelper;
 import br.com.xti.ouvidoria.model.TbManifestacao;
