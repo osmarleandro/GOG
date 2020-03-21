@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.validation.ConstraintViolationException;
 
 import br.com.xti.ouvidoria.model.TbFuncionalidade;
 import br.com.xti.ouvidoria.model.TbPerfil;
@@ -71,5 +72,16 @@ public class FuncionalidadeDAO extends AbstractDAO<TbFuncionalidade> {
         }
         return getFuncionalidadesAtivas(perfil.getIdPerfil());
     }
+
+	public void refresh(TbFuncionalidade entity) {
+	    try {
+	        getEntityManager().flush();
+	        getEntityManager().refresh(entity);
+	    } catch (ConstraintViolationException ex) {
+	        ex.printStackTrace();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
     
 }

@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import javax.ejb.Stateless;
+import javax.validation.ConstraintViolationException;
 
 import br.com.xti.ouvidoria.model.TbEncaminhamento;
 import br.com.xti.ouvidoria.model.TbTramite;
@@ -39,4 +40,15 @@ public class TramiteDAO extends AbstractDAO<TbTramite> {
         }
         return retorno;
     }
+
+	public void refresh(TbTramite entity) {
+	    try {
+	        getEntityManager().flush();
+	        getEntityManager().refresh(entity);
+	    } catch (ConstraintViolationException ex) {
+	        ex.printStackTrace();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
 }

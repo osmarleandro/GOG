@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import javax.ejb.Stateless;
+import javax.validation.ConstraintViolationException;
 
 import br.com.xti.ouvidoria.model.TbComunicacaoExterna;
 import br.com.xti.ouvidoria.model.TbManifestacao;
@@ -52,5 +53,16 @@ public class ComunicacaoExternaDAO extends AbstractDAO<TbComunicacaoExterna> {
         }
         return retorno;
     }
+
+	public void refresh(TbComunicacaoExterna entity) {
+	    try {
+	        getEntityManager().flush();
+	        getEntityManager().refresh(entity);
+	    } catch (ConstraintViolationException ex) {
+	        ex.printStackTrace();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
 
 }

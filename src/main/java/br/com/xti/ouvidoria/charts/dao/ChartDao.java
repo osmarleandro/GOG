@@ -7,6 +7,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
+import javax.validation.ConstraintViolationException;
 
 import br.com.xti.ouvidoria.dao.AbstractDAO;
 import br.com.xti.ouvidoria.dao.ManifestacaoDAO;
@@ -84,6 +85,17 @@ public class ChartDao extends AbstractDAO<TbManifestacao> {
 		filtroPersonalizado.setManDataCadastroDe(DataHelper.getDataMin(dataDe));
 		filtroPersonalizado.setManDataCadastroAte(DataHelper.getDataMax(dataAte));
 		return filtroPersonalizado;
+	}
+
+	public void refresh(TbManifestacao entity) {
+	    try {
+	        getEntityManager().flush();
+	        getEntityManager().refresh(entity);
+	    } catch (ConstraintViolationException ex) {
+	        ex.printStackTrace();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 	}
 
 }

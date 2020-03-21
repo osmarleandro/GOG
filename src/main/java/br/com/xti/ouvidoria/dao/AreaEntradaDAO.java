@@ -5,6 +5,7 @@
 package br.com.xti.ouvidoria.dao;
 
 import javax.ejb.Stateless;
+import javax.validation.ConstraintViolationException;
 
 import br.com.xti.ouvidoria.model.TbAreaEntrada;
 
@@ -21,6 +22,17 @@ public class AreaEntradaDAO extends AbstractDAO<TbAreaEntrada> {
 	@Override
 	public String getNomeEntidade() {
 		return "Área de Entrada";
+	}
+
+	public void refresh(TbAreaEntrada entity) {
+	    try {
+	        getEntityManager().flush();
+	        getEntityManager().refresh(entity);
+	    } catch (ConstraintViolationException ex) {
+	        ex.printStackTrace();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 	}
 
 }

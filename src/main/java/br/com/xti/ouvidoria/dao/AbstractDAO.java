@@ -17,7 +17,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.validation.ConstraintViolationException;
 
 import br.com.xti.ouvidoria.exception.InfrastructureException;
 import br.com.xti.ouvidoria.helper.ReflectionHelper;
@@ -71,17 +70,6 @@ public abstract class AbstractDAO<T> {
 
 
 	
-    public void refresh(T entity) {
-        try {
-            getEntityManager().flush();
-            getEntityManager().refresh(entity);
-        } catch (ConstraintViolationException ex) {
-            ex.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public void create(T entity) throws InfrastructureException {
         try {
             getEntityManager().persist(entity);

@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.NonUniqueResultException;
+import javax.validation.ConstraintViolationException;
 
 import br.com.xti.ouvidoria.helper.EnumHelper;
 import br.com.xti.ouvidoria.model.TbUsuario;
@@ -141,5 +142,16 @@ public class UsuarioDAO extends AbstractDAO<TbUsuario> {
         
         return listaUsuarios;
     }
+
+	public void refresh(TbUsuario entity) {
+	    try {
+	        getEntityManager().flush();
+	        getEntityManager().refresh(entity);
+	    } catch (ConstraintViolationException ex) {
+	        ex.printStackTrace();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
     
 }

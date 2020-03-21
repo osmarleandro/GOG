@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
+import javax.validation.ConstraintViolationException;
 
 import br.com.xti.ouvidoria.helper.ValidacaoHelper;
 import br.com.xti.ouvidoria.model.TbAviso;
@@ -48,5 +49,16 @@ public class AvisoDAO extends AbstractDAO<TbAviso> {
 		
         return aviso;
     }
+
+	public void refresh(TbAviso entity) {
+	    try {
+	        getEntityManager().flush();
+	        getEntityManager().refresh(entity);
+	    } catch (ConstraintViolationException ex) {
+	        ex.printStackTrace();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
 
 }

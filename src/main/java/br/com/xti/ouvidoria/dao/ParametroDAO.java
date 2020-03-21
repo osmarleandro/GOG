@@ -7,6 +7,7 @@ package br.com.xti.ouvidoria.dao;
 import java.util.Calendar;
 
 import javax.ejb.Stateless;
+import javax.validation.ConstraintViolationException;
 
 import br.com.xti.ouvidoria.exception.InfrastructureException;
 import br.com.xti.ouvidoria.model.TbParametro;
@@ -127,4 +128,15 @@ public class ParametroDAO extends AbstractDAO<TbParametro> {
         }
         return emailMonitoramento.getVlrParametro();
     }
+
+	public void refresh(TbParametro entity) {
+	    try {
+	        getEntityManager().flush();
+	        getEntityManager().refresh(entity);
+	    } catch (ConstraintViolationException ex) {
+	        ex.printStackTrace();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
 }

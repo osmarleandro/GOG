@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import javax.ejb.Stateless;
+import javax.validation.ConstraintViolationException;
 
 import br.com.xti.ouvidoria.model.TbManifestacao;
 import br.com.xti.ouvidoria.model.TbUnidade;
@@ -33,4 +34,15 @@ public class UnidadeDAO extends AbstractDAO<TbUnidade> {
         }
         return retorno;
     }
+
+	public void refresh(TbUnidade entity) {
+	    try {
+	        getEntityManager().flush();
+	        getEntityManager().refresh(entity);
+	    } catch (ConstraintViolationException ex) {
+	        ex.printStackTrace();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
 }
