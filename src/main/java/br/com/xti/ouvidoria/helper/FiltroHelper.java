@@ -21,7 +21,7 @@ import br.com.xti.ouvidoria.model.enums.StatusManifestacaoEnum;
  *
  * @author samuel.guimaraes
  */
-public class FiltroHelper {
+public class FiltroHelper extends SuperclassExtracted {
 
     public static FiltroPersonalizado getFiltrosPadrao(TbUsuario usuario) {
         FiltroPersonalizado filtro = new FiltroPersonalizado();
