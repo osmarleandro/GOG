@@ -1,5 +1,7 @@
 package br.com.xti.ouvidoria.dto;
 
+import java.util.Date;
+
 /**
  * Classe que carrega atributos de controle da paginação de pesquisas 
  * 
@@ -7,8 +9,9 @@ package br.com.xti.ouvidoria.dto;
  *
  */
 public class DTOPesquisaPaginacao {
-	
-	private Integer primeiroRegistro = 0;
+
+    protected Date dataCadastro;
+    private Integer primeiroRegistro = 0;
 	private Integer quantidadeRegistros = 10;
 	private String ordenacaoCampo;
 	private String ordenacaoForma;
