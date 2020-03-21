@@ -120,7 +120,11 @@ public abstract class AbstractManifestationController {
 		}
 		
 		if(redirectToHomePage) {
-			redirectToHomePage();
+			try {
+				JSFUtils.redirect("/login");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
